@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F6F9FC; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: white; border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 480px; box-shadow: 0 4px 32px rgba(0,0,0,0.08); }
+    .logo { font-size: 22px; font-weight: 800; color: #0A2540; margin-bottom: 32px; }
+    .logo span { color: #3D63FF; }
+    h1 { font-size: 26px; font-weight: 800; color: #0A2540; margin-bottom: 8px; }
+    p { color: #8898AA; font-size: 15px; margin-bottom: 32px; }
+    .role-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    .role-btn { border: 2px solid #E8EDF2; border-radius: 12px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .role-btn:hover { border-color: #3D63FF; }
+    .role-btn.active { border-color: #3D63FF; background: #EEF2FF; }
+    .role-btn .icon { font-size: 28px; margin-bottom: 8px; }
+    .role-btn .label { font-size: 14px; font-weight: 700; color: #0A2540; }
+    .role-btn .sub { font-size: 12px; color: #8898AA; margin-top: 2px; }
+    .field { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #0A2540; margin-bottom: 6px; }
+    input, select { width: 100%; padding: 13px 16px; border: 2px solid #E8EDF2; border-radius: 10px; font-size: 15px; font-family: inherit; color: #0A2540; outline: none; transition: border 0.2s; }
+    input:focus, select:focus { border-color: #3D63FF; }
+    .btn { width: 100%; padding: 15px; background: #3D63FF; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.2s; margin-top: 8px; }
+    .btn:hover { background: #2d52ee; }
+    .btn:disabled { background: #8898AA; cursor: not-allowed; }
+    .footer-link { text-align: center; margin-top: 24px; font-size: 14px; color: #8898AA; }
+    .footer-link a { color: #3D63FF; text-decoration: none; font-weight: 600; }
+    .error { background: #FEF2F2; color: #DC2626; padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 16px; display: none; }
+    .provider-fields { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Sort<span>ora</span></div>
+    <h1>Create your account</h1>
+    <p>Join Sortora — it's free to get started.</p>
+    <div class="role-select">
+      <div class="role-btn active" onclick="selectRole('customer')" id="role-customer">
+        <div class="icon">🙋</div>
+        <div class="label">I'm a Customer</div>
+        <div class="sub">Browse &amp; book sessions</div>
+      </div>
+      <div class="role-btn" onclick="selectRole('provider')" id="role-provider">
+        <div class="icon">📅</div>
+        <div class="label">I'm a Provider</div>
+        <div class="sub">Offer your services</div>
+      </div>
+    </div>
+    <div class="error" id="error-msg"></div>
+    <div class="field"><label>Full Name</label><input type="text" id="full-name" placeholder="Your name" /></div>
+    <div class="field"><label>Email</label><input type="email" id="email" placeholder="you@email.com" /></div>
+    <div class="field"><label>Password</label><input type="password" id="password" placeholder="Min 8 characters" /></div>
+    <div class="field"><label>City</label><input type="text" id="city" placeholder="e.g. Seattle" /></div>
+    <div class="provider-fields" id="provider-fields">
+      <div class="field"><label>Business Name</label><input type="text" id="business-name" placeholder="Your business or brand name" /></div>
+      <div class="field"><label>Category</label>
+        <select id="category">
+          <option value="">Select your service type</option>
+          <option value="photography">Photography</option>
+          <option value="fitness">Fitness / Personal Training</option>
+          <option value="yoga">Yoga / Wellness</option>
+          <option value="dj">DJ / Music</option>
+          <option value="chef">Private Chef</option>
+          <option value="coaching">Coaching</option>
+          <option value="workshop">Workshop / Class</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="handleSignup()" id="submit-btn">Create Account</button>
+    <div class="footer-link">Already have an account? <a href="/login.html">Sign in</a></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0MzI1NzEsImV4cCI6MjA1ODAwODU3MX0.wbMbJxKJHJlXsRSGpGHXPNbhEOQUE2y7rPE4X1NmBHg');
+    let selectedRole = 'customer';
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('role-customer').classList.toggle('active', role === 'customer');
+      document.getElementById('role-provider').classList.toggle('active', role === 'provider');
+      document.getElementById('provider-fields').style.display = role === 'provider' ? 'block' : 'none';
+    }
+    function showError(msg) { const el = document.getElementById('error-msg'); el.textContent = msg; el.style.display = 'block'; }
+    async function handleSignup() {
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true; btn.textContent = 'Creating account...';
+      document.getElementById('error-msg').style.display = 'none';
+      const fullName = document.getElementById('full-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const city = document.getElementById('city').value.trim();
+      if (!fullName || !email || !password || !city) { showError('Please fill in all fields.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+      if (password.length < 8) { showError('Password must be at least 8 characters.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) { showError(error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+      const userId = data.user.id;
+      const { error: profileError } = await supabase.from('profiles').insert({ id: userId, role: selectedRole, full_name: fullName, city });
+      if (profileError) { showError(profileError.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+      if (selectedRole === 'provider') {
+        const businessName = document.getElementById('business-name').value.trim();
+        const category = document.getElementById('category').value;
+        if (!businessName || !category) { showError('Please fill in your business name and category.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+        const { error: providerError } = await supabase.from('providers').insert({ id: userId, business_name: businessName, category, location: city });
+        if (providerError) { showError(providerError.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+        window.location.href = '/dashboard.html';
+      } else {
+        window.location.href = '/browse.html';
+      }
+    }
+  </script>
+</body>
+</html>
