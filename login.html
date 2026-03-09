@@ -38,27 +38,30 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const supabase = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0MzI1NzEsImV4cCI6MjA1ODAwODU3MX0.wbMbJxKJHJlXsRSGpGHXPNbhEOQUE2y7rPE4X1NmBHg');
+    var sb = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0MzI1NzEsImV4cCI6MjA1ODAwODU3MX0.wbMbJxKJHJlXsRSGpGHXPNbhEOQUE2y7rPE4X1NmBHg');
     async function handleLogin() {
-      const btn = document.getElementById('submit-btn');
+      var btn = document.getElementById('submit-btn');
       btn.disabled = true; btn.textContent = 'Signing in...';
       document.getElementById('error-msg').style.display = 'none';
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+      var email = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value;
       if (!email || !password) {
         document.getElementById('error-msg').textContent = 'Please fill in all fields.';
         document.getElementById('error-msg').style.display = 'block';
         btn.disabled = false; btn.textContent = 'Sign In'; return;
       }
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        document.getElementById('error-msg').textContent = error.message;
+      var result = await sb.auth.signInWithPassword({ email: email, password: password });
+      if (result.error) {
+        document.getElementById('error-msg').textContent = result.error.message;
         document.getElementById('error-msg').style.display = 'block';
         btn.disabled = false; btn.textContent = 'Sign In'; return;
       }
-      const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.user.id).single();
-      if (profile?.role === 'provider') { window.location.href = '/dashboard.html'; }
-      else { window.location.href = '/browse.html'; }
+      var profileResult = await sb.from('profiles').select('role').eq('id', result.data.user.id).single();
+      if (profileResult.data && profileResult.data.role === 'provider') {
+        window.location.href = '/dashboard.html';
+      } else {
+        window.location.href = '/browse.html';
+      }
     }
   </script>
 </body>
