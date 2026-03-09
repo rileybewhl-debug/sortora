@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sortora — Book Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#0A1628;--blue:#3D63FF;--bd:#2648D8;--blt:#EBF0FF;
+  --white:#fff;--stone:#F4F6FB;--line:rgba(255,255,255,.1);
+  --body:#4A5568;--slate:#8898AA;--teal:#00D4AA;
+  --FD:'Cabinet Grotesk',sans-serif;--FB:'Inter',sans-serif;
+  --max:1140px;--nh:68px;
+  --glass:rgba(255,255,255,.06);
+  --glass-border:rgba(255,255,255,.12);
+  --glass-light:rgba(255,255,255,.72);
+  --glass-light-border:rgba(255,255,255,.55);
+  --glow-blue:0 0 60px rgba(61,99,255,.25);
+  --glow-teal:0 0 50px rgba(0,212,170,.2);
+}
+html{scroll-behavior:smooth;}
+body{
+  background:#0A1628;
+  color:var(--white);
+  font-family:var(--FB);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ── WRAP ── */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 48px;}
+
+/* ── SCROLL BLUR ── */
+#sblur{
+  position:fixed;top:var(--nh);left:0;right:0;height:100px;
+  pointer-events:none;z-index:490;opacity:0;
+  transition:opacity .5s;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  mask-image:linear-gradient(to bottom,black 0%,black 40%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom,black 0%,black 40%,transparent 100%);
+}
+#sblur.on{opacity:1;}
+
+/* ══════════════════════════════════════
+   NAV — glass panel, logo unclipped
+══════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nh);z-index:500;
+  transition:background .4s,border-color .4s;
+}
+nav.solid{
+  background:rgba(10,22,40,.75);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.ni{display:flex;align-items:center;justify-content:space-between;height:100%;}
+
+/* LOGO — extra padding to prevent clipping */
+.logo{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+  padding:4px;/* breathing room so SVG strokes never clip */
+}
+.logo svg{overflow:visible;flex-shrink:0;}
+.lw{
+  font-family:var(--FD);font-size:20px;font-weight:900;
+  color:#fff;letter-spacing:-.05em;
+}
+.nr{display:flex;align-items:center;gap:8px;}
+.nl{
+  font-size:13px;font-weight:500;color:rgba(255,255,255,.5);
+  text-decoration:none;padding:6px 14px;border-radius:9px;
+  transition:color .2s,background .2s;
+}
+.nl:hover{color:#fff;background:rgba(255,255,255,.07);}
+.nb{
+  font-size:13px;font-weight:700;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+  color:#fff;border-radius:10px;padding:9px 20px;
+  cursor:pointer;text-decoration:none;letter-spacing:-.02em;
+  box-shadow:0 0 20px rgba(61,99,255,.15);
+  transition:background .2s,border-color .2s,box-shadow .2s,transform .15s;
+}
+.nb:hover{
+  background:var(--blue);border-color:transparent;
+  box-shadow:0 0 30px rgba(61,99,255,.4);
+  transform:translateY(-1px);
+}
+
+/* ══════════════════════════════════════
+   ORBS — CSS animated, GPU only
+══════════════════════════════════════ */
+.orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+.orb{
+  position:absolute;border-radius:50%;
+  filter:blur(90px);will-change:transform;
+  animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate;
+}
+.orb:nth-child(1){width:min(900px,85vw);height:min(900px,85vw);top:-25%;left:-18%;background:radial-gradient(circle,rgba(124,58,237,.32) 0%,transparent 65%);animation:o1 28s ease-in-out infinite alternate;}
+.orb:nth-child(2){width:min(700px,65vw);height:min(700px,65vw);top:20%;left:10%;background:radial-gradient(circle,rgba(61,99,255,.24) 0%,transparent 65%);animation:o2 22s ease-in-out infinite alternate;}
+.orb:nth-child(3){width:min(650px,60vw);height:min(650px,60vw);top:-15%;right:-12%;background:radial-gradient(circle,rgba(79,70,229,.28) 0%,transparent 65%);animation:o3 25s ease-in-out infinite alternate;}
+.orb:nth-child(4){width:min(500px,45vw);height:min(500px,45vw);bottom:-20%;right:-8%;background:radial-gradient(circle,rgba(0,190,255,.16) 0%,transparent 65%);animation:o4 32s ease-in-out infinite alternate;}
+.orb:nth-child(5){width:min(380px,35vw);height:min(380px,35vw);bottom:5%;left:5%;background:radial-gradient(circle,rgba(0,212,170,.12) 0%,transparent 65%);animation:o5 20s ease-in-out infinite alternate;}
+@keyframes o1{to{transform:translate(7%,10%) scale(1.07)}}
+@keyframes o2{to{transform:translate(-6%,-8%) scale(1.05)}}
+@keyframes o3{to{transform:translate(-8%,9%) scale(1.09)}}
+@keyframes o4{to{transform:translate(-9%,-7%) scale(1.06)}}
+@keyframes o5{to{transform:translate(8%,-5%) scale(1.04)}}
+
+/* dot grid */
+.hgrid{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:28px 28px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 100%);
+}
+
+/* ══════════════════════════════════════
+   HERO — centered Villo-style
+   Text centered, fund card floats below CTA
+══════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(var(--nh) + 60px) 0 120px;
+  text-align:center;overflow:hidden;
+}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes fi{from{opacity:0;transform:translateY(32px) scale(.97)}to{opacity:1;transform:none}}
+
+.hbadge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+  border-radius:100px;padding:5px 14px 5px 8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:24px;
+  opacity:0;animation:fu .6s ease .1s forwards;
+}
+.bdot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--teal);box-shadow:0 0 8px rgba(0,212,170,.8);
+  animation:pulse 2.5s ease infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}55%{opacity:.2}}
+
+h1{
+  font-family:var(--FD);font-size:clamp(44px,6vw,82px);font-weight:900;
+  line-height:.98;letter-spacing:-.06em;color:#fff;
+  max-width:800px;margin:0 auto 22px;
+  opacity:0;animation:fu .75s ease .2s forwards;
+}
+h1 .gi{
+  font-style:italic;
+  background:linear-gradient(105deg,#7BCEFF 0%,var(--teal) 55%,#93FBCF 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hsub{
+  font-size:18px;line-height:1.7;color:rgba(255,255,255,.45);
+  max-width:480px;margin:0 auto 40px;
+  opacity:0;animation:fu .75s ease .3s forwards;
+}
+
+/* CTA row */
+.hcta{
+  display:flex;gap:12px;align-items:center;justify-content:center;
+  margin-bottom:16px;
+  opacity:0;animation:fu .75s ease .4s forwards;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;color:var(--ink);
+  border:none;border-radius:14px;
+  padding:15px 26px;font-family:var(--FB);font-size:15px;font-weight:700;
+  cursor:pointer;letter-spacing:-.02em;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08),0 4px 24px rgba(0,0,0,.3),0 0 50px rgba(255,255,255,.1);
+  transition:transform .15s,box-shadow .2s,opacity .2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 60px rgba(255,255,255,.12);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.65);border-radius:14px;
+  padding:15px 22px;font-size:15px;font-weight:500;
+  cursor:pointer;letter-spacing:-.02em;text-decoration:none;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2);}
+
+.hnote{
+  font-size:12px;color:rgba(255,255,255,.18);
+  opacity:0;animation:fu .75s ease .5s forwards;
+  margin-bottom:56px;
+}
+
+/* ── HERO FLOATING FUND CARD ──
+   Centered below headline. Glass panel.
+   Wider, more horizontal, like a dashboard widget.
+   Floating effect with subtle glow beneath.
+*/
+.hcard-wrap{
+  width:100%;max-width:640px;
+  position:relative;z-index:4;
+  opacity:0;animation:fi 1s ease .6s forwards;
+}
+.hcard-wrap::before{
+  content:'';position:absolute;
+  bottom:-40px;left:10%;right:10%;height:60px;
+  background:rgba(61,99,255,.25);
+  filter:blur(40px);border-radius:50%;
+  pointer-events:none;
+}
+.hcard{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border-radius:24px;padding:24px 28px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.05) inset,
+    0 40px 80px rgba(0,0,0,.5),
+    0 0 100px rgba(61,99,255,.08);
+  position:relative;overflow:hidden;
+}
+.hcard::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+}
+/* card header row */
+.hch{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.hctag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(61,99,255,.18);border:1px solid rgba(61,99,255,.25);
+  backdrop-filter:blur(6px);border-radius:100px;
+  padding:4px 12px;font-size:10.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:#93ABFF;
+}
+.hcprice{
+  font-family:var(--FD);font-size:24px;font-weight:900;
+  color:#fff;letter-spacing:-.05em;
+}
+.hcprice small{font-size:11px;font-weight:400;color:rgba(255,255,255,.28);margin-left:3px;}
+/* progress */
+.hcbar-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.hcbar-row span{font-size:11px;color:rgba(255,255,255,.28);}
+.hcbar-row strong{font-size:11px;font-weight:800;color:#fff;}
+.hcbar{height:4px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;margin-bottom:18px;}
+.hcfill{
+  height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  width:0%;transition:width 1s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 10px rgba(61,99,255,.6);
+}
+/* contributors row */
+.hccont{display:flex;align-items:center;gap:10px;}
+.hcavs{display:flex;}
+.hcav{
+  width:30px;height:30px;border-radius:50%;
+  border:2px solid rgba(10,22,40,.6);
+  font-size:10px;font-weight:800;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  margin-left:-9px;flex-shrink:0;
+  transition:transform .3s ease;
+}
+.hcav.new{animation:pop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.hcav:first-child{margin-left:0;}
+.hclabel{font-size:12.5px;color:rgba(255,255,255,.35);flex:1;}
+.hclabel strong{color:rgba(255,255,255,.75);font-weight:600;}
+.hccheck{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--teal);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px rgba(0,212,170,.5);
+  transform:scale(0);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+.hccheck.show{transform:scale(1);}
+
+/* wave to sections */
+.hwave{
+  position:absolute;bottom:-2px;left:-3%;right:-3%;
+  z-index:5;pointer-events:none;
+}
+
+/* ══════════════════════════════════════
+   MARQUEE — horizontal category ticker
+   Borrowed from basement.studio aesthetic
+══════════════════════════════════════ */
+.marquee-section{
+  background:#060E1C;
+  border-top:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  padding:18px 0;overflow:hidden;
+  position:relative;z-index:2;
+}
+/* edge fade */
+.marquee-section::before,.marquee-section::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;
+  pointer-events:none;
+}
+.marquee-section::before{left:0;background:linear-gradient(to right,#060E1C,transparent);}
+.marquee-section::after{right:0;background:linear-gradient(to left,#060E1C,transparent);}
+.marquee-track{
+  display:flex;gap:0;
+  animation:marquee 28s linear infinite;
+  width:max-content;
+}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-track:hover{animation-play-state:paused;}
+.mtile{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:0 32px;white-space:nowrap;
+  font-size:13px;font-weight:600;color:rgba(255,255,255,.28);
+  letter-spacing:.02em;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.mtile svg{opacity:.4;flex-shrink:0;}
+.mtile .msep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.15);}
+
+/* ══════════════════════════════════════
+   SECTION BASES
+══════════════════════════════════════ */
+.eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(61,99,255,.8);display:block;margin-bottom:14px;
+}
+.eyebrow.lt{color:rgba(255,255,255,.25);}
+.section-h{
+  font-family:var(--FD);font-size:clamp(30px,3.2vw,48px);font-weight:900;
+  letter-spacing:-.05em;line-height:1.05;margin-bottom:16px;color:#fff;
+}
+.section-h em{font-style:italic;}
+.section-h .grad{
+  background:linear-gradient(120deg,#7BCEFF,var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-p{font-size:16px;line-height:1.75;color:rgba(255,255,255,.42);max-width:420px;}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.rv.vis{opacity:1;transform:none;}
+.rv.d1{transition-delay:.07s}.rv.d2{transition-delay:.14s}.rv.d3{transition-delay:.21s}.rv.d4{transition-delay:.28s}
+
+/* ══════════════════════════════════════
+   FEATURE SPLIT #1 — text LEFT, glass mock RIGHT
+   Breaks out of standard card grid entirely.
+   Linear / Raycast-style alternating feature row.
+══════════════════════════════════════ */
+.feat-section{
+  padding:140px 0;
+  background:linear-gradient(180deg,#070F1E 0%,#0A1628 100%);
+  position:relative;overflow:hidden;
+}
+.feat-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.feat-row.flip{direction:rtl;}
+.feat-row.flip > *{direction:ltr;}
+
+/* Glow blob behind feature mocks */
+.feat-glow{
+  position:absolute;width:500px;height:500px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(61,99,255,.12) 0%,transparent 65%);
+  filter:blur(60px);
+}
+.feat-glow.right{right:-100px;top:50%;transform:translateY(-50%);}
+.feat-glow.left{left:-100px;top:50%;transform:translateY(-50%);}
+.feat-glow.teal{background:radial-gradient(circle,rgba(0,212,170,.09) 0%,transparent 65%);}
+
+.feat-text{}
+.feat-text .eyebrow{display:inline-block;}
+.feat-bullets{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:14px;}
+.feat-bullets li{
+  display:flex;gap:12px;align-items:flex-start;
+  font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.4);
+}
+.feat-bullets li::before{
+  content:'';width:18px;height:18px;border-radius:6px;flex-shrink:0;margin-top:2px;
+  background:rgba(61,99,255,.18);border:1px solid rgba(61,99,255,.25);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10' fill='none'%3E%3Cpath d='M2 5l2.2 2.5L8 2.5' stroke='%233D63FF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;
+}
+
+/* ── GLASS MOCK PANEL ──
+   Used as the right-side "product screenshot"
+   Looks like a real UI frosted-glass card
+*/
+.glass-mock{
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(40px) saturate(160%);
+  -webkit-backdrop-filter:blur(40px) saturate(160%);
+  border-radius:26px;padding:28px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 40px 90px rgba(0,0,0,.5),
+    var(--glow-blue);
+  position:relative;overflow:hidden;
+}
+.glass-mock::before{
+  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+}
+.mock-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.mock-dot{width:8px;height:8px;border-radius:50%;}
+.mock-title{font-family:var(--FD);font-size:14px;font-weight:800;color:rgba(255,255,255,.7);letter-spacing:-.02em;}
+.mock-tag{
+  margin-left:auto;font-size:10px;font-weight:700;
+  background:rgba(0,212,170,.15);border:1px solid rgba(0,212,170,.25);
+  color:var(--teal);border-radius:100px;padding:3px 10px;letter-spacing:.06em;
+  box-shadow:0 0 12px rgba(0,212,170,.15);
+}
+
+/* Provider card inside mock */
+.mock-provider{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;padding:18px;margin-bottom:12px;
+  display:flex;align-items:center;gap:14px;
+  transition:background .2s,border-color .2s;
+}
+.mock-provider:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.15);}
+.mock-avatar{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--FD);font-size:15px;font-weight:900;color:#fff;
+}
+.mock-pname{font-family:var(--FD);font-size:14.5px;font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:3px;}
+.mock-psub{font-size:11.5px;color:rgba(255,255,255,.35);}
+.mock-pprice{
+  margin-left:auto;text-align:right;
+  font-family:var(--FD);font-size:16px;font-weight:900;color:#fff;
+  letter-spacing:-.04em;
+}
+.mock-pprice small{font-size:10px;color:rgba(255,255,255,.28);font-weight:400;display:block;}
+.mock-stars{display:flex;gap:2px;margin-top:2px;justify-content:flex-end;}
+
+/* Progress row inside mock */
+.mock-progress{margin-top:8px;}
+.mock-prog-label{
+  display:flex;justify-content:space-between;margin-bottom:6px;
+}
+.mock-prog-label span{font-size:11px;color:rgba(255,255,255,.28);}
+.mock-prog-label strong{font-size:11px;font-weight:800;color:var(--teal);}
+.mock-bar{height:3px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;}
+.mock-fill{
+  height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));
+  box-shadow:0 0 8px rgba(0,212,170,.4);
+}
+
+/* Contributor avatars inside mock */
+.mock-avs{display:flex;margin-top:12px;gap:0;}
+.mock-av{
+  width:26px;height:26px;border-radius:50%;
+  border:2px solid rgba(10,22,40,.7);
+  font-size:9px;font-weight:800;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  margin-left:-7px;flex-shrink:0;
+}
+.mock-av:first-child{margin-left:0;}
+.mock-av-more{
+  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);
+  font-size:9px;color:rgba(255,255,255,.5);
+}
+.mock-av-label{font-size:11.5px;color:rgba(255,255,255,.3);margin-left:10px;align-self:center;}
+
+/* ── SECOND MOCK — Calendar ── */
+.mock-cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.mock-cal-month{font-family:var(--FD);font-size:15px;font-weight:900;color:#fff;letter-spacing:-.03em;}
+.mock-cal-nav{display:flex;gap:4px;}
+.mock-cal-btn{
+  width:26px;height:26px;border-radius:7px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:background .15s;
+}
+.mock-cal-btn:hover{background:rgba(255,255,255,.12);}
+.mock-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.mock-cal-d{
+  height:32px;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;font-size:12px;font-weight:500;color:rgba(255,255,255,.4);
+}
+.mock-cal-d.head{font-size:10px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.04em;}
+.mock-cal-d.avail{color:#fff;cursor:pointer;}
+.mock-cal-d.avail:hover{background:rgba(61,99,255,.25);}
+.mock-cal-d.sel{background:var(--blue);color:#fff;font-weight:700;box-shadow:0 0 12px rgba(61,99,255,.5);}
+.mock-cal-d.off{opacity:.25;pointer-events:none;}
+.mock-cal-d.booked{color:rgba(255,255,255,.15);}
+.mock-price-preview{
+  margin-top:16px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:14px 16px;
+}
+.mock-price-row{display:flex;justify-content:space-between;font-size:12.5px;color:rgba(255,255,255,.35);padding:3px 0;}
+.mock-price-row.total{color:#fff;font-weight:700;font-family:var(--FD);font-size:14px;border-top:1px solid rgba(255,255,255,.07);padding-top:8px;margin-top:5px;}
+.mock-price-row.total span:last-child{color:var(--teal);}
+
+/* ══════════════════════════════════════
+   STATS — each metric isolated, glowing
+   Horizontal row of glass cards, full width.
+   NOT a cramped 4-column bar.
+══════════════════════════════════════ */
+.stats-section{
+  padding:100px 0;
+  background:#060E1C;
+  position:relative;overflow:hidden;
+}
+.stats-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(61,99,255,.07),transparent 70%);
+  pointer-events:none;
+}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.stat-card{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(20px);
+  border-radius:22px;padding:36px 28px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,box-shadow .3s,transform .25s;
+}
+.stat-card:hover{
+  border-color:rgba(61,99,255,.3);
+  box-shadow:0 0 50px rgba(61,99,255,.12),0 20px 40px rgba(0,0,0,.3);
+  transform:translateY(-3px);
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+}
+/* Inner glow spot */
+.stat-card::after{
+  content:'';position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);
+  width:80px;height:60px;
+  background:rgba(61,99,255,.2);filter:blur(20px);
+  border-radius:50%;pointer-events:none;
+}
+.stat-num{
+  font-family:var(--FD);font-size:clamp(36px,4vw,56px);font-weight:900;
+  letter-spacing:-.06em;color:#fff;display:block;margin-bottom:8px;
+  position:relative;z-index:1;
+}
+.stat-num em{font-style:normal;color:var(--blue);}
+.stat-num .t{color:var(--teal);}
+.stat-label{
+  font-size:13px;line-height:1.6;color:rgba(255,255,255,.3);
+  position:relative;z-index:1;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — part 1 only
+══════════════════════════════════════ */
+@media(max-width:900px){
+  .wrap{padding:0 24px;}
+  .feat-row{grid-template-columns:1fr;gap:48px;}
+  .feat-row.flip{direction:ltr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  h1{font-size:clamp(40px,9vw,60px);}
+  .hcta{flex-direction:column;}
+}
+@media(max-width:500px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-card{padding:24px 16px;}
+}
+
+/* ══════════════════════════════════════
+   PROVIDER SCROLL ROW
+══════════════════════════════════════ */
+.pscroll-outer{
+  overflow-x:auto;overflow-y:visible;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  cursor:grab;
+  padding:16px 48px 32px;
+}
+.pscroll-outer:active{cursor:grabbing;}
+.pscroll-outer::-webkit-scrollbar{display:none;}
+/* Fade edges */
+.pscroll-outer{
+  /* edge fades handled by wrapper pseudo-elements */
+}
+.pscroll-track{
+  display:flex;gap:18px;
+  width:max-content;
+  padding-bottom:8px;
+}
+
+/* Individual provider card */
+.pcard{
+  width:270px;flex-shrink:0;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(24px) saturate(160%);
+  border-radius:22px;overflow:hidden;
+  transition:transform .25s,box-shadow .25s,border-color .25s;
+  position:relative;
+}
+.pcard:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,.18);
+  box-shadow:0 28px 60px rgba(0,0,0,.5),0 0 50px rgba(61,99,255,.1);
+}
+.pcard::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  z-index:1;
+}
+.pcard-img{
+  height:170px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.pcard-initial{
+  font-family:var(--FD);font-size:72px;font-weight:900;
+  color:rgba(255,255,255,.07);letter-spacing:-.05em;
+  user-select:none;pointer-events:none;
+}
+.pcard-badge{
+  position:absolute;top:12px;right:12px;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:100px;padding:4px 10px;
+  font-size:11.5px;font-weight:700;color:#fff;
+  display:flex;align-items:center;gap:4px;
+}
+.pcard-body{padding:18px 20px 20px;}
+.pcard-avail{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;color:rgba(255,255,255,.4);
+  margin-bottom:8px;
+}
+.pcard-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.7);
+  flex-shrink:0;
+}
+.pcard-name{
+  font-family:var(--FD);font-size:17px;font-weight:900;
+  color:#fff;letter-spacing:-.03em;margin-bottom:3px;
+}
+.pcard-role{font-size:12px;color:rgba(255,255,255,.32);margin-bottom:14px;line-height:1.4;}
+.pcard-footer{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.pcard-price{font-size:13px;color:rgba(255,255,255,.35);}
+.pcard-price strong{font-family:var(--FD);font-size:18px;font-weight:900;color:#fff;letter-spacing:-.04em;margin:0 2px;}
+.pcard-price span{font-size:11px;}
+.pcard-btn{
+  font-size:12px;font-weight:700;color:var(--blue);
+  background:rgba(61,99,255,.15);border:1px solid rgba(61,99,255,.25);
+  border-radius:8px;padding:6px 12px;cursor:pointer;
+  transition:background .2s,color .2s;
+  box-shadow:0 0 12px rgba(61,99,255,.15);
+}
+.pcard:hover .pcard-btn{background:var(--blue);color:#fff;box-shadow:0 0 20px rgba(61,99,255,.35);}
+.pcard-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.pcard-tags span{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  border-radius:100px;padding:3px 9px;font-size:10.5px;color:rgba(255,255,255,.3);
+}
+
+/* Ghost "providers joining" card */
+.pcard-ghost{
+  width:230px;flex-shrink:0;
+  background:rgba(255,255,255,.03);
+  border:1px dashed rgba(255,255,255,.1);
+  border-radius:22px;padding:32px 24px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ══════════════════════════════════════
+   VISION BENTO
+══════════════════════════════════════ */
+.vbento{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:14px;
+  margin-bottom:14px;
+}
+.vcard{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(20px);
+  border-radius:22px;padding:28px;
+  position:relative;overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.vcard:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.15);
+  box-shadow:0 20px 50px rgba(0,0,0,.3),0 0 40px rgba(61,99,255,.07);
+}
+.vcard::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+}
+/* Anchor card spans column 1, both rows */
+.vcard-anchor{
+  grid-column:1;
+  grid-row:1 / 3;
+  background:rgba(61,99,255,.08);
+  border-color:rgba(61,99,255,.18);
+  display:flex;flex-direction:column;
+}
+.vcard-anchor:hover{
+  border-color:rgba(61,99,255,.28);
+  box-shadow:0 20px 60px rgba(0,0,0,.3),0 0 60px rgba(61,99,255,.1);
+}
+.vcard-icon-large{
+  width:64px;height:64px;border-radius:18px;
+  background:rgba(61,99,255,.12);border:1px solid rgba(61,99,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  box-shadow:0 0 24px rgba(61,99,255,.15);
+}
+.vcard-anchor-label{
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(61,99,255,.7);margin-bottom:10px;display:block;
+  background:rgba(61,99,255,.15);border:1px solid rgba(61,99,255,.2);
+  border-radius:100px;padding:3px 10px;display:inline-block;
+}
+.vcard-h{
+  font-family:var(--FD);font-size:22px;font-weight:900;
+  color:#fff;letter-spacing:-.04em;margin-bottom:10px;line-height:1.15;
+}
+.vcard-h-sm{font-size:17px;margin-bottom:7px;}
+.vcard-p{font-size:13.5px;line-height:1.68;color:rgba(255,255,255,.35);flex:1;}
+.vcard-p-sm{font-size:12.5px;}
+.vcard-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+}
+.vcard-status{
+  display:inline-block;margin-top:14px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:100px;padding:3px 10px;
+}
+.vcard-anchor-stat{
+  display:flex;gap:20px;align-items:center;
+  margin-top:28px;padding-top:22px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+
+/* Full-width vision statement */
+.vstatement{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:28px 36px;
+  display:flex;align-items:center;justify-content:space-between;gap:30px;
+  backdrop-filter:blur(20px);
+}
+
+/* ══════════════════════════════════════
+   CTA FORM
+══════════════════════════════════════ */
+.cta-form-row{
+  display:flex;gap:10px;max-width:460px;margin:0 auto;
+}
+.cta-input{
+  flex:1;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+  border-radius:14px;padding:15px 20px;
+  font-family:var(--FB);font-size:15px;color:#fff;
+  outline:none;transition:border-color .2s,background .2s;
+}
+.cta-input::placeholder{color:rgba(255,255,255,.22);}
+.cta-input:focus{border-color:rgba(61,99,255,.5);background:rgba(255,255,255,.09);}
+.cta-input.err{border-color:rgba(248,113,113,.6);animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.cta-submit{
+  background:#fff;color:#0A1628;
+  border:none;border-radius:14px;
+  padding:15px 24px;font-family:var(--FB);
+  font-size:15px;font-weight:700;cursor:pointer;
+  white-space:nowrap;letter-spacing:-.02em;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,.3),0 0 50px rgba(255,255,255,.08);
+  transition:transform .15s,box-shadow .2s,opacity .2s;
+}
+.cta-submit:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 60px rgba(255,255,255,.1);
+}
+.cta-ok{
+  display:none;align-items:center;gap:12px;
+  justify-content:center;padding:14px;
+}
+.cta-ok.show{display:flex;}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — Part 2
+══════════════════════════════════════ */
+@media(max-width:960px){
+  .vbento{grid-template-columns:1fr 1fr;}
+  .vcard-anchor{grid-row:auto;}
+  .pscroll-outer{padding:16px 20px 28px;}
+}
+@media(max-width:640px){
+  .vbento{grid-template-columns:1fr;}
+  .cta-form-row{flex-direction:column;}
+  .vstatement{flex-direction:column;align-items:flex-start;}
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- SCROLL BLUR -->
+<div id="sblur"></div>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="nav">
+<div class="wrap"><div class="ni">
+  <a href="#" class="logo">
+    <span class="lw">Sortora</span>
+  </a>
+  <div class="nr">
+    <a href="#how" class="nl">How it works</a>
+    <a href="#providers" class="nl">Providers</a>
+    <a href="#waitlist" class="nb">Join Waitlist</a>
+  </div>
+</div></div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" id="top">
+  <div class="orbs">
+    <div class="orb"></div><div class="orb"></div><div class="orb"></div>
+    <div class="orb"></div><div class="orb"></div>
+  </div>
+  <div class="hgrid"></div>
+
+  <div class="wrap" style="position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;">
+    <div class="hbadge"><div class="bdot"></div>Collective booking — launching 2026</div>
+
+    <h1>Your group's <span class="gi">dream booking</span> is one fund away.</h1>
+
+    <p class="hsub">Everyone chips in. The booking confirms when the goal is hit. Stop watching good things not happen.</p>
+
+    <div class="hcta">
+      <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1l2 5.5H16l-4.6 3.5 1.7 5.5L8 12 2.9 15.5l1.7-5.5L0 6.5h6z" fill="currentColor"/></svg>
+        Join the Waitlist
+      </button>
+      <a href="#how" class="btn-ghost">
+        See how it works
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6 2.5L9.5 6 6 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <p class="hnote">No card required. Free to join.</p>
+
+    <!-- Floating fund card — centered, below CTA -->
+    <div class="hcard-wrap rv">
+      <div class="hcard">
+        <div class="hch">
+          <div class="hctag">
+            <svg width="5" height="5" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="#3D63FF"/></svg>
+            Live fund
+          </div>
+          <div class="hcprice">$340<small>goal</small></div>
+        </div>
+        <div class="hcbar-row"><span>Season photography · 5 contributors</span><strong id="hpct">0%</strong></div>
+        <div class="hcbar"><div class="hcfill" id="hfill"></div></div>
+        <div class="hccont">
+          <div class="hcavs" id="havs">
+            <div class="hcav" style="background:#3D63FF">JM</div>
+            <div class="hcav" style="background:#7C3AED">SC</div>
+            <div class="hcav" style="background:#059669">MR</div>
+            <div class="hcav" style="background:#D97706">RK</div>
+            <div class="hcav" style="background:#DC2626">AT</div>
+          </div>
+          <span class="hclabel"><strong id="hclbl">Building fund…</strong></span>
+          <div class="hccheck" id="hcheck">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3.5L11.5 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- wave into dark section -->
+  <div class="hwave">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:106%;height:80px;">
+      <path d="M0 40C200 80 400 0 600 40C800 80 1000 0 1200 40C1320 65 1380 30 1440 40L1440 80L0 80Z" fill="#060E1C"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════ MARQUEE ══════════════ -->
+<div class="marquee-section">
+  <div class="marquee-track" id="mtrack">
+    <!-- doubled for seamless loop -->
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="10" rx="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 4l1-2.5h4L11 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Sports Photography</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".5"/><line x1="12" y1="4" x2="9.5" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>DJs & Music</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><rect x="0" y="5.5" width="5" height="5" rx="2" stroke="currentColor" stroke-width="1.3"/><rect x="11" y="5.5" width="5" height="5" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Personal Training</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="6" rx="4" ry="3" stroke="currentColor" stroke-width="1.4"/><path d="M4 10q4 5 8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><rect x="2" y="12" width="12" height="3" rx="1.5" fill="currentColor" opacity=".4"/></svg>Private Chefs</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 12L8 4l6 8H2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><line x1="8" y1="4" x2="8" y2="14" stroke="currentColor" stroke-width="1.4"/></svg>Workshops</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 13S2 9 2 5.5C2 3.5 4.5 2 8 2s6 1.5 6 3.5C14 9 8 13 8 13z" stroke="currentColor" stroke-width="1.4"/></svg>Wellness & Spa</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 3V2M11 3V2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="2" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.4"/></svg>Team Offsites</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M1 13c0-2.5 2-4 5-4M10 9c3 0 5 1.5 5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Group Coaching</div>
+    <!-- duplicate -->
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="10" rx="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 4l1-2.5h4L11 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Sports Photography</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".5"/><line x1="12" y1="4" x2="9.5" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>DJs & Music</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><rect x="0" y="5.5" width="5" height="5" rx="2" stroke="currentColor" stroke-width="1.3"/><rect x="11" y="5.5" width="5" height="5" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Personal Training</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="6" rx="4" ry="3" stroke="currentColor" stroke-width="1.4"/><path d="M4 10q4 5 8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><rect x="2" y="12" width="12" height="3" rx="1.5" fill="currentColor" opacity=".4"/></svg>Private Chefs</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 12L8 4l6 8H2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><line x1="8" y1="4" x2="8" y2="14" stroke="currentColor" stroke-width="1.4"/></svg>Workshops</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 13S2 9 2 5.5C2 3.5 4.5 2 8 2s6 1.5 6 3.5C14 9 8 13 8 13z" stroke="currentColor" stroke-width="1.4"/></svg>Wellness & Spa</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 3V2M11 3V2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="2" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.4"/></svg>Team Offsites</div>
+    <div class="mtile"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M1 13c0-2.5 2-4 5-4M10 9c3 0 5 1.5 5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Group Coaching</div>
+  </div>
+</div>
+
+<!-- ══════════════ FEATURE SPLIT #1 ══════════════ -->
+<!-- Text LEFT → Glass provider mock RIGHT -->
+<section class="feat-section" id="how">
+  <div class="feat-glow right"></div>
+  <div class="wrap">
+    <div class="feat-row rv">
+
+      <div class="feat-text">
+        <span class="eyebrow">For providers</span>
+        <h2 class="section-h">Your profile.<br>Your pricing.<br><em class="grad">One link.</em></h2>
+        <p class="section-p">Set up once. Share everywhere. Groups find you, start a fund, and the booking confirms automatically when it's fully paid.</p>
+        <ul class="feat-bullets">
+          <li>Live calendar availability visible to every visitor</li>
+          <li>Transparent pricing — no hidden fees or negotiations</li>
+          <li>Payment held in escrow until service is delivered</li>
+          <li>One shareable link for every booking inquiry</li>
+        </ul>
+      </div>
+
+      <div class="glass-mock rv d1">
+        <div class="mock-header">
+          <div class="mock-dot" style="background:#FF5F56"></div>
+          <div class="mock-dot" style="background:#FFBD2E;margin-left:5px;"></div>
+          <div class="mock-dot" style="background:#27C93F;margin-left:5px;"></div>
+          <div class="mock-title" style="margin-left:10px;">Sortora · Provider Profile</div>
+          <div class="mock-tag">Live</div>
+        </div>
+
+        <div class="mock-provider">
+          <div class="mock-avatar" style="background:linear-gradient(135deg,#1a3a6e,#3D63FF);">MC</div>
+          <div>
+            <div class="mock-pname">Marcus Chen</div>
+            <div class="mock-psub">Sports & Event Photography · SF</div>
+          </div>
+          <div class="mock-pprice">
+            $280
+            <small>per 2hr session</small>
+            <div class="mock-stars">
+              <svg width="9" height="9" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+              <svg width="9" height="9" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+              <svg width="9" height="9" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+              <svg width="9" height="9" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+              <svg width="9" height="9" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-progress">
+          <div class="mock-prog-label"><span>Current fund · Team Season End</span><strong>72% funded</strong></div>
+          <div class="mock-bar"><div class="mock-fill" style="width:72%"></div></div>
+          <div style="display:flex;align-items:center;margin-top:10px;">
+            <div class="mock-avs">
+              <div class="mock-av" style="background:#3D63FF">JM</div>
+              <div class="mock-av" style="background:#7C3AED">SC</div>
+              <div class="mock-av" style="background:#059669">MR</div>
+              <div class="mock-av mock-av-more">+3</div>
+            </div>
+            <div class="mock-av-label">6 of 10 contributors</div>
+            <div style="margin-left:auto;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.28);">$201 / $280</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FEATURE SPLIT #2 ══════════════ -->
+<!-- Glass calendar LEFT (flipped) → Text RIGHT -->
+<section class="feat-section" style="background:linear-gradient(180deg,#0A1628 0%,#070F1E 100%);padding-top:0;">
+  <div class="feat-glow left teal"></div>
+  <div class="wrap">
+    <div class="feat-row flip rv">
+
+      <div class="feat-text">
+        <span class="eyebrow">For groups</span>
+        <h2 class="section-h">Pick a date.<br>Set a goal.<br><em class="grad">Share the link.</em></h2>
+        <p class="section-p">No Venmo threads. No one person awkwardly fronting the cost. A fund opens, your group fills it, the booking locks automatically.</p>
+        <ul class="feat-bullets">
+          <li>100% funded or every contributor is refunded in full</li>
+          <li>No booking until the goal is met — no partial commits</li>
+          <li>48-hour escrow review before funds release to provider</li>
+          <li>Every contributor gets booking confirmation via email</li>
+        </ul>
+      </div>
+
+      <div class="glass-mock rv d1">
+        <div class="mock-header">
+          <div class="mock-dot" style="background:#FF5F56"></div>
+          <div class="mock-dot" style="background:#FFBD2E;margin-left:5px;"></div>
+          <div class="mock-dot" style="background:#27C93F;margin-left:5px;"></div>
+          <div class="mock-title" style="margin-left:10px;">Sortora · Start a Fund</div>
+          <div class="mock-tag" style="background:rgba(0,212,170,.12);border-color:rgba(0,212,170,.22);color:var(--teal);">Interactive</div>
+        </div>
+        <!-- Calendar grid -->
+        <div class="mock-cal-header">
+          <div class="mock-cal-month">March 2026</div>
+          <div class="mock-cal-nav">
+            <div class="mock-cal-btn"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M5 1.5L2.5 4 5 6.5" stroke="rgba(255,255,255,.5)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+            <div class="mock-cal-btn"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M3 1.5L5.5 4 3 6.5" stroke="rgba(255,255,255,.5)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="mock-cal-grid">
+          <div class="mock-cal-d head">Su</div><div class="mock-cal-d head">Mo</div><div class="mock-cal-d head">Tu</div><div class="mock-cal-d head">We</div><div class="mock-cal-d head">Th</div><div class="mock-cal-d head">Fr</div><div class="mock-cal-d head">Sa</div>
+          <div class="mock-cal-d off">23</div><div class="mock-cal-d off">24</div><div class="mock-cal-d off">25</div><div class="mock-cal-d off">26</div><div class="mock-cal-d off">27</div><div class="mock-cal-d off">28</div><div class="mock-cal-d avail">1</div>
+          <div class="mock-cal-d booked">2</div><div class="mock-cal-d booked">3</div><div class="mock-cal-d avail">4</div><div class="mock-cal-d avail">5</div><div class="mock-cal-d avail">6</div><div class="mock-cal-d booked">7</div><div class="mock-cal-d booked">8</div>
+          <div class="mock-cal-d avail">9</div><div class="mock-cal-d avail">10</div><div class="mock-cal-d avail">11</div><div class="mock-cal-d avail">12</div><div class="mock-cal-d sel">13</div><div class="mock-cal-d booked">14</div><div class="mock-cal-d booked">15</div>
+          <div class="mock-cal-d avail">16</div><div class="mock-cal-d avail">17</div><div class="mock-cal-d avail">18</div><div class="mock-cal-d avail">19</div><div class="mock-cal-d avail">20</div><div class="mock-cal-d avail">21</div><div class="mock-cal-d avail">22</div>
+        </div>
+        <div class="mock-price-preview">
+          <div class="mock-price-row"><span>Photography session</span><span>$280.00</span></div>
+          <div class="mock-price-row"><span>Sortora fee (5%)</span><span>$14.00</span></div>
+          <div class="mock-price-row total"><span>Per person (6 contributors)</span><span>$49</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<section class="stats-section">
+  <div class="wrap">
+    <div style="text-align:center;max-width:420px;margin:0 auto 64px;">
+      <span class="eyebrow" style="justify-content:center;display:block;">By the numbers</span>
+      <h2 class="section-h rv" style="font-size:clamp(26px,2.8vw,40px);">The math that makes<br><em class="grad">impossible bookings</em> obvious.</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card rv">
+        <span class="stat-num">5–<em>25</em><span class="t">×</span></span>
+        <div class="stat-label">more contributors per booking than solo platforms</div>
+      </div>
+      <div class="stat-card rv d1">
+        <span class="stat-num"><em>$0</em></span>
+        <div class="stat-label">single person needs to front the full cost alone</div>
+      </div>
+      <div class="stat-card rv d2">
+        <span class="stat-num"><span class="t">100</span>%</span>
+        <div class="stat-label">fund threshold before the booking confirms automatically</div>
+      </div>
+      <div class="stat-card rv d3">
+        <span class="stat-num">48<em>hr</em></span>
+        <div class="stat-label">escrow review window after service delivery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* NAV + SCROLL BLUR */
+const nav=document.getElementById('nav'),sb=document.getElementById('sblur');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  nav.classList.toggle('solid',y>30);
+  sb.classList.toggle('on',y>70);
+},{passive:true});
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(en=>{
+  en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:0,rootMargin:'0px 0px 0px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+// Reveal all fallback — fires on load, scroll, and after delay (iframe-safe)
+function revealAll(){document.querySelectorAll('.rv:not(.vis)').forEach(el=>el.classList.add('vis'));}
+setTimeout(revealAll, 200);
+window.addEventListener('scroll', revealAll, {once:true, passive:true});
+window.addEventListener('load', ()=>setTimeout(revealAll,100));
+
+/* HERO CARD ANIMATION */
+const hfill=document.getElementById('hfill'),
+      hpct=document.getElementById('hpct'),
+      hcheck=document.getElementById('hcheck'),
+      hclbl=document.getElementById('hclbl');
+
+function runCard(){
+  hfill.style.width='0%';hpct.textContent='0%';
+  hcheck.classList.remove('show');hclbl.textContent='Building fund…';
+  const steps=[
+    {pct:20,lbl:'2 contributors joined'},
+    {pct:44,lbl:'4 contributors joined'},
+    {pct:68,lbl:'6 contributors joined'},
+    {pct:88,lbl:'8 of 10 joined…'},
+    {pct:100,lbl:'Fund complete!'}
+  ];
+  steps.forEach((s,i)=>{
+    setTimeout(()=>{
+      hfill.style.width=s.pct+'%';
+      hpct.textContent=s.pct+'%';
+      hclbl.textContent=s.lbl;
+      if(s.pct===100){
+        setTimeout(()=>{hcheck.classList.add('show');},500);
+        setTimeout(()=>{hcheck.classList.remove('show');setTimeout(runCard,1000);},3200);
+      }
+    },800+i*900);
+  });
+}
+setTimeout(runCard,1000);
+</script>
+
+<!-- ══════════════════════════════════════
+   PROVIDERS — horizontal drag-scroll row
+   NOT a static 3-column grid.
+   Cards slide off the edge, inviting drag.
+   Borrowed from Dribbble / Contra scroll UX.
+══════════════════════════════════════ -->
+<section style="padding:120px 0;background:#070F1E;position:relative;overflow:hidden;" id="providers">
+
+  <!-- Subtle glow behind the row -->
+  <div style="position:absolute;width:800px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(61,99,255,.08),transparent 65%);filter:blur(40px);pointer-events:none;"></div>
+
+  <div class="wrap" style="position:relative;z-index:1;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;" class="rv">
+      <div>
+        <span class="eyebrow">Featured providers</span>
+        <h2 class="section-h" style="margin-bottom:0;">The pros behind<br><em class="grad">the bookings.</em></h2>
+      </div>
+      <p style="font-size:13.5px;color:rgba(255,255,255,.22);max-width:200px;text-align:right;line-height:1.6;padding-bottom:4px;">Drag to explore →<br>Real providers join at launch</p>
+    </div>
+  </div>
+
+  <!-- Full-bleed drag scroll — no padding clip -->
+  <div class="pscroll-outer">
+    <div class="pscroll-track" id="ptrack">
+
+      <!-- Card 1 — Marcus Chen -->
+      <div class="pcard rv d1">
+        <div class="pcard-img" style="background:linear-gradient(160deg,#0d1f4e 0%,#1a3a6e 55%,#3D63FF 130%);">
+          <div class="pcard-initial">MC</div>
+          <div class="pcard-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+            4.98
+          </div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-avail"><div class="pcard-dot"></div>Available this week</div>
+          <div class="pcard-name">Marcus Chen</div>
+          <div class="pcard-role">Sports & Event Photography · SF</div>
+          <div class="pcard-footer">
+            <div class="pcard-price">From <strong>$280</strong> <span>/session</span></div>
+            <div class="pcard-btn">Book →</div>
+          </div>
+          <div class="pcard-tags">
+            <span>RAW files</span><span>Same-day preview</span><span>Team packages</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 — DJ Priya Nair -->
+      <div class="pcard rv d1">
+        <div class="pcard-img" style="background:linear-gradient(160deg,#150a2e 0%,#2e1761 60%,#6366F1 140%);">
+          <div class="pcard-initial">PN</div>
+          <div class="pcard-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+            4.96
+          </div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-avail"><div class="pcard-dot"></div>Available this week</div>
+          <div class="pcard-name">DJ Priya Nair</div>
+          <div class="pcard-role">Event DJ & Music Producer · NYC</div>
+          <div class="pcard-footer">
+            <div class="pcard-price">From <strong>$450</strong> <span>/event</span></div>
+            <div class="pcard-btn">Book →</div>
+          </div>
+          <div class="pcard-tags">
+            <span>4hr sets</span><span>Own equipment</span><span>Custom playlist</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 — Coach Alex Rivera -->
+      <div class="pcard rv d2">
+        <div class="pcard-img" style="background:linear-gradient(160deg,#052e16 0%,#064e3b 60%,#10B981 140%);">
+          <div class="pcard-initial">AR</div>
+          <div class="pcard-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+            5.0
+          </div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-avail"><div class="pcard-dot"></div>Available this week</div>
+          <div class="pcard-name">Coach Alex Rivera</div>
+          <div class="pcard-role">Strength & Conditioning · Austin</div>
+          <div class="pcard-footer">
+            <div class="pcard-price">From <strong>$180</strong> <span>/session</span></div>
+            <div class="pcard-btn">Book →</div>
+          </div>
+          <div class="pcard-tags">
+            <span>Group sessions</span><span>Team programs</span><span>Video analysis</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 — Chef Naomi Park -->
+      <div class="pcard rv d2">
+        <div class="pcard-img" style="background:linear-gradient(160deg,#2d1a00 0%,#7c3a00 60%,#F59E0B 140%);">
+          <div class="pcard-initial">NP</div>
+          <div class="pcard-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+            4.97
+          </div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-avail"><div class="pcard-dot"></div>Available this week</div>
+          <div class="pcard-name">Chef Naomi Park</div>
+          <div class="pcard-role">Private Chef & Caterer · Chicago</div>
+          <div class="pcard-footer">
+            <div class="pcard-price">From <strong>$220</strong> <span>/person</span></div>
+            <div class="pcard-btn">Book →</div>
+          </div>
+          <div class="pcard-tags">
+            <span>Farm-to-table</span><span>All dietary needs</span><span>Full service</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 — Lena Strauss (Yoga) -->
+      <div class="pcard rv d3">
+        <div class="pcard-img" style="background:linear-gradient(160deg,#1a0a2e 0%,#4a1060 60%,#EC4899 140%);">
+          <div class="pcard-initial">LS</div>
+          <div class="pcard-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="#F59E0B"><path d="M5 1l1.2 2.8L9 4.1 7 6.1l.5 2.8L5 7.6 2.5 8.9 3 6.1 1 4.1l2.8-.3z"/></svg>
+            4.99
+          </div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-avail"><div class="pcard-dot"></div>Available this week</div>
+          <div class="pcard-name">Lena Strauss</div>
+          <div class="pcard-role">Yoga & Wellness Instructor · LA</div>
+          <div class="pcard-footer">
+            <div class="pcard-price">From <strong>$140</strong> <span>/class</span></div>
+            <div class="pcard-btn">Book →</div>
+          </div>
+          <div class="pcard-tags">
+            <span>Group classes</span><span>Corporate wellness</span><span>Retreats</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fade card — "and more" -->
+      <div class="pcard-ghost rv d3">
+        <div style="text-align:center;">
+          <div style="width:56px;height:56px;border-radius:16px;background:rgba(61,99,255,.15);border:1px solid rgba(61,99,255,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 29C5 29 5 10 19 5C33 0 33 29 33 29" stroke="#3D63FF" stroke-width="2.2" stroke-linecap="round" fill="none" transform="scale(.6) translate(2,2)"/><circle cx="7" cy="17" r="3" fill="none" stroke="#3D63FF" stroke-width="1.8" transform="scale(.6) translate(2,2)"/><circle cx="19" cy="17" r="3" fill="none" stroke="#3D63FF" stroke-width="1.8" transform="scale(.6) translate(2,2)"/><circle cx="13" cy="3" r="3" fill="#3D63FF" transform="scale(.6) translate(2,2)"/></svg>
+          </div>
+          <div style="font-family:var(--FD);font-size:18px;font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;">Providers join<br>at launch</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.3);line-height:1.6;margin-bottom:22px;">Are you a service provider?<br>Get listed for free.</div>
+          <button onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})" style="background:rgba(61,99,255,.2);border:1px solid rgba(61,99,255,.3);color:#93ABFF;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;">Apply to join →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   FOUNDER QUOTE — full-width centered
+   Large editorial pull-quote style.
+   Raycast / Linear "story" approach.
+   No sidebars, no grids. Just the words.
+══════════════════════════════════════ -->
+<section style="padding:140px 0;background:#0A1628;position:relative;overflow:hidden;">
+  <!-- Radial glow behind the text -->
+  <div style="position:absolute;width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(61,99,255,.09),transparent 65%);filter:blur(50px);pointer-events:none;"></div>
+
+  <div class="wrap" style="position:relative;z-index:1;max-width:860px;">
+    <div class="rv" style="text-align:center;">
+      <span class="eyebrow" style="justify-content:center;display:block;margin-bottom:32px;">Why we built this</span>
+
+      <!-- Large pull quote -->
+      <div style="position:relative;display:inline-block;">
+        <!-- Opening quote mark — decorative, not text -->
+        <div style="position:absolute;top:-24px;left:-20px;font-family:Georgia,serif;font-size:120px;line-height:1;color:rgba(61,99,255,.12);pointer-events:none;user-select:none;">"</div>
+        <p style="font-family:var(--FD);font-size:clamp(26px,3.5vw,46px);font-weight:900;letter-spacing:-.05em;line-height:1.12;color:#fff;position:relative;z-index:1;">Our team played the whole season.<br>Everyone wanted photos.<br><em style="font-style:italic;background:linear-gradient(120deg,#7BCEFF,var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Nobody booked the photographer.</em></p>
+      </div>
+
+      <!-- Body copy below the quote -->
+      <p style="font-size:16.5px;line-height:1.78;color:rgba(255,255,255,.35);max-width:560px;margin:32px auto 0;">
+        Sortora started not from a whiteboard, but from watching a good thing not happen because of an awkward problem nobody wanted to own. Every group has that version of this story.
+      </p>
+
+      <!-- Signature -->
+      <div style="display:inline-flex;align-items:center;gap:12px;margin-top:36px;padding:14px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:100px;backdrop-filter:blur(10px);">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#7C3AED);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:14px;font-weight:900;color:#fff;box-shadow:0 0 16px rgba(61,99,255,.35);">S</div>
+        <div style="text-align:left;">
+          <div style="font-family:var(--FD);font-size:13.5px;font-weight:800;color:#fff;letter-spacing:-.02em;">The Sortora Team</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.28);">Building in 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   EXPANSION / VISION
+   NOT a uniform 5-card grid.
+   One large "anchor" card + 4 smaller cards.
+   Bento-style with one card spanning 2 cols.
+   The "Sortora books it" statement replaces
+   the cramped 6th card entirely.
+══════════════════════════════════════ -->
+<section style="padding:120px 0;background:#070F1E;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-100px;top:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,170,.07),transparent 65%);filter:blur(50px);pointer-events:none;"></div>
+
+  <div class="wrap" style="position:relative;z-index:1;">
+    <div class="rv" style="max-width:500px;margin-bottom:64px;">
+      <span class="eyebrow">The vision</span>
+      <h2 class="section-h">Starting with sports.<br><em class="grad">Built for every group.</em></h2>
+      <p class="section-p">Every group has a booking they keep putting off. We start where the problem is clearest, then go everywhere.</p>
+    </div>
+
+    <!-- Vision bento — asymmetric, not uniform -->
+    <div class="vbento">
+
+      <!-- ANCHOR card — large, 2 rows tall -->
+      <div class="vcard vcard-anchor rv d1">
+        <div class="vcard-icon-large">
+          <svg width="52" height="52" viewBox="0 0 56 56" fill="none"><rect x="4" y="15" width="48" height="34" rx="7" fill="rgba(61,99,255,.15)" stroke="#3D63FF" stroke-width="1.8"/><circle cx="28" cy="32" r="9.5" fill="none" stroke="#3D63FF" stroke-width="2"/><circle cx="28" cy="32" r="3" fill="#3D63FF"/><path d="M18 15l2.2-5h15.6L38 15" fill="rgba(61,99,255,.2)" stroke="#3D63FF" stroke-width="1.6" stroke-linejoin="round"/><circle cx="44" cy="22" r="2.5" fill="#3D63FF"/><circle cx="24" cy="28.5" r="1.8" fill="white" opacity=".7"/></svg>
+        </div>
+        <div class="vcard-anchor-label">Launching first</div>
+        <h3 class="vcard-h">Sports Photography</h3>
+        <p class="vcard-p">The clearest version of the problem. A team of 15 wants season photos. Nobody wants to front $400 alone. Sortora was built for this exact moment.</p>
+        <div class="vcard-anchor-stat">
+          <div><div style="font-family:var(--FD);font-size:28px;font-weight:900;color:#fff;letter-spacing:-.05em;">$47</div><div style="font-size:11px;color:rgba(255,255,255,.28);margin-top:2px;">per person (6 contributors)</div></div>
+          <div style="width:1px;background:rgba(255,255,255,.08);align-self:stretch;"></div>
+          <div><div style="font-family:var(--FD);font-size:28px;font-weight:900;color:var(--teal);letter-spacing:-.05em;">100%</div><div style="font-size:11px;color:rgba(255,255,255,.28);margin-top:2px;">confirmed or refunded</div></div>
+        </div>
+      </div>
+
+      <!-- 4 smaller expansion cards -->
+      <div class="vcard rv d1">
+        <div class="vcard-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10" fill="#1E1B4B"/><circle cx="16" cy="16" r="5.5" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1.2"/><circle cx="16" cy="16" r="2.5" fill="#6366F1"/><line x1="22" y1="9" x2="18" y2="13" stroke="#6366F1" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3 class="vcard-h vcard-h-sm">Music & DJs</h3>
+        <p class="vcard-p vcard-p-sm">Events, parties, and concerts — split between everyone who shows up.</p>
+        <span class="vcard-status">Coming soon</span>
+      </div>
+
+      <div class="vcard rv d2">
+        <div class="vcard-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><line x1="6" y1="16" x2="26" y2="16" stroke="#3D63FF" stroke-width="4" stroke-linecap="round"/><rect x="2" y="12" width="8" height="8" rx="3" fill="rgba(61,99,255,.15)" stroke="#3D63FF" stroke-width="1.6"/><rect x="22" y="12" width="8" height="8" rx="3" fill="rgba(61,99,255,.15)" stroke="#3D63FF" stroke-width="1.6"/></svg></div>
+        <h3 class="vcard-h vcard-h-sm">Fitness & Training</h3>
+        <p class="vcard-p vcard-p-sm">Group personal training, team conditioning sessions, boot camps.</p>
+        <span class="vcard-status">Coming soon</span>
+      </div>
+
+      <div class="vcard rv d2">
+        <div class="vcard-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M4 28L16 8l12 20H4z" fill="rgba(61,99,255,.12)" stroke="#3D63FF" stroke-width="1.6" stroke-linejoin="round"/><line x1="16" y1="8" x2="16" y2="28" stroke="#3D63FF" stroke-width="1.4" opacity=".5"/></svg></div>
+        <h3 class="vcard-h vcard-h-sm">Workshops & Learning</h3>
+        <p class="vcard-p vcard-p-sm">Speakers, tutors, masterclasses — booked collectively by schools and clubs.</p>
+        <span class="vcard-status">Coming soon</span>
+      </div>
+
+      <div class="vcard rv d3">
+        <div class="vcard-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 28S4 20 4 11C4 7 8.5 5 16 5s12 2 12 6c0 9-12 17-12 17z" fill="rgba(16,185,129,.12)" stroke="#10B981" stroke-width="1.6"/><path d="M16 18S11 14 11 12c0-2 2-3 5-3s5 1 5 3c0 2-5 6-5 6z" fill="#10B981" opacity=".7"/></svg></div>
+        <h3 class="vcard-h vcard-h-sm">Wellness & Retreats</h3>
+        <p class="vcard-p vcard-p-sm">Massage, yoga, spa days — any shared experience, fully funded as a group.</p>
+        <span class="vcard-status">Coming soon</span>
+      </div>
+
+    </div>
+
+    <!-- Full-width closing statement -->
+    <div class="vstatement rv d3">
+      <div style="display:flex;align-items:center;gap:16px;">
+
+        <div>
+          <div style="font-family:var(--FD);font-size:clamp(18px,2.2vw,26px);font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.15;">If your group wants it, Sortora books it.</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,.28);margin-top:4px;">Any service. Any group size. Any occasion.</div>
+        </div>
+      </div>
+      <div style="flex-shrink:0;font-size:12.5px;color:rgba(255,255,255,.18);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:10px 16px;white-space:nowrap;">Coming 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   CTA — full dark, centered, max glow
+   "Seen enough? Sign up here." energy.
+   Big headline, one email input, done.
+══════════════════════════════════════ -->
+<section style="padding:160px 0;background:#060E1C;position:relative;overflow:hidden;text-align:center;" id="waitlist">
+
+  <!-- Layered radial glows — basement.studio style -->
+  <div style="position:absolute;width:900px;height:900px;border-radius:50%;bottom:-450px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(61,99,255,.13),transparent 55%);filter:blur(1px);pointer-events:none;"></div>
+  <div style="position:absolute;width:400px;height:400px;border-radius:50%;top:-80px;right:10%;background:radial-gradient(circle,rgba(0,212,170,.07),transparent 60%);filter:blur(30px);pointer-events:none;"></div>
+  <div style="position:absolute;width:350px;height:350px;border-radius:50%;top:-60px;left:8%;background:radial-gradient(circle,rgba(124,58,237,.08),transparent 60%);filter:blur(30px);pointer-events:none;"></div>
+
+  <div class="wrap" style="position:relative;z-index:1;max-width:640px;">
+    <div class="rv">
+      <span class="eyebrow" style="display:block;text-align:center;margin-bottom:20px;color:rgba(255,255,255,.2);">Join the waitlist</span>
+      <h2 style="font-family:var(--FD);font-size:clamp(36px,5.5vw,72px);font-weight:900;letter-spacing:-.06em;line-height:.97;color:#fff;margin-bottom:18px;">
+        The thing your group<br>keeps putting off.<br>
+        <em style="font-style:italic;background:linear-gradient(120deg,#7BCEFF 0%,var(--teal) 55%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Book it together.</em>
+      </h2>
+      <p style="font-size:17px;line-height:1.72;color:rgba(255,255,255,.35);margin-bottom:44px;">We're building Sortora now. Sign up and be first to know when it's live.</p>
+    </div>
+
+    <div class="rv d1">
+      <!-- Glass input row -->
+      <div class="cta-form-row" id="ctaform">
+        <input class="cta-input" type="email" id="ctaemail" placeholder="Enter your email address"/>
+        <button class="cta-submit" onclick="ctaSubmit()">
+          Join Waitlist
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="cta-ok" id="ctaok">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,212,170,.4);">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3.5L11.5 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span style="font-size:15px;font-weight:600;color:#fff;">You're on the list. We'll be in touch.</span>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,.14);margin-top:14px;">No spam. One email — when Sortora is ready to use.</p>
+
+      <!-- Social proof row -->
+      <div style="display:inline-flex;align-items:center;gap:12px;margin-top:28px;padding:12px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:100px;backdrop-filter:blur(10px);">
+        <div style="display:flex;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#3D63FF;border:2px solid rgba(6,14,28,.8);font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;">JM</div>
+          <div style="width:26px;height:26px;border-radius:50%;background:#7C3AED;border:2px solid rgba(6,14,28,.8);font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;margin-left:-8px;">SC</div>
+          <div style="width:26px;height:26px;border-radius:50%;background:#059669;border:2px solid rgba(6,14,28,.8);font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;margin-left:-8px;">MR</div>
+          <div style="width:26px;height:26px;border-radius:50%;background:#D97706;border:2px solid rgba(6,14,28,.8);font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;margin-left:-8px;">+</div>
+        </div>
+        <span id="waitcount" style="font-size:12.5px;color:rgba(255,255,255,.35);">47 people already waiting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   FOOTER — dark, minimal, clean
+══════════════════════════════════════ -->
+<footer style="background:#060E1C;border-top:1px solid rgba(255,255,255,.05);padding:36px 0;">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <a href="#" class="logo" style="padding:4px;">
+        <span style="font-family:var(--FD);font-size:17px;font-weight:900;color:rgba(255,255,255,.3);letter-spacing:-.05em;">Sortora</span>
+      </a>
+      <span style="font-size:12px;color:rgba(255,255,255,.14);">© 2026 Sortora. All rights reserved.</span>
+      <a href="/cdn-cgi/l/email-protection#1c74797070735c6f736e68736e7d327f7371" style="font-size:12.5px;color:rgba(255,255,255,.22);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.22)'"><span class="__cf_email__" data-cfemail="aec6cbc2c2c1eeddc1dcdac1dccf80cdc1c3">[email&#160;protected]</span></a>
+    </div>
+  </div>
+</footer>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── DRAG SCROLL for provider row ── */
+const ptrack = document.getElementById('ptrack');
+const pscroll = ptrack ? ptrack.closest('.pscroll-outer') : null;
+if(pscroll){
+  let isDown=false,startX,scrollLeft;
+  pscroll.addEventListener('mousedown',e=>{isDown=true;pscroll.classList.add('active');startX=e.pageX-pscroll.offsetLeft;scrollLeft=pscroll.scrollLeft;});
+  pscroll.addEventListener('mouseleave',()=>{isDown=false;});
+  pscroll.addEventListener('mouseup',()=>{isDown=false;});
+  pscroll.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-pscroll.offsetLeft;const walk=(x-startX)*1.4;pscroll.scrollLeft=scrollLeft-walk;});
+}
+
+/* ── CTA FORM ── */
+let wcount = 47;
+function ctaSubmit(){
+  const inp = document.getElementById('ctaemail');
+  if(!inp.value.includes('@')||!inp.value.includes('.')){
+    inp.classList.add('err');setTimeout(()=>inp.classList.remove('err'),1400);return;
+  }
+  document.getElementById('ctaform').style.display='none';
+  document.getElementById('ctaok').classList.add('show');
+  wcount++;
+  const wc = document.getElementById('waitcount');
+  if(wc) wc.textContent = wcount + ' people already waiting';
+}
+document.getElementById('ctaemail')?.addEventListener('keydown',e=>{if(e.key==='Enter')ctaSubmit();});
+
+/* ── WAITLIST COUNTER ANIMATE ── */
+const wcel = document.getElementById('waitcount');
+if(wcel){
+  let p=0;
+  setTimeout(()=>{
+ 
