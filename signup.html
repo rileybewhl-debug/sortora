@@ -76,36 +76,36 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const supabase = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0MzI1NzEsImV4cCI6MjA1ODAwODU3MX0.wbMbJxKJHJlXsRSGpGHXPNbhEOQUE2y7rPE4X1NmBHg');
-    let selectedRole = 'customer';
+    var sb = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0MzI1NzEsImV4cCI6MjA1ODAwODU3MX0.wbMbJxKJHJlXsRSGpGHXPNbhEOQUE2y7rPE4X1NmBHg');
+    var selectedRole = 'customer';
     function selectRole(role) {
       selectedRole = role;
       document.getElementById('role-customer').classList.toggle('active', role === 'customer');
       document.getElementById('role-provider').classList.toggle('active', role === 'provider');
       document.getElementById('provider-fields').style.display = role === 'provider' ? 'block' : 'none';
     }
-    function showError(msg) { const el = document.getElementById('error-msg'); el.textContent = msg; el.style.display = 'block'; }
+    function showError(msg) { var el = document.getElementById('error-msg'); el.textContent = msg; el.style.display = 'block'; }
     async function handleSignup() {
-      const btn = document.getElementById('submit-btn');
+      var btn = document.getElementById('submit-btn');
       btn.disabled = true; btn.textContent = 'Creating account...';
       document.getElementById('error-msg').style.display = 'none';
-      const fullName = document.getElementById('full-name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const city = document.getElementById('city').value.trim();
+      var fullName = document.getElementById('full-name').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value;
+      var city = document.getElementById('city').value.trim();
       if (!fullName || !email || !password || !city) { showError('Please fill in all fields.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
       if (password.length < 8) { showError('Password must be at least 8 characters.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) { showError(error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      const userId = data.user.id;
-      const { error: profileError } = await supabase.from('profiles').insert({ id: userId, role: selectedRole, full_name: fullName, city });
-      if (profileError) { showError(profileError.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+      var signUpResult = await sb.auth.signUp({ email: email, password: password });
+      if (signUpResult.error) { showError(signUpResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+      var userId = signUpResult.data.user.id;
+      var profileResult = await sb.from('profiles').insert({ id: userId, role: selectedRole, full_name: fullName, city: city });
+      if (profileResult.error) { showError(profileResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
       if (selectedRole === 'provider') {
-        const businessName = document.getElementById('business-name').value.trim();
-        const category = document.getElementById('category').value;
+        var businessName = document.getElementById('business-name').value.trim();
+        var category = document.getElementById('category').value;
         if (!businessName || !category) { showError('Please fill in your business name and category.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-        const { error: providerError } = await supabase.from('providers').insert({ id: userId, business_name: businessName, category, location: city });
-        if (providerError) { showError(providerError.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+        var providerResult = await sb.from('providers').insert({ id: userId, business_name: businessName, category: category, location: city });
+        if (providerResult.error) { showError(providerResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
         window.location.href = '/dashboard.html';
       } else {
         window.location.href = '/browse.html';
