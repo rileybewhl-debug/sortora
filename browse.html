@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Browse Sessions — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
+    .topbar-right{display:flex;align-items:center;gap:16px}
+    .user-name{font-size:14px;font-weight:600;color:#0A2540}
+    .signout{font-size:13px;color:#8898AA;cursor:pointer;text-decoration:none}
+    .signout:hover{color:#0A2540}
+    .main{max-width:1000px;margin:0 auto;padding:40px 24px}
+    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
+    .page-sub{font-size:15px;color:#8898AA;margin-bottom:28px}
+    .filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
+    .filter-btn{padding:8px 18px;border-radius:20px;border:2px solid #E8EDF2;background:#fff;font-size:13px;font-weight:600;color:#8898AA;cursor:pointer;font-family:inherit;transition:all .2s}
+    .filter-btn:hover,.filter-btn.active{border-color:#3D63FF;color:#3D63FF;background:#EEF2FF}
+    .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+    .session-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;cursor:pointer}
+    .session-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+    .card-header{background:linear-gradient(135deg,#3D63FF,#6B8EFF);padding:24px;color:#fff}
+    .card-category{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:8px}
+    .card-title{font-size:18px;font-weight:800;margin-bottom:4px}
+    .card-provider{font-size:13px;opacity:.8}
+    .card-body{padding:20px}
+    .card-meta{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+    .meta-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#8898AA}
+    .meta-row span{color:#0A2540;font-weight:600}
+    .card-footer{display:flex;align-items:center;justify-content:space-between}
+    .price{font-size:22px;font-weight:800;color:#0A2540}
+    .price small{font-size:13px;font-weight:500;color:#8898AA}
+    .join-btn{padding:10px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+    .join-btn:hover{background:#2d52ee}
+    .join-btn.joined{background:#10B981}
+    .join-btn:disabled{background:#8898AA;cursor:not-allowed}
+    .group-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;color:#C2410C;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;margin-bottom:12px}
+    .empty{text-align:center;padding:60px 24px;color:#8898AA}
+    .empty-icon{font-size:48px;margin-bottom:16px}
+    .empty h3{font-size:18px;font-weight:700;color:#0A2540;margin-bottom:8px}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:24px}
+    .modal-overlay.open{display:flex}
+    .modal{background:#fff;border-radius:20px;padding:36px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+    .modal-title{font-size:20px;font-weight:800;color:#0A2540;margin-bottom:4px}
+    .modal-sub{font-size:14px;color:#8898AA;margin-bottom:24px}
+    .status-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+    .status-opt{border:2px solid #E8EDF2;border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all .2s}
+    .status-opt:hover{border-color:#3D63FF}
+    .status-opt.active{border-color:#3D63FF;background:#EEF2FF}
+    .status-opt.going.active{border-color:#10B981;background:#ECFDF5}
+    .status-opt.maybe.active{border-color:#F59E0B;background:#FFFBEB}
+    .status-opt.out.active{border-color:#EF4444;background:#FEF2F2}
+    .status-opt .s-icon{font-size:24px;margin-bottom:6px}
+    .status-opt .s-label{font-size:13px;font-weight:700;color:#0A2540}
+    .status-opt .s-sub{font-size:11px;color:#8898AA;margin-top:2px}
+    .modal-btn{width:100%;padding:14px;background:#3D63FF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+    .modal-btn:hover{background:#2d52ee}
+    .modal-btn:disabled{background:#8898AA;cursor:not-allowed}
+    .modal-cancel{width:100%;padding:12px;background:none;color:#8898AA;border:none;font-size:14px;cursor:pointer;font-family:inherit;margin-top:8px}
+    .modal-cancel:hover{color:#0A2540}
+    .success-msg{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-bottom:16px;display:none}
+    @media(max-width:640px){.sessions-grid{grid-template-columns:1fr}.status-options{grid-template-columns:1fr 1fr 1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">Sort<span>ora</span></div>
+    <div class="topbar-right">
+      <span class="user-name" id="user-name">Loading...</span>
+      <a class="signout" onclick="signOut()">Sign out</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-title">Browse Sessions</div>
+    <div class="page-sub">Find and join sessions near you.</div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterBy('all', this)">All</button>
+      <button class="filter-btn" onclick="filterBy('photography', this)">📸 Photography</button>
+      <button class="filter-btn" onclick="filterBy('fitness', this)">💪 Fitness</button>
+      <button class="filter-btn" onclick="filterBy('yoga', this)">🧘 Yoga</button>
+      <button class="filter-btn" onclick="filterBy('dj', this)">🎵 DJ</button>
+      <button class="filter-btn" onclick="filterBy('coaching', this)">🎯 Coaching</button>
+      <button class="filter-btn" onclick="filterBy('chef', this)">👨‍🍳 Chef</button>
+      <button class="filter-btn" onclick="filterBy('workshop', this)">🛠 Workshop</button>
+    </div>
+
+    <div class="sessions-grid" id="sessions-grid">
+      <div class="empty"><div class="empty-icon">🔍</div><h3>Loading sessions...</h3></div>
+    </div>
+  </div>
+
+  <!-- Join Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-title" id="modal-title">Join Session</div>
+      <div class="modal-sub" id="modal-sub">Choose your status for this session.</div>
+      <div class="success-msg" id="modal-success">✓ You're signed up!</div>
+      <div class="status-options">
+        <div class="status-opt going" onclick="selectStatus('going')" id="opt-going">
+          <div class="s-icon">✅</div>
+          <div class="s-label">Going</div>
+          <div class="s-sub">I'll be there</div>
+        </div>
+        <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe">
+          <div class="s-icon">🤔</div>
+          <div class="s-label">Maybe</div>
+          <div class="s-sub">Not sure yet</div>
+        </div>
+        <div class="status-opt out" onclick="selectStatus('out')" id="opt-out">
+          <div class="s-icon">❌</div>
+          <div class="s-label">Out</div>
+          <div class="s-sub">Can't make it</div>
+        </div>
+      </div>
+      <button class="modal-btn" onclick="confirmJoin()" id="modal-btn">Confirm Status</button>
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient(
+      'https://gzwyzocfohtnejttkglg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
+    );
+    var currentUser = null;
+    var allSessions = [];
+    var selectedStatus = 'going';
+    var activeSession = null;
+
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = '/login.html'; return; }
+      currentUser = r.data.session.user;
+      var pr = await SB.from('profiles').select('full_name,role').eq('id', currentUser.id).single();
+      if (pr.data) {
+        document.getElementById('user-name').textContent = pr.data.full_name;
+        if (pr.data.role === 'provider') { window.location.href = '/dashboard.html'; return; }
+      }
+      loadSessions();
+    }
+
+    async function loadSessions() {
+      var r = await SB.from('sessions')
+        .select('*, providers(business_name, category)')
+        .eq('status', 'open')
+        .order('session_date', {ascending: true});
+      allSessions = r.data || [];
+      renderSessions(allSessions);
+    }
+
+    function renderSessions(sessions) {
+      var grid = document.getElementById('sessions-grid');
+      if (!sessions.length) {
+        grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><h3>No sessions yet</h3><p>Check back soon — providers are setting up!</p></div>';
+        return;
+      }
+      grid.innerHTML = sessions.map(function(s) {
+        var d = new Date(s.session_date);
+        var dateStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+        var timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+        var providerName = s.providers ? s.providers.business_name : 'Provider';
+        var category = s.providers ? s.providers.category : s.category || '';
+        return '<div class="session-card" onclick="openModal(\'' + s.id + '\')">'
+          + '<div class="card-header">'
+          + '<div class="card-category">' + category + '</div>'
+          + '<div class="card-title">' + s.title + '</div>'
+          + '<div class="card-provider">by ' + providerName + '</div>'
+          + '</div>'
+          + '<div class="card-body">'
+          + (s.is_group_funded ? '<div class="group-badge">👥 Group Funded</div>' : '')
+          + '<div class="card-meta">'
+          + '<div class="meta-row">📅 <span>' + dateStr + ' at ' + timeStr + '</span></div>'
+          + '<div class="meta-row">📍 <span>' + (s.location || 'TBD') + '</span></div>'
+          + (s.max_spots ? '<div class="meta-row">👥 <span>' + s.max_spots + ' spots</span></div>' : '')
+          + (s.duration_minutes ? '<div class="meta-row">⏱ <span>' + s.duration_minutes + ' mins</span></div>' : '')
+          + '</div>'
+          + '<div class="card-footer">'
+          + '<div class="price">$' + parseFloat(s.price_per_person).toFixed(2) + '<small> /person</small></div>'
+          + '<button class="join-btn">Join</button>'
+          + '</div></div></div>';
+      }).join('');
+    }
+
+    function filterBy(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      if (cat === 'all') { renderSessions(allSessions); return; }
+      renderSessions(allSessions.filter(function(s){
+        return (s.providers && s.providers.category === cat) || s.category === cat;
+      }));
+    }
+
+    function openModal(sessionId) {
+      activeSession = allSessions.find(function(s){return s.id === sessionId;});
+      if (!activeSession) return;
+      selectedStatus = 'going';
+      document.getElementById('opt-going').classList.add('active');
+      document.getElementById('opt-maybe').classList.remove('active');
+      document.getElementById('opt-out').classList.remove('active');
+      document.getElementById('modal-title').textContent = activeSession.title;
+      document.getElementById('modal-sub').textContent = 'Pick your status — you can update it anytime.';
+      document.getElementById('modal-success').style.display = 'none';
+      document.getElementById('modal-btn').disabled = false;
+      document.getElementById('modal-btn').textContent = 'Confirm Status';
+      document.getElementById('modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+      activeSession = null;
+    }
+
+    function selectStatus(s) {
+      selectedStatus = s;
+      ['going','maybe','out'].forEach(function(opt){
+        document.getElementById('opt-'+opt).classList.toggle('active', opt === s);
+      });
+    }
+
+    async function confirmJoin() {
+      if (!activeSession || !currentUser) return;
+      var btn = document.getElementById('modal-btn');
+      btn.disabled = true; btn.textContent = 'Saving...';
+
+      var r = await SB.from('bookings').upsert({
+        session_id: activeSession.id,
+        customer_id: currentUser.id,
+        status: selectedStatus
+      }, {onConflict: 'session_id,customer_id'});
+
+      if (r.error) {
+        btn.disabled = false; btn.textContent = 'Confirm Status';
+        alert(r.error.message);
+      } else {
+        document.getElementById('modal-success').style.display = 'block';
+        document.getElementById('modal-sub').textContent = 'Status saved! You can update this anytime.';
+        btn.textContent = 'Updated ✓';
+        setTimeout(closeModal, 1500);
+      }
+    }
+
+    async function signOut() {
+      await SB.auth.signOut();
+      window.location.href = '/login.html';
+    }
+
+    init();
+  </script>
+</body>
+</html>
