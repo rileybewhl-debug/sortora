@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Bookings — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
+    .topbar-right{display:flex;align-items:center;gap:16px}
+    .nav-link{font-size:13px;font-weight:600;color:#8898AA;text-decoration:none;cursor:pointer}
+    .nav-link:hover{color:#0A2540}
+    .nav-link.active{color:#3D63FF}
+    .user-name{font-size:14px;font-weight:600;color:#0A2540}
+    .main{max-width:900px;margin:0 auto;padding:40px 24px}
+    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
+    .page-sub{font-size:15px;color:#8898AA;margin-bottom:32px}
+    .tabs{display:flex;gap:4px;margin-bottom:28px;background:#fff;border-radius:12px;padding:4px;width:fit-content;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .tab{padding:8px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;color:#8898AA;transition:all .2s;border:none;background:none;font-family:inherit}
+    .tab.active{background:#3D63FF;color:#fff}
+    .bookings-list{display:flex;flex-direction:column;gap:16px}
+    .booking-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .booking-info .title{font-size:17px;font-weight:800;color:#0A2540;margin-bottom:4px}
+    .booking-info .provider{font-size:13px;color:#8898AA;margin-bottom:8px}
+    .booking-meta{display:flex;gap:16px;flex-wrap:wrap}
+    .meta-item{font-size:13px;color:#8898AA}
+    .meta-item span{color:#0A2540;font-weight:600}
+    .booking-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+    .price{font-size:20px;font-weight:800;color:#0A2540}
+    .status-select{display:flex;gap:6px}
+    .status-btn{padding:7px 14px;border-radius:20px;border:2px solid #E8EDF2;background:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;color:#8898AA}
+    .status-btn:hover{border-color:#3D63FF;color:#3D63FF}
+    .status-btn.going.active{border-color:#10B981;background:#ECFDF5;color:#065F46}
+    .status-btn.maybe.active{border-color:#F59E0B;background:#FFFBEB;color:#92400E}
+    .status-btn.out.active{border-color:#EF4444;background:#FEF2F2;color:#991B1B}
+    .group-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;color:#C2410C;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700;margin-left:8px}
+    .empty{text-align:center;padding:60px 24px;color:#8898AA}
+    .empty-icon{font-size:48px;margin-bottom:16px}
+    .empty h3{font-size:18px;font-weight:700;color:#0A2540;margin-bottom:8px}
+    .empty a{color:#3D63FF;text-decoration:none;font-weight:700}
+    .success-banner{background:#ECFDF5;color:#065F46;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;margin-bottom:24px;display:none}
+    @media(max-width:640px){.booking-card{flex-direction:column;align-items:flex-start}.booking-right{align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">Sort<span>ora</span></div>
+    <div class="topbar-right">
+      <a class="nav-link active" href="/bookings.html">My Bookings</a>
+      <a class="nav-link" href="/browse.html">Browse</a>
+      <span class="user-name" id="user-name"></span>
+      <a class="nav-link" onclick="signOut()">Sign out</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-title">My Bookings</div>
+    <div class="page-sub">Track and manage all your sessions.</div>
+
+    <div class="success-banner" id="success-banner">✓ Payment successful — you're confirmed!</div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="filterTab('all', this)">All</button>
+      <button class="tab" onclick="filterTab('going', this)">Going</button>
+      <button class="tab" onclick="filterTab('maybe', this)">Maybe</button>
+      <button class="tab" onclick="filterTab('out', this)">Out</button>
+    </div>
+
+    <div class="bookings-list" id="bookings-list">
+      <div class="empty"><div class="empty-icon">📋</div><h3>Loading...</h3></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient(
+      'https://gzwyzocfohtnejttkglg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
+    );
+    var currentUser = null;
+    var allBookings = [];
+
+    async function init() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('payment') === 'success') {
+        document.getElementById('success-banner').style.display = 'block';
+      }
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = '/login.html'; return; }
+      currentUser = r.data.session.user;
+      var pr = await SB.from('profiles').select('full_name,role').eq('id', currentUser.id).single();
+      if (pr.data) {
+        document.getElementById('user-name').textContent = pr.data.full_name;
+        if (pr.data.role === 'provider') { window.location.href = '/dashboard.html'; return; }
+      }
+      loadBookings();
+    }
+
+    async function loadBookings() {
+      var r = await SB.from('bookings')
+        .select('*, sessions(title, session_date, price_per_person, location, duration_minutes, is_group_funded, providers(business_name))')
+        .eq('customer_id', currentUser.id)
+        .order('created_at', {ascending: false});
+      allBookings = r.data || [];
+      renderBookings(allBookings);
+    }
+
+    function renderBookings(bookings) {
+      var list = document.getElementById('bookings-list');
+      if (!bookings.length) {
+        list.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><h3>No bookings yet</h3><p>Head to <a href="/browse.html">Browse</a> to find sessions.</p></div>';
+        return;
+      }
+      list.innerHTML = bookings.map(function(b) {
+        var s = b.sessions;
+        if (!s) return '';
+        var d = new Date(s.session_date);
+        var dateStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+        var timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+        var provider = s.providers ? s.providers.business_name : 'Provider';
+        return '<div class="booking-card" id="booking-'+b.id+'">'
+          + '<div class="booking-info">'
+          + '<div class="title">' + s.title + (s.is_group_funded ? '<span class="group-badge">👥 Group</span>' : '') + '</div>'
+          + '<div class="provider">by ' + provider + '</div>'
+          + '<div class="booking-meta">'
+          + '<div class="meta-item">📅 <span>' + dateStr + ' at ' + timeStr + '</span></div>'
+          + '<div class="meta-item">📍 <span>' + (s.location || 'TBD') + '</span></div>'
+          + (s.duration_minutes ? '<div class="meta-item">⏱ <span>' + s.duration_minutes + ' mins</span></div>' : '')
+          + '</div></div>'
+          + '<div class="booking-right">'
+          + '<div class="price">$' + parseFloat(s.price_per_person).toFixed(2) + '</div>'
+          + '<div class="status-select">'
+          + '<button class="status-btn going ' + (b.status==='going'?'active':'') + '" onclick="updateStatus(\''+b.id+'\',\'going\')">✅ Going</button>'
+          + '<button class="status-btn maybe ' + (b.status==='maybe'?'active':'') + '" onclick="updateStatus(\''+b.id+'\',\'maybe\')">🤔 Maybe</button>'
+          + '<button class="status-btn out ' + (b.status==='out'?'active':'') + '" onclick="updateStatus(\''+b.id+'\',\'out\')">❌ Out</button>'
+          + '</div></div></div>';
+      }).join('');
+    }
+
+    async function updateStatus(bookingId, newStatus) {
+      var r = await SB.from('bookings').update({status: newStatus}).eq('id', bookingId);
+      if (!r.error) {
+        var booking = allBookings.find(function(b){return b.id === bookingId;});
+        if (booking) { booking.status = newStatus; }
+        renderBookings(currentFilter === 'all' ? allBookings : allBookings.filter(function(b){return b.status === currentFilter;}));
+      }
+    }
+
+    var currentFilter = 'all';
+    function filterTab(status, btn) {
+      currentFilter = status;
+      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+      btn.classList.add('active');
+      if (status === 'all') { renderBookings(allBookings); return; }
+      renderBookings(allBookings.filter(function(b){return b.status === status;}));
+    }
+
+    async function signOut() {
+      await SB.auth.signOut();
+      window.location.href = '/login.html';
+    }
+
+    init();
+  </script>
+</body>
+</html>
