@@ -124,18 +124,58 @@
       </div>
     </div>
 
+    <div class="card" id="stripe-card">
+  <div class="card-title">💳 Payouts</div>
+  <div id="stripe-status"></div>
+  <button class="btn" id="connect-btn" onclick="connectStripe()" style="margin-top:0">Connect Bank Account</button>
+  <div class="success" id="connect-success" style="display:none">✓ Stripe connected — you can now receive payouts!</div>
+  <div class="error" id="connect-error" style="display:none">Something went wrong. Please try again.</div>
+</div>
     <button class="btn" onclick="saveProfile()" id="save-btn">Save Profile</button>
     <div class="success" id="save-success">✓ Profile saved successfully!</div>
     <div class="error" id="save-error"></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    async function connectStripe() {
+  var btn = document.getElementById('connect-btn');
+  btn.disabled = true; btn.textContent = 'Redirecting...';
+  var r = await fetch('/api/connect', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ providerId: currentUser.id })
+  });
+  var data = await r.json();
+  if (data.url) {
+    window.location.href = data.url;
+  } else {
+    document.getElementById('connect-error').style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Connect Bank Account';
+  }
+}
+
+// Check connect status on load — add this inside init() after provider data loads
+async function checkConnectStatus() {
+  var pv = await SB.from('providers').select('stripe_account_id').eq('id', currentUser.id).single();
+  if (pv.data && pv.data.stripe_account_id) {
+    document.getElementById('connect-btn').textContent = '✓ Stripe Connected';
+    document.getElementById('connect-btn').style.background = '#10B981';
+    document.getElementById('connect-btn').disabled = true;
+  }
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('connect') === 'success') {
+    document.getElementById('connect-success').style.display = 'block';
+  }
+  if (params.get('connect') === 'error') {
+    document.getElementById('connect-error').style.display = 'block';
+  }
+}
     var SB = window.supabase.createClient(
       'https://gzwyzocfohtnejttkglg.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
     );
     var currentUser = null;
-
+checkConnectStatus();
     async function init() {
       var r = await SB.auth.getSession();
       if (!r.data.session) { window.location.href = '/login.html'; return; }
