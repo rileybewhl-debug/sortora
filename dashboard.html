@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
+    .topbar-right{display:flex;align-items:center;gap:16px}
+    .user-name{font-size:14px;font-weight:600;color:#0A2540}
+    .signout{font-size:13px;color:#8898AA;cursor:pointer;text-decoration:none}
+    .signout:hover{color:#0A2540}
+    .main{max-width:960px;margin:0 auto;padding:40px 24px}
+    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
+    .page-sub{font-size:15px;color:#8898AA;margin-bottom:32px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .card-title{font-size:16px;font-weight:700;color:#0A2540;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+    .field{margin-bottom:16px}
+    label{display:block;font-size:13px;font-weight:600;color:#0A2540;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:11px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s}
+    input:focus,select:focus,textarea:focus{border-color:#3D63FF}
+    textarea{resize:vertical;min-height:80px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{padding:12px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;width:100%;margin-top:4px}
+    .btn:hover{background:#2d52ee}
+    .btn:disabled{background:#8898AA;cursor:not-allowed}
+    .btn-outline{background:#fff;color:#3D63FF;border:2px solid #3D63FF}
+    .btn-outline:hover{background:#EEF2FF}
+    .success{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
+    .error{background:#FEF2F2;color:#DC2626;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
+    .sessions-list{display:flex;flex-direction:column;gap:12px}
+    .session-card{background:#F6F9FC;border-radius:12px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+    .session-info .title{font-size:15px;font-weight:700;color:#0A2540}
+    .session-info .meta{font-size:13px;color:#8898AA;margin-top:3px}
+    .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+    .badge-open{background:#EEF2FF;color:#3D63FF}
+    .badge-funded{background:#ECFDF5;color:#065F46}
+    .empty{text-align:center;padding:32px;color:#8898AA;font-size:14px}
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+    .stat{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-align:center}
+    .stat-num{font-size:28px;font-weight:800;color:#3D63FF}
+    .stat-label{font-size:13px;color:#8898AA;margin-top:4px}
+    @media(max-width:640px){.two-col,.row,.stat-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">Sort<span>ora</span></div>
+    <div class="topbar-right">
+      <span class="user-name" id="user-name">Loading...</span>
+      <a class="signout" onclick="signOut()">Sign out</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-title" id="welcome">Welcome back 👋</div>
+    <div class="page-sub">Manage your sessions and bookings from here.</div>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-num" id="stat-sessions">0</div><div class="stat-label">Sessions Created</div></div>
+      <div class="stat"><div class="stat-num" id="stat-bookings">0</div><div class="stat-label">Total Bookings</div></div>
+      <div class="stat"><div class="stat-num" id="stat-funded">0</div><div class="stat-label">Funded Sessions</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📅 Create a Session</div>
+        <div class="field"><label>Session Title</label><input type="text" id="s-title" placeholder="e.g. Team Sports Photography"/></div>
+        <div class="field"><label>Description</label><textarea id="s-desc" placeholder="What's included, what to expect..."></textarea></div>
+        <div class="row">
+          <div class="field"><label>Date & Time</label><input type="datetime-local" id="s-date"/></div>
+          <div class="field"><label>Duration (mins)</label><input type="number" id="s-duration" placeholder="60"/></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Price per Person ($)</label><input type="number" id="s-price" placeholder="50" step="0.01"/></div>
+          <div class="field"><label>Max Spots</label><input type="number" id="s-spots" placeholder="10"/></div>
+        </div>
+        <div class="field"><label>Location</label><input type="text" id="s-location" placeholder="e.g. Seattle Central Park"/></div>
+        <div class="field">
+          <label>Session Type</label>
+          <select id="s-type">
+            <option value="false">Standard (individual booking)</option>
+            <option value="true">Group Funded (everyone chips in)</option>
+          </select>
+        </div>
+        <button class="btn" onclick="createSession()" id="create-btn">Create Session</button>
+        <div class="success" id="create-success">✓ Session created successfully!</div>
+        <div class="error" id="create-error"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 Your Sessions</div>
+        <div class="sessions-list" id="sessions-list">
+          <div class="empty">No sessions yet. Create your first one →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient(
+      'https://gzwyzocfohtnejttkglg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
+    );
+    var currentUser = null;
+
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = '/login.html'; return; }
+      currentUser = r.data.session.user;
+      var pr = await SB.from('profiles').select('full_name').eq('id', currentUser.id).single();
+      if (pr.data) {
+        document.getElementById('user-name').textContent = pr.data.full_name;
+        document.getElementById('welcome').textContent = 'Welcome back, ' + pr.data.full_name.split(' ')[0] + ' 👋';
+      }
+      loadSessions();
+    }
+
+    async function loadSessions() {
+      var r = await SB.from('sessions').select('*').eq('provider_id', currentUser.id).order('created_at', {ascending: false});
+      var list = document.getElementById('sessions-list');
+      if (!r.data || r.data.length === 0) {
+        list.innerHTML = '<div class="empty">No sessions yet. Create your first one →</div>';
+        return;
+      }
+      document.getElementById('stat-sessions').textContent = r.data.length;
+      document.getElementById('stat-funded').textContent = r.data.filter(function(s){return s.status==='funded';}).length;
+      list.innerHTML = r.data.map(function(s) {
+        var d = new Date(s.session_date);
+        var dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+        return '<div class="session-card">'
+          + '<div class="session-info">'
+          + '<div class="title">' + s.title + '</div>'
+          + '<div class="meta">$' + s.price_per_person + ' · ' + dateStr + ' · ' + (s.location||'TBD') + '</div>'
+          + '</div>'
+          + '<span class="badge badge-' + s.status + '">' + s.status + '</span>'
+          + '</div>';
+      }).join('');
+    }
+
+    async function createSession() {
+      var btn = document.getElementById('create-btn');
+      btn.disabled = true; btn.textContent = 'Creating...';
+      document.getElementById('create-success').style.display = 'none';
+      document.getElementById('create-error').style.display = 'none';
+
+      var title = document.getElementById('s-title').value.trim();
+      var desc = document.getElementById('s-desc').value.trim();
+      var date = document.getElementById('s-date').value;
+      var duration = document.getElementById('s-duration').value;
+      var price = document.getElementById('s-price').value;
+      var spots = document.getElementById('s-spots').value;
+      var location = document.getElementById('s-location').value.trim();
+      var grouped = document.getElementById('s-type').value === 'true';
+
+      if (!title || !date || !price) {
+        document.getElementById('create-error').textContent = 'Please fill in title, date and price.';
+        document.getElementById('create-error').style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Create Session'; return;
+      }
+
+      var r = await SB.from('sessions').insert({
+        provider_id: currentUser.id,
+        title: title,
+        description: desc,
+        session_date: new Date(date).toISOString(),
+        duration_minutes: duration ? parseInt(duration) : null,
+        price_per_person: parseFloat(price),
+        max_spots: spots ? parseInt(spots) : null,
+        location: location,
+        is_group_funded: grouped
+      });
+
+      if (r.error) {
+        document.getElementById('create-error').textContent = r.error.message;
+        document.getElementById('create-error').style.display = 'block';
+      } else {
+        document.getElementById('create-success').style.display = 'block';
+        document.getElementById('s-title').value = '';
+        document.getElementById('s-desc').value = '';
+        document.getElementById('s-date').value = '';
+        document.getElementById('s-duration').value = '';
+        document.getElementById('s-price').value = '';
+        document.getElementById('s-spots').value = '';
+        document.getElementById('s-location').value = '';
+        loadSessions();
+      }
+      btn.disabled = false; btn.textContent = 'Create Session';
+    }
+
+    async function signOut() {
+      await SB.auth.signOut();
+      window.location.href = '/login.html';
+    }
+
+    init();
+  </script>
+</body>
+</html>
