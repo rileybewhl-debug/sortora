@@ -50,13 +50,13 @@
         document.getElementById('error-msg').style.display = 'block';
         btn.disabled = false; btn.textContent = 'Sign In'; return;
       }
-      var result = await sb.auth.signInWithPassword({ email: email, password: password });
+      var result = await SB.auth.signInWithPassword({ email: email, password: password });
       if (result.error) {
         document.getElementById('error-msg').textContent = result.error.message;
         document.getElementById('error-msg').style.display = 'block';
         btn.disabled = false; btn.textContent = 'Sign In'; return;
       }
-      var profileResult = await sb.from('profiles').select('role').eq('id', result.data.user.id).single();
+      var profileResult = await SB.from('profiles').select('role').eq('id', result.data.user.id).single();
       if (profileResult.data && profileResult.data.role === 'provider') {
         window.location.href = '/dashboard.html';
       } else {
