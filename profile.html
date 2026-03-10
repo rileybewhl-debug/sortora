@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Profile — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
+    .topbar-right{display:flex;align-items:center;gap:16px}
+    .nav-link{font-size:13px;font-weight:600;color:#8898AA;text-decoration:none;cursor:pointer}
+    .nav-link:hover{color:#0A2540}
+    .nav-link.active{color:#3D63FF}
+    .user-name{font-size:14px;font-weight:600;color:#0A2540}
+    .main{max-width:800px;margin:0 auto;padding:40px 24px}
+    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
+    .page-sub{font-size:15px;color:#8898AA;margin-bottom:32px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:24px}
+    .card-title{font-size:16px;font-weight:700;color:#0A2540;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+    .field{margin-bottom:16px}
+    label{display:block;font-size:13px;font-weight:600;color:#0A2540;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:11px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s}
+    input:focus,select:focus,textarea:focus{border-color:#3D63FF}
+    textarea{resize:vertical;min-height:100px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{padding:12px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-top:4px}
+    .btn:hover{background:#2d52ee}
+    .btn:disabled{background:#8898AA;cursor:not-allowed}
+    .btn-outline{background:#fff;color:#3D63FF;border:2px solid #3D63FF}
+    .btn-outline:hover{background:#EEF2FF}
+    .success{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
+    .error{background:#FEF2F2;color:#DC2626;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
+    .preview-card{background:linear-gradient(135deg,#0A2540,#1a3a5c);border-radius:16px;padding:28px;color:#fff;margin-bottom:24px}
+    .preview-avatar{width:64px;height:64px;border-radius:50%;background:#3D63FF;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;margin-bottom:16px}
+    .preview-name{font-size:22px;font-weight:800;margin-bottom:4px}
+    .preview-category{font-size:13px;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+    .preview-bio{font-size:14px;opacity:.85;line-height:1.6;margin-bottom:16px}
+    .preview-meta{display:flex;gap:16px;flex-wrap:wrap}
+    .preview-meta-item{font-size:13px;opacity:.7;display:flex;align-items:center;gap:4px}
+    .category-badge{display:inline-block;background:rgba(61,99,255,.3);border:1px solid rgba(61,99,255,.5);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:12px}
+    .hint{font-size:12px;color:#8898AA;margin-top:4px}
+    @media(max-width:640px){.two-col,.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">Sort<span>ora</span></div>
+    <div class="topbar-right">
+      <a class="nav-link" href="/dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="/profile.html">Profile</a>
+      <span class="user-name" id="user-name"></span>
+      <a class="nav-link" onclick="signOut()">Sign out</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-title">My Profile</div>
+    <div class="page-sub">This is how customers will find and see you on Sortora.</div>
+
+    <div class="preview-card" id="preview-card">
+      <div class="preview-avatar" id="preview-avatar">?</div>
+      <div class="category-badge" id="preview-category">—</div>
+      <div class="preview-name" id="preview-name">Your Name</div>
+      <div class="preview-bio" id="preview-bio">Your bio will appear here...</div>
+      <div class="preview-meta">
+        <div class="preview-meta-item">📍 <span id="preview-location">Location</span></div>
+        <div class="preview-meta-item" id="preview-ig-wrap">📸 <span id="preview-ig">—</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👤 Personal Info</div>
+      <div class="row">
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="full-name" placeholder="Your full name"/>
+        </div>
+        <div class="field">
+          <label>City</label>
+          <input type="text" id="city" placeholder="e.g. Seattle"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏢 Business Info</div>
+      <div class="row">
+        <div class="field">
+          <label>Business Name</label>
+          <input type="text" id="business-name" placeholder="Your brand or business name"/>
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select id="category">
+            <option value="">Select type</option>
+            <option value="photography">Photography</option>
+            <option value="fitness">Fitness / Personal Training</option>
+            <option value="yoga">Yoga / Wellness</option>
+            <option value="dj">DJ / Music</option>
+            <option value="chef">Private Chef</option>
+            <option value="coaching">Coaching</option>
+            <option value="workshop">Workshop / Class</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Bio</label>
+        <textarea id="bio" placeholder="Tell customers about yourself, your experience, what makes you great..."></textarea>
+        <div class="hint">Keep it to 2–3 sentences. Customers read this before booking.</div>
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input type="text" id="location" placeholder="e.g. Seattle, WA"/>
+      </div>
+      <div class="field">
+        <label>Instagram Handle</label>
+        <input type="text" id="instagram" placeholder="@yourhandle"/>
+        <div class="hint">Optional — helps customers find your work.</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="saveProfile()" id="save-btn">Save Profile</button>
+    <div class="success" id="save-success">✓ Profile saved successfully!</div>
+    <div class="error" id="save-error"></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient(
+      'https://gzwyzocfohtnejttkglg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
+    );
+    var currentUser = null;
+
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = '/login.html'; return; }
+      currentUser = r.data.session.user;
+      var pr = await SB.from('profiles').select('full_name,role,city').eq('id', currentUser.id).single();
+      if (pr.data) {
+        if (pr.data.role !== 'provider') { window.location.href = '/browse.html'; return; }
+        document.getElementById('user-name').textContent = pr.data.full_name;
+        document.getElementById('full-name').value = pr.data.full_name || '';
+        document.getElementById('city').value = pr.data.city || '';
+      }
+      var pv = await SB.from('providers').select('*').eq('id', currentUser.id).single();
+      if (pv.data) {
+        document.getElementById('business-name').value = pv.data.business_name || '';
+        document.getElementById('category').value = pv.data.category || '';
+        document.getElementById('bio').value = pv.data.bio || '';
+        document.getElementById('location').value = pv.data.location || '';
+        document.getElementById('instagram').value = pv.data.instagram || '';
+        updatePreview();
+      }
+      addLivePreview();
+    }
+
+    function updatePreview() {
+      var name = document.getElementById('full-name').value || 'Your Name';
+      var biz = document.getElementById('business-name').value || name;
+      var cat = document.getElementById('category').value || '—';
+      var bio = document.getElementById('bio').value || 'Your bio will appear here...';
+      var loc = document.getElementById('location').value || document.getElementById('city').value || 'Location';
+      var ig = document.getElementById('instagram').value || '';
+
+      document.getElementById('preview-name').textContent = biz;
+      document.getElementById('preview-category').textContent = cat;
+      document.getElementById('preview-bio').textContent = bio;
+      document.getElementById('preview-location').textContent = loc;
+      document.getElementById('preview-avatar').textContent = (biz || name).charAt(0).toUpperCase();
+      if (ig) {
+        document.getElementById('preview-ig').textContent = ig;
+        document.getElementById('preview-ig-wrap').style.display = 'flex';
+      } else {
+        document.getElementById('preview-ig-wrap').style.display = 'none';
+      }
+    }
+
+    function addLivePreview() {
+      ['full-name','business-name','category','bio','location','city','instagram'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', updatePreview);
+      });
+    }
+
+    async function saveProfile() {
+      var btn = document.getElementById('save-btn');
+      btn.disabled = true; btn.textContent = 'Saving...';
+      document.getElementById('save-success').style.display = 'none';
+      document.getElementById('save-error').style.display = 'none';
+
+      var fullName = document.getElementById('full-name').value.trim();
+      var city = document.getElementById('city').value.trim();
+      var businessName = document.getElementById('business-name').value.trim();
+      var category = document.getElementById('category').value;
+      var bio = document.getElementById('bio').value.trim();
+      var location = document.getElementById('location').value.trim();
+      var instagram = document.getElementById('instagram').value.trim();
+
+      if (!fullName || !businessName || !category) {
+        document.getElementById('save-error').textContent = 'Please fill in your name, business name and category.';
+        document.getElementById('save-error').style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Save Profile'; return;
+      }
+
+      var r1 = await SB.from('profiles').update({full_name: fullName, city: city}).eq('id', currentUser.id);
+      var r2 = await SB.from('providers').update({
+        business_name: businessName,
+        category: category,
+        bio: bio,
+        location: location,
+        instagram: instagram
+      }).eq('id', currentUser.id);
+
+      if (r1.error || r2.error) {
+        document.getElementById('save-error').textContent = (r1.error || r2.error).message;
+        document.getElementById('save-error').style.display = 'block';
+      } else {
+        document.getElementById('save-success').style.display = 'block';
+        document.getElementById('user-name').textContent = fullName;
+      }
+      btn.disabled = false; btn.textContent = 'Save Profile';
+    }
+
+    async function signOut() {
+      await SB.auth.signOut();
+      window.location.href = '/login.html';
+    }
+
+    init();
+  </script>
+</body>
+</html>
