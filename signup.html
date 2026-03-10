@@ -71,7 +71,7 @@
         </select>
       </div>
     </div>
-    <button class="btn" onclick="handleSignup()" id="submit-btn">Create Account</button>
+    <button class="btn" onclick="go()" id="submit-btn">Create Account</button>
     <div class="footer-link">Already have an account? <a href="/login.html">Sign in</a></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -94,16 +94,16 @@ var SB=window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','
       var city = document.getElementById('city').value.trim();
       if (!fullName || !email || !password || !city) { showError('Please fill in all fields.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
       if (password.length < 8) { showError('Password must be at least 8 characters.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      var signUpResult = await sb.auth.signUp({ email: email, password: password });
+      var signUpResult = await SB.auth.signUp({ email: email, password: password });
       if (signUpResult.error) { showError(signUpResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
       var userId = signUpResult.data.user.id;
-      var profileResult = await sb.from('profiles').insert({ id: userId, role: selectedRole, full_name: fullName, city: city });
+      var profileResult = await SB.from('profiles').insert({ id: userId, role: selectedRole, full_name: fullName, city: city });
       if (profileResult.error) { showError(profileResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
       if (selectedRole === 'provider') {
         var businessName = document.getElementById('business-name').value.trim();
         var category = document.getElementById('category').value;
         if (!businessName || !category) { showError('Please fill in your business name and category.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-        var providerResult = await sb.from('providers').insert({ id: userId, business_name: businessName, category: category, location: city });
+        var providerResult = await SB.from('providers').insert({ id: userId, business_name: businessName, category: category, location: city });
         if (providerResult.error) { showError(providerResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
         window.location.href = '/dashboard.html';
       } else {
