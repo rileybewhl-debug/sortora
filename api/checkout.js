@@ -22,8 +22,8 @@ export default async function handler(req, res) {
       quantity: 1,
     }],
     mode: 'payment',
-    success_url: 'https://sortora.vercel.app/browse.html?payment=success',
-    cancel_url: 'https://sortora.vercel.app/browse.html?payment=cancelled',
+success_url: 'https://sortora.com/browse.html?payment=success',
+cancel_url: 'https://sortora.com/browse.html?payment=cancelled',
     metadata: { sessionId, customerId }
   });
 
