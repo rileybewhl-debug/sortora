@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       quantity: 1,
     }],
     mode: 'payment',
-success_url: 'https://sortora.com/browse.html?payment=success',
+success_url: 'https://sortora.com/bookings.html?payment=success',
 cancel_url: 'https://sortora.com/browse.html?payment=cancelled',
     metadata: { sessionId, customerId }
   });
