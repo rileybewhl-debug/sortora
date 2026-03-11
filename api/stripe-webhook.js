@@ -4,13 +4,26 @@ import { createClient } from '@supabase/supabase-js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const SB = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
+export const config = { api: { bodyParser: false } };
+
+async function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    req.on('data', chunk => chunks.push(chunk));
+    req.on('end', () => resolve(Buffer.concat(chunks)));
+    req.on('error', reject);
+  });
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
+  const rawBody = await getRawBody(req);
   const sig = req.headers['stripe-signature'];
+
   let event;
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     return res.status(400).send('Webhook error: ' + err.message);
   }
@@ -19,35 +32,23 @@ export default async function handler(req, res) {
     const s = event.data.object;
     const { sessionId, customerId, customerName, sessionTitle, sessionDate, sessionLocation, sessionPrice } = s.metadata;
 
-    // Get customer email
     const { data: customerProfile } = await SB
-      .from('profiles')
-      .select('full_name')
-      .eq('id', customerId)
-      .single();
+      .from('profiles').select('full_name').eq('id', customerId).single();
 
     const { data: customerAuth } = await SB.auth.admin.getUserById(customerId);
     const customerEmail = customerAuth?.user?.email;
 
-    // Get provider email
     const { data: session } = await SB
-      .from('sessions')
-      .select('provider_id')
-      .eq('id', sessionId)
-      .single();
+      .from('sessions').select('provider_id').eq('id', sessionId).single();
 
     const { data: providerAuth } = await SB.auth.admin.getUserById(session?.provider_id);
     const providerEmail = providerAuth?.user?.email;
 
     const { data: providerProfile } = await SB
-      .from('profiles')
-      .select('full_name')
-      .eq('id', session?.provider_id)
-      .single();
+      .from('profiles').select('full_name').eq('id', session?.provider_id).single();
 
     const baseUrl = 'https://sortora.com';
 
-    // Send confirmation to customer
     if (customerEmail) {
       await fetch(baseUrl + '/api/send-email', {
         method: 'POST',
@@ -56,15 +57,11 @@ export default async function handler(req, res) {
           type: 'booking_confirmation',
           customerEmail,
           customerName: customerProfile?.full_name || customerName,
-          sessionTitle,
-          sessionDate,
-          sessionLocation,
-          sessionPrice
+          sessionTitle, sessionDate, sessionLocation, sessionPrice
         })
       });
     }
 
-    // Send alert to provider
     if (providerEmail) {
       await fetch(baseUrl + '/api/send-email', {
         method: 'POST',
@@ -74,10 +71,7 @@ export default async function handler(req, res) {
           providerEmail,
           providerName: providerProfile?.full_name || '',
           customerName: customerProfile?.full_name || customerName,
-          sessionTitle,
-          sessionDate,
-          sessionLocation,
-          sessionPrice
+          sessionTitle, sessionDate, sessionLocation, sessionPrice
         })
       });
     }
