@@ -132,8 +132,7 @@
   <div class="error" id="connect-error" style="display:none">Something went wrong. Please try again.</div>
 </div>
     <button class="btn" onclick="saveProfile()" id="save-btn">Save Profile</button>
-    <div class="success" id="save-success">✓ Profile saved successfully!</div>
-    <div class="error" id="save-error"></div>
+<div class="success" id="save-success">✓ Profile saved! Your public page: <a id="profile-link" href="#" target="_blank" style="color:#065F46;font-weight:700"></a></div>    <div class="error" id="save-error"></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -261,6 +260,10 @@ checkConnectStatus();
         document.getElementById('save-error').style.display = 'block';
       } else {
         document.getElementById('save-success').style.display = 'block';
+        var slug = businessName.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+var link = 'https://sortora.com/p/' + slug;
+document.getElementById('profile-link').href = link;
+document.getElementById('profile-link').textContent = link;
         document.getElementById('user-name').textContent = fullName;
       }
       btn.disabled = false; btn.textContent = 'Save Profile';
