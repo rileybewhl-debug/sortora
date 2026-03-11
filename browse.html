@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Browse Sessions — Sortora</title>
+  <title>Browse Sessions - Sortora</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -65,7 +65,7 @@
     .promo-row{display:flex;gap:8px;margin-bottom:8px}
     .promo-input{flex:1;padding:10px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border .2s}
     .promo-input:focus{border-color:#3D63FF}
-    .promo-apply{padding:10px 16px;background:#F6F9FC;border:2px solid #E8EDF2;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:#0A2540;white-space:nowrap}
+    .promo-apply{padding:10px 16px;background:#F6F9FC;border:2px solid #E8EDF2;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:#0A2540}
     .promo-apply:hover{border-color:#3D63FF}
     .promo-msg{font-size:13px;margin-bottom:12px;display:none}
     .modal-btn{width:100%;padding:14px;background:#3D63FF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
@@ -91,34 +91,34 @@
     <div class="page-title">Browse Sessions</div>
     <div class="page-sub">Find and join sessions near you.</div>
     <div class="search-bar">
-      <input class="search-input" type="text" id="city-search" placeholder="🔍 Search by city or location..." oninput="applyFilters()"/>
+      <input class="search-input" type="text" id="city-search" placeholder="Search by city or location..." oninput="applyFilters()"/>
       <input class="date-input" type="date" id="date-filter" onchange="applyFilters()"/>
       <button class="clear-btn" onclick="clearFilters()">Clear</button>
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterBy('all',this)">All</button>
-      <button class="filter-btn" onclick="filterBy('photography',this)">📸 Photography</button>
-      <button class="filter-btn" onclick="filterBy('fitness',this)">💪 Fitness</button>
-      <button class="filter-btn" onclick="filterBy('yoga',this)">🧘 Yoga</button>
-      <button class="filter-btn" onclick="filterBy('dj',this)">🎵 DJ</button>
-      <button class="filter-btn" onclick="filterBy('coaching',this)">🎯 Coaching</button>
-      <button class="filter-btn" onclick="filterBy('chef',this)">👨‍🍳 Chef</button>
-      <button class="filter-btn" onclick="filterBy('workshop',this)">🛠 Workshop</button>
+      <button class="filter-btn" onclick="filterBy('photography',this)">Photography</button>
+      <button class="filter-btn" onclick="filterBy('fitness',this)">Fitness</button>
+      <button class="filter-btn" onclick="filterBy('yoga',this)">Yoga</button>
+      <button class="filter-btn" onclick="filterBy('dj',this)">DJ</button>
+      <button class="filter-btn" onclick="filterBy('coaching',this)">Coaching</button>
+      <button class="filter-btn" onclick="filterBy('chef',this)">Chef</button>
+      <button class="filter-btn" onclick="filterBy('workshop',this)">Workshop</button>
     </div>
     <div class="results-count" id="results-count"></div>
     <div class="sessions-grid" id="sessions-grid">
-      <div class="empty"><div class="empty-icon">🔍</div><h3>Loading sessions...</h3></div>
+      <div class="empty"><div class="empty-icon">...</div><h3>Loading sessions...</h3></div>
     </div>
   </div>
   <div class="modal-overlay" id="modal">
     <div class="modal">
       <div class="modal-title" id="modal-title">Join Session</div>
       <div class="modal-sub" id="modal-sub">Choose your status for this session.</div>
-      <div class="success-msg" id="modal-success">✓ You're signed up!</div>
+      <div class="success-msg" id="modal-success">You are signed up!</div>
       <div class="status-options">
-        <div class="status-opt going" onclick="selectStatus('going')" id="opt-going"><div class="s-icon">✅</div><div class="s-label">Going</div><div class="s-sub">I'll be there</div></div>
-        <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe"><div class="s-icon">🤔</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div></div>
-        <div class="status-opt out" onclick="selectStatus('out')" id="opt-out"><div class="s-icon">❌</div><div class="s-label">Out</div><div class="s-sub">Can't make it</div></div>
+        <div class="status-opt going" onclick="selectStatus('going')" id="opt-going"><div class="s-icon">&#10003;</div><div class="s-label">Going</div><div class="s-sub">I'll be there</div></div>
+        <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe"><div class="s-icon">?</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div></div>
+        <div class="status-opt out" onclick="selectStatus('out')" id="opt-out"><div class="s-icon">&#10007;</div><div class="s-label">Out</div><div class="s-sub">Can't make it</div></div>
       </div>
       <div class="promo-row">
         <input class="promo-input" type="text" id="promo-input" placeholder="Promo code"/>
@@ -187,7 +187,7 @@
       var grid=document.getElementById('sessions-grid');
       var count=document.getElementById('results-count');
       count.textContent=sessions.length+' session'+(sessions.length!==1?'s':'')+' found';
-      if(!sessions.length){grid.innerHTML='<div class="empty"><div class="empty-icon">📭</div><h3>No sessions found</h3><p>Try a different city or clear the filters.</p></div>';return;}
+      if(!sessions.length){grid.innerHTML='<div class="empty"><div class="empty-icon">:)</div><h3>No sessions found</h3><p>Try a different city or clear the filters.</p></div>';return;}
       grid.innerHTML=sessions.map(function(s){
         var d=new Date(s.session_date);
         var dateStr=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
@@ -195,7 +195,7 @@
         var providerName=s.providers?s.providers.business_name:'Provider';
         var providerSlug=s.providers?s.providers.slug:null;
         var category=s.providers?s.providers.category:s.category||'';
-        return '<div class="session-card" onclick="openModal(''+s.id+'')"><div class="card-header"><div class="card-category">'+category+'</div><div class="card-title">'+s.title+'</div><div class="card-provider" onclick="event.stopPropagation();'+(providerSlug?'window.location.href='/p/'+providerSlug+''':'')+'">'+ providerName+'</div></div><div class="card-body">'+(s.is_group_funded?'<div class="group-badge">👥 Group Funded</div>':'')+'<div class="card-meta"><div class="meta-row">📅 <span>'+dateStr+' at '+timeStr+'</span></div><div class="meta-row">📍 <span>'+(s.location||'TBD')+'</span></div>'+(s.max_spots?'<div class="meta-row">👥 <span>'+s.max_spots+' spots</span></div>':'')+(s.duration_minutes?'<div class="meta-row">⏱ <span>'+s.duration_minutes+' mins</span></div>':'')+'</div><div class="card-footer"><div class="price">$'+parseFloat(s.price_per_person).toFixed(2)+'<small> /person</small></div><button class="join-btn">Join</button></div></div></div>';
+        return '<div class="session-card" onclick="openModal(''+s.id+'')"><div class="card-header"><div class="card-category">'+category+'</div><div class="card-title">'+s.title+'</div><div class="card-provider" onclick="event.stopPropagation();'+(providerSlug?'window.location.href='/p/'+providerSlug+''':'')+'">'+ providerName+'</div></div><div class="card-body">'+(s.is_group_funded?'<div class="group-badge">Group Funded</div>':'')+'<div class="card-meta"><div class="meta-row">Date: <span>'+dateStr+' at '+timeStr+'</span></div><div class="meta-row">Location: <span>'+(s.location||'TBD')+'</span></div>'+(s.max_spots?'<div class="meta-row">Spots: <span>'+s.max_spots+'</span></div>':'')+(s.duration_minutes?'<div class="meta-row">Duration: <span>'+s.duration_minutes+' mins</span></div>':'')+'</div><div class="card-footer"><div class="price">$'+parseFloat(s.price_per_person).toFixed(2)+'<small> /person</small></div><button class="join-btn">Join</button></div></div></div>';
       }).join('');
     }
 
@@ -210,7 +210,7 @@
       document.getElementById('opt-maybe').classList.remove('active');
       document.getElementById('opt-out').classList.remove('active');
       document.getElementById('modal-title').textContent=activeSession.title;
-      document.getElementById('modal-sub').textContent='Pick your status — you can update it anytime.';
+      document.getElementById('modal-sub').textContent='Pick your status - you can update it anytime.';
       document.getElementById('modal-success').style.display='none';
       document.getElementById('modal-btn').disabled=false;
       document.getElementById('modal-btn').textContent='Confirm Status';
@@ -238,11 +238,11 @@
       var data=await r.json();
       msg.style.display='block';
       if(data.error){
-        msg.textContent='✗ '+data.error;
+        msg.textContent='Invalid: '+data.error;
         msg.style.color='#DC2626';
         appliedPromoId=null;appliedDiscount=0;
       } else {
-        msg.textContent='✓ '+data.discount_percent+'% discount applied!';
+        msg.textContent='Discount applied: '+data.discount_percent+'% off!';
         msg.style.color='#065F46';
         appliedPromoId=data.promo_id;
         appliedDiscount=data.discount_percent;
@@ -266,7 +266,7 @@
       }
       var r=await SB.from('bookings').upsert({session_id:activeSession.id,customer_id:currentUser.id,status:selectedStatus},{onConflict:'session_id,customer_id'});
       if(r.error){alert(r.error.message);btn.disabled=false;btn.textContent='Confirm Status';}
-      else{document.getElementById('modal-success').style.display='block';document.getElementById('modal-sub').textContent='Status saved!';btn.textContent='Updated ✓';setTimeout(closeModal,1500);}
+      else{document.getElementById('modal-success').style.display='block';document.getElementById('modal-sub').textContent='Status saved!';btn.textContent='Updated';setTimeout(closeModal,1500);}
     }
 
     async function signOut(){await SB.auth.signOut();window.location.href='/login.html';}
