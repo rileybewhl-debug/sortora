@@ -11,22 +11,32 @@
     .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
     .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
     .topbar-right{display:flex;align-items:center;gap:16px}
+    .nav-link{font-size:13px;font-weight:600;color:#8898AA;text-decoration:none;cursor:pointer}
+    .nav-link:hover{color:#0A2540}
+    .nav-link.active{color:#3D63FF}
     .user-name{font-size:14px;font-weight:600;color:#0A2540}
-    .signout{font-size:13px;color:#8898AA;cursor:pointer;text-decoration:none}
-    .signout:hover{color:#0A2540}
     .main{max-width:1000px;margin:0 auto;padding:40px 24px}
     .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
-    .page-sub{font-size:15px;color:#8898AA;margin-bottom:28px}
+    .page-sub{font-size:15px;color:#8898AA;margin-bottom:24px}
+    .search-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+    .search-input{flex:1;min-width:200px;padding:11px 16px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s;background:#fff}
+    .search-input:focus{border-color:#3D63FF}
+    .date-input{padding:11px 16px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s;background:#fff}
+    .date-input:focus{border-color:#3D63FF}
+    .clear-btn{padding:11px 18px;background:#fff;border:2px solid #E8EDF2;border-radius:10px;font-size:13px;font-weight:700;color:#8898AA;cursor:pointer;font-family:inherit;white-space:nowrap}
+    .clear-btn:hover{border-color:#3D63FF;color:#3D63FF}
     .filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
     .filter-btn{padding:8px 18px;border-radius:20px;border:2px solid #E8EDF2;background:#fff;font-size:13px;font-weight:600;color:#8898AA;cursor:pointer;font-family:inherit;transition:all .2s}
     .filter-btn:hover,.filter-btn.active{border-color:#3D63FF;color:#3D63FF;background:#EEF2FF}
+    .results-count{font-size:13px;color:#8898AA;margin-bottom:16px}
     .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
     .session-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;cursor:pointer}
     .session-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
     .card-header{background:linear-gradient(135deg,#3D63FF,#6B8EFF);padding:24px;color:#fff}
     .card-category{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:8px}
     .card-title{font-size:18px;font-weight:800;margin-bottom:4px}
-    .card-provider{font-size:13px;opacity:.8}
+    .card-provider{font-size:13px;opacity:.8;cursor:pointer;text-decoration:underline}
+    .card-provider:hover{opacity:1}
     .card-body{padding:20px}
     .card-meta{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
     .meta-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#8898AA}
@@ -36,8 +46,6 @@
     .price small{font-size:13px;font-weight:500;color:#8898AA}
     .join-btn{padding:10px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
     .join-btn:hover{background:#2d52ee}
-    .join-btn.joined{background:#10B981}
-    .join-btn:disabled{background:#8898AA;cursor:not-allowed}
     .group-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;color:#C2410C;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;margin-bottom:12px}
     .empty{text-align:center;padding:60px 24px;color:#8898AA}
     .empty-icon{font-size:48px;margin-bottom:16px}
@@ -50,14 +58,13 @@
     .status-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
     .status-opt{border:2px solid #E8EDF2;border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all .2s}
     .status-opt:hover{border-color:#3D63FF}
-    .status-opt.active{border-color:#3D63FF;background:#EEF2FF}
     .status-opt.going.active{border-color:#10B981;background:#ECFDF5}
     .status-opt.maybe.active{border-color:#F59E0B;background:#FFFBEB}
     .status-opt.out.active{border-color:#EF4444;background:#FEF2F2}
     .status-opt .s-icon{font-size:24px;margin-bottom:6px}
     .status-opt .s-label{font-size:13px;font-weight:700;color:#0A2540}
     .status-opt .s-sub{font-size:11px;color:#8898AA;margin-top:2px}
-    .modal-btn{width:100%;padding:14px;background:#3D63FF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+    .modal-btn{width:100%;padding:14px;background:#3D63FF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
     .modal-btn:hover{background:#2d52ee}
     .modal-btn:disabled{background:#8898AA;cursor:not-allowed}
     .modal-cancel{width:100%;padding:12px;background:none;color:#8898AA;border:none;font-size:14px;cursor:pointer;font-family:inherit;margin-top:8px}
@@ -70,14 +77,22 @@
   <div class="topbar">
     <div class="logo">Sort<span>ora</span></div>
     <div class="topbar-right">
-      <span class="user-name" id="user-name">Loading...</span>
-      <a class="signout" onclick="signOut()">Sign out</a>
+      <a class="nav-link active" href="/browse.html">Browse</a>
+      <a class="nav-link" href="/bookings.html">My Bookings</a>
+      <span class="user-name" id="user-name"></span>
+      <a class="nav-link" onclick="signOut()">Sign out</a>
     </div>
   </div>
 
   <div class="main">
     <div class="page-title">Browse Sessions</div>
     <div class="page-sub">Find and join sessions near you.</div>
+
+    <div class="search-bar">
+      <input class="search-input" type="text" id="city-search" placeholder="🔍 Search by city or location..." oninput="applyFilters()"/>
+      <input class="date-input" type="date" id="date-filter" onchange="applyFilters()"/>
+      <button class="clear-btn" onclick="clearFilters()">Clear</button>
+    </div>
 
     <div class="filters">
       <button class="filter-btn active" onclick="filterBy('all', this)">All</button>
@@ -90,12 +105,12 @@
       <button class="filter-btn" onclick="filterBy('workshop', this)">🛠 Workshop</button>
     </div>
 
+    <div class="results-count" id="results-count"></div>
     <div class="sessions-grid" id="sessions-grid">
       <div class="empty"><div class="empty-icon">🔍</div><h3>Loading sessions...</h3></div>
     </div>
   </div>
 
-  <!-- Join Modal -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
       <div class="modal-title" id="modal-title">Join Session</div>
@@ -103,26 +118,19 @@
       <div class="success-msg" id="modal-success">✓ You're signed up!</div>
       <div class="status-options">
         <div class="status-opt going" onclick="selectStatus('going')" id="opt-going">
-          <div class="s-icon">✅</div>
-          <div class="s-label">Going</div>
-          <div class="s-sub">I'll be there</div>
+          <div class="s-icon">✅</div><div class="s-label">Going</div><div class="s-sub">I'll be there</div>
         </div>
         <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe">
-          <div class="s-icon">🤔</div>
-          <div class="s-label">Maybe</div>
-          <div class="s-sub">Not sure yet</div>
+          <div class="s-icon">🤔</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div>
         </div>
         <div class="status-opt out" onclick="selectStatus('out')" id="opt-out">
-          <div class="s-icon">❌</div>
-          <div class="s-label">Out</div>
-          <div class="s-sub">Can't make it</div>
+          <div class="s-icon">❌</div><div class="s-label">Out</div><div class="s-sub">Can't make it</div>
         </div>
       </div>
       <button class="modal-btn" onclick="confirmJoin()" id="modal-btn">Confirm Status</button>
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     var SB = window.supabase.createClient(
@@ -133,6 +141,7 @@
     var allSessions = [];
     var selectedStatus = 'going';
     var activeSession = null;
+    var currentCategory = 'all';
 
     async function init() {
       var r = await SB.auth.getSession();
@@ -143,22 +152,59 @@
         document.getElementById('user-name').textContent = pr.data.full_name;
         if (pr.data.role === 'provider') { window.location.href = '/dashboard.html'; return; }
       }
-      loadSessions();
+      await loadSessions();
+      // Check if coming from provider page with a specific session
+      var params = new URLSearchParams(window.location.search);
+      var targetSession = params.get('session');
+      if (targetSession) {
+        var s = allSessions.find(function(x){ return x.id === targetSession; });
+        if (s) openModal(s.id);
+      }
     }
 
     async function loadSessions() {
       var r = await SB.from('sessions')
-        .select('*, providers(business_name, category)')
+        .select('*, providers(business_name, category, slug)')
         .eq('status', 'open')
+        .gte('session_date', new Date().toISOString())
         .order('session_date', {ascending: true});
       allSessions = r.data || [];
-      renderSessions(allSessions);
+      applyFilters();
+    }
+
+    function applyFilters() {
+      var cityVal = (document.getElementById('city-search').value || '').toLowerCase().trim();
+      var dateVal = document.getElementById('date-filter').value;
+      var filtered = allSessions.filter(function(s) {
+        var matchCity = !cityVal || (s.location && s.location.toLowerCase().includes(cityVal));
+        var matchDate = !dateVal || s.session_date.startsWith(dateVal);
+        var matchCat = currentCategory === 'all' || (s.providers && s.providers.category === currentCategory) || s.category === currentCategory;
+        return matchCity && matchDate && matchCat;
+      });
+      renderSessions(filtered);
+    }
+
+    function clearFilters() {
+      document.getElementById('city-search').value = '';
+      document.getElementById('date-filter').value = '';
+      currentCategory = 'all';
+      document.querySelectorAll('.filter-btn').forEach(function(b,i){ b.classList.toggle('active', i===0); });
+      applyFilters();
+    }
+
+    function filterBy(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      applyFilters();
     }
 
     function renderSessions(sessions) {
       var grid = document.getElementById('sessions-grid');
+      var count = document.getElementById('results-count');
+      count.textContent = sessions.length + ' session' + (sessions.length !== 1 ? 's' : '') + ' found';
       if (!sessions.length) {
-        grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><h3>No sessions yet</h3><p>Check back soon — providers are setting up!</p></div>';
+        grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><h3>No sessions found</h3><p>Try a different city or clear the filters.</p></div>';
         return;
       }
       grid.innerHTML = sessions.map(function(s) {
@@ -166,12 +212,13 @@
         var dateStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
         var timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
         var providerName = s.providers ? s.providers.business_name : 'Provider';
+        var providerSlug = s.providers ? s.providers.slug : null;
         var category = s.providers ? s.providers.category : s.category || '';
         return '<div class="session-card" onclick="openModal(\'' + s.id + '\')">'
           + '<div class="card-header">'
           + '<div class="card-category">' + category + '</div>'
           + '<div class="card-title">' + s.title + '</div>'
-          + '<div class="card-provider">by ' + providerName + '</div>'
+          + '<div class="card-provider" onclick="event.stopPropagation();' + (providerSlug ? 'window.location.href=\'/p/'+providerSlug+'\'' : '') + '">' + providerName + '</div>'
           + '</div>'
           + '<div class="card-body">'
           + (s.is_group_funded ? '<div class="group-badge">👥 Group Funded</div>' : '')
@@ -186,15 +233,6 @@
           + '<button class="join-btn">Join</button>'
           + '</div></div></div>';
       }).join('');
-    }
-
-    function filterBy(cat, btn) {
-      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
-      btn.classList.add('active');
-      if (cat === 'all') { renderSessions(allSessions); return; }
-      renderSessions(allSessions.filter(function(s){
-        return (s.providers && s.providers.category === cat) || s.category === cat;
-      }));
     }
 
     function openModal(sessionId) {
@@ -224,59 +262,49 @@
       });
     }
 
-   async function confirmJoin() {
-  if (!activeSession || !currentUser) return;
-  var btn = document.getElementById('modal-btn');
-  btn.disabled = true; btn.textContent = 'Saving...';
+    async function confirmJoin() {
+      if (!activeSession || !currentUser) return;
+      var btn = document.getElementById('modal-btn');
+      btn.disabled = true; btn.textContent = 'Saving...';
 
-  if (selectedStatus === 'going') {
-    var res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        sessionId: activeSession.id,
-        sessionTitle: activeSession.title,
-        price: activeSession.price_per_person,
-        customerId: currentUser.id
-      })
-    });
-    var data = await res.json();
-    if (data.url) {
-      await SB.from('bookings').upsert({
+      if (selectedStatus === 'going') {
+        var res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            sessionId: activeSession.id,
+            sessionTitle: activeSession.title,
+            price: activeSession.price_per_person,
+            customerId: currentUser.id
+          })
+        });
+        var data = await res.json();
+        if (data.url) {
+          await SB.from('bookings').upsert({
+            session_id: activeSession.id,
+            customer_id: currentUser.id,
+            status: 'going'
+          }, {onConflict: 'session_id,customer_id'});
+          window.location.href = data.url;
+          return;
+        } else {
+          alert(data.error || 'Payment failed to start.');
+          btn.disabled = false; btn.textContent = 'Confirm Status'; return;
+        }
+      }
+
+      var r = await SB.from('bookings').upsert({
         session_id: activeSession.id,
         customer_id: currentUser.id,
-        status: 'going'
+        status: selectedStatus
       }, {onConflict: 'session_id,customer_id'});
-      window.location.href = data.url;
-      return;
-    } else {
-      alert(data.error || 'Payment failed to start.');
-      btn.disabled = false; btn.textContent = 'Confirm Status'; return;
-    }
-  }
-
-  var r = await SB.from('bookings').upsert({
-    session_id: activeSession.id,
-    customer_id: currentUser.id,
-    status: selectedStatus
-  }, {onConflict: 'session_id,customer_id'});
-
-  if (r.error) {
-    alert(r.error.message);
-    btn.disabled = false; btn.textContent = 'Confirm Status';
-  } else {
-    document.getElementById('modal-success').style.display = 'block';
-    document.getElementById('modal-sub').textContent = 'Status saved!';
-    btn.textContent = 'Updated ✓';
-    setTimeout(closeModal, 1500);
-  }
 
       if (r.error) {
-        btn.disabled = false; btn.textContent = 'Confirm Status';
         alert(r.error.message);
+        btn.disabled = false; btn.textContent = 'Confirm Status';
       } else {
         document.getElementById('modal-success').style.display = 'block';
-        document.getElementById('modal-sub').textContent = 'Status saved! You can update this anytime.';
+        document.getElementById('modal-sub').textContent = 'Status saved!';
         btn.textContent = 'Updated ✓';
         setTimeout(closeModal, 1500);
       }
