@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Provider — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:20px;font-weight:800;color:#0A2540;text-decoration:none}.logo span{color:#3D63FF}
+    .topbar-right{display:flex;gap:12px}
+    .nav-btn{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+    .nav-btn-outline{border:2px solid #E8EDF2;background:#fff;color:#0A2540}
+    .nav-btn-blue{background:#3D63FF;color:#fff;border:none}
+    .hero{background:linear-gradient(135deg,#0C1220,#1a2e50);padding:48px 24px;color:#fff}
+    .hero-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:32px}
+    .avatar{width:88px;height:88px;border-radius:50%;background:#3D63FF;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;flex-shrink:0;border:3px solid rgba(255,255,255,.2)}
+    .hero-info{flex:1}
+    .hero-category{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D63FF;background:rgba(61,99,255,.2);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+    .hero-name{font-size:32px;font-weight:800;margin-bottom:8px}
+    .hero-bio{font-size:15px;opacity:.8;line-height:1.6;margin-bottom:16px;max-width:600px}
+    .hero-meta{display:flex;gap:20px;flex-wrap:wrap}
+    .hero-meta-item{font-size:13px;opacity:.7;display:flex;align-items:center;gap:6px}
+    .share-btn{padding:10px 20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+    .share-btn:hover{background:rgba(255,255,255,.2)}
+    .main{max-width:900px;margin:0 auto;padding:40px 24px}
+    .section-title{font-size:20px;font-weight:800;color:#0A2540;margin-bottom:20px}
+    .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .session-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s}
+    .session-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+    .scard-header{background:linear-gradient(135deg,#3D63FF,#6B8EFF);padding:20px;color:#fff}
+    .scard-title{font-size:16px;font-weight:800;margin-bottom:4px}
+    .scard-date{font-size:12px;opacity:.8}
+    .scard-body{padding:16px}
+    .scard-meta{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+    .scard-meta-row{font-size:13px;color:#8898AA}
+    .scard-meta-row span{color:#0A2540;font-weight:600}
+    .scard-footer{display:flex;justify-content:space-between;align-items:center}
+    .scard-price{font-size:20px;font-weight:800;color:#0A2540}
+    .scard-price small{font-size:12px;font-weight:500;color:#8898AA}
+    .book-btn{padding:9px 18px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+    .book-btn:hover{background:#2d52ee}
+    .group-badge{background:#FFF7ED;color:#C2410C;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700;margin-bottom:10px;display:inline-block}
+    .empty{text-align:center;padding:48px;color:#8898AA}
+    .empty-icon{font-size:40px;margin-bottom:12px}
+    .copied{background:#ECFDF5;color:#065F46;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;position:fixed;bottom:24px;right:24px;display:none;z-index:99}
+    .not-found{text-align:center;padding:80px 24px;color:#8898AA}
+    .not-found h2{font-size:24px;font-weight:800;color:#0A2540;margin-bottom:8px}
+    @media(max-width:640px){.hero-inner{flex-direction:column;align-items:flex-start}.sessions-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="logo" href="/">Sort<span>ora</span></a>
+    <div class="topbar-right">
+      <a class="nav-btn nav-btn-outline" href="/login.html">Sign in</a>
+      <a class="nav-btn nav-btn-blue" href="/signup.html">Join free</a>
+    </div>
+  </div>
+
+  <div id="content">
+    <div style="text-align:center;padding:80px;color:#8898AA">Loading...</div>
+  </div>
+
+  <div class="copied" id="copied">✓ Link copied!</div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    async function init() {
+      var params = new URLSearchParams(window.location.search);
+      var slug = params.get('slug');
+      if (!slug) { showNotFound(); return; }
+
+      var r = await fetch('/api/provider-data?slug=' + encodeURIComponent(slug));
+      if (!r.ok) { showNotFound(); return; }
+      var data = await r.json();
+      render(data.provider, data.sessions);
+    }
+
+    function render(p, sessions) {
+      var name = p.profiles ? p.profiles.full_name : p.business_name;
+      var city = p.profiles ? p.profiles.city : p.location;
+      var initial = (p.business_name || name || '?').charAt(0).toUpperCase();
+      var shareUrl = 'https://sortora.com/p/' + p.slug;
+
+      document.title = p.business_name + ' — Sortora';
+
+      var heroHtml = '<div class="hero"><div class="hero-inner">'
+        + '<div class="avatar">' + initial + '</div>'
+        + '<div class="hero-info">'
+        + '<div class="hero-category">' + (p.category || 'Provider') + '</div>'
+        + '<div class="hero-name">' + p.business_name + '</div>'
+        + (p.bio ? '<div class="hero-bio">' + p.bio + '</div>' : '')
+        + '<div class="hero-meta">'
+        + (city ? '<div class="hero-meta-item">📍 ' + city + '</div>' : '')
+        + (p.instagram ? '<div class="hero-meta-item">📸 ' + p.instagram + '</div>' : '')
+        + '<div class="hero-meta-item">📅 ' + sessions.length + ' upcoming session' + (sessions.length !== 1 ? 's' : '') + '</div>'
+        + '</div>'
+        + '<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">'
+        + '<button class="share-btn" onclick="copyLink(\'' + shareUrl + '\')">🔗 Share Profile</button>'
+        + '</div>'
+        + '</div></div></div>';
+
+      var sessionsHtml = '<div class="main"><div class="section-title">Upcoming Sessions</div>';
+      if (!sessions.length) {
+        sessionsHtml += '<div class="empty"><div class="empty-icon">📭</div><p>No upcoming sessions right now. Check back soon!</p></div>';
+      } else {
+        sessionsHtml += '<div class="sessions-grid">' + sessions.map(function(s) {
+          var d = new Date(s.session_date);
+          var dateStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+          var timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+          return '<div class="session-card">'
+            + '<div class="scard-header">'
+            + '<div class="scard-title">' + s.title + '</div>'
+            + '<div class="scard-date">' + dateStr + ' at ' + timeStr + '</div>'
+            + '</div>'
+            + '<div class="scard-body">'
+            + (s.is_group_funded ? '<div class="group-badge">👥 Group Funded</div>' : '')
+            + '<div class="scard-meta">'
+            + '<div class="scard-meta-row">📍 <span>' + (s.location || 'TBD') + '</span></div>'
+            + (s.duration_minutes ? '<div class="scard-meta-row">⏱ <span>' + s.duration_minutes + ' mins</span></div>' : '')
+            + (s.max_spots ? '<div class="scard-meta-row">👥 <span>' + s.max_spots + ' spots</span></div>' : '')
+            + '</div>'
+            + '<div class="scard-footer">'
+            + '<div class="scard-price">$' + parseFloat(s.price_per_person).toFixed(2) + '<small> /person</small></div>'
+            + '<button class="book-btn" onclick="bookSession(\'' + s.id + '\')">Book Now</button>'
+            + '</div></div></div>';
+        }).join('') + '</div>';
+      }
+      sessionsHtml += '</div>';
+
+      document.getElementById('content').innerHTML = heroHtml + sessionsHtml;
+    }
+
+    function bookSession(sessionId) {
+      window.location.href = '/browse.html?session=' + sessionId;
+    }
+
+    function copyLink(url) {
+      navigator.clipboard.writeText(url).then(function() {
+        var el = document.getElementById('copied');
+        el.style.display = 'block';
+        setTimeout(function(){ el.style.display = 'none'; }, 2500);
+      });
+    }
+
+    function showNotFound() {
+      document.getElementById('content').innerHTML = '<div class="not-found"><h2>Provider not found</h2><p>This page doesn\'t exist or may have moved.</p><br><a href="/browse.html" style="color:#3D63FF;font-weight:700">Browse all sessions →</a></div>';
+    }
+
+    init();
+  </script>
+</body>
+</html>
