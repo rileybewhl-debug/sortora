@@ -128,6 +128,13 @@
         </div>
       </div>
       <button class="modal-btn" onclick="confirmJoin()" id="modal-btn">Confirm Status</button>
+      <div style="margin-bottom:16px">
+  <div style="display:flex;gap:8px;margin-bottom:8px">
+    <input type="text" id="promo-input" placeholder="Promo code" style="flex:1;padding:10px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;outline:none"/>
+    <button onclick="applyPromo()" style="padding:10px 16px;background:#F6F9FC;border:2px solid #E8EDF2;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:#0A2540">Apply</button>
+  </div>
+  <div id="promo-msg" style="font-size:13px;display:none"></div>
+</div>
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
     </div>
   </div>
