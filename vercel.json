@@ -1,10 +1,5 @@
 {
   "rewrites": [
     { "source": "/p/:slug", "destination": "/provider.html?slug=:slug" }
-  ],
-  "functions": {
-    "api/stripe-webhook.js": {
-      "bodyParser": false
-    }
-  }
+  ]
 }
