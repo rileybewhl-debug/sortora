@@ -149,6 +149,8 @@
     var selectedStatus = 'going';
     var activeSession = null;
     var currentCategory = 'all';
+    var appliedPromoId = null;
+var appliedDiscount = 0;
 
     async function init() {
       var r = await SB.auth.getSession();
@@ -258,8 +260,10 @@
     }
 
     function closeModal() {
-      document.getElementById('modal').classList.remove('open');
-      activeSession = null;
+appliedPromoId = null;
+appliedDiscount = 0;
+document.getElementById('promo-input').value = '';
+document.getElementById('promo-msg').style.display = 'none';
     }
 
     function selectStatus(s) {
@@ -269,10 +273,42 @@
       });
     }
 
+    async function applyPromo() {
+  var code = document.getElementById('promo-input').value.trim();
+  var msg = document.getElementById('promo-msg');
+  if (!code) return;
+  var r = await fetch('/api/validate-promo', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ code, sessionId: activeSession?.id })
+  });
+  var data = await r.json();
+  if (data.error) {
+    msg.textContent = '✗ ' + data.error;
+    msg.style.color = '#DC2626';
+    msg.style.display = 'block';
+    appliedPromoId = null;
+    appliedDiscount = 0;
+  } else {
+    msg.textContent = '✓ ' + data.discount_percent + '% discount applied!';
+    msg.style.color = '#065F46';
+    msg.style.display = 'block';
+    appliedPromoId = data.promo_id;
+    appliedDiscount = data.discount_percent;
+  }
+}
     async function confirmJoin() {
       if (!activeSession || !currentUser) return;
       var btn = document.getElementById('modal-btn');
       btn.disabled = true; btn.textContent = 'Saving...';
+      body: JSON.stringify({
+  sessionId: activeSession.id,
+  sessionTitle: activeSession.title,
+  price: activeSession.price_per_person,
+  customerId: currentUser.id,
+  promoId: appliedPromoId,
+  discountPercent: appliedDiscount
+})
 
       if (selectedStatus === 'going') {
         var res = await fetch('/api/checkout', {
