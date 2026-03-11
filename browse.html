@@ -297,22 +297,55 @@ document.getElementById('promo-msg').style.display = 'none';
     appliedDiscount = data.discount_percent;
   }
 }
-    async function confirmJoin() {
-      if (!activeSession || !currentUser) return;
-      var btn = document.getElementById('modal-btn');
-      btn.disabled = true; btn.textContent = 'Saving...';
-      if (selectedStatus === 'going') {
-        var res = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-  sessionId: activeSession.id,
-  sessionTitle: activeSession.title,
-  price: activeSession.price_per_person,
-  customerId: currentUser.id,
-  promoId: appliedPromoId,
-  discountPercent: appliedDiscount
-})
+async function confirmJoin() {
+  if (!activeSession || !currentUser) return;
+  var btn = document.getElementById('modal-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  if (selectedStatus === 'going') {
+    var res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        sessionId: activeSession.id,
+        sessionTitle: activeSession.title,
+        price: activeSession.price_per_person,
+        customerId: currentUser.id,
+        promoId: appliedPromoId,
+        discountPercent: appliedDiscount
+      })
+    });
+    var data = await res.json();
+    if (data.url) {
+      await SB.from('bookings').upsert({
+        session_id: activeSession.id,
+        customer_id: currentUser.id,
+        status: 'going'
+      }, {onConflict: 'session_id,customer_id'});
+      window.location.href = data.url;
+      return;
+    } else {
+      alert(data.error || 'Payment failed to start.');
+      btn.disabled = false; btn.textContent = 'Confirm Status'; return;
+    }
+  }
+
+  var r = await SB.from('bookings').upsert({
+    session_id: activeSession.id,
+    customer_id: currentUser.id,
+    status: selectedStatus
+  }, {onConflict: 'session_id,customer_id'});
+
+  if (r.error) {
+    alert(r.error.message);
+    btn.disabled = false; btn.textContent = 'Confirm Status';
+  } else {
+    document.getElementById('modal-success').style.display = 'block';
+    document.getElementById('modal-sub').textContent = 'Status saved!';
+    btn.textContent = 'Updated ✓';
+    setTimeout(closeModal, 1500);
+  }
+}
           })
         });
         var data = await res.json();
