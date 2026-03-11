@@ -301,7 +301,12 @@ document.getElementById('promo-msg').style.display = 'none';
       if (!activeSession || !currentUser) return;
       var btn = document.getElementById('modal-btn');
       btn.disabled = true; btn.textContent = 'Saving...';
-      body: JSON.stringify({
+
+      if (selectedStatus === 'going') {
+        var res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
   sessionId: activeSession.id,
   sessionTitle: activeSession.title,
   price: activeSession.price_per_person,
@@ -309,16 +314,6 @@ document.getElementById('promo-msg').style.display = 'none';
   promoId: appliedPromoId,
   discountPercent: appliedDiscount
 })
-
-      if (selectedStatus === 'going') {
-        var res = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            sessionId: activeSession.id,
-            sessionTitle: activeSession.title,
-            price: activeSession.price_per_person,
-            customerId: currentUser.id
           })
         });
         var data = await res.json();
