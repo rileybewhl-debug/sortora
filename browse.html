@@ -301,7 +301,6 @@ document.getElementById('promo-msg').style.display = 'none';
       if (!activeSession || !currentUser) return;
       var btn = document.getElementById('modal-btn');
       btn.disabled = true; btn.textContent = 'Saving...';
-
       if (selectedStatus === 'going') {
         var res = await fetch('/api/checkout', {
           method: 'POST',
