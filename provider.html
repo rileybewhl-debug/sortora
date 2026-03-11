@@ -68,8 +68,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     async function init() {
-      var params = new URLSearchParams(window.location.search);
-      var slug = params.get('slug');
+var path = window.location.pathname;
+var slug = path.startsWith('/p/') ? path.split('/p/')[1] : new URLSearchParams(window.location.search).get('slug');
       if (!slug) { showNotFound(); return; }
 
       var r = await fetch('/api/provider-data?slug=' + encodeURIComponent(slug));
