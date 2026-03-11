@@ -12,16 +12,27 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Get the provider's Stripe account for this session
   const { data: session } = await SB
     .from('sessions')
-    .select('provider_id, providers(stripe_account_id)')
+    .select('provider_id, location, session_date, providers(stripe_account_id, profiles(full_name)), profiles!sessions_provider_id_fkey(full_name)')
     .eq('id', sessionId)
+    .single();
+
+  const { data: customer } = await SB
+    .from('profiles')
+    .select('full_name')
+    .eq('id', customerId)
+    .single();
+
+  const { data: customerAuth } = await SB
+    .from('profiles')
+    .select('full_name')
+    .eq('id', customerId)
     .single();
 
   const stripeAccountId = session?.providers?.stripe_account_id;
   const amount = Math.round(price * 100);
-  const platformFee = Math.round(amount * 0.05); // 5% platform fee
+  const platformFee = Math.round(amount * 0.05);
 
   const checkoutParams = {
     payment_method_types: ['card'],
@@ -36,10 +47,18 @@ export default async function handler(req, res) {
     mode: 'payment',
     success_url: 'https://sortora.com/bookings.html?payment=success',
     cancel_url: 'https://sortora.com/browse.html?payment=cancelled',
-    metadata: { sessionId, customerId }
+    metadata: {
+      sessionId,
+      customerId,
+      customerName: customer?.full_name || '',
+      providerName: session?.providers?.profiles?.full_name || '',
+      sessionTitle,
+      sessionDate: session?.session_date || '',
+      sessionLocation: session?.location || '',
+      sessionPrice: price
+    }
   };
 
-  // If provider has connected Stripe, route payment to them
   if (stripeAccountId) {
     checkoutParams.payment_intent_data = {
       application_fee_amount: platformFee,
