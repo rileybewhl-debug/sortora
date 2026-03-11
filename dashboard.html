@@ -93,6 +93,21 @@
       <div class="stat"><div class="stat-num" id="stat-bookings">0</div><div class="stat-label">Total Bookings</div></div>
       <div class="stat"><div class="stat-num" id="stat-going">0</div><div class="stat-label">Confirmed Going</div></div>
       <div class="stat"><div class="stat-num" id="stat-funded">0</div><div class="stat-label">Funded Sessions</div></div>
+      <div class="card" style="margin-top:24px">
+  <div class="card-title">🎟 Promo Codes</div>
+  <div class="row">
+    <div class="field"><label>Code</label><input type="text" id="promo-code" placeholder="e.g. SUMMER20" style="text-transform:uppercase"/></div>
+    <div class="field"><label>Discount %</label><input type="number" id="promo-discount" placeholder="20" min="1" max="100"/></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Max Uses (optional)</label><input type="number" id="promo-max" placeholder="Unlimited"/></div>
+    <div class="field"><label>Expires (optional)</label><input type="date" id="promo-expires"/></div>
+  </div>
+  <button class="btn" onclick="createPromo()" id="promo-btn">Create Promo Code</button>
+  <div class="success" id="promo-success" style="display:none">✓ Promo code created!</div>
+  <div class="error" id="promo-error" style="display:none"></div>
+  <div id="promo-list" style="margin-top:16px"></div>
+</div>
     </div>
 
     <div class="two-col">
@@ -291,7 +306,68 @@
       await SB.auth.signOut();
       window.location.href = '/login.html';
     }
+async function createPromo() {
+  var btn = document.getElementById('promo-btn');
+  btn.disabled = true; btn.textContent = 'Creating...';
+  document.getElementById('promo-success').style.display = 'none';
+  document.getElementById('promo-error').style.display = 'none';
 
+  var code = document.getElementById('promo-code').value.trim().toUpperCase();
+  var discount = parseInt(document.getElementById('promo-discount').value);
+  var maxUses = document.getElementById('promo-max').value;
+  var expires = document.getElementById('promo-expires').value;
+
+  if (!code || !discount) {
+    document.getElementById('promo-error').textContent = 'Code and discount are required.';
+    document.getElementById('promo-error').style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Create Promo Code'; return;
+  }
+
+  var r = await SB.from('promo_codes').insert({
+    provider_id: currentUser.id,
+    code,
+    discount_percent: discount,
+    max_uses: maxUses ? parseInt(maxUses) : null,
+    expires_at: expires ? new Date(expires).toISOString() : null
+  });
+
+  if (r.error) {
+    document.getElementById('promo-error').textContent = r.error.message;
+    document.getElementById('promo-error').style.display = 'block';
+  } else {
+    document.getElementById('promo-success').style.display = 'block';
+    document.getElementById('promo-code').value = '';
+    document.getElementById('promo-discount').value = '';
+    document.getElementById('promo-max').value = '';
+    document.getElementById('promo-expires').value = '';
+    loadPromos();
+  }
+  btn.disabled = false; btn.textContent = 'Create Promo Code';
+}
+
+async function loadPromos() {
+  var r = await SB.from('promo_codes').select('*').eq('provider_id', currentUser.id).order('created_at', {ascending: false});
+  var list = document.getElementById('promo-list');
+  if (!r.data || !r.data.length) { list.innerHTML = ''; return; }
+  list.innerHTML = '<div style="font-size:13px;font-weight:700;color:#0A2540;margin-bottom:10px">Your Codes</div>'
+    + r.data.map(function(p) {
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F6F9FC;border-radius:10px;margin-bottom:6px">'
+        + '<div>'
+        + '<div style="font-size:14px;font-weight:700;color:#0A2540">' + p.code + ' — ' + p.discount_percent + '% off</div>'
+        + '<div style="font-size:12px;color:#8898AA">' + p.uses + ' uses' + (p.max_uses ? ' / ' + p.max_uses : '') + '</div>'
+        + '</div>'
+        + '<div style="display:flex;gap:8px;align-items:center">'
+        + '<span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:' + (p.active ? '#ECFDF5' : '#FEF2F2') + ';color:' + (p.active ? '#065F46' : '#991B1B') + '">' + (p.active ? 'Active' : 'Inactive') + '</span>'
+        + '<button onclick="togglePromo(\'' + p.id + '\',' + !p.active + ')" style="padding:5px 10px;background:#fff;border:2px solid #E8EDF2;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">' + (p.active ? 'Disable' : 'Enable') + '</button>'
+        + '</div></div>';
+    }).join('');
+}
+
+async function togglePromo(id, active) {
+  await SB.from('promo_codes').update({ active }).eq('id', id);
+  loadPromos();
+}
+    
     init();
   </script>
 </body>
