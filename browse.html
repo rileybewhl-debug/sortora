@@ -113,12 +113,18 @@
   <div class="modal-overlay" id="modal">
     <div class="modal">
       <div class="modal-title" id="modal-title">Join Session</div>
-      <div class="modal-sub" id="modal-sub">Choose your status for this session.</div>
+      <div class="modal-sub" id="modal-sub">Choose your status.</div>
       <div class="success-msg" id="modal-success">You are signed up!</div>
       <div class="status-options">
-        <div class="status-opt going" onclick="selectStatus('going')" id="opt-going"><div class="s-icon">&#10003;</div><div class="s-label">Going</div><div class="s-sub">I'll be there</div></div>
-        <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe"><div class="s-icon">?</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div></div>
-        <div class="status-opt out" onclick="selectStatus('out')" id="opt-out"><div class="s-icon">&#10007;</div><div class="s-label">Out</div><div class="s-sub">Can't make it</div></div>
+        <div class="status-opt going" onclick="selectStatus('going')" id="opt-going">
+          <div class="s-icon">&#10003;</div><div class="s-label">Going</div><div class="s-sub">I will be there</div>
+        </div>
+        <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe">
+          <div class="s-icon">?</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div>
+        </div>
+        <div class="status-opt out" onclick="selectStatus('out')" id="opt-out">
+          <div class="s-icon">&#10007;</div><div class="s-label">Out</div><div class="s-sub">Cannot make it</div>
+        </div>
       </div>
       <div class="promo-row">
         <input class="promo-input" type="text" id="promo-input" placeholder="Promo code"/>
@@ -131,145 +137,153 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    var SB=window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
-    var currentUser=null,allSessions=[],selectedStatus='going',activeSession=null,currentCategory='all';
-    var appliedPromoId=null,appliedDiscount=0;
+    var SB = window.supabase.createClient(
+      "https://gzwyzocfohtnejttkglg.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw"
+    );
+    var currentUser = null, allSessions = [], selectedStatus = "going", activeSession = null, currentCategory = "all";
+    var appliedPromoId = null, appliedDiscount = 0;
 
-    async function init(){
-      var r=await SB.auth.getSession();
-      if(!r.data.session){window.location.href='/login.html';return;}
-      currentUser=r.data.session.user;
-      var pr=await SB.from('profiles').select('full_name,role').eq('id',currentUser.id).single();
-      if(pr.data){
-        document.getElementById('user-name').textContent=pr.data.full_name;
-        if(pr.data.role==='provider'){window.location.href='/dashboard.html';return;}
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = "/login.html"; return; }
+      currentUser = r.data.session.user;
+      var pr = await SB.from("profiles").select("full_name,role").eq("id", currentUser.id).single();
+      if (pr.data) {
+        document.getElementById("user-name").textContent = pr.data.full_name;
+        if (pr.data.role === "provider") { window.location.href = "/dashboard.html"; return; }
       }
       await loadSessions();
-      var params=new URLSearchParams(window.location.search);
-      var target=params.get('session');
-      if(target){var s=allSessions.find(function(x){return x.id===target;});if(s)openModal(s.id);}
+      var params = new URLSearchParams(window.location.search);
+      var target = params.get("session");
+      if (target) { var s = allSessions.find(function(x){return x.id===target;}); if(s) openModal(s.id); }
     }
 
-    async function loadSessions(){
-      var r=await SB.from('sessions').select('*,providers(business_name,category,slug)').eq('status','open').gte('session_date',new Date().toISOString()).order('session_date',{ascending:true});
-      allSessions=r.data||[];
+    async function loadSessions() {
+      var r = await SB.from("sessions").select("*, providers(business_name, category, slug)").eq("status","open").gte("session_date", new Date().toISOString()).order("session_date",{ascending:true});
+      allSessions = r.data || [];
       applyFilters();
     }
 
-    function applyFilters(){
-      var cityVal=(document.getElementById('city-search').value||'').toLowerCase().trim();
-      var dateVal=document.getElementById('date-filter').value;
-      var filtered=allSessions.filter(function(s){
-        var matchCity=!cityVal||(s.location&&s.location.toLowerCase().includes(cityVal));
-        var matchDate=!dateVal||s.session_date.startsWith(dateVal);
-        var matchCat=currentCategory==='all'||(s.providers&&s.providers.category===currentCategory)||s.category===currentCategory;
-        return matchCity&&matchDate&&matchCat;
+    function applyFilters() {
+      var cityVal = (document.getElementById("city-search").value || "").toLowerCase().trim();
+      var dateVal = document.getElementById("date-filter").value;
+      var filtered = allSessions.filter(function(s) {
+        var matchCity = !cityVal || (s.location && s.location.toLowerCase().includes(cityVal));
+        var matchDate = !dateVal || s.session_date.startsWith(dateVal);
+        var matchCat = currentCategory === "all" || (s.providers && s.providers.category === currentCategory) || s.category === currentCategory;
+        return matchCity && matchDate && matchCat;
       });
       renderSessions(filtered);
     }
 
-    function clearFilters(){
-      document.getElementById('city-search').value='';
-      document.getElementById('date-filter').value='';
-      currentCategory='all';
-      document.querySelectorAll('.filter-btn').forEach(function(b,i){b.classList.toggle('active',i===0);});
+    function clearFilters() {
+      document.getElementById("city-search").value = "";
+      document.getElementById("date-filter").value = "";
+      currentCategory = "all";
+      document.querySelectorAll(".filter-btn").forEach(function(b,i){b.classList.toggle("active",i===0);});
       applyFilters();
     }
 
-    function filterBy(cat,btn){
-      currentCategory=cat;
-      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
-      btn.classList.add('active');
+    function filterBy(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
       applyFilters();
     }
 
-    function renderSessions(sessions){
-      var grid=document.getElementById('sessions-grid');
-      var count=document.getElementById('results-count');
-      count.textContent=sessions.length+' session'+(sessions.length!==1?'s':'')+' found';
-      if(!sessions.length){grid.innerHTML='<div class="empty"><div class="empty-icon">:)</div><h3>No sessions found</h3><p>Try a different city or clear the filters.</p></div>';return;}
-      grid.innerHTML=sessions.map(function(s){
-        var d=new Date(s.session_date);
-        var dateStr=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-        var timeStr=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-        var providerName=s.providers?s.providers.business_name:'Provider';
-        var providerSlug=s.providers?s.providers.slug:null;
-        var category=s.providers?s.providers.category:s.category||'';
-        return '<div class="session-card" onclick="openModal(''+s.id+'')"><div class="card-header"><div class="card-category">'+category+'</div><div class="card-title">'+s.title+'</div><div class="card-provider" onclick="event.stopPropagation();'+(providerSlug?'window.location.href='/p/'+providerSlug+''':'')+'">'+ providerName+'</div></div><div class="card-body">'+(s.is_group_funded?'<div class="group-badge">Group Funded</div>':'')+'<div class="card-meta"><div class="meta-row">Date: <span>'+dateStr+' at '+timeStr+'</span></div><div class="meta-row">Location: <span>'+(s.location||'TBD')+'</span></div>'+(s.max_spots?'<div class="meta-row">Spots: <span>'+s.max_spots+'</span></div>':'')+(s.duration_minutes?'<div class="meta-row">Duration: <span>'+s.duration_minutes+' mins</span></div>':'')+'</div><div class="card-footer"><div class="price">$'+parseFloat(s.price_per_person).toFixed(2)+'<small> /person</small></div><button class="join-btn">Join</button></div></div></div>';
-      }).join('');
+    function renderSessions(sessions) {
+      var grid = document.getElementById("sessions-grid");
+      var count = document.getElementById("results-count");
+      count.textContent = sessions.length + " session" + (sessions.length !== 1 ? "s" : "") + " found";
+      if (!sessions.length) { grid.innerHTML = "<div class=\"empty\"><h3>No sessions found</h3><p>Try a different city or clear filters.</p></div>"; return; }
+      grid.innerHTML = sessions.map(function(s) {
+        var d = new Date(s.session_date);
+        var dateStr = d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+        var timeStr = d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+        var pName = s.providers ? s.providers.business_name : "Provider";
+        var pSlug = s.providers ? s.providers.slug : null;
+        var cat = s.providers ? s.providers.category : s.category || "";
+        var pClick = pSlug ? "window.location.href=\"/p/" + pSlug + "\"" : "";
+        var card = "<div class=\"session-card\" onclick=\"openModal('"+s.id+"')\">";
+        card += "<div class=\"card-header\">";
+        card += "<div class=\"card-category\">"+cat+"</div>";
+        card += "<div class=\"card-title\">"+s.title+"</div>";
+        card += "<div class=\"card-provider\" onclick=\"event.stopPropagation();"+pClick+"\">"+pName+"</div>";
+        card += "</div><div class=\"card-body\">";
+        if (s.is_group_funded) card += "<div class=\"group-badge\">Group Funded</div>";
+        card += "<div class=\"card-meta\">";
+        card += "<div class=\"meta-row\">Date: <span>"+dateStr+" at "+timeStr+"</span></div>";
+        card += "<div class=\"meta-row\">Location: <span>"+(s.location||"TBD")+"</span></div>";
+        if (s.max_spots) card += "<div class=\"meta-row\">Spots: <span>"+s.max_spots+"</span></div>";
+        if (s.duration_minutes) card += "<div class=\"meta-row\">Duration: <span>"+s.duration_minutes+" mins</span></div>";
+        card += "</div><div class=\"card-footer\">";
+        card += "<div class=\"price\">$"+parseFloat(s.price_per_person).toFixed(2)+"<small> /person</small></div>";
+        card += "<button class=\"join-btn\">Join</button>";
+        card += "</div></div></div>";
+        return card;
+      }).join("");
     }
 
-    function openModal(sessionId){
-      activeSession=allSessions.find(function(s){return s.id===sessionId;});
-      if(!activeSession)return;
-      selectedStatus='going';
-      appliedPromoId=null;appliedDiscount=0;
-      document.getElementById('promo-input').value='';
-      document.getElementById('promo-msg').style.display='none';
-      document.getElementById('opt-going').classList.add('active');
-      document.getElementById('opt-maybe').classList.remove('active');
-      document.getElementById('opt-out').classList.remove('active');
-      document.getElementById('modal-title').textContent=activeSession.title;
-      document.getElementById('modal-sub').textContent='Pick your status - you can update it anytime.';
-      document.getElementById('modal-success').style.display='none';
-      document.getElementById('modal-btn').disabled=false;
-      document.getElementById('modal-btn').textContent='Confirm Status';
-      document.getElementById('modal').classList.add('open');
+    function openModal(sessionId) {
+      activeSession = allSessions.find(function(s){return s.id===sessionId;});
+      if (!activeSession) return;
+      selectedStatus = "going";
+      appliedPromoId = null; appliedDiscount = 0;
+      document.getElementById("promo-input").value = "";
+      document.getElementById("promo-msg").style.display = "none";
+      document.getElementById("opt-going").classList.add("active");
+      document.getElementById("opt-maybe").classList.remove("active");
+      document.getElementById("opt-out").classList.remove("active");
+      document.getElementById("modal-title").textContent = activeSession.title;
+      document.getElementById("modal-sub").textContent = "Pick your status - you can update it anytime.";
+      document.getElementById("modal-success").style.display = "none";
+      document.getElementById("modal-btn").disabled = false;
+      document.getElementById("modal-btn").textContent = "Confirm Status";
+      document.getElementById("modal").classList.add("open");
     }
 
-    function closeModal(){
-      document.getElementById('modal').classList.remove('open');
-      activeSession=null;
-      appliedPromoId=null;appliedDiscount=0;
-      document.getElementById('promo-input').value='';
-      document.getElementById('promo-msg').style.display='none';
+    function closeModal() {
+      document.getElementById("modal").classList.remove("open");
+      activeSession = null; appliedPromoId = null; appliedDiscount = 0;
+      document.getElementById("promo-input").value = "";
+      document.getElementById("promo-msg").style.display = "none";
     }
 
-    function selectStatus(s){
-      selectedStatus=s;
-      ['going','maybe','out'].forEach(function(opt){document.getElementById('opt-'+opt).classList.toggle('active',opt===s);});
+    function selectStatus(s) {
+      selectedStatus = s;
+      ["going","maybe","out"].forEach(function(opt){document.getElementById("opt-"+opt).classList.toggle("active",opt===s);});
     }
 
-    async function applyPromo(){
-      var code=document.getElementById('promo-input').value.trim();
-      var msg=document.getElementById('promo-msg');
-      if(!code)return;
-      var r=await fetch('/api/validate-promo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,sessionId:activeSession?activeSession.id:null})});
-      var data=await r.json();
-      msg.style.display='block';
-      if(data.error){
-        msg.textContent='Invalid: '+data.error;
-        msg.style.color='#DC2626';
-        appliedPromoId=null;appliedDiscount=0;
-      } else {
-        msg.textContent='Discount applied: '+data.discount_percent+'% off!';
-        msg.style.color='#065F46';
-        appliedPromoId=data.promo_id;
-        appliedDiscount=data.discount_percent;
+    async function applyPromo() {
+      var code = document.getElementById("promo-input").value.trim();
+      var msg = document.getElementById("promo-msg");
+      if (!code) return;
+      var r = await fetch("/api/validate-promo",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:code,sessionId:activeSession?activeSession.id:null})});
+      var data = await r.json();
+      msg.style.display = "block";
+      if (data.error) { msg.textContent = "Invalid: "+data.error; msg.style.color = "#DC2626"; appliedPromoId=null; appliedDiscount=0; }
+      else { msg.textContent = data.discount_percent+"% discount applied!"; msg.style.color = "#065F46"; appliedPromoId=data.promo_id; appliedDiscount=data.discount_percent; }
+    }
+
+    async function confirmJoin() {
+      if (!activeSession || !currentUser) return;
+      var btn = document.getElementById("modal-btn");
+      btn.disabled = true; btn.textContent = "Saving...";
+      if (selectedStatus === "going") {
+        var res = await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sessionId:activeSession.id,sessionTitle:activeSession.title,price:activeSession.price_per_person,customerId:currentUser.id,promoId:appliedPromoId,discountPercent:appliedDiscount})});
+        var data = await res.json();
+        if (data.url) {
+          await SB.from("bookings").upsert({session_id:activeSession.id,customer_id:currentUser.id,status:"going"},{onConflict:"session_id,customer_id"});
+          window.location.href = data.url; return;
+        } else { alert(data.error||"Payment failed to start."); btn.disabled=false; btn.textContent="Confirm Status"; return; }
       }
+      var r = await SB.from("bookings").upsert({session_id:activeSession.id,customer_id:currentUser.id,status:selectedStatus},{onConflict:"session_id,customer_id"});
+      if (r.error) { alert(r.error.message); btn.disabled=false; btn.textContent="Confirm Status"; }
+      else { document.getElementById("modal-success").style.display="block"; document.getElementById("modal-sub").textContent="Status saved!"; btn.textContent="Updated"; setTimeout(closeModal,1500); }
     }
 
-    async function confirmJoin(){
-      if(!activeSession||!currentUser)return;
-      var btn=document.getElementById('modal-btn');
-      btn.disabled=true;btn.textContent='Saving...';
-      if(selectedStatus==='going'){
-        var res=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId:activeSession.id,sessionTitle:activeSession.title,price:activeSession.price_per_person,customerId:currentUser.id,promoId:appliedPromoId,discountPercent:appliedDiscount})});
-        var data=await res.json();
-        if(data.url){
-          await SB.from('bookings').upsert({session_id:activeSession.id,customer_id:currentUser.id,status:'going'},{onConflict:'session_id,customer_id'});
-          window.location.href=data.url;return;
-        } else {
-          alert(data.error||'Payment failed to start.');
-          btn.disabled=false;btn.textContent='Confirm Status';return;
-        }
-      }
-      var r=await SB.from('bookings').upsert({session_id:activeSession.id,customer_id:currentUser.id,status:selectedStatus},{onConflict:'session_id,customer_id'});
-      if(r.error){alert(r.error.message);btn.disabled=false;btn.textContent='Confirm Status';}
-      else{document.getElementById('modal-success').style.display='block';document.getElementById('modal-sub').textContent='Status saved!';btn.textContent='Updated';setTimeout(closeModal,1500);}
-    }
-
-    async function signOut(){await SB.auth.signOut();window.location.href='/login.html';}
+    async function signOut() { await SB.auth.signOut(); window.location.href="/login.html"; }
 
     init();
   </script>
