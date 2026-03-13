@@ -47,6 +47,12 @@
     .waitlist-badge{display:inline-block;background:#FFF7ED;color:#F59E0B;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
     .leave-waitlist-btn{background:none;border:1px solid #e0e6ef;color:#8898AA;font-size:12px;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:600}
     .leave-waitlist-btn:hover{border-color:#ef4444;color:#ef4444}
+
+    .out-badge{display:inline-block;background:#FEF2F2;color:#EF4444;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+    .going-badge{display:inline-block;background:#F0FDF4;color:#10B981;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+    .pay-now-btn{background:#3D63FF;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;border:none;cursor:pointer;margin-top:8px;display:block}
+    .pay-now-btn:hover{background:#2d52ee}
+    .deadline-note{font-size:11px;color:#F59E0B;font-weight:600;margin-top:4px}
   </style>
 </head>
 <body>
@@ -113,7 +119,7 @@
 
     async function loadBookings() {
       var r = await SB.from('bookings')
-        .select('*, sessions(title, session_date, price_per_person, location, duration_minutes, is_group_funded, providers(business_name))')
+        .select('*, sessions(id, title, session_date, price_per_person, location, duration_minutes, funding_deadline, payment_mode, is_group_funded, providers(business_name))')
         .eq('customer_id', currentUser.id)
         .order('created_at', {ascending: false});
       allBookings = r.data || [];
@@ -144,32 +150,34 @@
           + '</div></div>'
           + '<div class="booking-right">'
           + '<div class="price">$' + parseFloat(s.price_per_person).toFixed(2) + '</div>'
-          + '<div class="status-select">'
-          + '<button class="status-btn going ' + (b.status==='going'?'active':'') + '" onclick="updateStatus(\''+b.id+'\',\'going\')">✅ Going</button>'
-          + '<button class="status-btn maybe ' + (b.status==='maybe'?'active':'') + '" onclick="updateStatus(\''+b.id+'\',\'maybe\')">🤔 Maybe</button>'
-          + '<button class="status-btn out ' + (b.status==='out'?'active':'') + '" onclick="updateStatus(\''+b.id+'\',\'out\')">❌ Out</button>'
+                    + '<div class="booking-status">'
+          + (b.status === 'going'
+            ? '<div class="going-badge">✅ Going — Paid</div>'
+            : '<div class="out-badge">⏳ Registered — Payment Due</div>'
+              + (s.funding_deadline ? '<div class="deadline-note">Pay before ' + new Date(s.funding_deadline).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + '</div>' : '')
+              + '<button class="pay-now-btn" onclick="payNow(\'' + b.id + '\',\'' + s.id + '\')">Pay Now →</button>'
+          )
           + '</div></div></div>';
       }).join('');
     }
 
-    async function updateStatus(bookingId, newStatus) {
-      var r = await SB.from('bookings').update({status: newStatus}).eq('id', bookingId);
-      if (!r.error) {
-        var booking = allBookings.find(function(b){return b.id === bookingId;});
-        if (booking) { booking.status = newStatus; }
-        renderBookings(currentFilter === 'all' ? allBookings : allBookings.filter(function(b){return b.status === currentFilter;}));
-      }
-    }
+    async function payNow(bookingId, sessionId) {
+            var btn = event.target;
+            btn.textContent = "Loading...";
+            btn.disabled = true;
+            var sess = await SB.auth.getSession();
+            if (!sess.data.session) { window.location.href = "/login.html"; return; }
+            var res = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ sessionId: sessionId, customerId: sess.data.session.user.id, bookingId: bookingId })
+            });
+            var data = await res.json();
+            if (data.url) { window.location.href = data.url; }
+            else { alert(data.error || "Could not start checkout."); btn.textContent = "Pay Now →"; btn.disabled = false; }
+          }
 
-    var currentFilter = 'all';
-    function filterTab(status, btn) {
-      currentFilter = status;
-      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-      btn.classList.add('active');
-      if (status === 'all') { renderBookings(allBookings); return; }
-      renderBookings(allBookings.filter(function(b){return b.status === status;}));
-    }
-
+    
     async function signOut() {
       await SB.auth.signOut();
       window.location.href = '/login.html';
