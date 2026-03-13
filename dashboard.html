@@ -71,6 +71,13 @@
     .cancel-btn:hover{background:#FEE2E2}
     .empty{text-align:center;padding:40px;color:#8898AA;font-size:14px}
     @media(max-width:900px){.two-col{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}}
+    .analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:8px}
+    .stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .stat-label{font-size:12px;font-weight:700;color:#8898AA;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+    .stat-value{font-size:28px;font-weight:800;color:#0A2540}
+    .stat-sub{font-size:12px;color:#8898AA;margin-top:4px}
+    .stat-card.blue .stat-value{color:#3D63FF}
+    .stat-card.green .stat-value{color:#10B981}
   </style>
 </head>
 <body>
@@ -94,6 +101,14 @@
       <div class="stat"><div class="stat-num" id="stat-going">0</div><div class="stat-label">Confirmed Going</div></div>
       <div class="stat"><div class="stat-num" id="stat-funded">0</div><div class="stat-label">Funded Sessions</div></div>
       <div class="card" style="margin-top:24px">
+    <div class="card-title">&#128202; Analytics</div>
+    <div id="analytics-loading" style="font-size:14px;color:#8898AA;padding:8px 0">Loading...</div>
+    <div id="analytics-content" style="display:none">
+      <div class="analytics-grid" id="analytics-grid"></div>
+      <div style="font-size:12px;color:#8898AA;margin-top:8px">Revenue is your 95% share after platform fee.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:24px">
   <div class="card-title">🎟 Promo Codes</div>
   <div class="row">
     <div class="field"><label>Code</label><input type="text" id="promo-code" placeholder="e.g. SUMMER20" style="text-transform:uppercase"/></div>
@@ -341,6 +356,7 @@ async function createPromo() {
     document.getElementById('promo-max').value = '';
     document.getElementById('promo-expires').value = '';
     loadPromos();
+    loadAnalytics();
   }
   btn.disabled = false; btn.textContent = 'Create Promo Code';
 }
@@ -369,6 +385,28 @@ async function togglePromo(id, active) {
 }
     
     init();
+
+    async function loadAnalytics() {
+      var r = await fetch("/api/analytics?providerId=" + currentUser.id);
+      var data = await r.json();
+      if (data.error) { document.getElementById("analytics-loading").textContent = "Could not load analytics."; return; }
+      document.getElementById("analytics-loading").style.display = "none";
+      document.getElementById("analytics-content").style.display = "block";
+      var stats = [
+        { label: "Total Revenue", value: "$" + parseFloat(data.totalRevenue).toFixed(0), sub: "all time (95% share)", cls: "green" },
+        { label: "Last 30 Days", value: "$" + parseFloat(data.recentRevenue).toFixed(0), sub: "revenue", cls: "blue" },
+        { label: "Total Bookings", value: data.totalBookings, sub: data.goingCount + " going / " + data.maybeCount + " maybe", cls: "" },
+        { label: "Conversion", value: data.conversionRate + "%", sub: "going / total", cls: "" },
+        { label: "Sessions", value: data.totalSessions, sub: data.activeSessions + " active", cls: "" }
+      ];
+      document.getElementById("analytics-grid").innerHTML = stats.map(function(s) {
+        return "<div class=\"stat-card " + s.cls + "\">" +
+          "<div class=\"stat-label\">" + s.label + "</div>" +
+          "<div class=\"stat-value\">" + s.value + "</div>" +
+          "<div class=\"stat-sub\">" + s.sub + "</div>" +
+          "</div>";
+      }).join("");
+    }
   </script>
 </body>
 </html>
