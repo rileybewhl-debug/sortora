@@ -1,5 +1,14 @@
 {
   "rewrites": [
-    { "source": "/p/:slug", "destination": "/provider.html?slug=:slug" }
+    {
+      "source": "/p/:slug",
+      "destination": "/provider.html?slug=:slug"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/send-reminders",
+      "schedule": "0 * * * *"
+    }
   ]
 }
