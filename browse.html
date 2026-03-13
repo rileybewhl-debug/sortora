@@ -249,7 +249,11 @@
       document.getElementById("modal-sub").textContent = "Pick your status - you can update it anytime.";
       document.getElementById("modal-success").style.display = "none";
       document.getElementById("modal-btn").disabled = false;
-      document.getElementById("modal-btn").textContent = "Confirm Status";
+      var pm = activeSession.payment_mode || "upfront";
+      document.getElementById("modal-btn").textContent = pm === "later" ? "Register Free" : "Pay & Book";
+      document.getElementById("modal-btn").style.background = pm === "later" ? "#10B981" : "#3D63FF";
+      var payLaterNote = document.getElementById("pay-later-note");
+      if (payLaterNote) payLaterNote.style.display = pm === "later" ? "block" : "none";
       document.getElementById("modal").classList.add("open");
     }
 
@@ -280,7 +284,15 @@
       if (!activeSession || !currentUser) return;
       var btn = document.getElementById("modal-btn");
       btn.disabled = true; btn.textContent = "Saving...";
-      if (selectedStatus === "going") {
+      var payMode = activeSession.payment_mode || "upfront";
+      if (payMode === "later") {
+        var regRes = await fetch("/api/register-booking", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ sessionId: activeSession.id, customerId: currentUser.id }) });
+        var regData = await regRes.json();
+        if (regData.success) { closeModal(); window.location.href = "/bookings.html?registered=1"; }
+        else { alert(regData.error || "Could not register. Please try again."); btn.disabled = false; btn.textContent = "Register Free"; }
+        return;
+      }
+      if (true) {
         var res = await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sessionId:activeSession.id,sessionTitle:activeSession.title,price:activeSession.price_per_person,customerId:currentUser.id,promoId:appliedPromoId,discountPercent:appliedDiscount})});
         var data = await res.json();
         if (data.url) {
