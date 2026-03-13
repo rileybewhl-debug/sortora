@@ -43,6 +43,10 @@
     .empty a{color:#3D63FF;text-decoration:none;font-weight:700}
     .success-banner{background:#ECFDF5;color:#065F46;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;margin-bottom:24px;display:none}
     @media(max-width:640px){.booking-card{flex-direction:column;align-items:flex-start}.booking-right{align-items:flex-start}}
+
+    .waitlist-badge{display:inline-block;background:#FFF7ED;color:#F59E0B;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+    .leave-waitlist-btn{background:none;border:1px solid #e0e6ef;color:#8898AA;font-size:12px;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+    .leave-waitlist-btn:hover{border-color:#ef4444;color:#ef4444}
   </style>
 </head>
 <body>
@@ -72,6 +76,13 @@
     <div class="bookings-list" id="bookings-list">
       <div class="empty"><div class="empty-icon">📋</div><h3>Loading...</h3></div>
     </div>
+    <div style="margin-top:40px">
+      <div class="page-title" style="font-size:20px;margin-bottom:6px">My Waitlist</div>
+      <div class="page-sub" style="margin-bottom:20px">Sessions you are waiting on a spot for.</div>
+      <div class="bookings-list" id="waitlist-list">
+        <div class="empty"><div class="empty-icon">⏳</div><h3>Loading...</h3></div>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -97,6 +108,7 @@
         if (pr.data.role === 'provider') { window.location.href = '/dashboard.html'; return; }
       }
       loadBookings();
+      loadWaitlist();
     }
 
     async function loadBookings() {
@@ -164,6 +176,37 @@
     }
 
     init();
+
+    async function loadWaitlist() {
+      var wl = document.getElementById("waitlist-list");
+      var sess = await SB.auth.getSession();
+      if (!sess.data.session) return;
+      var uid = sess.data.session.user.id;
+      var r = await SB.from("session_waitlist").select("id, created_at, sessions(id, title, session_date, location, price_per_person, providers(business_name))").eq("customer_id", uid).order("created_at", { ascending: true });
+      if (!r.data || !r.data.length) {
+        wl.innerHTML = "<div class=\"empty\"><div class=\"empty-icon\">⏳</div><h3>No waitlist entries</h3><p>When sessions are full you can join the waitlist from the browse page.</p></div>";
+        return;
+      }
+      wl.innerHTML = r.data.map(function(w) {
+        var s = w.sessions;
+        if (!s) return "";
+        var d = new Date(s.session_date);
+        var ds = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+        var ts = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+        return "<div class=\"booking-card\">" +
+          "<div><div class=\"waitlist-badge\">⏳ On Waitlist</div>" +
+          "<div class=\"session-name\">" + s.title + "</div>" +
+          "<div class=\"provider-name\">" + (s.providers ? s.providers.business_name : "") + "</div>" +
+          "<div class=\"session-meta\">" + ds + " at " + ts + " &bull; " + (s.location || "TBD") + " &bull; $" + s.price_per_person + "/person</div></div>" +
+          "<button class=\"leave-waitlist-btn\" onclick=\"leaveWaitlist('"+w.id+"')\" >Leave Waitlist</button></div>";
+      }).join("");
+    }
+
+    async function leaveWaitlist(waitlistId) {
+      if (!confirm("Leave the waitlist for this session?")) return;
+      await SB.from("session_waitlist").delete().eq("id", waitlistId);
+      loadWaitlist();
+    }
   </script>
 </body>
 </html>
