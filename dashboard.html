@@ -180,6 +180,8 @@
         if (pr.data.role !== 'provider') { window.location.href = '/browse.html'; return; }
       }
       loadSessions();
+      loadPromos();
+      loadAnalytics();
     }
 
     async function loadSessions() {
@@ -357,7 +359,6 @@ async function createPromo() {
     document.getElementById('promo-max').value = '';
     document.getElementById('promo-expires').value = '';
     loadPromos();
-    loadAnalytics();
   }
   btn.disabled = false; btn.textContent = 'Create Promo Code';
 }
