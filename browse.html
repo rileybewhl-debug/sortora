@@ -44,6 +44,8 @@
     .price small{font-size:13px;font-weight:500;color:#8898AA}
     .join-btn{padding:10px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
     .join-btn:hover{background:#2d52ee}
+    .waitlist-btn{background:#0A2540!important}
+    .waitlist-btn:hover{background:#162a4a!important}
     .group-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;color:#C2410C;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;margin-bottom:12px}
     .empty{text-align:center;padding:60px 24px;color:#8898AA}
     .empty-icon{font-size:48px;margin-bottom:16px}
@@ -162,6 +164,13 @@
     async function loadSessions() {
       var r = await SB.from("sessions").select("*, providers(business_name, category, slug)").eq("status","open").gte("session_date", new Date().toISOString()).order("session_date",{ascending:true});
       allSessions = r.data || [];
+      var goingCounts = {};
+      if (allSessions.length) {
+        var sessionIds = allSessions.map(function(x){return x.id;});
+        var bc = await SB.from("bookings").select("session_id").eq("status","going").in("session_id", sessionIds);
+        if (bc.data) bc.data.forEach(function(bk){ goingCounts[bk.session_id] = (goingCounts[bk.session_id]||0)+1; });
+      }
+      window._goingCounts = goingCounts;
       applyFilters();
     }
 
@@ -219,7 +228,8 @@
         if (s.duration_minutes) card += "<div class=\"meta-row\">Duration: <span>"+s.duration_minutes+" mins</span></div>";
         card += "</div><div class=\"card-footer\">";
         card += "<div class=\"price\">$"+parseFloat(s.price_per_person).toFixed(2)+"<small> /person</small></div>";
-        card += "<button class=\"join-btn\">Join</button>";
+        var isFull = window._goingCounts && (window._goingCounts[s.id]||0) >= s.max_spots;
+        card += isFull ? "<button class=\"join-btn waitlist-btn\" onclick=\"joinWaitlist('"+s.id+"')\" >Join Waitlist</button>" : "<button class=\"join-btn\">Join</button>";
         card += "</div></div></div>";
         return card;
       }).join("");
@@ -286,6 +296,36 @@
     async function signOut() { await SB.auth.signOut(); window.location.href="/login.html"; }
 
     init();
+
+    async function joinWaitlist(sessionId) {
+      if (!currentUser) { window.location.href = "/login.html"; return; }
+      var btn = event.target;
+      btn.textContent = "Joining...";
+      btn.disabled = true;
+      try {
+        var r = await fetch("/api/waitlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId: sessionId, customerId: currentUser.id })
+        });
+        var data = await r.json();
+        if (data.success) {
+          btn.textContent = "On Waitlist";
+          btn.style.background = "#10B981";
+          btn.disabled = true;
+        } else if (data.error === "Already on waitlist") {
+          btn.textContent = "Already Waitlisted";
+          btn.disabled = true;
+        } else {
+          btn.textContent = "Join Waitlist";
+          btn.disabled = false;
+          alert(data.error || "Could not join waitlist");
+        }
+      } catch(e) {
+        btn.textContent = "Join Waitlist";
+        btn.disabled = false;
+      }
+    }
   </script>
 </body>
 </html>
