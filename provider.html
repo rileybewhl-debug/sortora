@@ -49,7 +49,13 @@
     .not-found{text-align:center;padding:80px 24px;color:#8898AA}
     .not-found h2{font-size:24px;font-weight:800;color:#0A2540;margin-bottom:8px}
     @media(max-width:640px){.hero-inner{flex-direction:column;align-items:flex-start}.sessions-grid{grid-template-columns:1fr}}
-  </style>
+  
+    .hero{position:relative;overflow:hidden}
+    .hero-cover{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+    .hero-cover-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,18,32,0.3),rgba(12,18,32,0.75));z-index:1}
+    .hero-inner{position:relative;z-index:2}
+    .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    </style>
 </head>
 <body>
   <div class="topbar">
@@ -86,8 +92,8 @@ var slug = path.startsWith('/p/') ? path.split('/p/')[1] : new URLSearchParams(w
 
       document.title = p.business_name + ' — Sortora';
 
-      var heroHtml = '<div class="hero"><div class="hero-inner">'
-        + '<div class="avatar">' + initial + '</div>'
+      var heroHtml = '<div class="hero">' + (p.cover_url ? '<div class="hero-cover" style="background-image:url(' + p.cover_url + ')"></div><div class="hero-cover-overlay"></div>' : '') + '<div class="hero-inner">'
+        + '<div class="avatar">' + (p.avatar_url ? '<img src="' + p.avatar_url + '" alt="">' : initial) + '</div>'
         + '<div class="hero-info">'
         + '<div class="hero-category">' + (p.category || 'Provider') + '</div>'
         + '<div class="hero-name">' + p.business_name + '</div>'
