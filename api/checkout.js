@@ -7,7 +7,7 @@ const SB = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_K
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { sessionId, sessionTitle, price, customerId, promoId, discountPercent } = req.body;
+  const { sessionId, sessionTitle, price, customerId, promoId, discountPercent, bookingId } = req.body;
   if (!sessionId || !price || !customerId) return res.status(400).json({ error: 'Missing required fields' });
 
   const { data: session } = await SB
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     success_url: 'https://sortora.com/bookings.html?payment=success',
     cancel_url: 'https://sortora.com/browse.html?payment=cancelled',
     metadata: {
-      sessionId, customerId,
+      sessionId, customerId, booking_id: bookingId || '',
       customerName: customer?.full_name || '',
       sessionTitle, sessionPrice: finalPrice.toFixed(2),
       sessionDate: session?.session_date || '',
