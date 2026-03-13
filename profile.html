@@ -45,6 +45,20 @@
     .hint{font-size:12px;color:#8898AA;margin-top:4px}
     @media(max-width:640px){.two-col,.row{grid-template-columns:1fr}}
   </style>
+
+  <style>
+  .photo-upload-section{display:flex;flex-direction:column;gap:20px}
+  .upload-group{display:flex;flex-direction:column;gap:8px}
+  .upload-label{font-weight:600;font-size:.875rem;color:#374151}
+  .cover-upload-area{width:100%;height:140px;border:2px dashed #d1d5db;border-radius:10px;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f9fafb;transition:border-color .2s}
+  .cover-upload-area:hover{border-color:#3D63FF;background:#eff3ff}
+  .cover-bg-preview{position:absolute;inset:0;background-size:cover;background-position:center;display:none}
+  .cover-bg-preview.active{display:block}
+  .avatar-upload-area{display:flex;align-items:center;gap:16px;padding:12px;border:2px dashed #d1d5db;border-radius:10px;cursor:pointer;background:#f9fafb;transition:border-color .2s;width:fit-content}
+  .avatar-upload-area:hover{border-color:#3D63FF;background:#eff3ff}
+  .upload-hint{font-size:.8rem;color:#6b7280;text-align:center}
+  .upload-hint span{font-size:.7rem;color:#9ca3af;display:block}
+  </style>
 </head>
 <body>
   <div class="topbar">
@@ -72,6 +86,28 @@
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-title">&#128247; Profile Photos</div>
+      <div class="photo-upload-section">
+        <div class="upload-group">
+          <label class="upload-label">Cover Photo</label>
+          <div class="cover-upload-area" id="cover-upload-area" onclick="document.getElementById('cover-file-input').click()">
+            <div id="cover-bg-preview" class="cover-bg-preview"></div>
+            <div class="upload-hint" id="cover-hint">Click to upload cover photo<span>Recommended: 1200x400px</span></div>
+          </div>
+          <input type="file" id="cover-file-input" accept="image/*" style="display:none" onchange="handleCoverSelect(event)">
+        </div>
+        <div class="upload-group">
+          <label class="upload-label">Profile Photo</label>
+          <div class="avatar-upload-area" id="avatar-upload-area" onclick="document.getElementById('avatar-file-input').click()">
+            <img id="avatar-upload-preview" src="" style="display:none;width:72px;height:72px;border-radius:50%;object-fit:cover">
+            <div id="avatar-upload-placeholder" style="width:72px;height:72px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:1.8rem">&#128100;</div>
+            <div class="upload-hint">Click to upload profile photo<span>Square image works best</span></div>
+          </div>
+          <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="handleAvatarSelect(event)">
+        </div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-title">👤 Personal Info</div>
       <div class="row">
@@ -193,6 +229,8 @@ checkConnectStatus();
         document.getElementById('bio').value = pv.data.bio || '';
         document.getElementById('location').value = pv.data.location || '';
         document.getElementById('instagram').value = pv.data.instagram || '';
+        if(pv.data.avatar_url){_profileAvatarUrl=pv.data.avatar_url;var ai=document.getElementById('avatar-upload-preview');if(ai){ai.src=pv.data.avatar_url;ai.style.display='block';var ap=document.getElementById('avatar-upload-placeholder');if(ap)ap.style.display='none';}}
+        if(pv.data.cover_url){_profileCoverUrl=pv.data.cover_url;var cp=document.getElementById('cover-bg-preview');if(cp){cp.style.backgroundImage='url('+pv.data.cover_url+')';cp.classList.add('active');var ch=document.getElementById('cover-hint');if(ch)ch.style.display='none';}}
         updatePreview();
       }
       addLivePreview();
@@ -247,13 +285,8 @@ checkConnectStatus();
       }
 
       var r1 = await SB.from('profiles').update({full_name: fullName, city: city}).eq('id', currentUser.id);
-      var r2 = await SB.from('providers').update({
-        business_name: businessName,
-        category: category,
-        bio: bio,
-        location: location,
-        instagram: instagram
-      }).eq('id', currentUser.id);
+      await uploadProfilePhotos();
+      var r2 = await SB.from('providers').update(Object.assign({business_name:businessName,category:category,bio:bio,location:location,instagram:instagram},(_profileAvatarUrl?{avatar_url:_profileAvatarUrl}:{}),(_profileCoverUrl?{cover_url:_profileCoverUrl}:{}))).eq('id',currentUser.id);
 
       if (r1.error || r2.error) {
         document.getElementById('save-error').textContent = (r1.error || r2.error).message;
@@ -275,6 +308,60 @@ document.getElementById('profile-link').textContent = link;
     }
 
     init();
-  </script>
+  
+      var _profileAvatarUrl = null;
+      var _profileCoverUrl = null;
+      var _avatarFile = null;
+      var _coverFile = null;
+
+      function handleAvatarSelect(evt) {
+        var file = evt.target.files[0];
+        if (!file) return;
+        _avatarFile = file;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = document.getElementById('avatar-upload-preview');
+          img.src = e.target.result; img.style.display = 'block';
+          var ph = document.getElementById('avatar-upload-placeholder');
+          if (ph) ph.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function handleCoverSelect(evt) {
+        var file = evt.target.files[0];
+        if (!file) return;
+        _coverFile = file;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var prev = document.getElementById('cover-bg-preview');
+          prev.style.backgroundImage = 'url(' + e.target.result + ')';
+          prev.classList.add('active');
+          var hint = document.getElementById('cover-hint');
+          if (hint) hint.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      async function uploadProfilePhotos() {
+        var SURL = 'https://gzwyzocfohtnejttkglg.supabase.co';
+        var sess = await SB.auth.getSession();
+        if (!sess.data.session) return;
+        var uid = sess.data.session.user.id;
+        if (_avatarFile) {
+          var ext = _avatarFile.name.split('.').pop();
+          var path = uid + '/avatar.' + ext;
+          var res = await SB.storage.from('avatars').upload(path, _avatarFile, {upsert:true});
+          if (!res.error) _profileAvatarUrl = SURL + '/storage/v1/object/public/avatars/' + path;
+        }
+        if (_coverFile) {
+          var ext2 = _coverFile.name.split('.').pop();
+          var path2 = uid + '/cover.' + ext2;
+          var res2 = await SB.storage.from('covers').upload(path2, _coverFile, {upsert:true});
+          if (!res2.error) _profileCoverUrl = SURL + '/storage/v1/object/public/covers/' + path2;
+        }
+      }
+  
+    </script>
 </body>
 </html>
