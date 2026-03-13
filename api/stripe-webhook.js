@@ -28,7 +28,11 @@ export default async function handler(req, res) {
   if (event.type === "checkout.session.completed") {
     const cs = event.data.object;
     const { bookingId, sessionId, customerId, providerId } = cs.metadata || {};
-    if (bookingId) await SB.from("bookings").update({ status: "going", paid: true, stripe_payment_intent: cs.payment_intent }).eq("id", bookingId);
+    if (bookingId) {
+      await SB.from("bookings").update({ status: "going", paid: true, stripe_payment_intent: cs.payment_intent }).eq("id", bookingId);
+    } else if (customerId && sessionId) {
+      await SB.from("bookings").upsert({ session_id: sessionId, customer_id: customerId, status: "going", paid: true, stripe_payment_intent: cs.payment_intent }, { onConflict: "session_id,customer_id" });
+    }
     if (customerId && sessionId) {
       const { data: ca } = await SB.auth.admin.getUserById(customerId);
       const em = ca && ca.user ? ca.user.email : null;
