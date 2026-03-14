@@ -191,6 +191,7 @@
 
 // Check connect status on load — add this inside init() after provider data loads
 async function checkConnectStatus() {
+  if (!currentUser) return;
   var pv = await SB.from('providers').select('stripe_account_id').eq('id', currentUser.id).single();
   if (pv.data && pv.data.stripe_account_id) {
     document.getElementById('connect-btn').textContent = '✓ Stripe Connected';
@@ -210,7 +211,6 @@ async function checkConnectStatus() {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
     );
     var currentUser = null;
-checkConnectStatus();
     async function init() {
       var r = await SB.auth.getSession();
       if (!r.data.session) { window.location.href = '/login.html'; return; }
@@ -233,6 +233,7 @@ checkConnectStatus();
         if(pv.data.cover_url){_profileCoverUrl=pv.data.cover_url;var cp=document.getElementById('cover-bg-preview');if(cp){cp.style.backgroundImage='url('+pv.data.cover_url+')';cp.classList.add('active');var ch=document.getElementById('cover-hint');if(ch)ch.style.display='none';}}
         updatePreview();
       }
+      checkConnectStatus();
       addLivePreview();
     }
 
