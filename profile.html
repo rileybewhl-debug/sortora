@@ -172,6 +172,11 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    var SB = window.supabase.createClient(
+      'https://gzwyzocfohtnejttkglg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
+    );
+    var currentUser = null;
     async function connectStripe() {
   var btn = document.getElementById('connect-btn');
   btn.disabled = true; btn.textContent = 'Redirecting...';
@@ -206,11 +211,7 @@ async function checkConnectStatus() {
     document.getElementById('connect-error').style.display = 'block';
   }
 }
-    var SB = window.supabase.createClient(
-      'https://gzwyzocfohtnejttkglg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
-    );
-    var currentUser = null;
+    
     async function init() {
       var r = await SB.auth.getSession();
       if (!r.data.session) { window.location.href = '/login.html'; return; }
@@ -346,20 +347,19 @@ document.getElementById('profile-link').textContent = link;
 
       async function uploadProfilePhotos() {
         var SURL = 'https://gzwyzocfohtnejttkglg.supabase.co';
-        var _SB2 = window.supabase.createClient(SURL,'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
-        var sess = await _SB2.auth.getSession();
+        var sess = await SB.auth.getSession();
         if (!sess.data.session) return;
         var uid = sess.data.session.user.id;
         if (_avatarFile) {
           var ext = _avatarFile.name.split('.').pop();
           var path = uid + '/avatar.' + ext;
-          var res = await _SB2.storage.from('avatars').upload(path, _avatarFile, {upsert:true});
+          var res = await SB.storage.from('avatars').upload(path, _avatarFile, {upsert:true});
           if (!res.error) _profileAvatarUrl = SURL + '/storage/v1/object/public/avatars/' + path;
         }
         if (_coverFile) {
           var ext2 = _coverFile.name.split('.').pop();
           var path2 = uid + '/cover.' + ext2;
-          var res2 = await _SB2.storage.from('covers').upload(path2, _coverFile, {upsert:true});
+          var res2 = await SB.storage.from('covers').upload(path2, _coverFile, {upsert:true});
           if (!res2.error) _profileCoverUrl = SURL + '/storage/v1/object/public/covers/' + path2;
         }
       }
