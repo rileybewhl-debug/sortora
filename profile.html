@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>My Profile — Sortora</title>
+  <title>My Profile \u2014 Sortora</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -34,8 +34,11 @@
     .btn-outline:hover{background:#EEF2FF}
     .success{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
     .error{background:#FEF2F2;color:#DC2626;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
-    .preview-card{background:linear-gradient(135deg,#0A2540,#1a3a5c);border-radius:16px;padding:28px;color:#fff;margin-bottom:24px}
-    .preview-avatar{width:64px;height:64px;border-radius:50%;background:#3D63FF;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;margin-bottom:16px}
+    .preview-card{border-radius:16px;padding:28px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;background-color:#0A2540;background-size:cover;background-position:center}
+    .preview-card-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,37,64,0.82),rgba(26,58,92,0.75))}
+    .preview-card-content{position:relative;z-index:1}
+    .preview-avatar{width:64px;height:64px;border-radius:50%;background:#3D63FF;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;margin-bottom:16px;overflow:hidden}
+    .preview-avatar img{width:100%;height:100%;object-fit:cover}
     .preview-name{font-size:22px;font-weight:800;margin-bottom:4px}
     .preview-category{font-size:13px;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
     .preview-bio{font-size:14px;opacity:.85;line-height:1.6;margin-bottom:16px}
@@ -75,13 +78,19 @@
     <div class="page-sub">This is how customers will find and see you on Sortora.</div>
 
     <div class="preview-card" id="preview-card">
-      <div class="preview-avatar" id="preview-avatar">?</div>
-      <div class="category-badge" id="preview-category">—</div>
-      <div class="preview-name" id="preview-name">Your Name</div>
-      <div class="preview-bio" id="preview-bio">Your bio will appear here...</div>
-      <div class="preview-meta">
-        <div class="preview-meta-item">📍 <span id="preview-location">Location</span></div>
-        <div class="preview-meta-item" id="preview-ig-wrap">📸 <span id="preview-ig">—</span></div>
+      <div class="preview-card-overlay" id="preview-card-overlay"></div>
+      <div class="preview-card-content">
+        <div class="preview-avatar" id="preview-avatar">
+          <img id="preview-avatar-img" src="" style="display:none">
+          <span id="preview-avatar-letter">?</span>
+        </div>
+        <div class="category-badge" id="preview-category">\u2014</div>
+        <div class="preview-name" id="preview-name">Your Name</div>
+        <div class="preview-bio" id="preview-bio">Your bio will appear here...</div>
+        <div class="preview-meta">
+          <div class="preview-meta-item">\uD83D\uDCCD <span id="preview-location">Location</span></div>
+          <div class="preview-meta-item" id="preview-ig-wrap">\uD83D\uDCF8 <span id="preview-ig">\u2014</span></div>
+        </div>
       </div>
     </div>
 
@@ -101,14 +110,14 @@
           <div class="avatar-upload-area" id="avatar-upload-area" onclick="document.getElementById('avatar-file-input').click()">
             <img id="avatar-upload-preview" src="" style="display:none;width:72px;height:72px;border-radius:50%;object-fit:cover">
             <div id="avatar-upload-placeholder" style="width:72px;height:72px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:1.8rem">&#128100;</div>
-            <div class="upload-hint">Click to upload profile photo<span>Square image works best</span></div>
+            <div class="upload-hint" id="avatar-hint">Click to upload profile photo<span>Square image works best</span></div>
           </div>
           <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="handleAvatarSelect(event)">
         </div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">🤝 Personal Info</div>
+      <div class="card-title">\uD83E\uDD1D Personal Info</div>
       <div class="row">
         <div class="field">
           <label>Full Name</label>
@@ -122,7 +131,7 @@
     </div>
 
     <div class="card">
-      <div class="card-title">🏢 Business Info</div>
+      <div class="card-title">\uD83C\uDFE2 Business Info</div>
       <div class="row">
         <div class="field">
           <label>Business Name</label>
@@ -146,7 +155,7 @@
       <div class="field">
         <label>Bio</label>
         <textarea id="bio" placeholder="Tell customers about yourself, your experience, what makes you great..."></textarea>
-        <div class="hint">Keep it to 2—3 sentences. Customers read this before booking.</div>
+        <div class="hint">Keep it to 2\u20143 sentences. Customers read this before booking.</div>
       </div>
       <div class="field">
         <label>Location</label>
@@ -155,19 +164,19 @@
       <div class="field">
         <label>Instagram Handle</label>
         <input type="text" id="instagram" placeholder="@yourhandle"/>
-        <div class="hint">Optional — helps customers find your work.</div>
+        <div class="hint">Optional \u2014 helps customers find your work.</div>
       </div>
     </div>
 
     <div class="card" id="stripe-card">
-      <div class="card-title">💳 Payouts</div>
+      <div class="card-title">\uD83D\uDCB3 Payouts</div>
       <div id="stripe-status"></div>
       <button class="btn" id="connect-btn" onclick="connectStripe()" style="margin-top:0">Connect Bank Account</button>
-      <div class="success" id="connect-success" style="display:none">✅ Stripe connected — you can now receive payouts!</div>
+      <div class="success" id="connect-success" style="display:none">\u2705 Stripe connected \u2014 you can now receive payouts!</div>
       <div class="error" id="connect-error" style="display:none">Something went wrong. Please try again.</div>
     </div>
     <button class="btn" onclick="saveProfile()" id="save-btn">Save Profile</button>
-    <div class="success" id="save-success">✅ Profile saved! Your public page: <a id="profile-link" href="#" target="_blank" style="color:#065F46;font-weight:700"></a></div>
+    <div class="success" id="save-success">\u2705 Profile saved! Your public page: <a id="profile-link" href="#" target="_blank" style="color:#065F46;font-weight:700"></a></div>
     <div class="error" id="save-error"></div>
   </div>
 
@@ -178,22 +187,17 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
     );
     var currentUser = null;
-
-    /* ── photo state: declared BEFORE init() ── */
     var _profileAvatarUrl = null;
     var _profileCoverUrl  = null;
     var _avatarFile = null;
     var _coverFile  = null;
 
-    /* ── photo select handlers ── */
     function handleAvatarSelect(evt) {
       var file = evt.target.files[0];
       if (!file) return;
       _avatarFile = file;
       var reader = new FileReader();
-      reader.onload = function(e) {
-        showAvatarPreview(e.target.result);
-      };
+      reader.onload = function(e) { showAvatarPreview(e.target.result); };
       reader.readAsDataURL(file);
     }
 
@@ -202,61 +206,54 @@
       if (!file) return;
       _coverFile = file;
       var reader = new FileReader();
-      reader.onload = function(e) {
-        showCoverPreview(e.target.result);
-      };
+      reader.onload = function(e) { showCoverPreview(e.target.result); };
       reader.readAsDataURL(file);
     }
 
-    /* ── reusable preview helpers (used by BOTH select + init load) ── */
     function showAvatarPreview(url) {
       var img = document.getElementById('avatar-upload-preview');
-      if (!img) return;
-      img.src = url;
-      img.style.display = 'block';
+      if (img) { img.src = url; img.style.display = 'block'; }
       var ph = document.getElementById('avatar-upload-placeholder');
       if (ph) ph.style.display = 'none';
+      var ah = document.getElementById('avatar-hint');
+      if (ah) ah.style.display = 'none';
+      var pImg = document.getElementById('preview-avatar-img');
+      if (pImg) { pImg.src = url; pImg.style.display = 'block'; }
+      var pLetter = document.getElementById('preview-avatar-letter');
+      if (pLetter) pLetter.style.display = 'none';
     }
 
     function showCoverPreview(url) {
       var prev = document.getElementById('cover-bg-preview');
-      if (!prev) return;
-      prev.style.backgroundImage = 'url(' + url + ')';
-      prev.classList.add('active');
+      if (prev) { prev.style.backgroundImage = 'url(' + url + ')'; prev.classList.add('active'); }
       var hint = document.getElementById('cover-hint');
       if (hint) hint.style.display = 'none';
+      var card = document.getElementById('preview-card');
+      if (card) card.style.backgroundImage = 'url(' + url + ')';
     }
 
-    /* ── upload to Supabase Storage ── */
     async function uploadProfilePhotos() {
       var SURL = 'https://gzwyzocfohtnejttkglg.supabase.co';
       var sess = await SB.auth.getSession();
       if (!sess.data.session) return;
       var uid = sess.data.session.user.id;
-      var ts = Date.now(); // cache-buster
+      var ts = Date.now();
       if (_avatarFile) {
         var ext = _avatarFile.name.split('.').pop();
         var path = uid + '/avatar.' + ext;
         var res = await SB.storage.from('avatars').upload(path, _avatarFile, {upsert:true});
-        if (!res.error) {
-          _profileAvatarUrl = SURL + '/storage/v1/object/public/avatars/' + path + '?t=' + ts;
-        } else {
-          console.error('Avatar upload error:', res.error);
-        }
+        if (!res.error) _profileAvatarUrl = SURL + '/storage/v1/object/public/avatars/' + path + '?t=' + ts;
+        else console.error('Avatar upload error:', res.error);
       }
       if (_coverFile) {
         var ext2 = _coverFile.name.split('.').pop();
         var path2 = uid + '/cover.' + ext2;
         var res2 = await SB.storage.from('covers').upload(path2, _coverFile, {upsert:true});
-        if (!res2.error) {
-          _profileCoverUrl = SURL + '/storage/v1/object/public/covers/' + path2 + '?t=' + ts;
-        } else {
-          console.error('Cover upload error:', res2.error);
-        }
+        if (!res2.error) _profileCoverUrl = SURL + '/storage/v1/object/public/covers/' + path2 + '?t=' + ts;
+        else console.error('Cover upload error:', res2.error);
       }
     }
 
-    /* ── Stripe ── */
     async function connectStripe() {
       var btn = document.getElementById('connect-btn');
       btn.disabled = true; btn.textContent = 'Redirecting...';
@@ -283,20 +280,14 @@
         document.getElementById('connect-btn').disabled = true;
       }
       var params = new URLSearchParams(window.location.search);
-      if (params.get('connect') === 'success') {
-        document.getElementById('connect-success').style.display = 'block';
-      }
-      if (params.get('connect') === 'error') {
-        document.getElementById('connect-error').style.display = 'block';
-      }
+      if (params.get('connect') === 'success') document.getElementById('connect-success').style.display = 'block';
+      if (params.get('connect') === 'error') document.getElementById('connect-error').style.display = 'block';
     }
 
-    /* ── init ── */
     async function init() {
       var r = await SB.auth.getSession();
       if (!r.data.session) { window.location.href = '/login.html'; return; }
       currentUser = r.data.session.user;
-
       var pr = await SB.from('profiles').select('full_name,role,city').eq('id', currentUser.id).single();
       if (pr.data) {
         if (pr.data.role !== 'provider') { window.location.href = '/browse.html'; return; }
@@ -304,7 +295,6 @@
         document.getElementById('full-name').value = pr.data.full_name || '';
         document.getElementById('city').value = pr.data.city || '';
       }
-
       var pv = await SB.from('providers').select('*').eq('id', currentUser.id).single();
       if (pv.data) {
         document.getElementById('business-name').value = pv.data.business_name || '';
@@ -312,8 +302,6 @@
         document.getElementById('bio').value = pv.data.bio || '';
         document.getElementById('location').value = pv.data.location || '';
         document.getElementById('instagram').value = pv.data.instagram || '';
-
-        /* ── PHOTO DISPLAY: cache-bust + use shared helpers ── */
         if (pv.data.avatar_url) {
           var aUrl = pv.data.avatar_url.split('?')[0] + '?t=' + Date.now();
           _profileAvatarUrl = aUrl;
@@ -324,7 +312,6 @@
           _profileCoverUrl = cUrl;
           showCoverPreview(cUrl);
         }
-
         updatePreview();
       }
       checkConnectStatus();
@@ -342,7 +329,11 @@
       document.getElementById('preview-category').textContent = cat;
       document.getElementById('preview-bio').textContent = bio;
       document.getElementById('preview-location').textContent = loc;
-      document.getElementById('preview-avatar').textContent = (biz || name).charAt(0).toUpperCase();
+      var pImg = document.getElementById('preview-avatar-img');
+      if (!pImg || pImg.style.display === 'none') {
+        var pLetter = document.getElementById('preview-avatar-letter');
+        if (pLetter) pLetter.textContent = (biz || name).charAt(0).toUpperCase();
+      }
       if (ig) {
         document.getElementById('preview-ig').textContent = ig;
         document.getElementById('preview-ig-wrap').style.display = 'flex';
@@ -358,13 +349,11 @@
       });
     }
 
-    /* ── save ── */
     async function saveProfile() {
       var btn = document.getElementById('save-btn');
       btn.disabled = true; btn.textContent = 'Saving...';
       document.getElementById('save-success').style.display = 'none';
       document.getElementById('save-error').style.display = 'none';
-
       var fullName = document.getElementById('full-name').value.trim();
       var city = document.getElementById('city').value.trim();
       var businessName = document.getElementById('business-name').value.trim();
@@ -372,23 +361,20 @@
       var bio = document.getElementById('bio').value.trim();
       var location = document.getElementById('location').value.trim();
       var instagram = document.getElementById('instagram').value.trim();
-
       if (!fullName || !businessName || !category) {
         document.getElementById('save-error').textContent = 'Please fill in your name, business name and category.';
         document.getElementById('save-error').style.display = 'block';
         btn.disabled = false; btn.textContent = 'Save Profile'; return;
       }
-
       var r1 = await SB.from('profiles').update({full_name: fullName, city: city}).eq('id', currentUser.id);
       await uploadProfilePhotos();
       var r2 = await SB.from('providers').update(
         Object.assign(
-          {business_name:businessName, category:category, bio:bio, location:location, instagram:instagram},
-          (_profileAvatarUrl ? {avatar_url: _profileAvatarUrl} : {}),
-          (_profileCoverUrl  ? {cover_url:  _profileCoverUrl}  : {})
+          {business_name:businessName,category:category,bio:bio,location:location,instagram:instagram},
+          (_profileAvatarUrl ? {avatar_url:_profileAvatarUrl} : {}),
+          (_profileCoverUrl ? {cover_url:_profileCoverUrl} : {})
         )
       ).eq('id', currentUser.id);
-
       if (r1.error || r2.error) {
         document.getElementById('save-error').textContent = (r1.error || r2.error).message;
         document.getElementById('save-error').style.display = 'block';
@@ -399,10 +385,8 @@
         document.getElementById('profile-link').href = link;
         document.getElementById('profile-link').textContent = link;
         document.getElementById('user-name').textContent = fullName;
-
-        /* ── refresh photo previews after save ── */
         if (_profileAvatarUrl) showAvatarPreview(_profileAvatarUrl);
-        if (_profileCoverUrl)  showCoverPreview(_profileCoverUrl);
+        if (_profileCoverUrl) showCoverPreview(_profileCoverUrl);
       }
       btn.disabled = false; btn.textContent = 'Save Profile';
       _avatarFile = null;
