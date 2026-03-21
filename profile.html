@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>My Profile \u2014 Sortora</title>
+  <title>My Profile — Sortora</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -84,12 +84,12 @@
           <img id="preview-avatar-img" src="" style="display:none">
           <span id="preview-avatar-letter">?</span>
         </div>
-        <div class="category-badge" id="preview-category">\u2014</div>
+        <div class="category-badge" id="preview-category">—</div>
         <div class="preview-name" id="preview-name">Your Name</div>
         <div class="preview-bio" id="preview-bio">Your bio will appear here...</div>
         <div class="preview-meta">
-          <div class="preview-meta-item">\uD83D\uDCCD <span id="preview-location">Location</span></div>
-          <div class="preview-meta-item" id="preview-ig-wrap">\uD83D\uDCF8 <span id="preview-ig">\u2014</span></div>
+          <div class="preview-meta-item">📍 <span id="preview-location">Location</span></div>
+          <div class="preview-meta-item" id="preview-ig-wrap">📸 <span id="preview-ig">—</span></div>
         </div>
       </div>
     </div>
@@ -117,7 +117,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-title">\uD83E\uDD1D Personal Info</div>
+      <div class="card-title">🤝 Personal Info</div>
       <div class="row">
         <div class="field">
           <label>Full Name</label>
@@ -131,7 +131,7 @@
     </div>
 
     <div class="card">
-      <div class="card-title">\uD83C\uDFE2 Business Info</div>
+      <div class="card-title">🏢 Business Info</div>
       <div class="row">
         <div class="field">
           <label>Business Name</label>
@@ -155,7 +155,7 @@
       <div class="field">
         <label>Bio</label>
         <textarea id="bio" placeholder="Tell customers about yourself, your experience, what makes you great..."></textarea>
-        <div class="hint">Keep it to 2\u20143 sentences. Customers read this before booking.</div>
+        <div class="hint">Keep it to 2—3 sentences. Customers read this before booking.</div>
       </div>
       <div class="field">
         <label>Location</label>
@@ -164,19 +164,19 @@
       <div class="field">
         <label>Instagram Handle</label>
         <input type="text" id="instagram" placeholder="@yourhandle"/>
-        <div class="hint">Optional \u2014 helps customers find your work.</div>
+        <div class="hint">Optional — helps customers find your work.</div>
       </div>
     </div>
 
     <div class="card" id="stripe-card">
-      <div class="card-title">\uD83D\uDCB3 Payouts</div>
+      <div class="card-title">💳 Payouts</div>
       <div id="stripe-status"></div>
       <button class="btn" id="connect-btn" onclick="connectStripe()" style="margin-top:0">Connect Bank Account</button>
-      <div class="success" id="connect-success" style="display:none">\u2705 Stripe connected \u2014 you can now receive payouts!</div>
+      <div class="success" id="connect-success" style="display:none">✅ Stripe connected — you can now receive payouts!</div>
       <div class="error" id="connect-error" style="display:none">Something went wrong. Please try again.</div>
     </div>
     <button class="btn" onclick="saveProfile()" id="save-btn">Save Profile</button>
-    <div class="success" id="save-success">\u2705 Profile saved! Your public page: <a id="profile-link" href="#" target="_blank" style="color:#065F46;font-weight:700"></a></div>
+    <div class="success" id="save-success">✅ Profile saved! Your public page: <a id="profile-link" href="#" target="_blank" style="color:#065F46;font-weight:700"></a></div>
     <div class="error" id="save-error"></div>
   </div>
 
@@ -275,7 +275,7 @@
       if (!currentUser) return;
       var pv = await SB.from('providers').select('stripe_account_id').eq('id', currentUser.id).single();
       if (pv.data && pv.data.stripe_account_id) {
-        document.getElementById('connect-btn').textContent = '\u2705 Stripe Connected';
+        document.getElementById('connect-btn').textContent = '✅ Stripe Connected';
         document.getElementById('connect-btn').style.background = '#10B981';
         document.getElementById('connect-btn').disabled = true;
       }
@@ -321,7 +321,7 @@
     function updatePreview() {
       var name = document.getElementById('full-name').value || 'Your Name';
       var biz = document.getElementById('business-name').value || name;
-      var cat = document.getElementById('category').value || '\u2014';
+      var cat = document.getElementById('category').value || '—';
       var bio = document.getElementById('bio').value || 'Your bio will appear here...';
       var loc = document.getElementById('location').value || document.getElementById('city').value || 'Location';
       var ig = document.getElementById('instagram').value || '';
