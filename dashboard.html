@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- v2 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,455 +7,380 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
-    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
-    .topbar-right{display:flex;align-items:center;gap:16px}
-    .nav-link{font-size:13px;font-weight:600;color:#8898AA;text-decoration:none;cursor:pointer}
-    .nav-link:hover{color:#0A2540}
-    .nav-link.active{color:#3D63FF}
-    .user-name{font-size:14px;font-weight:600;color:#0A2540}
-    .main{max-width:1100px;margin:0 auto;padding:40px 24px}
-    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
-    .page-sub{font-size:15px;color:#8898AA;margin-bottom:32px}
-    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-    .stat{background:#fff;border-radius:14px;padding:20px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .stat-num{font-size:30px;font-weight:800;color:#3D63FF}
-    .stat-label{font-size:13px;color:#8898AA;margin-top:4px}
-    .two-col{display:grid;grid-template-columns:400px 1fr;gap:24px;align-items:start}
-    .card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .card-title{font-size:16px;font-weight:700;color:#0A2540;margin-bottom:20px}
-    .field{margin-bottom:16px}
-    label{display:block;font-size:13px;font-weight:600;color:#0A2540;margin-bottom:6px}
-    input,select,textarea{width:100%;padding:11px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s}
-    input:focus,select:focus,textarea:focus{border-color:#3D63FF}
-    textarea{resize:vertical;min-height:72px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{padding:12px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-top:4px}
-    .btn:hover{background:#2d52ee}
-    .btn:disabled{background:#8898AA;cursor:not-allowed}
-    .success{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
-    .error{background:#FEF2F2;color:#DC2626;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
-    .sessions-list{display:flex;flex-direction:column;gap:12px}
-    .session-item{border:2px solid #E8EDF2;border-radius:14px;overflow:hidden;transition:border-color .2s}
-    .session-item.expanded{border-color:#3D63FF}
-    .session-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:#fff}
-    .session-header:hover{background:#F6F9FC}
-    .session-title{font-size:15px;font-weight:700;color:#0A2540}
-    .session-meta{font-size:13px;color:#8898AA;margin-top:3px}
-    .session-right{display:flex;align-items:center;gap:10px}
-    .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
-    .badge-open{background:#EEF2FF;color:#3D63FF}
-    .badge-funded{background:#ECFDF5;color:#065F46}
-    .badge-cancelled{background:#FEF2F2;color:#DC2626}
-    .chevron{font-size:12px;color:#8898AA;transition:transform .2s}
-    .session-item.expanded .chevron{transform:rotate(180deg)}
-    .session-body{display:none;padding:0 20px 20px;border-top:1px solid #E8EDF2}
-    .session-item.expanded .session-body{display:block}
-    .bookings-title{font-size:13px;font-weight:700;color:#0A2540;margin:16px 0 10px}
-    .booking-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F6F9FC;border-radius:10px;margin-bottom:6px}
-    .booking-name{font-size:14px;font-weight:600;color:#0A2540}
-    .booking-email{font-size:12px;color:#8898AA;margin-top:1px}
-    .status-pill{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
-    .status-going{background:#ECFDF5;color:#065F46}
-    .status-maybe{background:#FFFBEB;color:#92400E}
-    .status-out{background:#FEF2F2;color:#991B1B}
-    .funding-bar{margin-top:14px}
-    .funding-label{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#8898AA;margin-bottom:6px}
-    .funding-label span{color:#0A2540}
-    .bar-track{background:#E8EDF2;border-radius:99px;height:8px;overflow:hidden}
-    .bar-fill{background:#3D63FF;height:100%;border-radius:99px;transition:width .5s}
-    .bar-fill.funded{background:#10B981}
-    .no-bookings{font-size:13px;color:#8898AA;padding:12px 0;text-align:center}
-    .cancel-btn{padding:6px 14px;background:#FEF2F2;color:#DC2626;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-    .cancel-btn:hover{background:#FEE2E2}
-    .empty{text-align:center;padding:40px;color:#8898AA;font-size:14px}
-    @media(max-width:900px){.two-col{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}}
-    .analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:8px}
-    .stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-    .stat-label{font-size:12px;font-weight:700;color:#8898AA;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-    .stat-value{font-size:28px;font-weight:800;color:#0A2540}
-    .stat-sub{font-size:12px;color:#8898AA;margin-top:4px}
-    .stat-card.blue .stat-value{color:#3D63FF}
-    .stat-card.green .stat-value{color:#10B981}
-    .payment-toggle{display:flex;gap:8px;margin-bottom:16px}
-    .payment-toggle label{flex:1;display:flex;align-items:center;gap:8px;padding:12px 16px;border:2px solid #e0e6ef;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;color:#8898AA;transition:all .2s}
-    .payment-toggle input[type=radio]{accent-color:#3D63FF}
-    .payment-toggle input[type=radio]:checked + span{color:#0A2540}
-    .payment-toggle label:has(input:checked){border-color:#3D63FF;background:#f0f4ff;color:#0A2540}
-  </style>
-<style>
-  .img-upload-area{width:100%;height:110px;border:2px dashed #d1d5db;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#f9fafb;transition:border-color .2s;overflow:hidden;position:relative}
-  .img-upload-area:hover{border-color:#3D63FF;background:#eff3ff}
-  .img-upload-area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
-  .img-upload-hint{font-size:.8rem;color:#6b7280;text-align:center;pointer-events:none}
-  .img-upload-hint span{font-size:.7rem;color:#9ca3af;display:block}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#f9fafb;min-height:100vh;-webkit-font-smoothing:antialiased;color:#222;display:flex}
+
+    .sidebar{width:240px;background:#fff;border-right:1px solid #EBEBEB;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40}
+    .sb-logo{padding:20px 20px 24px;display:flex;align-items:center;gap:8px;text-decoration:none}
+    .sb-logo svg{width:32px;height:32px;flex-shrink:0}
+    .sb-logo-text{font-weight:800;font-size:20px;color:#3B6BFF;letter-spacing:-.5px}
+    .sb-nav{flex:1;padding:0 12px;display:flex;flex-direction:column;gap:2px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:600;color:#6a6a6a;cursor:pointer;transition:all .12s;text-decoration:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+    .sb-item:hover{background:#f7f7f7;color:#222}
+    .sb-item.active{background:#EEF2FF;color:#3B6BFF}
+    .sb-item svg{width:18px;height:18px;flex-shrink:0}
+    .sb-divider{height:1px;background:#EBEBEB;margin:12px 0}
+    .sb-footer{padding:16px;border-top:1px solid #EBEBEB}
+    .sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .12s}
+    .sb-user:hover{background:#f7f7f7}
+    .sb-avatar{width:32px;height:32px;border-radius:50%;background:#3B6BFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;overflow:hidden;flex-shrink:0}
+    .sb-avatar img{width:100%;height:100%;object-fit:cover}
+    .sb-user-info{flex:1;min-width:0}
+    .sb-user-name{font-size:13px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sb-user-role{font-size:11px;color:#6a6a6a}
+
+    .main{flex:1;margin-left:240px;min-height:100vh}
+    .main-header{background:#fff;border-bottom:1px solid #EBEBEB;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+    .main-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .main-actions{display:flex;gap:8px}
+    .header-btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:1px solid #EBEBEB;background:#fff;color:#222;display:flex;align-items:center;gap:6px}
+    .header-btn:hover{background:#f7f7f7}
+    .header-btn svg{width:16px;height:16px}
+    .header-btn-primary{background:#3B6BFF;color:#fff;border-color:#3B6BFF}
+    .header-btn-primary:hover{background:#2d5ae6}
+    .main-body{padding:24px 32px 48px}
+
+    .card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px;margin-bottom:20px}
+    .card-title{font-size:15px;font-weight:700;color:#222;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+    .card-title small{font-size:13px;font-weight:500;color:#6a6a6a}
+
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .stat-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px}
+    .stat-card-label{font-size:12px;font-weight:600;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+    .stat-card-value{font-size:28px;font-weight:800;color:#222;letter-spacing:-.02em}
+    .stat-card-sub{font-size:12px;color:#b0b0b0;margin-top:4px}
+    .stat-card.blue .stat-card-value{color:#3B6BFF}
+    .stat-card.green .stat-card-value{color:#10B981}
+
+    .form-group{margin-bottom:16px}
+    .form-label{display:block;font-size:13px;font-weight:600;color:#222;margin-bottom:6px}
+    .form-input{width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit;color:#222;outline:none;transition:border .15s;background:#fff}
+    .form-input:focus{border-color:#3B6BFF;box-shadow:0 0 0 3px rgba(59,107,255,.08)}
+    textarea.form-input{resize:vertical;min-height:80px}
+    select.form-input{cursor:pointer}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-hint{font-size:12px;color:#b0b0b0;margin-top:4px}
+
+    .btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:none}
+    .btn-primary{background:#3B6BFF;color:#fff}
+    .btn-primary:hover{background:#2d5ae6}
+    .btn-primary:disabled{background:#d1d5db;cursor:not-allowed}
+    .btn-danger{background:#fff;color:#d93b30;border:1px solid #fca5a5}
+    .btn-danger:hover{background:#fef2f2}
+    .btn-sm{padding:6px 14px;font-size:12px;border-radius:6px}
+
+    .alert-success{background:#f0fff4;border:1px solid #c6f6d5;color:#276749;padding:12px 16px;border-radius:8px;font-size:14px;margin-top:12px;display:none}
+    .alert-error{background:#fff5f5;border:1px solid #fed7d7;color:#c53030;padding:12px 16px;border-radius:8px;font-size:14px;margin-top:12px;display:none}
+
+    .toggle-group{display:flex;gap:8px;margin-bottom:16px}
+    .toggle-opt{flex:1;padding:12px 14px;border:1px solid #d1d5db;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#6a6a6a;text-align:center;transition:all .15s}
+    .toggle-opt.active{border-color:#3B6BFF;background:#EEF2FF;color:#3B6BFF}
+    .toggle-opt:hover{border-color:#b0b0b0}
+
+    .img-upload{width:100%;height:100px;border:2px dashed #d1d5db;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#fafafa;transition:all .15s;position:relative;overflow:hidden}
+    .img-upload:hover{border-color:#3B6BFF;background:#f0f4ff}
+    .img-upload img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+    .img-upload-hint{font-size:13px;color:#b0b0b0;pointer-events:none}
+
+    .session-row{display:flex;align-items:center;gap:16px;padding:14px 16px;border:1px solid #EBEBEB;border-radius:10px;margin-bottom:8px;transition:all .15s;cursor:pointer}
+    .session-row:hover{border-color:#b0b0b0;background:#fafafa}
+    .session-row-img{width:48px;height:48px;border-radius:8px;background:#f0f0f0;background-size:cover;background-position:center;flex-shrink:0}
+    .session-row-info{flex:1;min-width:0}
+    .session-row-title{font-size:14px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .session-row-meta{font-size:12px;color:#6a6a6a;margin-top:2px}
+    .session-row-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    .pill-open{background:#EEF2FF;color:#3B6BFF}
+    .pill-funded{background:#f0fff4;color:#276749}
+    .pill-cancelled{background:#fff5f5;color:#c53030}
+    .pill-closed{background:#f5f5f5;color:#6a6a6a}
+    .session-row-price{font-size:14px;font-weight:800;color:#222}
+    .session-row-spots{font-size:12px;color:#6a6a6a}
+
+    .panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:60}
+    .panel-overlay.open{display:block}
+    .panel{position:fixed;top:0;right:-480px;bottom:0;width:480px;background:#fff;z-index:70;box-shadow:-8px 0 30px rgba(0,0,0,.1);transition:right .25s ease;overflow-y:auto}
+    .panel.open{right:0}
+    .panel-header{padding:20px 24px;border-bottom:1px solid #EBEBEB;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2}
+    .panel-title{font-size:18px;font-weight:800}
+    .panel-close{width:32px;height:32px;border-radius:50%;border:none;background:#f7f7f7;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .12s;font-family:inherit}
+    .panel-close:hover{background:#EBEBEB}
+    .panel-body{padding:24px}
+    .panel-section{margin-bottom:20px}
+    .panel-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#6a6a6a;margin-bottom:10px}
+    .panel-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:14px}
+    .panel-stat:last-child{border-bottom:none}
+    .panel-stat-label{color:#6a6a6a}
+    .panel-stat-value{font-weight:700;color:#222}
+    .booking-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#fafafa;border-radius:8px;margin-bottom:6px}
+    .booking-item-name{font-size:14px;font-weight:600;color:#222}
+    .booking-item-status{font-size:12px;font-weight:700}
+    .status-going{color:#276749}
+    .status-maybe{color:#92400e}
+    .status-out{color:#c53030}
+    .no-data{font-size:13px;color:#b0b0b0;text-align:center;padding:20px 0}
+    .funding-track{background:#EBEBEB;border-radius:99px;height:8px;overflow:hidden;margin-top:8px}
+    .funding-fill{background:#3B6BFF;height:100%;border-radius:99px;transition:width .4s}
+    .funding-fill.complete{background:#10B981}
+
+    .promo-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid #EBEBEB;border-radius:8px;margin-bottom:8px}
+    .promo-item-code{font-size:14px;font-weight:700;color:#222}
+    .promo-item-meta{font-size:12px;color:#6a6a6a;margin-top:2px}
+    .promo-item-actions{display:flex;align-items:center;gap:8px}
+
+    .analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+
+    .empty-state{text-align:center;padding:48px 24px;color:#b0b0b0}
+    .empty-state p{font-size:14px;margin-top:8px}
+
+    .view{display:none}
+    .view.active{display:block}
+
+    @media(max-width:768px){
+      .sidebar{display:none}
+      .main{margin-left:0}
+      .main-header{padding:16px 20px}
+      .main-body{padding:16px 20px 40px}
+      .stats-row{grid-template-columns:1fr 1fr}
+      .form-row{grid-template-columns:1fr}
+      .panel{width:100%;right:-100%}
+    }
+    .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EBEBEB;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+    .mobile-nav-inner{display:flex;justify-content:space-around;padding:8px 0}
+    .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:#6a6a6a;cursor:pointer;padding:4px 8px}
+    .mn-item.active{color:#3B6BFF}
+    .mn-item svg{width:20px;height:20px}
+    @media(max-width:768px){.mobile-nav{display:block}body{padding-bottom:60px}}
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="logo">Sort<span>ora</span></div>
-    <div class="topbar-right">
-      <a class="nav-link active" href="/dashboard.html">Dashboard</a>
-      <a class="nav-link" href="/profile.html">Profile</a>
-      <span class="user-name" id="user-name"></span>
-      <a class="nav-link" onclick="signOut()">Sign out</a>
-    </div>
-  </div>
+
+  <aside class="sidebar">
+    <a class="sb-logo" href="/"><svg viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="sb-logo-text">Sortora</span></a>
+    <nav class="sb-nav">
+      <button class="sb-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Overview</button>
+      <button class="sb-item" onclick="showView('sessions',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Sessions</button>
+      <button class="sb-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</button>
+      <button class="sb-item" onclick="showView('promos',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Promos</button>
+      <div class="sb-divider"></div>
+      <a class="sb-item" href="/profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Edit Profile</a>
+      <button class="sb-item" onclick="viewPublicProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Public Page</button>
+    </nav>
+    <div class="sb-footer"><div class="sb-user" onclick="signOut()"><div class="sb-avatar" id="sb-avatar"></div><div class="sb-user-info"><div class="sb-user-name" id="sb-name">Provider</div><div class="sb-user-role">Sign out</div></div></div></div>
+  </aside>
 
   <div class="main">
-    <div class="page-title" id="welcome">Welcome back 👋</div>
-    <div class="page-sub">Manage your sessions and see who's coming.</div>
-
-    <div class="stat-grid">
-      <div class="stat"><div class="stat-num" id="stat-sessions">0</div><div class="stat-label">Sessions Created</div></div>
-      <div class="stat"><div class="stat-num" id="stat-bookings">0</div><div class="stat-label">Total Bookings</div></div>
-      <div class="stat"><div class="stat-num" id="stat-going">0</div><div class="stat-label">Confirmed Going</div></div>
-      <div class="stat"><div class="stat-num" id="stat-funded">0</div><div class="stat-label">Funded Sessions</div></div>
-      <div class="card" style="margin-top:24px">
-    <div class="card-title">&#128202; Analytics</div>
-    <div id="analytics-loading" style="font-size:14px;color:#8898AA;padding:8px 0">Loading...</div>
-    <div id="analytics-content" style="display:none">
-      <div class="analytics-grid" id="analytics-grid"></div>
-      <div style="font-size:12px;color:#8898AA;margin-top:8px">Revenue is your 95% share after platform fee.</div>
-    </div>
-  </div>
-  <div class="card" style="margin-top:24px">
-  <div class="card-title">🎟 Promo Codes</div>
-  <div class="row">
-    <div class="field"><label>Code</label><input type="text" id="promo-code" placeholder="e.g. SUMMER20" style="text-transform:uppercase"/></div>
-    <div class="field"><label>Discount %</label><input type="number" id="promo-discount" placeholder="20" min="1" max="100"/></div>
-  </div>
-  <div class="row">
-    <div class="field"><label>Max Uses (optional)</label><input type="number" id="promo-max" placeholder="Unlimited"/></div>
-    <div class="field"><label>Expires (optional)</label><input type="date" id="promo-expires"/></div>
-  </div>
-  <button class="btn" onclick="createPromo()" id="promo-btn">Create Promo Code</button>
-  <div class="success" id="promo-success" style="display:none">✓ Promo code created!</div>
-  <div class="error" id="promo-error" style="display:none"></div>
-  <div id="promo-list" style="margin-top:16px"></div>
-</div>
-    </div>
-
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title">📅 Create a Session</div>
-        <div class="field"><label>Session Title</label><input type="text" id="s-title" placeholder="e.g. Team Sports Photography"/></div>
-        <div class="field"><label>Description</label><textarea id="s-desc" placeholder="What's included, what to expect..."></textarea></div>
-        <div class="row">
-          <div class="field"><label>Date & Time</label><input type="datetime-local" id="s-date"/></div>
-          <div class="field"><label>Duration (mins)</label><input type="number" id="s-duration" placeholder="60"/></div>
+    <div class="view active" id="view-overview">
+      <div class="main-header"><div class="main-title" id="welcome-title">Dashboard</div><div class="main-actions"><button class="header-btn header-btn-primary" onclick="showView('sessions',document.querySelector('[onclick*=sessions]'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Session</button></div></div>
+      <div class="main-body">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-card-label">Sessions</div><div class="stat-card-value" id="ov-sessions">0</div><div class="stat-card-sub">created</div></div>
+          <div class="stat-card blue"><div class="stat-card-label">Bookings</div><div class="stat-card-value" id="ov-bookings">0</div><div class="stat-card-sub">total</div></div>
+          <div class="stat-card green"><div class="stat-card-label">Confirmed</div><div class="stat-card-value" id="ov-going">0</div><div class="stat-card-sub">going</div></div>
+          <div class="stat-card"><div class="stat-card-label">Funded</div><div class="stat-card-value" id="ov-funded">0</div><div class="stat-card-sub">sessions</div></div>
         </div>
-        <div class="row">
-          <div class="field"><label>Price per Person ($)</label><input type="number" id="s-price" placeholder="50" step="0.01"/></div>
-          <div class="field"><label>Max Spots</label><input type="number" id="s-spots" placeholder="10"/></div>
-        </div>
-        <div class="field"><label>Location</label><input type="text" id="s-location" placeholder="e.g. Seattle Central Park"/></div>
-        <div class="field">
-          <label>Session Type</label>
-          <select id="s-type">
-            <option value="false">Standard (individual booking)</option>
-            <option value="true">Group Funded (everyone chips in)</option>
-          </select>
-        </div>
-        <button class="btn" onclick="createSession()" id="create-btn">Payment Mode</div>
-      <div class="payment-toggle"><label><input type="radio" name="payment_mode" value="upfront" checked><span>Pay Upfront — customers pay immediately when booking</span></label><label><input type="radio" name="payment_mode" value="later"><span>Pay Later — customers register free, pay before the deadline</span></label></div>
-      Create Session</button>
-        <div class="success" id="create-success">✓ Session created!</div>
-        <div class="error" id="create-error"></div>
+        <div class="card"><div class="card-title">Recent Sessions <small id="ov-session-count"></small></div><div id="ov-sessions-list"></div></div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="card-title">📋 Your Sessions</div>
-        <div class="sessions-list" id="sessions-list">
-          <div class="empty">No sessions yet — create your first one.</div>
+    <div class="view" id="view-sessions">
+      <div class="main-header"><div class="main-title">Sessions</div></div>
+      <div class="main-body">
+        <div class="card">
+          <div class="card-title">Create a Session</div>
+          <div class="form-group"><label class="form-label">Session Title</label><input class="form-input" type="text" id="s-title" placeholder="e.g. Team Sports Photography"/></div>
+          <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="s-desc" placeholder="What's included, what to expect..."></textarea></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">Date & Time</label><input class="form-input" type="datetime-local" id="s-date"/></div><div class="form-group"><label class="form-label">Duration (mins)</label><input class="form-input" type="number" id="s-duration" placeholder="60"/></div></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">Price per Person ($)</label><input class="form-input" type="number" id="s-price" placeholder="50" step="0.01"/></div><div class="form-group"><label class="form-label">Max Spots</label><input class="form-input" type="number" id="s-spots" placeholder="10"/></div></div>
+          <div class="form-group"><label class="form-label">Location</label><input class="form-input" type="text" id="s-location" placeholder="e.g. Seattle Central Park"/></div>
+          <div class="form-group"><label class="form-label">Session Type</label><select class="form-input" id="s-type"><option value="false">Standard (individual booking)</option><option value="true">Group Funded (everyone chips in)</option></select></div>
+          <div class="form-group"><label class="form-label">Payment Mode</label><div class="toggle-group"><div class="toggle-opt active" id="pm-upfront" onclick="selectPayMode('upfront')">Pay Upfront</div><div class="toggle-opt" id="pm-later" onclick="selectPayMode('later')">Pay Later</div></div><div class="form-hint" id="pm-hint">Customers pay immediately when booking.</div></div>
+          <div class="form-group"><label class="form-label">Cover Image (optional)</label><div class="img-upload" onclick="document.getElementById('s-img-file').click()"><img id="s-img-preview" src=""/><div class="img-upload-hint" id="s-img-hint">Click to upload</div></div><input type="file" id="s-img-file" accept="image/*" style="display:none" onchange="handleSessionImgSelect(event)"/></div>
+          <button class="btn btn-primary" onclick="createSession()" id="create-btn" style="width:100%">Create Session</button>
+          <div class="alert-success" id="create-success">Session created!</div>
+          <div class="alert-error" id="create-error"></div>
         </div>
+        <div class="card" style="margin-top:4px"><div class="card-title">All Sessions <small id="all-session-count"></small></div><div id="all-sessions-list"></div></div>
+      </div>
+    </div>
+
+    <div class="view" id="view-analytics">
+      <div class="main-header"><div class="main-title">Analytics</div></div>
+      <div class="main-body"><div id="analytics-loading" style="color:#b0b0b0;padding:24px 0">Loading analytics...</div><div id="analytics-content" style="display:none"><div class="analytics-grid" id="analytics-grid"></div><div style="font-size:12px;color:#b0b0b0;margin-top:12px">Revenue reflects your 95% share after platform fee.</div></div></div>
+    </div>
+
+    <div class="view" id="view-promos">
+      <div class="main-header"><div class="main-title">Promo Codes</div></div>
+      <div class="main-body">
+        <div class="card">
+          <div class="card-title">Create Promo Code</div>
+          <div class="form-row"><div class="form-group"><label class="form-label">Code</label><input class="form-input" type="text" id="promo-code" placeholder="e.g. SUMMER20" style="text-transform:uppercase"/></div><div class="form-group"><label class="form-label">Discount %</label><input class="form-input" type="number" id="promo-discount" placeholder="20" min="1" max="100"/></div></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">Max Uses (optional)</label><input class="form-input" type="number" id="promo-max" placeholder="Unlimited"/></div><div class="form-group"><label class="form-label">Expires (optional)</label><input class="form-input" type="date" id="promo-expires"/></div></div>
+          <button class="btn btn-primary" onclick="createPromo()" id="promo-btn" style="width:100%">Create Promo Code</button>
+          <div class="alert-success" id="promo-success">Promo code created!</div>
+          <div class="alert-error" id="promo-error"></div>
+        </div>
+        <div class="card" style="margin-top:4px"><div class="card-title">Your Codes</div><div id="promo-list"></div></div>
       </div>
     </div>
   </div>
+
+  <div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+  <div class="panel" id="panel"><div class="panel-header"><div class="panel-title" id="panel-title">Session</div><button class="panel-close" onclick="closePanel()">&#10005;</button></div><div class="panel-body" id="panel-body"></div></div>
+
+  <div class="mobile-nav"><div class="mobile-nav-inner">
+    <div class="mn-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</div>
+    <div class="mn-item" onclick="showView('sessions',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Sessions</div>
+    <div class="mn-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Stats</div>
+    <div class="mn-item" onclick="showView('promos',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Promos</div>
+  </div></div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    var SB = window.supabase.createClient(
-      'https://gzwyzocfohtnejttkglg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
-    );
-    var currentUser = null;
-    var sessionsData = [];
+    var SB=window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
+    var currentUser=null,sessionsData=[],providerData=null;
+    var _sessionImageUrl=null,_sessionImageFile=null,selectedPayMode='upfront';
 
-    async function init() {
-      var r = await SB.auth.getSession();
-      if (!r.data.session) { window.location.href = '/login.html'; return; }
-      currentUser = r.data.session.user;
-      var pr = await SB.from('profiles').select('full_name,role').eq('id', currentUser.id).single();
-      if (pr.data) {
-        document.getElementById('user-name').textContent = pr.data.full_name;
-        document.getElementById('welcome').textContent = 'Welcome back, ' + pr.data.full_name.split(' ')[0] + ' 👋';
-        if (pr.data.role !== 'provider') { window.location.href = '/browse.html'; return; }
-      }
-      loadSessions();
-      loadPromos();
-      loadAnalytics();
+    function showView(id,el){
+      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+      document.getElementById('view-'+id).classList.add('active');
+      document.querySelectorAll('.sb-item').forEach(function(s){s.classList.remove('active')});
+      document.querySelectorAll('.mn-item').forEach(function(m){m.classList.remove('active')});
+      if(el)el.classList.add('active');
     }
 
-    async function loadSessions() {
-      var r = await SB.from('sessions')
-        .select('*, bookings(id, status, customer_id, profiles(full_name))')
-        .eq('provider_id', currentUser.id)
-        .order('session_date', {ascending: true});
-
-      sessionsData = r.data || [];
-
-      var totalBookings = 0;
-      var totalGoing = 0;
-      var totalFunded = 0;
-
-      sessionsData.forEach(function(s) {
-        var b = s.bookings || [];
-        totalBookings += b.length;
-        totalGoing += b.filter(function(x){return x.status==='going';}).length;
-        if (s.status === 'funded') totalFunded++;
-      });
-
-      document.getElementById('stat-sessions').textContent = sessionsData.length;
-      document.getElementById('stat-bookings').textContent = totalBookings;
-      document.getElementById('stat-going').textContent = totalGoing;
-      document.getElementById('stat-funded').textContent = totalFunded;
-
-      var list = document.getElementById('sessions-list');
-      if (!sessionsData.length) {
-        list.innerHTML = '<div class="empty">No sessions yet — create your first one.</div>';
-        return;
+    async function init(){
+      var r=await SB.auth.getSession();
+      if(!r.data.session){window.location.href='/login.html';return}
+      currentUser=r.data.session.user;
+      var pr=await SB.from('profiles').select('full_name,role').eq('id',currentUser.id).single();
+      if(pr.data){
+        if(pr.data.role!=='provider'){window.location.href='/browse.html';return}
+        document.getElementById('welcome-title').textContent='Welcome back, '+pr.data.full_name.split(' ')[0];
+        document.getElementById('sb-name').textContent=pr.data.full_name;
+        document.getElementById('sb-avatar').textContent=pr.data.full_name.charAt(0);
       }
+      var pv=await SB.from('providers').select('slug,avatar_url').eq('id',currentUser.id).single();
+      if(pv.data){
+        providerData=pv.data;
+        if(pv.data.avatar_url)document.getElementById('sb-avatar').innerHTML='<img src="'+pv.data.avatar_url.split('?')[0]+'?t=1">';
+      }
+      loadSessions();loadPromos();loadAnalytics();
+    }
 
-      list.innerHTML = sessionsData.map(function(s) {
-        var d = new Date(s.session_date);
-        var dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
-        var bookings = s.bookings || [];
-        var going = bookings.filter(function(b){return b.status==='going';}).length;
-        var maybe = bookings.filter(function(b){return b.status==='maybe';}).length;
-        var out = bookings.filter(function(b){return b.status==='out';}).length;
-        var maxSpots = s.max_spots || 0;
-        var pct = maxSpots > 0 ? Math.round((going / maxSpots) * 100) : 0;
+    async function loadSessions(){
+      var r=await SB.from('sessions').select('*, bookings(id, status, customer_id, profiles(full_name))').eq('provider_id',currentUser.id).order('session_date',{ascending:false});
+      sessionsData=r.data||[];
+      var tb=0,tg=0,tf=0;
+      sessionsData.forEach(function(s){var b=s.bookings||[];tb+=b.length;tg+=b.filter(function(x){return x.status==='going'}).length;if(s.status==='funded')tf++});
+      document.getElementById('ov-sessions').textContent=sessionsData.length;
+      document.getElementById('ov-bookings').textContent=tb;
+      document.getElementById('ov-going').textContent=tg;
+      document.getElementById('ov-funded').textContent=tf;
+      renderList('ov-sessions-list',sessionsData.slice(0,5));
+      document.getElementById('ov-session-count').textContent=sessionsData.length+' total';
+      renderList('all-sessions-list',sessionsData);
+      document.getElementById('all-session-count').textContent=sessionsData.length+' total';
+    }
 
-        var bookingRows = bookings.length ? bookings.map(function(b) {
-          var name = b.profiles ? b.profiles.full_name : 'Customer';
-          return '<div class="booking-row">'
-            + '<div><div class="booking-name">' + name + '</div></div>'
-            + '<span class="status-pill status-' + b.status + '">' + b.status + '</span>'
-            + '</div>';
-        }).join('') : '<div class="no-bookings">No bookings yet</div>';
-
-        var fundingBar = s.is_group_funded && maxSpots > 0 ? '<div class="funding-bar">'
-          + '<div class="funding-label"><span>Funding progress</span><span>' + going + ' / ' + maxSpots + ' spots (' + pct + '%)</span></div>'
-          + '<div class="bar-track"><div class="bar-fill ' + (pct>=100?'funded':'') + '" style="width:' + Math.min(pct,100) + '%"></div></div>'
-          + '</div>' : '';
-
-        return '<div class="session-item" id="si-' + s.id + '">'
-          + '<div class="session-header" onclick="toggleSession(\'' + s.id + '\')">'
-          + '<div>'
-          + '<div class="session-title">' + s.title + '</div>'
-          + '<div class="session-meta">$' + s.price_per_person + ' · ' + dateStr + ' · ' + going + ' going, ' + maybe + ' maybe, ' + out + ' out</div>'
-          + '</div>'
-          + '<div class="session-right">'
-          + '<span class="badge badge-' + s.status + '">' + s.status + '</span>'
-          + '<span class="chevron">▼</span>'
-          + '</div></div>'
-          + '<div class="session-body">'
-          + (s.location ? '<div style="font-size:13px;color:#8898AA;margin-top:12px">📍 ' + s.location + '</div>' : '')
-          + fundingBar
-          + '<div class="bookings-title">Bookings (' + bookings.length + ')</div>'
-          + bookingRows
-          + '<div style="margin-top:14px;display:flex;gap:8px">'
-          + '<button class="cancel-btn" onclick="cancelSession(\'' + s.id + '\')">Cancel Session</button>'
-          + '</div>'
-          + '</div></div>';
+    function renderList(cid,sessions){
+      var el=document.getElementById(cid);
+      if(!sessions.length){el.innerHTML='<div class="empty-state"><p>No sessions yet. Create your first one!</p></div>';return}
+      el.innerHTML=sessions.map(function(s){
+        var d=new Date(s.session_date);var ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});var ts=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+        var going=(s.bookings||[]).filter(function(b){return b.status==='going'}).length;
+        var pc=s.status==='open'?'pill-open':s.status==='funded'?'pill-funded':s.status==='cancelled'?'pill-cancelled':'pill-closed';
+        var img=s.image_url?'background-image:url('+s.image_url+')':'background:#e8ecf0';
+        return '<div class="session-row" onclick="openPanel(\''+s.id+'\')">'
+          +'<div class="session-row-img" style="'+img+'"></div>'
+          +'<div class="session-row-info"><div class="session-row-title">'+s.title+'</div>'
+          +'<div class="session-row-meta">'+ds+' · '+ts+(s.location?' · '+s.location:'')+'</div></div>'
+          +'<div class="session-row-right"><span class="pill '+pc+'">'+s.status+'</span>'
+          +'<div><div class="session-row-price">$'+parseFloat(s.price_per_person).toFixed(0)+'</div>'
+          +'<div class="session-row-spots">'+going+'/'+(s.max_spots||'\u221e')+' spots</div></div></div></div>';
       }).join('');
     }
 
-    function toggleSession(id) {
-      var el = document.getElementById('si-' + id);
-      el.classList.toggle('expanded');
+    function openPanel(sid){
+      var s=sessionsData.find(function(x){return x.id===sid});if(!s)return;
+      var d=new Date(s.session_date);var dl=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});var ts=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+      var bk=s.bookings||[];var going=bk.filter(function(b){return b.status==='going'}).length;var ms=s.max_spots||0;var pct=ms>0?Math.round(going/ms*100):0;
+      document.getElementById('panel-title').textContent=s.title;
+      var h='<div class="panel-section"><div class="panel-section-title">Details</div>';
+      h+='<div class="panel-stat"><span class="panel-stat-label">Date</span><span class="panel-stat-value">'+dl+'</span></div>';
+      h+='<div class="panel-stat"><span class="panel-stat-label">Time</span><span class="panel-stat-value">'+ts+'</span></div>';
+      if(s.duration_minutes)h+='<div class="panel-stat"><span class="panel-stat-label">Duration</span><span class="panel-stat-value">'+s.duration_minutes+' min</span></div>';
+      if(s.location)h+='<div class="panel-stat"><span class="panel-stat-label">Location</span><span class="panel-stat-value">'+s.location+'</span></div>';
+      h+='<div class="panel-stat"><span class="panel-stat-label">Price</span><span class="panel-stat-value">$'+parseFloat(s.price_per_person).toFixed(2)+'/person</span></div>';
+      h+='<div class="panel-stat"><span class="panel-stat-label">Payment</span><span class="panel-stat-value">'+(s.payment_mode==='later'?'Pay Later':'Upfront')+'</span></div>';
+      h+='<div class="panel-stat"><span class="panel-stat-label">Type</span><span class="panel-stat-value">'+(s.is_group_funded?'Group Funded':'Standard')+'</span></div></div>';
+      if(s.is_group_funded&&ms>0){h+='<div class="panel-section"><div class="panel-section-title">Funding Progress</div><div style="display:flex;justify-content:space-between;font-size:13px;color:#6a6a6a;margin-bottom:6px"><span>'+going+' of '+ms+' spots</span><span>'+pct+'%</span></div><div class="funding-track"><div class="funding-fill '+(pct>=100?'complete':'')+'" style="width:'+Math.min(pct,100)+'%"></div></div></div>'}
+      h+='<div class="panel-section"><div class="panel-section-title">Bookings ('+bk.length+')</div>';
+      if(!bk.length)h+='<div class="no-data">No bookings yet</div>';
+      else h+=bk.map(function(b){var n=b.profiles?b.profiles.full_name:'Customer';return '<div class="booking-item"><span class="booking-item-name">'+n+'</span><span class="booking-item-status status-'+b.status+'">'+b.status+'</span></div>'}).join('');
+      h+='</div>';
+      if(s.status!=='cancelled')h+='<div class="panel-section"><button class="btn btn-danger btn-sm" onclick="cancelSession(\''+s.id+'\')">Cancel Session</button></div>';
+      document.getElementById('panel-body').innerHTML=h;
+      document.getElementById('panel').classList.add('open');
+      document.getElementById('panel-overlay').classList.add('open');
     }
 
-    async function cancelSession(id) {
-      if (!confirm('Cancel this session? This cannot be undone.')) return;
-      await SB.from('sessions').update({status:'cancelled'}).eq('id', id);
-      loadSessions();
-    }
+    function closePanel(){document.getElementById('panel').classList.remove('open');document.getElementById('panel-overlay').classList.remove('open')}
 
-    async function createSession() {
-      var btn = document.getElementById('create-btn');
-      btn.disabled = true; btn.textContent = 'Creating...';
-      document.getElementById('create-success').style.display = 'none';
-      document.getElementById('create-error').style.display = 'none';
+    async function cancelSession(id){if(!confirm('Cancel this session? This cannot be undone.'))return;await SB.from('sessions').update({status:'cancelled'}).eq('id',id);closePanel();loadSessions()}
 
-      var title = document.getElementById('s-title').value.trim();
-      var desc = document.getElementById('s-desc').value.trim();
-      var date = document.getElementById('s-date').value;
-      var duration = document.getElementById('s-duration').value;
-      var price = document.getElementById('s-price').value;
-      var spots = document.getElementById('s-spots').value;
-      var location = document.getElementById('s-location').value.trim();
-      var grouped = document.getElementById('s-type').value === 'true';
+    function selectPayMode(m){selectedPayMode=m;document.getElementById('pm-upfront').classList.toggle('active',m==='upfront');document.getElementById('pm-later').classList.toggle('active',m==='later');document.getElementById('pm-hint').textContent=m==='upfront'?'Customers pay immediately when booking.':'Customers register free, pay before the deadline.'}
 
-      if (!title || !date || !price) {
-        document.getElementById('create-error').textContent = 'Please fill in title, date and price.';
-        document.getElementById('create-error').style.display = 'block';
-        btn.disabled = false; btn.textContent = 'Create Session'; return;
-      }
+    function handleSessionImgSelect(evt){var f=evt.target.files[0];if(!f)return;_sessionImageFile=f;var r=new FileReader();r.onload=function(e){var i=document.getElementById('s-img-preview');i.src=e.target.result;i.style.display='block';var h=document.getElementById('s-img-hint');if(h)h.style.display='none'};r.readAsDataURL(f)}
 
+    async function uploadSessionImage(){if(!_sessionImageFile)return;var SURL='https://gzwyzocfohtnejttkglg.supabase.co';var sess=await SB.auth.getSession();if(!sess.data.session)return;var uid=sess.data.session.user.id;var ext=_sessionImageFile.name.split('.').pop();var path=uid+'/'+Date.now()+'.'+ext;var res=await SB.storage.from('sessions').upload(path,_sessionImageFile,{upsert:true});if(!res.error)_sessionImageUrl=SURL+'/storage/v1/object/public/sessions/'+path}
+
+    async function createSession(){
+      var btn=document.getElementById('create-btn');btn.disabled=true;btn.textContent='Creating...';
+      document.getElementById('create-success').style.display='none';document.getElementById('create-error').style.display='none';
+      var title=document.getElementById('s-title').value.trim();var desc=document.getElementById('s-desc').value.trim();var date=document.getElementById('s-date').value;var duration=document.getElementById('s-duration').value;var price=document.getElementById('s-price').value;var spots=document.getElementById('s-spots').value;var location=document.getElementById('s-location').value.trim();var grouped=document.getElementById('s-type').value==='true';
+      if(!title||!date||!price){document.getElementById('create-error').textContent='Title, date and price are required.';document.getElementById('create-error').style.display='block';btn.disabled=false;btn.textContent='Create Session';return}
       await uploadSessionImage();
-      var r = await SB.from('sessions').insert({
-        provider_id: currentUser.id,
-        title: title,
-        description: desc,
-        session_date: new Date(date).toISOString(),
-        duration_minutes: duration ? parseInt(duration) : null,
-        price_per_person: parseFloat(price),
-        max_spots: spots ? parseInt(spots) : null,
-        location: location,
-        is_group_funded: grouped,
-        payment_mode: document.querySelector("input[name=payment_mode]:checked").value
-      });
-
-      if (r.error) {
-        document.getElementById('create-error').textContent = r.error.message;
-        document.getElementById('create-error').style.display = 'block';
-      } else {
-        document.getElementById('create-success').style.display = 'block';
-        document.getElementById('s-title').value = '';
-        document.getElementById('s-img-file').value = ''; document.getElementById('s-img-preview').src = ''; document.getElementById('s-img-preview').style.display = 'none'; document.getElementById('s-img-hint').style.display = ''; _sessionImageUrl = null; _sessionImageFile = null;
-        document.getElementById('s-desc').value = '';
-        document.getElementById('s-date').value = '';
-        document.getElementById('s-duration').value = '';
-        document.getElementById('s-price').value = '';
-        document.getElementById('s-spots').value = '';
-        document.getElementById('s-location').value = '';
-        loadSessions();
-      }
-      btn.disabled = false; btn.textContent = 'Create Session';
+      var r=await SB.from('sessions').insert({provider_id:currentUser.id,title:title,description:desc,session_date:new Date(date).toISOString(),duration_minutes:duration?parseInt(duration):null,price_per_person:parseFloat(price),max_spots:spots?parseInt(spots):null,location:location,is_group_funded:grouped,payment_mode:selectedPayMode,image_url:_sessionImageUrl||null});
+      if(r.error){document.getElementById('create-error').textContent=r.error.message;document.getElementById('create-error').style.display='block'}
+      else{document.getElementById('create-success').style.display='block';['s-title','s-desc','s-date','s-duration','s-price','s-spots','s-location'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('s-img-file').value='';var prev=document.getElementById('s-img-preview');prev.src='';prev.style.display='none';var hint=document.getElementById('s-img-hint');if(hint)hint.style.display='';_sessionImageUrl=null;_sessionImageFile=null;loadSessions()}
+      btn.disabled=false;btn.textContent='Create Session';
     }
 
-    async function signOut() {
-      await SB.auth.signOut();
-      window.location.href = '/login.html';
+    async function loadPromos(){
+      var r=await SB.from('promo_codes').select('*').eq('provider_id',currentUser.id).order('created_at',{ascending:false});
+      var el=document.getElementById('promo-list');
+      if(!r.data||!r.data.length){el.innerHTML='<div class="no-data">No promo codes yet.</div>';return}
+      el.innerHTML=r.data.map(function(p){
+        return '<div class="promo-item"><div><div class="promo-item-code">'+p.code+' \u2014 '+p.discount_percent+'% off</div><div class="promo-item-meta">'+p.uses+' uses'+(p.max_uses?' / '+p.max_uses:'')+(p.expires_at?' \u00B7 Expires '+new Date(p.expires_at).toLocaleDateString():'')+'</div></div>'
+          +'<div class="promo-item-actions"><span class="pill '+(p.active?'pill-funded':'pill-cancelled')+'">'+(p.active?'Active':'Inactive')+'</span>'
+          +'<button class="btn btn-sm" style="background:#f7f7f7;border:1px solid #EBEBEB;color:#222" onclick="togglePromo(\''+p.id+'\','+!p.active+')">'+(p.active?'Disable':'Enable')+'</button></div></div>';
+      }).join('');
     }
-async function createPromo() {
-  var btn = document.getElementById('promo-btn');
-  btn.disabled = true; btn.textContent = 'Creating...';
-  document.getElementById('promo-success').style.display = 'none';
-  document.getElementById('promo-error').style.display = 'none';
 
-  var code = document.getElementById('promo-code').value.trim().toUpperCase();
-  var discount = parseInt(document.getElementById('promo-discount').value);
-  var maxUses = document.getElementById('promo-max').value;
-  var expires = document.getElementById('promo-expires').value;
+    async function createPromo(){
+      var btn=document.getElementById('promo-btn');btn.disabled=true;btn.textContent='Creating...';
+      document.getElementById('promo-success').style.display='none';document.getElementById('promo-error').style.display='none';
+      var code=document.getElementById('promo-code').value.trim().toUpperCase();var discount=parseInt(document.getElementById('promo-discount').value);var maxUses=document.getElementById('promo-max').value;var expires=document.getElementById('promo-expires').value;
+      if(!code||!discount){document.getElementById('promo-error').textContent='Code and discount are required.';document.getElementById('promo-error').style.display='block';btn.disabled=false;btn.textContent='Create Promo Code';return}
+      var r=await SB.from('promo_codes').insert({provider_id:currentUser.id,code:code,discount_percent:discount,max_uses:maxUses?parseInt(maxUses):null,expires_at:expires?new Date(expires).toISOString():null});
+      if(r.error){document.getElementById('promo-error').textContent=r.error.message;document.getElementById('promo-error').style.display='block'}
+      else{document.getElementById('promo-success').style.display='block';['promo-code','promo-discount','promo-max','promo-expires'].forEach(function(id){document.getElementById(id).value=''});loadPromos()}
+      btn.disabled=false;btn.textContent='Create Promo Code';
+    }
 
-  if (!code || !discount) {
-    document.getElementById('promo-error').textContent = 'Code and discount are required.';
-    document.getElementById('promo-error').style.display = 'block';
-    btn.disabled = false; btn.textContent = 'Create Promo Code'; return;
-  }
+    async function togglePromo(id,active){await SB.from('promo_codes').update({active:active}).eq('id',id);loadPromos()}
 
-  var r = await SB.from('promo_codes').insert({
-    provider_id: currentUser.id,
-    code,
-    discount_percent: discount,
-    max_uses: maxUses ? parseInt(maxUses) : null,
-    expires_at: expires ? new Date(expires).toISOString() : null
-  });
+    async function loadAnalytics(){
+      var r=await fetch('/api/analytics?providerId='+currentUser.id);var data=await r.json();
+      if(data.error){document.getElementById('analytics-loading').textContent='Could not load analytics.';return}
+      document.getElementById('analytics-loading').style.display='none';document.getElementById('analytics-content').style.display='block';
+      var stats=[{label:'Total Revenue',value:'$'+parseFloat(data.totalRevenue).toFixed(0),sub:'all time (95% share)',cls:'green'},{label:'Last 30 Days',value:'$'+parseFloat(data.recentRevenue).toFixed(0),sub:'revenue',cls:'blue'},{label:'Total Bookings',value:data.totalBookings,sub:data.goingCount+' going / '+data.maybeCount+' maybe',cls:''},{label:'Conversion',value:data.conversionRate+'%',sub:'going / total',cls:''},{label:'Sessions',value:data.totalSessions,sub:data.activeSessions+' active',cls:''}];
+      document.getElementById('analytics-grid').innerHTML=stats.map(function(s){return '<div class="stat-card '+s.cls+'"><div class="stat-card-label">'+s.label+'</div><div class="stat-card-value">'+s.value+'</div><div class="stat-card-sub">'+s.sub+'</div></div>'}).join('');
+    }
 
-  if (r.error) {
-    document.getElementById('promo-error').textContent = r.error.message;
-    document.getElementById('promo-error').style.display = 'block';
-  } else {
-    document.getElementById('promo-success').style.display = 'block';
-    document.getElementById('promo-code').value = '';
-    document.getElementById('promo-discount').value = '';
-    document.getElementById('promo-max').value = '';
-    document.getElementById('promo-expires').value = '';
-    loadPromos();
-  }
-  btn.disabled = false; btn.textContent = 'Create Promo Code';
-}
-
-async function loadPromos() {
-  var r = await SB.from('promo_codes').select('*').eq('provider_id', currentUser.id).order('created_at', {ascending: false});
-  var list = document.getElementById('promo-list');
-  if (!r.data || !r.data.length) { list.innerHTML = ''; return; }
-  list.innerHTML = '<div style="font-size:13px;font-weight:700;color:#0A2540;margin-bottom:10px">Your Codes</div>'
-    + r.data.map(function(p) {
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F6F9FC;border-radius:10px;margin-bottom:6px">'
-        + '<div>'
-        + '<div style="font-size:14px;font-weight:700;color:#0A2540">' + p.code + ' — ' + p.discount_percent + '% off</div>'
-        + '<div style="font-size:12px;color:#8898AA">' + p.uses + ' uses' + (p.max_uses ? ' / ' + p.max_uses : '') + '</div>'
-        + '</div>'
-        + '<div style="display:flex;gap:8px;align-items:center">'
-        + '<span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:' + (p.active ? '#ECFDF5' : '#FEF2F2') + ';color:' + (p.active ? '#065F46' : '#991B1B') + '">' + (p.active ? 'Active' : 'Inactive') + '</span>'
-        + '<button onclick="togglePromo(\'' + p.id + '\',' + !p.active + ')" style="padding:5px 10px;background:#fff;border:2px solid #E8EDF2;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">' + (p.active ? 'Disable' : 'Enable') + '</button>'
-        + '</div></div>';
-    }).join('');
-}
-
-async function togglePromo(id, active) {,
-        image_url: _sessionImageUrl || null
-  await SB.from('promo_codes').update({ active }).eq('id', id);
-  loadPromos();
-}
-    
+    function viewPublicProfile(){if(providerData&&providerData.slug)window.open('/p/'+providerData.slug,'_blank');else window.location.href='/profile.html'}
+    async function signOut(){await SB.auth.signOut();window.location.href='/login.html'}
     init();
-
-    async function loadAnalytics() {
-      var r = await fetch("/api/analytics?providerId=" + currentUser.id);
-      var data = await r.json();
-      if (data.error) { document.getElementById("analytics-loading").textContent = "Could not load analytics."; return; }
-      document.getElementById("analytics-loading").style.display = "none";
-      document.getElementById("analytics-content").style.display = "block";
-      var stats = [
-        { label: "Total Revenue", value: "$" + parseFloat(data.totalRevenue).toFixed(0), sub: "all time (95% share)", cls: "green" },
-        { label: "Last 30 Days", value: "$" + parseFloat(data.recentRevenue).toFixed(0), sub: "revenue", cls: "blue" },
-        { label: "Total Bookings", value: data.totalBookings, sub: data.goingCount + " going / " + data.maybeCount + " maybe", cls: "" },
-        { label: "Conversion", value: data.conversionRate + "%", sub: "going / total", cls: "" },
-        { label: "Sessions", value: data.totalSessions, sub: data.activeSessions + " active", cls: "" }
-      ];
-      document.getElementById("analytics-grid").innerHTML = stats.map(function(s) {
-        return "<div class=\"stat-card " + s.cls + "\">" +
-          "<div class=\"stat-label\">" + s.label + "</div>" +
-          "<div class=\"stat-value\">" + s.value + "</div>" +
-          "<div class=\"stat-sub\">" + s.sub + "</div>" +
-          "</div>";
-      }).join("");
-    }
-  
-      var _sessionImageUrl = null;
-      var _sessionImageFile = null;
-
-      function handleSessionImgSelect(evt) {
-        var file = evt.target.files[0];
-        if (!file) return;
-        _sessionImageFile = file;
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var img = document.getElementById('s-img-preview');
-          img.src = e.target.result; img.style.display = 'block';
-          var hint = document.getElementById('s-img-hint');
-          if (hint) hint.style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-      }
-
-      async function uploadSessionImage() {
-        if (!_sessionImageFile) return;
-        var SURL = 'https://gzwyzocfohtnejttkglg.supabase.co';
-        var sess = await SB.auth.getSession();
-        if (!sess.data.session) return;
-        var uid = sess.data.session.user.id;
-        var ext = _sessionImageFile.name.split('.').pop();
-        var path = uid + '/' + Date.now() + '.' + ext;
-        var res = await SB.storage.from('sessions').upload(path, _sessionImageFile, {upsert:true});
-        if (!res.error) _sessionImageUrl = SURL + '/storage/v1/object/public/sessions/' + path;
-      }
-  
-    </script>
+  </script>
 </body>
 </html>
