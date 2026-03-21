@@ -4,12 +4,12 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Browse Sessions — Sortora</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
       --ink:#0C1220;
-      --blue:#3D63FF;
+      --blue:#3B6BFF;
       --blue-light:#6B8EFF;
       --blue-pale:#EEF2FF;
       --gray-50:#F8FAFC;
@@ -41,8 +41,9 @@
 
     /* ── Top Nav ── */
     .nav{position:sticky;top:0;z-index:50;background:var(--white);border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:80px}
-    .nav-logo{font-size:22px;font-weight:800;color:var(--ink);text-decoration:none;letter-spacing:-.03em;flex-shrink:0}
-    .nav-logo span{color:var(--blue)}
+    .nav-logo{text-decoration:none;flex-shrink:0;display:flex;align-items:center;gap:8px}
+    .logo-mark{display:block;width:36px;height:36px}
+    .logo-text{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:#3B6BFF;letter-spacing:-0.5px}
 
     /* Center Tabs (Airbnb style) */
     .nav-tabs{display:flex;align-items:center;gap:0;position:absolute;left:50%;transform:translateX(-50%)}
@@ -198,7 +199,15 @@
 
   <!-- ── Top Nav ── -->
   <nav class="nav">
-    <a class="nav-logo" href="/">Sort<span>ora</span></a>
+    <a class="nav-logo" href="/">
+      <svg class="logo-mark" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/>
+        <circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/>
+        <circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/>
+        <path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Sortora</span>
+    </a>
     <div class="nav-tabs">
       <a class="nav-tab active" href="/browse.html">
         <div class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
