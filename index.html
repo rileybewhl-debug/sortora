@@ -1,172 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sortora — Smart Group Booking</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{--blue:#3D63FF;--blue-dim:rgba(61,99,255,0.12);--blue-border:rgba(61,99,255,0.25);--teal:#00D4AA;--teal-dim:rgba(0,212,170,0.1);--ink:#060E1C;--ink2:#0C1828;--ink3:#111F35;--stone:#F6F9FC;--slate:rgba(255,255,255,0.45);--muted:rgba(255,255,255,0.18);--border:rgba(255,255,255,0.07)}
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--ink);font-family:'Plus Jakarta Sans',-apple-system,sans-serif;color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:rgba(6,14,28,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}.nav-logo span{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.04em}
-.nav-links{display:flex;align-items:center;gap:32px;list-style:none}.nav-links a{font-size:13px;font-weight:600;color:var(--slate);text-decoration:none;transition:color .2s}.nav-links a:hover{color:#fff}
-.nav-cta{background:var(--blue);color:#fff !important;padding:9px 20px;border-radius:10px;font-size:13px !important;font-weight:700 !important}
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 80px;text-align:center;overflow:hidden}
-.hero::after{content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(61,99,255,0.18) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;color:#8BABFF;letter-spacing:.05em;text-transform:uppercase;margin-bottom:32px;position:relative;z-index:1;animation:fadeUp .6s ease both}
-.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-h1{font-size:clamp(42px,7vw,80px);font-weight:900;line-height:1.05;letter-spacing:-0.04em;max-width:860px;position:relative;z-index:1;animation:fadeUp .6s .1s ease both}
-h1 .accent{color:var(--blue)}h1 .accent-teal{color:var(--teal)}
-.hero-sub{font-size:clamp(16px,2vw,19px);color:var(--slate);line-height:1.65;max-width:600px;margin:24px auto 0;font-weight:500;position:relative;z-index:1;animation:fadeUp .6s .2s ease both}
-.waitlist-form{display:flex;align-items:center;gap:10px;margin:40px auto 0;max-width:480px;position:relative;z-index:1;animation:fadeUp .6s .3s ease both}
-.waitlist-form input{flex:1;height:52px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:0 20px;font-size:15px;font-family:inherit;color:#fff;outline:none;transition:border-color .2s}
-.waitlist-form input::placeholder{color:rgba(255,255,255,0.28)}.waitlist-form input:focus{border-color:rgba(61,99,255,0.5)}
-.btn-primary{height:52px;padding:0 28px;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:-0.01em}
-.btn-primary:hover{background:#5578ff;transform:translateY(-1px)}
-.form-note{font-size:12px;color:var(--muted);margin-top:12px;position:relative;z-index:1;animation:fadeUp .6s .35s ease both}
-.social-proof{display:flex;align-items:center;gap:16px;margin-top:48px;position:relative;z-index:1;animation:fadeUp .6s .4s ease both}
-.avatars{display:flex}.avatars span{width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);margin-left:-8px;font-size:14px;display:flex;align-items:center;justify-content:center}.avatars span:first-child{margin-left:0}
-.sp-text{font-size:13px;color:var(--slate);font-weight:500}.sp-text strong{color:#fff}
-.preview-section{padding:0 24px 100px;max-width:1100px;margin:0 auto}
-.preview-card{background:var(--ink2);border:1px solid var(--border);border-radius:24px;overflow:hidden}
-.preview-topbar{display:flex;align-items:center;gap:8px;padding:16px 20px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
-.dot{width:11px;height:11px;border-radius:50%}.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#27c840}
-.preview-url{flex:1;text-align:center;font-size:12px;color:var(--muted);background:rgba(255,255,255,0.04);border-radius:8px;padding:5px 12px;max-width:260px;margin:0 auto}
-.preview-body{padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.session-card{background:var(--ink3);border:1px solid var(--border);border-radius:16px;padding:20px}
-.session-card.highlight{border-color:var(--blue-border);background:rgba(61,99,255,0.06)}
-.sc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-.sc-title{font-size:13px;font-weight:800;letter-spacing:-0.02em}
-.sc-badge{font-size:10px;font-weight:700;padding:4px 9px;border-radius:100px;letter-spacing:.04em;text-transform:uppercase}
-.sc-badge.funded{background:rgba(0,212,170,0.15);color:var(--teal)}.sc-badge.open{background:var(--blue-dim);color:#8BABFF}
-.sc-meta{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6}
-.progress-wrap{background:rgba(255,255,255,0.06);border-radius:100px;height:5px;margin-bottom:10px;overflow:hidden}
-.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--teal))}
-.sc-footer{display:flex;justify-content:space-between;align-items:center;font-size:11px}
-.sc-members{color:var(--muted)}.sc-amount{font-weight:800;font-size:13px;color:var(--teal)}
-.attendee-list{display:flex;flex-direction:column;gap:8px}
-.attendee-row{display:flex;align-items:center;justify-content:space-between;font-size:12px}
-.attendee-name{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7)}
-.attendee-avatar{width:24px;height:24px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
-.status-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.03em}
-.going{background:rgba(0,212,170,0.14);color:var(--teal)}.maybe{background:rgba(255,200,80,0.12);color:#FFD060}.out{background:rgba(255,80,80,0.1);color:#FF7070}
-.ai-row{grid-column:1/-1;background:linear-gradient(135deg,rgba(61,99,255,0.08),rgba(0,212,170,0.06));border:1px solid rgba(61,99,255,0.2);border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:14px}
-.ai-icon{width:36px;height:36px;border-radius:10px;background:var(--blue-dim);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.ai-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5}.ai-text strong{color:#fff}
-.ai-sessions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.ai-pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;background:var(--blue-dim);border:1px solid var(--blue-border);color:#8BABFF}
-section{padding:100px 24px}.container{max-width:1100px;margin:0 auto}
-.section-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
-.section-title{font-size:clamp(32px,4.5vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:18px}
-.section-sub{font-size:17px;color:var(--slate);line-height:1.65;max-width:560px;font-weight:500}
-.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;position:relative}
-.how-step{padding:32px 28px;background:var(--ink2);border:1px solid var(--border);border-radius:20px;margin:1px;transition:border-color .2s}
-.how-step:hover{border-color:var(--blue-border)}
-.step-num{width:40px;height:40px;border-radius:12px;background:var(--blue-dim);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--blue);margin-bottom:20px}
-.step-title{font-size:15px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px}
-.step-desc{font-size:13px;color:var(--muted);line-height:1.65}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px}
-.feature-card{background:var(--ink2);border:1px solid var(--border);border-radius:20px;padding:28px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
-.feature-card:hover{border-color:rgba(61,99,255,0.3);transform:translateY(-2px)}
-.feature-card.wide{grid-column:span 2}
-.feature-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px}
-.fi-blue{background:var(--blue-dim);border:1px solid var(--blue-border)}.fi-teal{background:var(--teal-dim);border:1px solid rgba(0,212,170,0.2)}.fi-gold{background:rgba(255,200,80,0.1);border:1px solid rgba(255,200,80,0.2)}.fi-purple{background:rgba(160,80,255,0.1);border:1px solid rgba(160,80,255,0.2)}
-.feature-title{font-size:16px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px}
-.feature-desc{font-size:13px;color:var(--muted);line-height:1.65}
-.wide-inner{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
-.wide-visual{background:var(--ink3);border:1px solid var(--border);border-radius:14px;padding:18px}
-.schedule-rows{display:flex;flex-direction:column;gap:8px}
-.schedule-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid var(--border)}
-.sr-day{color:var(--muted);width:60px}.sr-name{color:rgba(255,255,255,0.8);font-weight:600}
-.sr-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
-.sr-new{background:rgba(61,99,255,0.15);color:#8BABFF}.sr-full{background:rgba(0,212,170,0.12);color:var(--teal)}.sr-open{background:rgba(255,255,255,0.06);color:var(--muted)}
-.for-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:60px}
-.for-card{background:var(--ink2);border:1px solid var(--border);border-radius:24px;padding:40px;position:relative;overflow:hidden}
-.for-card.provider{border-color:var(--blue-border);background:linear-gradient(135deg,rgba(61,99,255,0.06),transparent)}
-.for-card.group{border-color:rgba(0,212,170,0.2);background:linear-gradient(135deg,rgba(0,212,170,0.06),transparent)}
-.for-eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
-.for-eyebrow.blue{color:var(--blue)}.for-eyebrow.teal{color:var(--teal)}
-.for-title{font-size:26px;font-weight:900;letter-spacing:-0.04em;margin-bottom:14px;line-height:1.15}
-.for-desc{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:28px}
-.for-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.for-list li{font-size:13px;color:rgba(255,255,255,0.65);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
-.for-list li::before{content:'✓';font-weight:800;flex-shrink:0;margin-top:1px}
-.for-card.provider .for-list li::before{color:var(--blue)}.for-card.group .for-list li::before{color:var(--teal)}
-.for-types{display:flex;flex-wrap:wrap;gap:7px;margin-top:24px}
-.for-type{font-size:12px;font-weight:600;padding:6px 13px;border-radius:100px;border:1px solid var(--border);color:var(--muted)}
-.funding-callout{background:linear-gradient(135deg,rgba(61,99,255,0.1),rgba(0,212,170,0.06));border:1px solid var(--blue-border);border-radius:28px;padding:60px;text-align:center;position:relative;overflow:hidden;margin-top:60px}
-.funding-label{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.25);border-radius:100px;padding:6px 14px;font-size:11px;font-weight:800;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px}
-.funding-title{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;max-width:680px;margin:0 auto 18px}
-.funding-sub{font-size:16px;color:var(--slate);max-width:520px;margin:0 auto 40px;line-height:1.65}
-.funding-stats{display:flex;justify-content:center;gap:48px}
-.fstat{text-align:center}.fstat-num{font-size:36px;font-weight:900;letter-spacing:-0.04em;color:var(--teal);display:block}.fstat-label{font-size:13px;color:var(--muted);margin-top:4px}
-.final-cta{text-align:center;padding:100px 24px 140px}
-.final-cta h2{font-size:clamp(36px,5.5vw,64px);font-weight:900;letter-spacing:-0.04em;line-height:1.08;max-width:780px;margin:0 auto 20px}
-.final-cta p{font-size:17px;color:var(--slate);margin-bottom:44px}
-footer{border-top:1px solid var(--border);padding:40px 24px;display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto}
-.footer-logo{display:flex;align-items:center;gap:9px;text-decoration:none}.footer-logo span{font-size:16px;font-weight:900;color:#fff;letter-spacing:-0.04em}
-.footer-copy{font-size:12px;color:var(--muted)}
-.success-msg{display:none;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--teal);background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.2);border-radius:14px;padding:14px 20px;margin-top:12px;justify-content:center}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}.reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:768px){nav{padding:0 20px}.nav-links{display:none}.waitlist-form{flex-direction:column}.waitlist-form input,.btn-primary{width:100%}.preview-body{grid-template-columns:1fr}.how-grid{grid-template-columns:1fr 1fr}.features-grid{grid-template-columns:1fr}.feature-card.wide{grid-column:span 1}.wide-inner{grid-template-columns:1fr}.for-grid{grid-template-columns:1fr}.funding-stats{gap:28px}.funding-callout{padding:40px 24px}footer{flex-direction:column;gap:12px}}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Sortora — Book Local Sessions Together</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#222;-webkit-font-smoothing:antialiased}
+
+    /* ── Nav ── */
+    .nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:72px}
+    .nav-logo{text-decoration:none;display:flex;align-items:center;gap:8px}
+    .logo-text{font-weight:800;font-size:22px;color:#fff;letter-spacing:-.5px}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-link{font-size:14px;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;padding:8px 16px;border-radius:22px;transition:all .15s}
+    .nav-link:hover{background:rgba(255,255,255,.12);color:#fff}
+    .nav-btn{font-size:14px;font-weight:700;padding:9px 20px;border-radius:8px;text-decoration:none;cursor:pointer;font-family:inherit;transition:all .15s}
+    .nav-btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+    .nav-btn-ghost:hover{background:rgba(255,255,255,.18)}
+    .nav-btn-white{background:#fff;color:#222;border:1px solid #fff}
+    .nav-btn-white:hover{background:#f0f0f0}
+
+    /* ── Hero ── */
+    .hero{position:relative;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#0C1220}
+    .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0C1220 0%,#112040 30%,#1a2d5c 60%,#0C1220 100%);z-index:0}
+    .hero-glow1{position:absolute;top:-20%;right:10%;width:500px;height:500px;background:radial-gradient(circle,rgba(59,107,255,.2) 0%,transparent 70%);z-index:1;pointer-events:none}
+    .hero-glow2{position:absolute;bottom:-10%;left:5%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.12) 0%,transparent 70%);z-index:1;pointer-events:none}
+    .hero-content{position:relative;z-index:2;text-align:center;max-width:720px;padding:100px 24px 60px}
+    .hero-tag{display:inline-block;padding:6px 16px;border-radius:99px;background:rgba(59,107,255,.15);border:1px solid rgba(59,107,255,.25);color:#3B6BFF;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:20px}
+    .hero-title{font-size:clamp(36px,6vw,56px);font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1.1;margin-bottom:16px}
+    .hero-title span{color:#3B6BFF}
+    .hero-sub{font-size:18px;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto 36px;line-height:1.5;font-weight:500}
+
+    /* Search capsule */
+    .search-capsule{max-width:600px;margin:0 auto;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:60px;overflow:hidden;backdrop-filter:blur(8px);transition:all .2s}
+    .search-capsule:focus-within{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+    .search-seg{flex:1;padding:14px 24px}
+    .search-seg input{width:100%;border:none;outline:none;background:transparent;font-size:15px;font-family:inherit;color:#fff}
+    .search-seg input::placeholder{color:rgba(255,255,255,.4)}
+    .search-seg-divider{width:1px;height:24px;background:rgba(255,255,255,.12);flex-shrink:0}
+    .search-go{width:48px;height:48px;border-radius:50%;background:#3B6BFF;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:4px;flex-shrink:0;transition:all .15s}
+    .search-go:hover{background:#2d5ae6;transform:scale(1.05)}
+    .search-go svg{color:#fff;width:20px;height:20px}
+
+    .hero-cats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+    .hero-cat{padding:7px 16px;border-radius:99px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none}
+    .hero-cat:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)}
+
+    /* ── Content ── */
+    .content{max-width:1280px;margin:0 auto;padding:48px 24px 0}
+    .section{margin-bottom:56px}
+    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .section-title{font-size:24px;font-weight:800;color:#222;letter-spacing:-.03em}
+    .section-link{font-size:14px;font-weight:600;color:#222;text-decoration:underline;cursor:pointer;display:flex;align-items:center;gap:4px;transition:color .15s}
+    .section-link:hover{color:#3B6BFF}
+    .section-link svg{width:16px;height:16px;transition:transform .15s}
+    .section-link:hover svg{transform:translateX(3px)}
+
+    /* Session cards (Airbnb style) */
+    .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+    .s-card{cursor:pointer;transition:all .2s}
+    .s-card:hover .s-card-img{transform:scale(1.02)}
+    .s-card-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:12px;background-color:#0C1220;transition:transform .25s;position:relative;overflow:hidden}
+    .s-card-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#0C1220,#1a2d50);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;transition:transform .25s;position:relative;overflow:hidden}
+    .s-card:hover .s-card-placeholder{transform:scale(1.02)}
+    .s-card-badge{position:absolute;top:10px;left:10px}
+    .s-badge{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;background:#fff;color:#222;box-shadow:0 2px 4px rgba(0,0,0,.08)}
+    .s-card-info{padding:10px 2px 0}
+    .s-card-title{font-size:15px;font-weight:700;color:#222;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .s-card-provider{font-size:13px;color:#6a6a6a;margin-bottom:2px}
+    .s-card-date{font-size:13px;color:#6a6a6a;margin-bottom:4px}
+    .s-card-price{font-size:15px;font-weight:800;color:#222}
+    .s-card-price small{font-size:13px;font-weight:400;color:#6a6a6a}
+
+    .loading-text{text-align:center;padding:40px;color:#b0b0b0;font-size:14px}
+
+    /* ── Categories Grid ── */
+    .cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+    .cat-card{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 16px;border:1px solid #EBEBEB;border-radius:12px;cursor:pointer;transition:all .15s;text-decoration:none;color:#222}
+    .cat-card:hover{border-color:#3B6BFF;background:#f8f9ff}
+    .cat-icon{font-size:28px}
+    .cat-name{font-size:13px;font-weight:700;text-align:center}
+
+    /* ── Provider CTA ── */
+    .provider-cta{background:#0C1220;border-radius:20px;padding:60px 40px;display:flex;align-items:center;justify-content:space-between;gap:40px;margin-bottom:56px;position:relative;overflow:hidden}
+    .provider-cta-glow{position:absolute;right:-5%;top:-30%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.2) 0%,transparent 70%);pointer-events:none}
+    .provider-cta-content{position:relative;z-index:1;max-width:480px}
+    .provider-cta-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:12px;line-height:1.2}
+    .provider-cta-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:24px}
+    .provider-cta-btn{display:inline-block;padding:14px 32px;background:#3B6BFF;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;font-family:inherit}
+    .provider-cta-btn:hover{background:#2d5ae6;transform:translateY(-1px)}
+    .provider-cta-stats{position:relative;z-index:1;display:flex;gap:32px}
+    .pcs{text-align:center}
+    .pcs-num{font-size:32px;font-weight:800;color:#3B6BFF}
+    .pcs-label{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px}
+
+    /* ── How It Works ── */
+    .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .how-card{text-align:center;padding:32px 20px}
+    .how-num{width:40px;height:40px;border-radius:50%;background:#EEF2FF;color:#3B6BFF;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .how-title{font-size:16px;font-weight:800;color:#222;margin-bottom:8px}
+    .how-desc{font-size:14px;color:#6a6a6a;line-height:1.6}
+
+    /* ── Footer ── */
+    .footer{background:#fafafa;border-top:1px solid #EBEBEB;padding:40px 24px;margin-top:24px}
+    .footer-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .footer-logo-text{font-weight:800;font-size:18px;color:#3B6BFF;letter-spacing:-.5px}
+    .footer-copy{font-size:13px;color:#b0b0b0}
+    .footer-links{display:flex;gap:16px}
+    .footer-link{font-size:13px;font-weight:600;color:#6a6a6a;text-decoration:none;transition:color .15s}
+    .footer-link:hover{color:#222}
+
+    /* ── Mobile ── */
+    @media(max-width:768px){
+      .nav{padding:0 16px;height:60px}
+      .nav-link{display:none}
+      .hero{min-height:480px}
+      .hero-content{padding:80px 20px 40px}
+      .hero-title{font-size:32px}
+      .hero-sub{font-size:16px}
+      .search-capsule{flex-direction:column;border-radius:16px;gap:0}
+      .search-seg{padding:12px 20px}
+      .search-seg-divider{width:100%;height:1px}
+      .search-go{width:100%;border-radius:12px;margin:8px;height:44px}
+      .hero-cats{display:none}
+      .content{padding:32px 16px 0}
+      .section-title{font-size:20px}
+      .sessions-grid{grid-template-columns:1fr 1fr;gap:16px}
+      .cats-grid{grid-template-columns:repeat(3,1fr)}
+      .how-grid{grid-template-columns:1fr;gap:8px}
+      .provider-cta{flex-direction:column;padding:40px 24px;text-align:center}
+      .provider-cta-stats{justify-content:center}
+      .footer-inner{flex-direction:column;gap:16px;text-align:center}
+      .footer-links{justify-content:center}
+    }
+    @media(max-width:480px){
+      .sessions-grid{grid-template-columns:1fr}
+      .cats-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .hero-content{animation:fadeUp .5s ease both}
+    .section{animation:fadeUp .4s ease both}
+    .section:nth-child(1){animation-delay:.1s}
+    .section:nth-child(2){animation-delay:.15s}
+    .section:nth-child(3){animation-delay:.2s}
+  </style>
 </head>
 <body>
-<nav>
-  <a class="nav-logo" href="/">
-    <svg width="28" height="26" viewBox="-6 -6 50 46" fill="none"><circle cx="8" cy="32" r="7" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.2"/><circle cx="30" cy="32" r="7" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.2"/><path d="M8 32 Q19 4 30 32" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/><circle cx="19" cy="5" r="7" fill="#3D63FF"/></svg>
-    <span>Sortora</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#who">Who it's for</a></li>
-    <li><a href="#waitlist" class="nav-cta">Join waitlist</a></li>
-  </ul>
-</nav>
-<section class="hero">
-  <div class="hero-badge"><div class="hero-badge-dot"></div>Now in early access</div>
-  <h1>The smarter way to<br><span class="accent">book, manage</span> &amp;<br><span class="accent-teal">fund sessions</span></h1>
-  <p class="hero-sub">Sortora helps service providers set up intelligent recurring sessions — and lets groups sign up, track attendance, and split costs automatically. No chasing. No fronting cash. Just sessions that run themselves.</p>
-  <form class="waitlist-form" id="waitlistForm">
-    <input type="email" id="emailInput" placeholder="Enter your email" required>
-    <button type="submit" class="btn-primary">Join waitlist</button>
-  </form>
-  <p class="form-note">Free to join · No card needed · Be first when we launch</p>
-  <div class="success-msg" id="successMsg">&#10003;&nbsp; You're on the list — we'll be in touch soon.</div>
-  <div class="social-proof">
-    <div class="avatars">
-      <span style="background:#3D63FF;">🏋️</span><span style="background:#1a3060;">📸</span><span style="background:#0a4040;">🎵</span><span style="background:#2a1060;">🍳</span>
+
+  <!-- Nav (overlays hero) -->
+  <nav class="nav">
+    <a class="nav-logo" href="/">
+      <svg width="36" height="36" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#fff"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <span class="logo-text">Sortora</span>
+    </a>
+    <div class="nav-right">
+      <a class="nav-link" href="/browse.html">Browse</a>
+      <a class="nav-link" href="/signup.html?role=provider">List your service</a>
+      <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
+      <a class="nav-btn nav-btn-white" href="/signup.html">Sign up</a>
     </div>
-    <p class="sp-text">Photographers, DJs, trainers &amp; chefs <strong>already on the waitlist</strong></p>
-  </div>
-</section>
-<div class="preview-section">
-  <div class="preview-card reveal">
-    <div class="preview-topbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="preview-url">app.sortora.com / sessions</div></div>
-    <div class="preview-body">
-      <div class="ai-row"><div class="ai-icon">✦</div><div class="ai-text"><strong>AI detected your schedule</strong> — generated 4 recurring sessions based on your availability<div class="ai-sessions"><span class="ai-pill">Mon 6PM · Training</span><span class="ai-pill">Wed 6PM · Training</span><span class="ai-pill">Sat 10AM · Team Session</span><span class="ai-pill">Sat 2PM · Open Gym</span></div></div></div>
-      <div class="session-card highlight"><div class="sc-header"><div class="sc-title">Sat Team Media Day</div><div class="sc-badge funded">Funded</div></div><div class="sc-meta">Mar 15 · 10:00 AM<br>Carlos Sanchez Photography</div><div class="progress-wrap"><div class="progress-fill" style="width:100%"></div></div><div class="sc-footer"><div class="sc-members">12/12 members paid</div><div class="sc-amount">$480 secured</div></div></div>
-      <div class="session-card"><div class="sc-header"><div class="sc-title">Mon 6PM · Group Training</div><div class="sc-badge open">Open</div></div><div class="sc-meta">Mar 17 · Collecting responses</div><div class="attendee-list"><div class="attendee-row"><div class="attendee-name"><div class="attendee-avatar" style="background:#3D63FF20;color:#8BABFF">R</div>Ryan M.</div><div class="status-pill going">Going</div></div><div class="attendee-row"><div class="attendee-name"><div class="attendee-avatar" style="background:#FFD06020;color:#FFD060">J</div>Jamie K.</div><div class="status-pill maybe">Maybe</div></div><div class="attendee-row"><div class="attendee-name"><div class="attendee-avatar" style="background:#FF707020;color:#FF7070">A</div>Alex T.</div><div class="status-pill out">Out</div></div></div></div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-glow1"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Book together, save together</div>
+      <div class="hero-title">Find and book <span>local sessions</span> as a group</div>
+      <div class="hero-sub">From photographers to fitness coaches — discover pros near you and split the cost with your team.</div>
+      <div class="search-capsule">
+        <div class="search-seg">
+          <input type="text" id="hero-search" placeholder="What are you looking for?" onkeydown="if(event.key==='Enter')goSearch()"/>
+        </div>
+        <div class="search-seg-divider"></div>
+        <div class="search-seg">
+          <input type="text" id="hero-location" placeholder="City or location"/>
+        </div>
+        <button class="search-go" onclick="goSearch()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+      <div class="hero-cats">
+        <a class="hero-cat" href="/browse.html">Photography</a>
+        <a class="hero-cat" href="/browse.html">Fitness</a>
+        <a class="hero-cat" href="/browse.html">Yoga</a>
+        <a class="hero-cat" href="/browse.html">Coaching</a>
+        <a class="hero-cat" href="/browse.html">Workshops</a>
+      </div>
     </div>
   </div>
-</div>
-<section id="how"><div class="container"><div class="reveal"><p class="section-label">How it works</p><h2 class="section-title">Four steps to a session<br>that runs itself</h2></div><div class="how-grid"><div class="how-step reveal"><div class="step-num">✦</div><div class="step-title">AI builds your schedule</div><div class="step-desc">Tell Sortora your service and availability. The AI generates recurring sessions — every Monday, every Saturday, whatever fits — instantly bookable.</div></div><div class="how-step reveal" style="transition-delay:.1s"><div class="step-num">📋</div><div class="step-title">Members sign up</div><div class="step-desc">Share your session link. Participants mark themselves Going, Maybe, or Out. Their funding contribution is automatically calculated by status.</div></div><div class="how-step reveal" style="transition-delay:.2s"><div class="step-num">💳</div><div class="step-title">Group funds it together</div><div class="step-desc">Each person pays their share directly. Funds are held in escrow. The session confirms automatically once the funding threshold is hit.</div></div><div class="how-step reveal" style="transition-delay:.3s"><div class="step-num">✓</div><div class="step-title">Show up &amp; get paid</div><div class="step-desc">Session happens, funds release to the provider. No chasing invoices, no awkward group chats, no one fronting cash for the whole team.</div></div></div></div></section>
-<section id="features" style="padding-top:0"><div class="container"><div class="reveal"><p class="section-label">Features</p><h2 class="section-title">Everything a booking needs.<br>Nothing it doesn't.</h2></div><div class="features-grid"><div class="feature-card wide reveal"><div class="wide-inner"><div><div class="feature-icon fi-gold">✦</div><div class="feature-title">AI Session Scheduling</div><div class="feature-desc">Describe your service and paste your availability. Sortora's AI reads your schedule and automatically creates recurring bookable sessions — no manual setup required.</div></div><div class="wide-visual"><div class="schedule-rows"><div class="schedule-row"><span class="sr-day">Mon</span><span class="sr-name">Group Training · 6PM</span><span class="sr-status sr-new">AI Generated</span></div><div class="schedule-row"><span class="sr-day">Wed</span><span class="sr-name">Group Training · 6PM</span><span class="sr-status sr-new">AI Generated</span></div><div class="schedule-row"><span class="sr-day">Sat</span><span class="sr-name">Team Session · 10AM</span><span class="sr-status sr-full">3 signed up</span></div><div class="schedule-row"><span class="sr-day">Sat</span><span class="sr-name">Open Gym · 2PM</span><span class="sr-status sr-open">Open</span></div></div></div></div></div><div class="feature-card reveal"><div class="feature-icon fi-teal">📋</div><div class="feature-title">Attendance Status</div><div class="feature-desc">Participants mark Going, Maybe, or Out. Funding adjusts in real time based on who's actually in.</div></div><div class="feature-card reveal"><div class="feature-icon fi-blue">🔒</div><div class="feature-title">Escrow Protection</div><div class="feature-desc">All payments held securely until session completes. Full refund if threshold isn't met.</div></div><div class="feature-card reveal"><div class="feature-icon fi-purple">👥</div><div class="feature-title">Group Funding</div><div class="feature-desc">The whole group splits the cost — no one fronts the money. Booking confirms when fully funded.</div></div><div class="feature-card reveal"><div class="feature-icon fi-blue">📊</div><div class="feature-title">Provider Dashboard</div><div class="feature-desc">See every session, who's coming, funding status, and earnings — all in one place.</div></div><div class="feature-card reveal"><div class="feature-icon fi-teal">🔔</div><div class="feature-title">Smart Reminders</div><div class="feature-desc">Automated nudges prompt maybes to commit and trigger payment before the deadline.</div></div></div></div></section>
-<section id="who"><div class="container"><div class="reveal"><p class="section-label">Who it's for</p><h2 class="section-title">Built for both sides<br>of every booking</h2><p class="section-sub">Sortora works for the person delivering the session and the group booking it.</p></div><div class="for-grid"><div class="for-card provider reveal"><div class="for-eyebrow blue">For providers</div><div class="for-title">Stop chasing clients.<br>Start running sessions.</div><div class="for-desc">Set your schedule once, let AI handle the rest. Every session is pre-funded — you show up and get paid.</div><ul class="for-list"><li>AI creates recurring sessions automatically</li><li>Know your earnings before the week starts</li><li>No invoices, no follow-ups, no unpaid sessions</li><li>Full cancellation protection via escrow</li></ul><div class="for-types"><span class="for-type">📸 Photographers</span><span class="for-type">🎵 DJs</span><span class="for-type">💪 Trainers</span><span class="for-type">🍳 Private Chefs</span><span class="for-type">🎓 Coaches</span><span class="for-type">🧘 Wellness</span></div></div><div class="for-card group reveal"><div class="for-eyebrow teal">For groups &amp; teams</div><div class="for-title">Book together.<br>Nobody fronts the bill.</div><div class="for-desc">Organise group bookings without the awkward money conversations. Everyone pays their share and you're done.</div><ul class="for-list"><li>Each person pays their own share directly</li><li>Status-based funding — only pay if you're going</li><li>Full refund if session doesn't reach threshold</li><li>One link, everyone sorted</li></ul><div class="for-types"><span class="for-type">⚽ Sports teams</span><span class="for-type">🏋️ Gym groups</span><span class="for-type">🎉 Event groups</span><span class="for-type">🏢 Work teams</span><span class="for-type">👨‍👩‍👧 Families</span></div></div></div><div class="funding-callout reveal"><div class="funding-label">✦ Group Funding Feature</div><h3 class="funding-title">One person shouldn't have to pay for everyone</h3><p class="funding-sub">Group funding isn't just a payment split — it's a commitment mechanism. When everyone pays their share, everyone shows up.</p><div class="funding-stats"><div class="fstat"><span class="fstat-num">100%</span><span class="fstat-label">Funding required to confirm</span></div><div class="fstat"><span class="fstat-num">$0</span><span class="fstat-label">Risk to any individual</span></div><div class="fstat"><span class="fstat-num">5%</span><span class="fstat-label">Platform fee on funded sessions</span></div></div></div></div></section>
-<section class="final-cta" id="waitlist"><div class="reveal"><h2>Ready to run sessions<br><span style="color:var(--blue)">that run themselves?</span></h2><p>Join the waitlist. We're rolling out to Washington providers first.</p><form class="waitlist-form" id="waitlistForm2" style="max-width:480px;margin:0 auto 12px;"><input type="email" id="emailInput2" placeholder="Enter your email" required><button type="submit" class="btn-primary">Get early access</button></form><p class="form-note">Free to join · Launching in Washington · Providers get priority access</p><div class="success-msg" id="successMsg2">&#10003;&nbsp; You're on the list — we'll reach out soon.</div></div></section>
-<footer><a class="footer-logo" href="/"><svg width="22" height="20" viewBox="-6 -6 50 46" fill="none"><circle cx="8" cy="32" r="7" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.2"/><circle cx="30" cy="32" r="7" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.2"/><path d="M8 32 Q19 4 30 32" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"/><circle cx="19" cy="5" r="7" fill="#3D63FF"/></svg><span>Sortora</span></a><p class="footer-copy">© 2025 Sortora. Built in Washington.</p></footer>
-<script>
-const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-async function submitWaitlist(email,formEl,successEl){const btn=formEl.querySelector('button');btn.textContent='Joining...';btn.disabled=true;try{const res=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});if(res.ok||res.status===409){formEl.style.display='none';successEl.style.display='flex'}else{btn.textContent='Try again';btn.disabled=false}}catch{btn.textContent='Try again';btn.disabled=false}}
-document.getElementById('waitlistForm').addEventListener('submit',e=>{e.preventDefault();submitWaitlist(document.getElementById('emailInput').value,document.getElementById('waitlistForm'),document.getElementById('successMsg'))});
-document.getElementById('waitlistForm2').addEventListener('submit',e=>{e.preventDefault();submitWaitlist(document.getElementById('emailInput2').value,document.getElementById('waitlistForm2'),document.getElementById('successMsg2'))});
-</script>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Available Sessions -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title" id="sessions-title">Available near you</div>
+        <a class="section-link" href="/browse.html">Show all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+      </div>
+      <div class="sessions-grid" id="sessions-grid">
+        <div class="loading-text">Loading sessions...</div>
+      </div>
+    </div>
+
+    <!-- Browse by Category -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">Browse by category</div>
+      </div>
+      <div class="cats-grid">
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">📸</div><div class="cat-name">Photography</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">💪</div><div class="cat-name">Fitness</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">🧘</div><div class="cat-name">Yoga</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">🎵</div><div class="cat-name">DJ / Music</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">👨‍🍳</div><div class="cat-name">Private Chef</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">🏆</div><div class="cat-name">Coaching</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">🎨</div><div class="cat-name">Workshops</div></a>
+        <a class="cat-card" href="/browse.html"><div class="cat-icon">🎯</div><div class="cat-name">Other</div></a>
+      </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">How Sortora works</div>
+      </div>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-num">1</div>
+          <div class="how-title">Find a session</div>
+          <div class="how-desc">Browse local providers and pick a session that fits your team's schedule and budget.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">2</div>
+          <div class="how-title">Book together</div>
+          <div class="how-desc">Share the session link with your group. Everyone chips in — the session unlocks when spots fill up.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">3</div>
+          <div class="how-title">Show up and enjoy</div>
+          <div class="how-desc">The provider handles everything. You just show up, have a great experience, and split the cost.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Provider CTA -->
+    <div class="provider-cta">
+      <div class="provider-cta-glow"></div>
+      <div class="provider-cta-content">
+        <div class="provider-cta-title">Run your business on Sortora</div>
+        <div class="provider-cta-sub">List your services, manage bookings, accept group payments, and grow your client base — all in one platform built for local professionals.</div>
+        <a class="provider-cta-btn" href="/signup.html?role=provider">Get started free</a>
+      </div>
+      <div class="provider-cta-stats">
+        <div class="pcs"><div class="pcs-num">0%</div><div class="pcs-label">Listing fees</div></div>
+        <div class="pcs"><div class="pcs-num">95%</div><div class="pcs-label">Payout rate</div></div>
+        <div class="pcs"><div class="pcs-num">24h</div><div class="pcs-label">Fast payouts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a class="footer-logo" href="/">
+        <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+        <span class="footer-logo-text">Sortora</span>
+      </a>
+      <div class="footer-copy">&copy; 2026 Sortora. All rights reserved.</div>
+      <div class="footer-links">
+        <a class="footer-link" href="/browse.html">Browse</a>
+        <a class="footer-link" href="/signup.html?role=provider">For Providers</a>
+        <a class="footer-link" href="/login.html">Log in</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient(
+      'https://gzwyzocfohtnejttkglg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
+    );
+
+    async function loadSessions() {
+      var r = await SB.from('sessions')
+        .select('*, providers(business_name, category, slug, avatar_url)')
+        .eq('status', 'open')
+        .gte('session_date', new Date().toISOString())
+        .order('session_date', {ascending: true})
+        .limit(8);
+
+      var sessions = r.data || [];
+      var grid = document.getElementById('sessions-grid');
+
+      if (!sessions.length) {
+        grid.innerHTML = '<div class="loading-text">No sessions available yet. Check back soon!</div>';
+        return;
+      }
+
+      grid.innerHTML = sessions.map(function(s) {
+        var d = new Date(s.session_date);
+        var dateStr = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+        var timeStr = d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+        var pName = s.providers ? s.providers.business_name : 'Provider';
+        var card = '<div class="s-card" onclick="window.location.href=\'/session.html?id=' + s.id + '\'">';
+        if (s.image_url) {
+          card += '<div class="s-card-img" style="background-image:url(' + s.image_url + ')">';
+        } else {
+          card += '<div class="s-card-placeholder">';
+        }
+        if (s.is_group_funded) card += '<div class="s-card-badge"><span class="s-badge">Group Funded</span></div>';
+        card += '</div>';
+        card += '<div class="s-card-info">';
+        card += '<div class="s-card-title">' + s.title + '</div>';
+        card += '<div class="s-card-provider">' + pName + '</div>';
+        card += '<div class="s-card-date">' + dateStr + ' · ' + timeStr;
+        if (s.duration_minutes) card += ' · ' + s.duration_minutes + ' min';
+        card += '</div>';
+        card += '<div class="s-card-price">$' + parseFloat(s.price_per_person).toFixed(0) + ' <small>per person</small></div>';
+        card += '</div></div>';
+        return card;
+      }).join('');
+    }
+
+    function goSearch() {
+      var q = document.getElementById('hero-search').value.trim();
+      var loc = document.getElementById('hero-location').value.trim();
+      var url = '/browse.html';
+      if (loc) url += '?city=' + encodeURIComponent(loc);
+      window.location.href = url;
+    }
+
+    // Check if logged in — redirect appropriately
+    async function checkAuth() {
+      var r = await SB.auth.getSession();
+      if (r.data.session) {
+        var pr = await SB.from('profiles').select('role').eq('id', r.data.session.user.id).single();
+        if (pr.data) {
+          // Update nav for logged-in users
+          var navRight = document.querySelector('.nav-right');
+          if (pr.data.role === 'provider') {
+            navRight.innerHTML = '<a class="nav-link" href="/dashboard.html">Dashboard</a><a class="nav-link" href="/profile.html">Profile</a><a class="nav-btn nav-btn-white" href="/dashboard.html">Go to Dashboard</a>';
+          } else {
+            navRight.innerHTML = '<a class="nav-link" href="/browse.html">Browse</a><a class="nav-link" href="/bookings.html">Bookings</a><a class="nav-btn nav-btn-white" href="/browse.html">Browse Sessions</a>';
+          }
+        }
+      }
+    }
+
+    loadSessions();
+    checkAuth();
+  </script>
 </body>
 </html>
