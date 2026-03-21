@@ -128,33 +128,6 @@
     .bottom-tab svg{width:22px;height:22px}
     .bottom-tab-label{font-size:10px;font-weight:700;letter-spacing:.02em}
 
-    /* ── Modal ── */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(12,18,32,.55);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px}
-    .modal-overlay.open{display:flex}
-    .modal{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
-    .modal-title{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:4px}
-    .modal-sub{font-size:14px;color:var(--gray-500);margin-bottom:24px}
-    .status-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
-    .status-opt{border:2px solid var(--gray-200);border-radius:var(--radius-md);padding:16px 8px;text-align:center;cursor:pointer;transition:var(--transition)}
-    .status-opt:hover{border-color:var(--blue)}
-    .status-opt.going.active{border-color:var(--green);background:var(--green-bg)}
-    .status-opt.maybe.active{border-color:var(--orange);background:var(--orange-bg)}
-    .status-opt.out.active{border-color:var(--red);background:var(--red-bg)}
-    .status-opt .s-icon{font-size:24px;margin-bottom:6px}
-    .status-opt .s-label{font-size:13px;font-weight:700;color:var(--ink)}
-    .status-opt .s-sub{font-size:11px;color:var(--gray-400);margin-top:2px}
-    .promo-row{display:flex;gap:8px;margin-bottom:8px}
-    .promo-input{flex:1;padding:10px 14px;border:2px solid var(--gray-200);border-radius:var(--radius-md);font-size:14px;font-family:inherit;outline:none;transition:var(--transition)}
-    .promo-input:focus{border-color:var(--blue)}
-    .promo-apply{padding:10px 16px;background:var(--gray-50);border:2px solid var(--gray-200);border-radius:var(--radius-md);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:var(--transition)}
-    .promo-apply:hover{border-color:var(--blue)}
-    .promo-msg{font-size:13px;margin-bottom:12px;display:none}
-    .modal-btn{width:100%;padding:14px;background:var(--blue);color:var(--white);border:none;border-radius:var(--radius-md);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:var(--transition)}
-    .modal-btn:hover{background:#2d52ee}
-    .modal-btn:disabled{background:var(--gray-400);cursor:not-allowed}
-    .modal-cancel{width:100%;padding:12px;background:none;color:var(--gray-400);border:none;font-size:14px;cursor:pointer;font-family:inherit;margin-top:8px;transition:var(--transition)}
-    .modal-cancel:hover{color:var(--ink)}
-    .success-msg{background:var(--green-bg);color:#065F46;padding:12px 16px;border-radius:var(--radius-md);font-size:14px;margin-bottom:16px;display:none}
 
     /* ── Desktop: hide bottom nav ── */
     @media(min-width:769px){
@@ -276,32 +249,6 @@
     </a>
   </div>
 
-  <!-- ── Modal ── -->
-  <div class="modal-overlay" id="modal">
-    <div class="modal">
-      <div class="modal-title" id="modal-title">Join Session</div>
-      <div class="modal-sub" id="modal-sub">Choose your status.</div>
-      <div class="success-msg" id="modal-success">You are signed up!</div>
-      <div class="status-options">
-        <div class="status-opt going" onclick="selectStatus('going')" id="opt-going">
-          <div class="s-icon">✓</div><div class="s-label">Going</div><div class="s-sub">I will be there</div>
-        </div>
-        <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe">
-          <div class="s-icon">?</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div>
-        </div>
-        <div class="status-opt out" onclick="selectStatus('out')" id="opt-out">
-          <div class="s-icon">✗</div><div class="s-label">Out</div><div class="s-sub">Cannot make it</div>
-        </div>
-      </div>
-      <div class="promo-row">
-        <input class="promo-input" type="text" id="promo-input" placeholder="Promo code"/>
-        <button class="promo-apply" onclick="applyPromo()">Apply</button>
-      </div>
-      <div class="promo-msg" id="promo-msg"></div>
-      <button class="modal-btn" onclick="confirmJoin()" id="modal-btn">Confirm Status</button>
-      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-    </div>
-  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -309,8 +256,7 @@
       "https://gzwyzocfohtnejttkglg.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw"
     );
-    var currentUser = null, allSessions = [], selectedStatus = "going", activeSession = null;
-    var appliedPromoId = null, appliedDiscount = 0;
+    var currentUser = null, allSessions = [];
 
     async function init() {
       var r = await SB.auth.getSession();
@@ -324,7 +270,7 @@
       await loadSessions();
       var params = new URLSearchParams(window.location.search);
       var target = params.get("session");
-      if (target) { var s = allSessions.find(function(x){return x.id===target;}); if(s) openModal(s.id); }
+      if (target) { window.location.href = '/session.html?id=' + target; return; }
     }
 
     async function loadSessions() {
@@ -378,7 +324,7 @@
         var spotsLeft = s.max_spots ? s.max_spots - goingCount : null;
         var isFull = s.max_spots && goingCount >= s.max_spots;
 
-        var card = '<div class="session-card" onclick="openModal(\'' + s.id + '\')">';
+        var card = '<div class="session-card" onclick="window.location.href=\'/session.html?id=' + s.id + '\'">';
 
         // Image
         if (s.image_url) {
@@ -416,105 +362,7 @@
       }).join("");
     }
 
-    function openModal(sessionId) {
-      activeSession = allSessions.find(function(s){return s.id===sessionId;});
-      if (!activeSession) return;
-      selectedStatus = "going";
-      appliedPromoId = null; appliedDiscount = 0;
-      document.getElementById("promo-input").value = "";
-      document.getElementById("promo-msg").style.display = "none";
-      document.getElementById("opt-going").classList.add("active");
-      document.getElementById("opt-maybe").classList.remove("active");
-      document.getElementById("opt-out").classList.remove("active");
-      document.getElementById("modal-title").textContent = activeSession.title;
-      document.getElementById("modal-sub").textContent = "Pick your status — you can update it anytime.";
-      document.getElementById("modal-success").style.display = "none";
-      document.getElementById("modal-btn").disabled = false;
-      var pm = activeSession.payment_mode || "upfront";
-      document.getElementById("modal-btn").textContent = pm === "later" ? "Register Free" : "Pay & Book";
-      document.getElementById("modal-btn").style.background = pm === "later" ? "var(--green)" : "var(--blue)";
-      var payLaterNote = document.getElementById("pay-later-note");
-      if (payLaterNote) payLaterNote.style.display = pm === "later" ? "block" : "none";
-      document.getElementById("modal").classList.add("open");
-    }
-
-    function closeModal() {
-      document.getElementById("modal").classList.remove("open");
-      activeSession = null; appliedPromoId = null; appliedDiscount = 0;
-      document.getElementById("promo-input").value = "";
-      document.getElementById("promo-msg").style.display = "none";
-    }
-
-    function selectStatus(s) {
-      selectedStatus = s;
-      ["going","maybe","out"].forEach(function(opt){document.getElementById("opt-"+opt).classList.toggle("active",opt===s);});
-    }
-
-    async function applyPromo() {
-      var code = document.getElementById("promo-input").value.trim();
-      var msg = document.getElementById("promo-msg");
-      if (!code) return;
-      var r = await fetch("/api/validate-promo",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:code,sessionId:activeSession?activeSession.id:null})});
-      var data = await r.json();
-      msg.style.display = "block";
-      if (data.error) { msg.textContent = "Invalid: "+data.error; msg.style.color = "var(--red)"; appliedPromoId=null; appliedDiscount=0; }
-      else { msg.textContent = data.discount_percent+"% discount applied!"; msg.style.color = "#065F46"; appliedPromoId=data.promo_id; appliedDiscount=data.discount_percent; }
-    }
-
-    async function confirmJoin() {
-      if (!activeSession || !currentUser) return;
-      var btn = document.getElementById("modal-btn");
-      btn.disabled = true; btn.textContent = "Saving...";
-      var payMode = activeSession.payment_mode || "upfront";
-      if (payMode === "later") {
-        var regRes = await fetch("/api/register-booking", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ sessionId: activeSession.id, customerId: currentUser.id }) });
-        var regData = await regRes.json();
-        if (regData.success) { closeModal(); window.location.href = "/bookings.html?registered=1"; }
-        else { alert(regData.error || "Could not register. Please try again."); btn.disabled = false; btn.textContent = "Register Free"; }
-        return;
-      }
-      if (true) {
-        var res = await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sessionId:activeSession.id,sessionTitle:activeSession.title,price:activeSession.price_per_person,customerId:currentUser.id,promoId:appliedPromoId,discountPercent:appliedDiscount})});
-        var data = await res.json();
-        if (data.url) {
-          await SB.from("bookings").upsert({session_id:activeSession.id,customer_id:currentUser.id,status:"going"},{onConflict:"session_id,customer_id"});
-          window.location.href = data.url; return;
-        } else { alert(data.error||"Payment failed to start."); btn.disabled=false; btn.textContent="Confirm Status"; return; }
-      }
-      var r = await SB.from("bookings").upsert({session_id:activeSession.id,customer_id:currentUser.id,status:selectedStatus},{onConflict:"session_id,customer_id"});
-      if (r.error) { alert(r.error.message); btn.disabled=false; btn.textContent="Confirm Status"; }
-      else { document.getElementById("modal-success").style.display="block"; document.getElementById("modal-sub").textContent="Status saved!"; btn.textContent="Updated"; setTimeout(closeModal,1500); }
-    }
-
     async function signOut() { await SB.auth.signOut(); window.location.href="/login.html"; }
-
-    async function joinWaitlist(sessionId) {
-      if (!currentUser) { window.location.href = "/login.html"; return; }
-      var btn = event.target;
-      btn.textContent = "Joining...";
-      btn.disabled = true;
-      try {
-        var r = await fetch("/api/waitlist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId: sessionId, customerId: currentUser.id })
-        });
-        var data = await r.json();
-        if (data.success) {
-          btn.textContent = "On Waitlist ✓";
-          btn.style.background = "var(--green)";
-        } else if (data.error === "Already on waitlist") {
-          btn.textContent = "Already Waitlisted";
-        } else {
-          btn.textContent = "Join Waitlist";
-          btn.disabled = false;
-          alert(data.error || "Could not join waitlist");
-        }
-      } catch(e) {
-        btn.textContent = "Join Waitlist";
-        btn.disabled = false;
-      }
-    }
 
     init();
   </script>
