@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Session — Sortora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --ink:#0C1220;
+      --blue:#3B6BFF;
+      --blue-pale:#EEF2FF;
+      --gray-50:#F8FAFC;
+      --gray-100:#F1F5F9;
+      --gray-200:#E2E8F0;
+      --gray-300:#CBD5E1;
+      --gray-400:#94A3B8;
+      --gray-500:#64748B;
+      --gray-600:#475569;
+      --gray-800:#1E293B;
+      --white:#FFFFFF;
+      --green:#10B981;
+      --green-bg:#ECFDF5;
+      --red:#EF4444;
+      --red-bg:#FEF2F2;
+      --orange:#F59E0B;
+      --radius-md:12px;
+      --radius-lg:16px;
+      --radius-xl:20px;
+      --radius-full:999px;
+      --shadow-sm:0 1px 3px rgba(12,18,32,.06);
+      --shadow-md:0 4px 16px rgba(12,18,32,.08);
+      --shadow-lg:0 12px 40px rgba(12,18,32,.12);
+      --transition:all .25s cubic-bezier(.4,0,.2,1);
+    }
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+
+    /* ── Nav ── */
+    .nav{position:sticky;top:0;z-index:50;background:var(--white);border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:72px}
+    .nav-logo{text-decoration:none;flex-shrink:0;display:flex;align-items:center;gap:8px}
+    .logo-mark{display:block;width:36px;height:36px}
+    .logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px;color:#3B6BFF;letter-spacing:-0.5px}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-link{font-size:13px;font-weight:600;color:var(--gray-500);text-decoration:none;padding:8px 14px;border-radius:var(--radius-full);transition:var(--transition)}
+    .nav-link:hover{color:var(--ink);background:var(--gray-100)}
+    .nav-back{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--gray-500);text-decoration:none;padding:8px 14px;border-radius:var(--radius-full);transition:var(--transition)}
+    .nav-back:hover{color:var(--ink);background:var(--gray-100)}
+    .nav-back svg{width:16px;height:16px}
+
+    /* ── Hero Image ── */
+    .hero-img{width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
+    .hero-img-inner{width:100%;aspect-ratio:21/9;background-size:cover;background-position:center;background-color:var(--ink);border-radius:0 0 var(--radius-xl) var(--radius-xl);position:relative;overflow:hidden}
+    .hero-img-placeholder{width:100%;aspect-ratio:21/9;background:linear-gradient(135deg,var(--ink),#1d2d50);border-radius:0 0 var(--radius-xl) var(--radius-xl);display:flex;align-items:center;justify-content:center;font-size:3rem}
+    .hero-badge{position:absolute;top:16px;left:16px;display:flex;gap:8px}
+    .badge{padding:6px 14px;border-radius:var(--radius-full);font-size:12px;font-weight:700;background:var(--white);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+    .badge-group{background:var(--orange);color:var(--white)}
+
+    /* ── Content Layout ── */
+    .content{max-width:1080px;margin:0 auto;padding:32px 24px 0;display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+
+    /* Left: Details */
+    .details{min-width:0}
+    .session-category{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:8px}
+    .session-title{font-size:clamp(24px,4vw,32px);font-weight:800;letter-spacing:-.03em;line-height:1.2;margin-bottom:16px}
+
+    .provider-row{display:flex;align-items:center;gap:12px;padding:16px 0;border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);margin-bottom:24px;cursor:pointer;transition:var(--transition)}
+    .provider-row:hover{opacity:.85}
+    .provider-avatar{width:48px;height:48px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--white);flex-shrink:0;overflow:hidden}
+    .provider-avatar img{width:100%;height:100%;object-fit:cover}
+    .provider-info{flex:1}
+    .provider-name{font-size:16px;font-weight:700;color:var(--ink)}
+    .provider-label{font-size:13px;color:var(--gray-500)}
+    .provider-arrow{color:var(--gray-400)}
+
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+    .detail-item{display:flex;align-items:flex-start;gap:12px;padding:16px;background:var(--gray-50);border-radius:var(--radius-md)}
+    .detail-icon{width:40px;height:40px;border-radius:10px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .detail-icon svg{width:20px;height:20px;color:var(--blue)}
+    .detail-label{font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:2px}
+    .detail-value{font-size:15px;font-weight:700;color:var(--ink)}
+
+    .section-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);margin-bottom:12px}
+    .session-desc{font-size:15px;line-height:1.7;color:var(--gray-600);margin-bottom:32px}
+    .session-desc.empty{color:var(--gray-400);font-style:italic}
+
+    /* Right: Booking Card */
+    .booking-card{position:sticky;top:88px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-xl);padding:28px;box-shadow:var(--shadow-md)}
+    .booking-price{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+    .booking-price small{font-size:14px;font-weight:500;color:var(--gray-500)}
+    .booking-spots{font-size:13px;font-weight:600;margin-bottom:20px}
+    .spots-ok{color:var(--gray-500)}
+    .spots-low{color:var(--red);font-weight:700}
+    .spots-full{color:var(--gray-400)}
+
+    .booking-divider{height:1px;background:var(--gray-200);margin:16px 0}
+
+    .promo-section{margin-bottom:16px}
+    .promo-toggle{font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;margin-bottom:8px;display:inline-block}
+    .promo-toggle:hover{text-decoration:underline}
+    .promo-row{display:flex;gap:8px;margin-top:8px}
+    .promo-input{flex:1;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-size:14px;font-family:inherit;outline:none;transition:var(--transition)}
+    .promo-input:focus{border-color:var(--blue)}
+    .promo-apply{padding:10px 18px;background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:var(--transition)}
+    .promo-apply:hover{border-color:var(--blue)}
+    .promo-msg{font-size:13px;margin-top:6px;display:none}
+    .promo-hidden{display:none}
+
+    .book-btn{width:100%;padding:16px;border:none;border-radius:var(--radius-md);font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:var(--transition);letter-spacing:-.01em}
+    .book-btn-primary{background:var(--blue);color:var(--white)}
+    .book-btn-primary:hover{background:#2d52ee;box-shadow:0 4px 20px rgba(59,107,255,.35)}
+    .book-btn-waitlist{background:var(--gray-800);color:var(--white)}
+    .book-btn-waitlist:hover{background:var(--ink)}
+    .book-btn:disabled{background:var(--gray-300);cursor:not-allowed;color:var(--white)}
+    .book-btn-free{background:var(--green);color:var(--white)}
+    .book-btn-free:hover{background:#0ea472}
+
+    .booking-note{font-size:12px;color:var(--gray-400);text-align:center;margin-top:12px;line-height:1.5}
+
+    .booking-breakdown{margin-top:16px}
+    .breakdown-row{display:flex;justify-content:space-between;font-size:14px;color:var(--gray-600);margin-bottom:8px}
+    .breakdown-row.total{font-weight:800;color:var(--ink);font-size:15px;padding-top:8px;border-top:1px solid var(--gray-200)}
+
+    .success-banner{background:var(--green-bg);color:#065F46;padding:14px 16px;border-radius:var(--radius-md);font-size:14px;font-weight:600;margin-bottom:16px;display:none}
+    .error-banner{background:var(--red-bg);color:var(--red);padding:14px 16px;border-radius:var(--radius-md);font-size:14px;font-weight:600;margin-bottom:16px;display:none}
+
+    /* ── Loading ── */
+    .loading{text-align:center;padding:120px 24px;color:var(--gray-400)}
+    .loading h3{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px}
+
+    /* ── Mobile ── */
+    @media(max-width:768px){
+      .content{grid-template-columns:1fr;gap:24px}
+      .booking-card{position:static}
+      .hero-img{padding:0}
+      .hero-img-inner,.hero-img-placeholder{border-radius:0}
+      .detail-grid{grid-template-columns:1fr}
+      .nav{padding:0 16px}
+    }
+
+    /* ── Bottom mobile bar ── */
+    .mobile-book-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--gray-200);padding:12px 16px;z-index:50;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+    .mobile-book-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .mobile-price{font-size:18px;font-weight:800}
+    .mobile-price small{font-size:13px;font-weight:500;color:var(--gray-500)}
+    .mobile-book-btn{padding:14px 32px;border:none;border-radius:var(--radius-md);font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;background:var(--blue);color:var(--white);transition:var(--transition)}
+    @media(max-width:768px){
+      .mobile-book-bar{display:block}
+      body{padding-bottom:90px}
+    }
+
+    /* ── Fade-in ── */
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .details,.booking-card{animation:fadeIn .4s ease both}
+    .booking-card{animation-delay:.1s}
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a class="nav-logo" href="/">
+      <svg class="logo-mark" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/>
+        <circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/>
+        <circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/>
+        <path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Sortora</span>
+    </a>
+    <div class="nav-right">
+      <a class="nav-back" href="/browse.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Browse
+      </a>
+    </div>
+  </nav>
+
+  <!-- Page content (filled by JS) -->
+  <div id="page-content">
+    <div class="loading"><h3>Loading session...</h3></div>
+  </div>
+
+  <!-- Mobile bottom book bar -->
+  <div class="mobile-book-bar" id="mobile-bar" style="display:none">
+    <div class="mobile-book-inner">
+      <div class="mobile-price" id="mobile-price"></div>
+      <button class="mobile-book-btn" id="mobile-book-btn" onclick="handleBook()">Book Now</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient(
+      "https://gzwyzocfohtnejttkglg.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw"
+    );
+    var currentUser = null;
+    var session = null;
+    var goingCount = 0;
+    var appliedPromoId = null;
+    var appliedDiscount = 0;
+    var promoVisible = false;
+
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = "/login.html"; return; }
+      currentUser = r.data.session.user;
+
+      var params = new URLSearchParams(window.location.search);
+      var sessionId = params.get("id");
+      if (!sessionId) { document.getElementById("page-content").innerHTML = '<div class="loading"><h3>Session not found</h3></div>'; return; }
+
+      var sr = await SB.from("sessions").select("*, providers(business_name, category, slug, avatar_url, bio, location)").eq("id", sessionId).single();
+      if (!sr.data) { document.getElementById("page-content").innerHTML = '<div class="loading"><h3>Session not found</h3></div>'; return; }
+      session = sr.data;
+
+      // Get going count
+      var bc = await SB.from("bookings").select("id").eq("session_id", sessionId).eq("status", "going");
+      goingCount = bc.data ? bc.data.length : 0;
+
+      document.title = session.title + " — Sortora";
+      renderPage();
+    }
+
+    function renderPage() {
+      var s = session;
+      var d = new Date(s.session_date);
+      var dateStr = d.toLocaleDateString("en-US", {weekday:"long", month:"long", day:"numeric", year:"numeric"});
+      var timeStr = d.toLocaleTimeString("en-US", {hour:"2-digit", minute:"2-digit"});
+      var pName = s.providers ? s.providers.business_name : "Provider";
+      var pSlug = s.providers ? s.providers.slug : null;
+      var pAvatar = s.providers && s.providers.avatar_url ? s.providers.avatar_url.split('?')[0] + '?t=1' : null;
+      var pBio = s.providers ? s.providers.bio : "";
+      var cat = s.providers ? s.providers.category : s.category || "";
+      var spotsLeft = s.max_spots ? s.max_spots - goingCount : null;
+      var isFull = s.max_spots && goingCount >= s.max_spots;
+      var price = parseFloat(s.price_per_person);
+      var payMode = s.payment_mode || "upfront";
+
+      // Spots text
+      var spotsHtml = "";
+      if (isFull) {
+        spotsHtml = '<span class="spots-full">Session is full</span>';
+      } else if (spotsLeft !== null && spotsLeft <= 3) {
+        spotsHtml = '<span class="spots-low">' + spotsLeft + ' spot' + (spotsLeft !== 1 ? 's' : '') + ' left — book now</span>';
+      } else if (spotsLeft !== null) {
+        spotsHtml = '<span class="spots-ok">' + spotsLeft + ' of ' + s.max_spots + ' spots available</span>';
+      }
+
+      // Button
+      var btnClass = "book-btn ";
+      var btnText = "";
+      if (isFull) {
+        btnClass += "book-btn-waitlist";
+        btnText = "Join Waitlist";
+      } else if (payMode === "later") {
+        btnClass += "book-btn-free";
+        btnText = "Register Free";
+      } else {
+        btnClass += "book-btn-primary";
+        btnText = "Book Now — $" + price.toFixed(0);
+      }
+
+      var html = '';
+
+      // Hero image
+      html += '<div class="hero-img">';
+      if (s.image_url) {
+        html += '<div class="hero-img-inner" style="background-image:url(' + s.image_url + ')">';
+      } else {
+        html += '<div class="hero-img-placeholder">';
+      }
+      html += '<div class="hero-badge">';
+      if (s.is_group_funded) html += '<span class="badge badge-group">👥 Group Funded</span>';
+      html += '</div>';
+      html += '</div></div>';
+
+      // Content grid
+      html += '<div class="content">';
+
+      // Left: details
+      html += '<div class="details">';
+      html += '<div class="session-category">' + cat + '</div>';
+      html += '<div class="session-title">' + s.title + '</div>';
+
+      // Provider row
+      html += '<div class="provider-row" onclick="' + (pSlug ? "window.location.href=\'/p/" + pSlug + "\'" : "") + '">';
+      if (pAvatar) {
+        html += '<div class="provider-avatar"><img src="' + pAvatar + '"></div>';
+      } else {
+        html += '<div class="provider-avatar">' + pName.charAt(0) + '</div>';
+      }
+      html += '<div class="provider-info">';
+      html += '<div class="provider-name">' + pName + '</div>';
+      html += '<div class="provider-label">Session host</div>';
+      html += '</div>';
+      html += '<div class="provider-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>';
+      html += '</div>';
+
+      // Detail grid
+      html += '<div class="detail-grid">';
+      html += '<div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="detail-label">Date</div><div class="detail-value">' + dateStr + '</div></div></div>';
+      html += '<div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="detail-label">Time</div><div class="detail-value">' + timeStr + (s.duration_minutes ? ' · ' + s.duration_minutes + ' min' : '') + '</div></div></div>';
+      if (s.location) {
+        html += '<div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="detail-label">Location</div><div class="detail-value">' + s.location + '</div></div></div>';
+      }
+      if (s.max_spots) {
+        html += '<div class="detail-item"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div><div class="detail-label">Capacity</div><div class="detail-value">' + goingCount + ' / ' + s.max_spots + ' booked</div></div></div>';
+      }
+      html += '</div>';
+
+      // Description
+      if (s.description) {
+        html += '<div class="section-label">About this session</div>';
+        html += '<div class="session-desc">' + s.description.replace(/\n/g, '<br>') + '</div>';
+      } else {
+        html += '<div class="section-label">About this session</div>';
+        html += '<div class="session-desc empty">No description provided yet.</div>';
+      }
+
+      html += '</div>';
+
+      // Right: booking card
+      html += '<div class="booking-card">';
+      html += '<div class="success-banner" id="success-msg"></div>';
+      html += '<div class="error-banner" id="error-msg"></div>';
+      html += '<div class="booking-price">$' + price.toFixed(0) + '<small> per person</small></div>';
+      html += '<div class="booking-spots">' + spotsHtml + '</div>';
+
+      // Price breakdown
+      html += '<div class="booking-breakdown" id="breakdown">';
+      html += '<div class="breakdown-row"><span>Session price</span><span>$' + price.toFixed(2) + '</span></div>';
+      html += '<div class="breakdown-row" id="discount-row" style="display:none"><span>Promo discount</span><span id="discount-amount"></span></div>';
+      html += '<div class="breakdown-row total" id="total-row"><span>Total</span><span id="total-amount">$' + price.toFixed(2) + '</span></div>';
+      html += '</div>';
+
+      html += '<div class="booking-divider"></div>';
+
+      // Promo
+      html += '<div class="promo-section">';
+      html += '<div class="promo-toggle" onclick="togglePromo()">Have a promo code?</div>';
+      html += '<div class="promo-hidden" id="promo-area">';
+      html += '<div class="promo-row"><input class="promo-input" type="text" id="promo-input" placeholder="Enter code"/><button class="promo-apply" onclick="applyPromo()">Apply</button></div>';
+      html += '<div class="promo-msg" id="promo-msg"></div>';
+      html += '</div></div>';
+
+      html += '<button class="' + btnClass + '" id="book-btn" onclick="handleBook()">' + btnText + '</button>';
+
+      if (payMode === "later" && !isFull) {
+        html += '<div class="booking-note">No payment required now. Pay the host directly at the session.</div>';
+      } else if (!isFull) {
+        html += '<div class="booking-note">Secure checkout powered by Stripe. You won\'t be charged until the session is confirmed.</div>';
+      }
+
+      html += '</div>';
+      html += '</div>';
+
+      document.getElementById("page-content").innerHTML = html;
+
+      // Mobile bar
+      if (window.innerWidth <= 768) {
+        var mbar = document.getElementById("mobile-bar");
+        mbar.style.display = "block";
+        document.getElementById("mobile-price").innerHTML = '$' + price.toFixed(0) + '<small> /person</small>';
+        var mbtn = document.getElementById("mobile-book-btn");
+        if (isFull) { mbtn.textContent = "Join Waitlist"; mbtn.style.background = "var(--gray-800)"; }
+        else if (payMode === "later") { mbtn.textContent = "Register Free"; mbtn.style.background = "var(--green)"; }
+        else { mbtn.textContent = "Book Now"; }
+      }
+    }
+
+    function togglePromo() {
+      promoVisible = !promoVisible;
+      var area = document.getElementById("promo-area");
+      if (area) area.style.display = promoVisible ? "block" : "none";
+    }
+
+    async function applyPromo() {
+      var code = document.getElementById("promo-input").value.trim();
+      var msg = document.getElementById("promo-msg");
+      if (!code || !session) return;
+      var r = await fetch("/api/validate-promo", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({code: code, sessionId: session.id})});
+      var data = await r.json();
+      msg.style.display = "block";
+      if (data.error) {
+        msg.textContent = "Invalid: " + data.error;
+        msg.style.color = "var(--red)";
+        appliedPromoId = null; appliedDiscount = 0;
+        updateBreakdown();
+      } else {
+        msg.textContent = data.discount_percent + "% discount applied!";
+        msg.style.color = "#065F46";
+        appliedPromoId = data.promo_id;
+        appliedDiscount = data.discount_percent;
+        updateBreakdown();
+      }
+    }
+
+    function updateBreakdown() {
+      var price = parseFloat(session.price_per_person);
+      var discountRow = document.getElementById("discount-row");
+      var discountAmt = document.getElementById("discount-amount");
+      var totalAmt = document.getElementById("total-amount");
+      if (appliedDiscount > 0) {
+        var disc = price * appliedDiscount / 100;
+        discountRow.style.display = "flex";
+        discountAmt.textContent = "-$" + disc.toFixed(2);
+        discountAmt.style.color = "var(--green)";
+        totalAmt.textContent = "$" + (price - disc).toFixed(2);
+      } else {
+        discountRow.style.display = "none";
+        totalAmt.textContent = "$" + price.toFixed(2);
+      }
+      // Update button text
+      var btn = document.getElementById("book-btn");
+      if (btn && !session.max_spots || goingCount < session.max_spots) {
+        var payMode = session.payment_mode || "upfront";
+        if (payMode !== "later") {
+          var finalPrice = appliedDiscount > 0 ? price - (price * appliedDiscount / 100) : price;
+          btn.textContent = "Book Now — $" + finalPrice.toFixed(0);
+        }
+      }
+    }
+
+    async function handleBook() {
+      if (!session || !currentUser) return;
+      var btn = document.getElementById("book-btn");
+      var mBtn = document.getElementById("mobile-book-btn");
+      var isFull = session.max_spots && goingCount >= session.max_spots;
+
+      if (btn) { btn.disabled = true; btn.textContent = "Processing..."; }
+      if (mBtn) { mBtn.disabled = true; mBtn.textContent = "Processing..."; }
+
+      // Waitlist
+      if (isFull) {
+        try {
+          var wr = await fetch("/api/waitlist", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({sessionId: session.id, customerId: currentUser.id})});
+          var wd = await wr.json();
+          if (wd.success) {
+            showSuccess("You're on the waitlist! We'll notify you if a spot opens up.");
+            if (btn) { btn.textContent = "On Waitlist ✓"; btn.style.background = "var(--green)"; }
+            if (mBtn) { mBtn.textContent = "On Waitlist ✓"; mBtn.style.background = "var(--green)"; }
+          } else {
+            showError(wd.error || "Could not join waitlist");
+            if (btn) { btn.disabled = false; btn.textContent = "Join Waitlist"; }
+            if (mBtn) { mBtn.disabled = false; mBtn.textContent = "Join Waitlist"; }
+          }
+        } catch(e) {
+          showError("Something went wrong. Try again.");
+          if (btn) { btn.disabled = false; btn.textContent = "Join Waitlist"; }
+          if (mBtn) { mBtn.disabled = false; mBtn.textContent = "Join Waitlist"; }
+        }
+        return;
+      }
+
+      var payMode = session.payment_mode || "upfront";
+
+      // Pay later (free registration)
+      if (payMode === "later") {
+        var regRes = await fetch("/api/register-booking", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({sessionId: session.id, customerId: currentUser.id})});
+        var regData = await regRes.json();
+        if (regData.success) {
+          showSuccess("You're registered! Check your bookings for details.");
+          if (btn) { btn.textContent = "Registered ✓"; btn.style.background = "var(--green)"; }
+          if (mBtn) { mBtn.textContent = "Registered ✓"; mBtn.style.background = "var(--green)"; }
+        } else {
+          showError(regData.error || "Could not register. Try again.");
+          if (btn) { btn.disabled = false; btn.textContent = "Register Free"; }
+          if (mBtn) { mBtn.disabled = false; mBtn.textContent = "Register Free"; }
+        }
+        return;
+      }
+
+      // Stripe checkout
+      var res = await fetch("/api/checkout", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({sessionId: session.id, sessionTitle: session.title, price: session.price_per_person, customerId: currentUser.id, promoId: appliedPromoId, discountPercent: appliedDiscount})});
+      var data = await res.json();
+      if (data.url) {
+        await SB.from("bookings").upsert({session_id: session.id, customer_id: currentUser.id, status: "going"}, {onConflict: "session_id,customer_id"});
+        window.location.href = data.url;
+      } else {
+        showError(data.error || "Payment failed to start. Try again.");
+        if (btn) { btn.disabled = false; btn.textContent = "Book Now"; }
+        if (mBtn) { mBtn.disabled = false; mBtn.textContent = "Book Now"; }
+      }
+    }
+
+    function showSuccess(msg) {
+      var el = document.getElementById("success-msg");
+      if (el) { el.textContent = msg; el.style.display = "block"; }
+    }
+    function showError(msg) {
+      var el = document.getElementById("error-msg");
+      if (el) { el.textContent = msg; el.style.display = "block"; }
+    }
+
+    init();
+  </script>
+</body>
+</html>
