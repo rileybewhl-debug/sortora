@@ -3,118 +3,243 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Browse Sessions - Sortora</title>
+  <title>Browse Sessions — Sortora</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
-    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
-    .topbar-right{display:flex;align-items:center;gap:16px}
-    .nav-link{font-size:13px;font-weight:600;color:#8898AA;text-decoration:none;cursor:pointer}
-    .nav-link:hover{color:#0A2540}
-    .nav-link.active{color:#3D63FF}
-    .user-name{font-size:14px;font-weight:600;color:#0A2540}
-    .main{max-width:1000px;margin:0 auto;padding:40px 24px}
-    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
-    .page-sub{font-size:15px;color:#8898AA;margin-bottom:24px}
-    .search-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
-    .search-input{flex:1;min-width:200px;padding:11px 16px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s;background:#fff}
-    .search-input:focus{border-color:#3D63FF}
-    .date-input{padding:11px 16px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;background:#fff}
-    .clear-btn{padding:11px 18px;background:#fff;border:2px solid #E8EDF2;border-radius:10px;font-size:13px;font-weight:700;color:#8898AA;cursor:pointer;font-family:inherit}
-    .clear-btn:hover{border-color:#3D63FF;color:#3D63FF}
-    .filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
-    .filter-btn{padding:8px 18px;border-radius:20px;border:2px solid #E8EDF2;background:#fff;font-size:13px;font-weight:600;color:#8898AA;cursor:pointer;font-family:inherit;transition:all .2s}
-    .filter-btn:hover,.filter-btn.active{border-color:#3D63FF;color:#3D63FF;background:#EEF2FF}
-    .results-count{font-size:13px;color:#8898AA;margin-bottom:16px}
-    .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
-    .session-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;cursor:pointer}
-    .session-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-    .card-header{background:linear-gradient(135deg,#3D63FF,#6B8EFF);padding:24px;color:#fff}
-    .card-category{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:8px}
-    .card-title{font-size:18px;font-weight:800;margin-bottom:4px}
-    .card-provider{font-size:13px;opacity:.8;cursor:pointer;text-decoration:underline}
-    .card-body{padding:20px}
-    .card-meta{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-    .meta-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#8898AA}
-    .meta-row span{color:#0A2540;font-weight:600}
-    .card-footer{display:flex;align-items:center;justify-content:space-between}
-    .price{font-size:22px;font-weight:800;color:#0A2540}
-    .price small{font-size:13px;font-weight:500;color:#8898AA}
-    .join-btn{padding:10px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-    .join-btn:hover{background:#2d52ee}
-    .waitlist-btn{background:#0A2540!important}
-    .waitlist-btn:hover{background:#162a4a!important}
-    .group-badge{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;color:#C2410C;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;margin-bottom:12px}
-    .empty{text-align:center;padding:60px 24px;color:#8898AA}
-    .empty-icon{font-size:48px;margin-bottom:16px}
-    .empty h3{font-size:18px;font-weight:700;color:#0A2540;margin-bottom:8px}
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:24px}
+    :root{
+      --ink:#0C1220;
+      --blue:#3D63FF;
+      --blue-light:#6B8EFF;
+      --blue-pale:#EEF2FF;
+      --gray-50:#F8FAFC;
+      --gray-100:#F1F5F9;
+      --gray-200:#E2E8F0;
+      --gray-400:#94A3B8;
+      --gray-500:#64748B;
+      --gray-600:#475569;
+      --gray-800:#1E293B;
+      --white:#FFFFFF;
+      --green:#10B981;
+      --green-bg:#ECFDF5;
+      --red:#EF4444;
+      --red-bg:#FEF2F2;
+      --orange:#F59E0B;
+      --orange-bg:#FFF7ED;
+      --radius-sm:8px;
+      --radius-md:12px;
+      --radius-lg:16px;
+      --radius-xl:20px;
+      --radius-full:999px;
+      --shadow-sm:0 1px 3px rgba(12,18,32,.06);
+      --shadow-md:0 4px 16px rgba(12,18,32,.08);
+      --shadow-lg:0 12px 40px rgba(12,18,32,.12);
+      --transition:all .25s cubic-bezier(.4,0,.2,1);
+    }
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gray-50);min-height:100vh;color:var(--ink);-webkit-font-smoothing:antialiased}
+
+    /* ── Frosted Glass Nav ── */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid rgba(226,232,240,.6);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:21px;font-weight:800;color:var(--ink);text-decoration:none;letter-spacing:-.02em}.logo span{color:var(--blue)}
+    .nav-links{display:flex;align-items:center;gap:8px}
+    .nav-link{font-size:13px;font-weight:600;color:var(--gray-500);text-decoration:none;padding:7px 14px;border-radius:var(--radius-full);transition:var(--transition)}
+    .nav-link:hover{color:var(--ink);background:var(--gray-100)}
+    .nav-link.active{color:var(--blue);background:var(--blue-pale)}
+    .nav-user{font-size:13px;font-weight:700;color:var(--ink);padding:7px 14px;background:var(--gray-100);border-radius:var(--radius-full)}
+    .nav-signout{font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;text-decoration:none;padding:7px 10px;border-radius:var(--radius-full);transition:var(--transition)}
+    .nav-signout:hover{color:var(--red);background:var(--red-bg)}
+
+    /* ── Hero / Search Section ── */
+    .hero{position:relative;overflow:hidden;padding:48px 24px 40px;background:linear-gradient(135deg,var(--ink) 0%,#162040 50%,#1a2d5c 100%)}
+    .hero::before{content:'';position:absolute;top:-30%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(61,99,255,.25) 0%,transparent 70%);pointer-events:none}
+    .hero::after{content:'';position:absolute;bottom:-20%;left:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(107,142,255,.15) 0%,transparent 70%);pointer-events:none}
+    .hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+    .hero-title{font-size:clamp(26px,4vw,36px);font-weight:800;color:var(--white);margin-bottom:6px;letter-spacing:-.02em}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;font-weight:500}
+
+    /* ── Search Bar ── */
+    .search-row{display:flex;gap:10px;flex-wrap:wrap}
+    .search-field{flex:1;min-width:200px;position:relative}
+    .search-field svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none}
+    .search-input{width:100%;padding:13px 14px 13px 42px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--radius-md);font-size:14px;font-family:inherit;color:var(--white);outline:none;transition:var(--transition);backdrop-filter:blur(8px)}
+    .search-input::placeholder{color:rgba(255,255,255,.4)}
+    .search-input:focus{border-color:var(--blue);background:rgba(255,255,255,.15)}
+    .date-input{padding:13px 16px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--radius-md);font-size:14px;font-family:inherit;color:var(--white);outline:none;transition:var(--transition);cursor:pointer}
+    .date-input:focus{border-color:var(--blue);background:rgba(255,255,255,.15)}
+    .clear-btn{padding:13px 20px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--radius-md);font-size:13px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;font-family:inherit;transition:var(--transition)}
+    .clear-btn:hover{background:rgba(255,255,255,.15);color:var(--white);border-color:rgba(255,255,255,.25)}
+
+    /* ── Category Pills ── */
+    .pills-wrap{max-width:1080px;margin:0 auto;padding:20px 24px 0}
+    .pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px}
+    .pills::-webkit-scrollbar{display:none}
+    .pill{flex-shrink:0;padding:9px 20px;border-radius:var(--radius-full);border:1.5px solid var(--gray-200);background:var(--white);font-size:13px;font-weight:600;color:var(--gray-500);cursor:pointer;font-family:inherit;transition:var(--transition);white-space:nowrap}
+    .pill:hover{border-color:var(--blue);color:var(--blue)}
+    .pill.active{border-color:var(--blue);color:var(--white);background:var(--blue);box-shadow:0 2px 12px rgba(61,99,255,.3)}
+
+    /* ── Main Content ── */
+    .content{max-width:1080px;margin:0 auto;padding:24px 24px 60px}
+    .results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .results-count{font-size:13px;font-weight:600;color:var(--gray-400)}
+
+    /* ── Session Cards: Photo-First (Airbnb-style) ── */
+    .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+    .session-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer;border:1px solid var(--gray-200)}
+    .session-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:transparent}
+
+    /* Card Image */
+    .card-img{position:relative;width:100%;aspect-ratio:16/10;background-color:var(--ink);background-size:cover;background-position:center;overflow:hidden}
+    .card-img-placeholder{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,var(--ink),#1d2d50);display:flex;align-items:center;justify-content:center;font-size:2.4rem;position:relative}
+    .card-badge{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+    .badge{padding:5px 12px;border-radius:var(--radius-full);font-size:11px;font-weight:700;backdrop-filter:blur(8px)}
+    .badge-category{background:rgba(12,18,32,.65);color:var(--white);text-transform:uppercase;letter-spacing:.06em}
+    .badge-group{background:rgba(245,158,11,.9);color:var(--white)}
+    .card-spots{position:absolute;bottom:12px;right:12px}
+    .spots-tag{padding:5px 12px;border-radius:var(--radius-full);font-size:11px;font-weight:700;backdrop-filter:blur(8px);letter-spacing:.02em}
+    .spots-ok{background:rgba(255,255,255,.88);color:var(--gray-600)}
+    .spots-low{background:rgba(239,68,68,.9);color:var(--white);animation:pulse-spots 2s ease-in-out infinite}
+    .spots-full{background:rgba(30,41,59,.85);color:var(--gray-400)}
+    @keyframes pulse-spots{0%,100%{opacity:1}50%{opacity:.8}}
+
+    /* Card Body */
+    .card-info{padding:16px 18px 18px}
+    .card-provider-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .card-provider-avatar{width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--white);flex-shrink:0;overflow:hidden}
+    .card-provider-avatar img{width:100%;height:100%;object-fit:cover}
+    .card-provider-name{font-size:13px;font-weight:600;color:var(--gray-500);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .card-provider-name:hover{color:var(--blue)}
+    .card-title{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .card-details{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:14px}
+    .card-detail{font-size:12.5px;color:var(--gray-500);display:flex;align-items:center;gap:4px;font-weight:500}
+    .card-detail svg{flex-shrink:0;color:var(--gray-400)}
+    .card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--gray-100)}
+    .card-price{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+    .card-price small{font-size:12px;font-weight:500;color:var(--gray-400);letter-spacing:0}
+    .card-btn{padding:10px 22px;border-radius:var(--radius-full);border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:var(--transition)}
+    .card-btn-book{background:var(--blue);color:var(--white)}
+    .card-btn-book:hover{background:#2d52ee;box-shadow:0 4px 16px rgba(61,99,255,.35)}
+    .card-btn-waitlist{background:var(--gray-800);color:var(--white)}
+    .card-btn-waitlist:hover{background:var(--ink)}
+
+    /* ── Empty State ── */
+    .empty{text-align:center;padding:80px 24px;color:var(--gray-400)}
+    .empty-icon{font-size:48px;margin-bottom:16px;opacity:.5}
+    .empty h3{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px}
+    .empty p{font-size:14px;color:var(--gray-500)}
+
+    /* ── Modal ── */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(12,18,32,.6);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px}
     .modal-overlay.open{display:flex}
-    .modal{background:#fff;border-radius:20px;padding:36px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
-    .modal-title{font-size:20px;font-weight:800;color:#0A2540;margin-bottom:4px}
-    .modal-sub{font-size:14px;color:#8898AA;margin-bottom:24px}
+    .modal{background:var(--white);border-radius:var(--radius-xl);padding:36px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+    .modal-title{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:4px}
+    .modal-sub{font-size:14px;color:var(--gray-500);margin-bottom:24px}
     .status-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
-    .status-opt{border:2px solid #E8EDF2;border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all .2s}
-    .status-opt:hover{border-color:#3D63FF}
-    .status-opt.going.active{border-color:#10B981;background:#ECFDF5}
-    .status-opt.maybe.active{border-color:#F59E0B;background:#FFFBEB}
-    .status-opt.out.active{border-color:#EF4444;background:#FEF2F2}
+    .status-opt{border:2px solid var(--gray-200);border-radius:var(--radius-md);padding:16px 8px;text-align:center;cursor:pointer;transition:var(--transition)}
+    .status-opt:hover{border-color:var(--blue)}
+    .status-opt.going.active{border-color:var(--green);background:var(--green-bg)}
+    .status-opt.maybe.active{border-color:var(--orange);background:var(--orange-bg)}
+    .status-opt.out.active{border-color:var(--red);background:var(--red-bg)}
     .status-opt .s-icon{font-size:24px;margin-bottom:6px}
-    .status-opt .s-label{font-size:13px;font-weight:700;color:#0A2540}
-    .status-opt .s-sub{font-size:11px;color:#8898AA;margin-top:2px}
+    .status-opt .s-label{font-size:13px;font-weight:700;color:var(--ink)}
+    .status-opt .s-sub{font-size:11px;color:var(--gray-400);margin-top:2px}
     .promo-row{display:flex;gap:8px;margin-bottom:8px}
-    .promo-input{flex:1;padding:10px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border .2s}
-    .promo-input:focus{border-color:#3D63FF}
-    .promo-apply{padding:10px 16px;background:#F6F9FC;border:2px solid #E8EDF2;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:#0A2540}
-    .promo-apply:hover{border-color:#3D63FF}
+    .promo-input{flex:1;padding:10px 14px;border:2px solid var(--gray-200);border-radius:var(--radius-md);font-size:14px;font-family:inherit;outline:none;transition:var(--transition)}
+    .promo-input:focus{border-color:var(--blue)}
+    .promo-apply{padding:10px 16px;background:var(--gray-50);border:2px solid var(--gray-200);border-radius:var(--radius-md);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:var(--transition)}
+    .promo-apply:hover{border-color:var(--blue)}
     .promo-msg{font-size:13px;margin-bottom:12px;display:none}
-    .modal-btn{width:100%;padding:14px;background:#3D63FF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+    .modal-btn{width:100%;padding:14px;background:var(--blue);color:var(--white);border:none;border-radius:var(--radius-md);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:var(--transition)}
     .modal-btn:hover{background:#2d52ee}
-    .modal-btn:disabled{background:#8898AA;cursor:not-allowed}
-    .modal-cancel{width:100%;padding:12px;background:none;color:#8898AA;border:none;font-size:14px;cursor:pointer;font-family:inherit;margin-top:8px}
-    .modal-cancel:hover{color:#0A2540}
-    .success-msg{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-bottom:16px;display:none}
-    @media(max-width:640px){.sessions-grid{grid-template-columns:1fr}}
-  
-    .card-cover{width:calc(100% + 32px);height:140px;background-size:cover;background-position:center;background-color:#1a2540;border-radius:10px 10px 0 0;margin:-16px -16px 12px -16px}
-    .card-cover-placeholder{width:calc(100% + 32px);height:120px;background:linear-gradient(135deg,#0C1220 0%,#1d2d50 100%);border-radius:10px 10px 0 0;margin:-16px -16px 12px -16px;display:flex;align-items:center;justify-content:center;font-size:2rem}
-    </style>
+    .modal-btn:disabled{background:var(--gray-400);cursor:not-allowed}
+    .modal-cancel{width:100%;padding:12px;background:none;color:var(--gray-400);border:none;font-size:14px;cursor:pointer;font-family:inherit;margin-top:8px;transition:var(--transition)}
+    .modal-cancel:hover{color:var(--ink)}
+    .success-msg{background:var(--green-bg);color:#065F46;padding:12px 16px;border-radius:var(--radius-md);font-size:14px;margin-bottom:16px;display:none}
+
+    /* ── Mobile ── */
+    @media(max-width:768px){
+      .nav{padding:0 16px}
+      .nav-links{gap:4px}
+      .nav-link{padding:6px 10px;font-size:12px}
+      .hero{padding:32px 16px 28px}
+      .hero-title{font-size:24px}
+      .search-row{flex-direction:column}
+      .search-field{min-width:100%}
+      .pills-wrap{padding:16px 16px 0}
+      .content{padding:20px 16px 48px}
+      .sessions-grid{grid-template-columns:1fr;gap:16px}
+      .card-info{padding:14px 16px 16px}
+    }
+    @media(max-width:380px){
+      .nav-user{display:none}
+      .card-footer{flex-direction:column;align-items:flex-start;gap:10px}
+      .card-btn{width:100%;text-align:center}
+    }
+
+    /* ── Fade-in Animation ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .session-card{animation:fadeUp .4s ease both}
+    .session-card:nth-child(1){animation-delay:.05s}
+    .session-card:nth-child(2){animation-delay:.1s}
+    .session-card:nth-child(3){animation-delay:.15s}
+    .session-card:nth-child(4){animation-delay:.2s}
+    .session-card:nth-child(5){animation-delay:.25s}
+    .session-card:nth-child(6){animation-delay:.3s}
+  </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="logo">Sort<span>ora</span></div>
-    <div class="topbar-right">
+
+  <!-- ── Nav ── -->
+  <nav class="nav">
+    <a class="logo" href="/">Sort<span>ora</span></a>
+    <div class="nav-links">
       <a class="nav-link active" href="/browse.html">Browse</a>
-      <a class="nav-link" href="/bookings.html">My Bookings</a>
-      <span class="user-name" id="user-name"></span>
-      <a class="nav-link" onclick="signOut()">Sign out</a>
+      <a class="nav-link" href="/bookings.html">Bookings</a>
+      <span class="nav-user" id="user-name"></span>
+      <a class="nav-signout" onclick="signOut()">Sign out</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero + Search ── -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-title">Find your next experience</div>
+      <div class="hero-sub">Browse local sessions from verified providers near you.</div>
+      <div class="search-row">
+        <div class="search-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" id="city-search" placeholder="Search by city or location..." oninput="applyFilters()"/>
+        </div>
+        <input class="date-input" type="date" id="date-filter" onchange="applyFilters()"/>
+        <button class="clear-btn" onclick="clearFilters()">Clear</button>
+      </div>
     </div>
   </div>
-  <div class="main">
-    <div class="page-title">Browse Sessions</div>
-    <div class="page-sub">Find and join sessions near you.</div>
-    <div class="search-bar">
-      <input class="search-input" type="text" id="city-search" placeholder="Search by city or location..." oninput="applyFilters()"/>
-      <input class="date-input" type="date" id="date-filter" onchange="applyFilters()"/>
-      <button class="clear-btn" onclick="clearFilters()">Clear</button>
+
+  <!-- ── Category Pills ── -->
+  <div class="pills-wrap">
+    <div class="pills">
+      <button class="pill active" onclick="filterBy('all',this)">All</button>
+      <button class="pill" onclick="filterBy('photography',this)">📸 Photography</button>
+      <button class="pill" onclick="filterBy('fitness',this)">💪 Fitness</button>
+      <button class="pill" onclick="filterBy('yoga',this)">🧘 Yoga</button>
+      <button class="pill" onclick="filterBy('dj',this)">🎵 DJ</button>
+      <button class="pill" onclick="filterBy('coaching',this)">🏆 Coaching</button>
+      <button class="pill" onclick="filterBy('chef',this)">👨‍🍳 Chef</button>
+      <button class="pill" onclick="filterBy('workshop',this)">🎨 Workshop</button>
     </div>
-    <div class="filters">
-      <button class="filter-btn active" onclick="filterBy('all',this)">All</button>
-      <button class="filter-btn" onclick="filterBy('photography',this)">Photography</button>
-      <button class="filter-btn" onclick="filterBy('fitness',this)">Fitness</button>
-      <button class="filter-btn" onclick="filterBy('yoga',this)">Yoga</button>
-      <button class="filter-btn" onclick="filterBy('dj',this)">DJ</button>
-      <button class="filter-btn" onclick="filterBy('coaching',this)">Coaching</button>
-      <button class="filter-btn" onclick="filterBy('chef',this)">Chef</button>
-      <button class="filter-btn" onclick="filterBy('workshop',this)">Workshop</button>
+  </div>
+
+  <!-- ── Content ── -->
+  <div class="content">
+    <div class="results-bar">
+      <div class="results-count" id="results-count"></div>
     </div>
-    <div class="results-count" id="results-count"></div>
     <div class="sessions-grid" id="sessions-grid">
-      <div class="empty"><div class="empty-icon">...</div><h3>Loading sessions...</h3></div>
+      <div class="empty"><div class="empty-icon">⏳</div><h3>Loading sessions...</h3></div>
     </div>
   </div>
+
+  <!-- ── Modal ── -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
       <div class="modal-title" id="modal-title">Join Session</div>
@@ -122,13 +247,13 @@
       <div class="success-msg" id="modal-success">You are signed up!</div>
       <div class="status-options">
         <div class="status-opt going" onclick="selectStatus('going')" id="opt-going">
-          <div class="s-icon">&#10003;</div><div class="s-label">Going</div><div class="s-sub">I will be there</div>
+          <div class="s-icon">✓</div><div class="s-label">Going</div><div class="s-sub">I will be there</div>
         </div>
         <div class="status-opt maybe" onclick="selectStatus('maybe')" id="opt-maybe">
           <div class="s-icon">?</div><div class="s-label">Maybe</div><div class="s-sub">Not sure yet</div>
         </div>
         <div class="status-opt out" onclick="selectStatus('out')" id="opt-out">
-          <div class="s-icon">&#10007;</div><div class="s-label">Out</div><div class="s-sub">Cannot make it</div>
+          <div class="s-icon">✗</div><div class="s-label">Out</div><div class="s-sub">Cannot make it</div>
         </div>
       </div>
       <div class="promo-row">
@@ -140,6 +265,7 @@
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     var SB = window.supabase.createClient(
@@ -165,7 +291,7 @@
     }
 
     async function loadSessions() {
-      var r = await SB.from("sessions").select("*, providers(business_name, category, slug)").eq("status","open").gte("session_date", new Date().toISOString()).order("session_date",{ascending:true});
+      var r = await SB.from("sessions").select("*, providers(business_name, category, slug, avatar_url)").eq("status","open").gte("session_date", new Date().toISOString()).order("session_date",{ascending:true});
       allSessions = r.data || [];
       var goingCounts = {};
       if (allSessions.length) {
@@ -193,13 +319,13 @@
       document.getElementById("city-search").value = "";
       document.getElementById("date-filter").value = "";
       currentCategory = "all";
-      document.querySelectorAll(".filter-btn").forEach(function(b,i){b.classList.toggle("active",i===0);});
+      document.querySelectorAll(".pill").forEach(function(b,i){b.classList.toggle("active",i===0);});
       applyFilters();
     }
 
     function filterBy(cat, btn) {
       currentCategory = cat;
-      document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
+      document.querySelectorAll(".pill").forEach(function(b){b.classList.remove("active");});
       btn.classList.add("active");
       applyFilters();
     }
@@ -207,34 +333,76 @@
     function renderSessions(sessions) {
       var grid = document.getElementById("sessions-grid");
       var count = document.getElementById("results-count");
-      count.textContent = sessions.length + " session" + (sessions.length !== 1 ? "s" : "") + " found";
-      if (!sessions.length) { grid.innerHTML = "<div class=\"empty\"><h3>No sessions found</h3><p>Try a different city or clear filters.</p></div>"; return; }
+      count.textContent = sessions.length + " session" + (sessions.length !== 1 ? "s" : "") + " available";
+      if (!sessions.length) {
+        grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3>No sessions found</h3><p>Try a different city or clear your filters.</p></div>';
+        return;
+      }
       grid.innerHTML = sessions.map(function(s) {
         var d = new Date(s.session_date);
         var dateStr = d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
         var timeStr = d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
         var pName = s.providers ? s.providers.business_name : "Provider";
         var pSlug = s.providers ? s.providers.slug : null;
+        var pAvatar = s.providers && s.providers.avatar_url ? s.providers.avatar_url.split('?')[0] + '?t=1' : null;
         var cat = s.providers ? s.providers.category : s.category || "";
-        var pClick = pSlug ? "window.location.href=\"/p/" + pSlug + "\"" : "";
-        var card = "<div class=\"session-card\" onclick=\"openModal('"+s.id+"')\">";
-        card+=(s.image_url?"<div class=\"card-cover\" style=\"background-image:url("+s.image_url+")\"></div>":"<div class=\"card-cover-placeholder\">&#128247;</div>");
-        card += "<div class=\"card-header\">";
-        card += "<div class=\"card-category\">"+cat+"</div>";
-        card += "<div class=\"card-title\">"+s.title+"</div>";
-        card += "<div class=\"card-provider\" onclick=\"event.stopPropagation();"+pClick+"\">"+pName+"</div>";
-        card += "</div><div class=\"card-body\">";
-        if (s.is_group_funded) card += "<div class=\"group-badge\">Group Funded</div>";
-        card += "<div class=\"card-meta\">";
-        card += "<div class=\"meta-row\">Date: <span>"+dateStr+" at "+timeStr+"</span></div>";
-        card += "<div class=\"meta-row\">Location: <span>"+(s.location||"TBD")+"</span></div>";
-        if (s.max_spots) card += "<div class=\"meta-row\">Spots: <span>"+s.max_spots+"</span></div>";
-        if (s.duration_minutes) card += "<div class=\"meta-row\">Duration: <span>"+s.duration_minutes+" mins</span></div>";
-        card += "</div><div class=\"card-footer\">";
-        card += "<div class=\"price\">$"+parseFloat(s.price_per_person).toFixed(2)+"<small> /person</small></div>";
-        var isFull = window._goingCounts && (window._goingCounts[s.id]||0) >= s.max_spots;
-        card += isFull ? "<button class=\"join-btn waitlist-btn\" onclick=\"joinWaitlist('"+s.id+"')\" >Join Waitlist</button>" : "<button class=\"join-btn\">Join</button>";
-        card += "</div></div></div>";
+        var pClick = pSlug ? "event.stopPropagation();window.location.href='/p/" + pSlug + "'" : "event.stopPropagation()";
+        var goingCount = window._goingCounts ? (window._goingCounts[s.id]||0) : 0;
+        var spotsLeft = s.max_spots ? s.max_spots - goingCount : null;
+        var isFull = s.max_spots && goingCount >= s.max_spots;
+
+        var card = '<div class="session-card" onclick="openModal(\'' + s.id + '\')">';
+
+        // Image
+        if (s.image_url) {
+          card += '<div class="card-img" style="background-image:url(' + s.image_url + ')">';
+        } else {
+          card += '<div class="card-img-placeholder">';
+        }
+        // Badges
+        card += '<div class="card-badge">';
+        card += '<span class="badge badge-category">' + cat + '</span>';
+        if (s.is_group_funded) card += '<span class="badge badge-group">👥 Group Funded</span>';
+        card += '</div>';
+        // Spots indicator
+        if (s.max_spots) {
+          if (isFull) {
+            card += '<div class="card-spots"><span class="spots-tag spots-full">Full</span></div>';
+          } else if (spotsLeft !== null && spotsLeft <= 3) {
+            card += '<div class="card-spots"><span class="spots-tag spots-low">[ ' + spotsLeft + ' spot' + (spotsLeft!==1?'s':'') + ' left ]</span></div>';
+          } else if (spotsLeft !== null) {
+            card += '<div class="card-spots"><span class="spots-tag spots-ok">' + spotsLeft + ' spots left</span></div>';
+          }
+        }
+        card += '</div>';
+
+        // Info
+        card += '<div class="card-info">';
+        card += '<div class="card-provider-row" onclick="' + pClick + '">';
+        if (pAvatar) {
+          card += '<div class="card-provider-avatar"><img src="' + pAvatar + '"></div>';
+        } else {
+          card += '<div class="card-provider-avatar">' + pName.charAt(0) + '</div>';
+        }
+        card += '<span class="card-provider-name">' + pName + '</span>';
+        card += '</div>';
+        card += '<div class="card-title">' + s.title + '</div>';
+        card += '<div class="card-details">';
+        card += '<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' + dateStr + '</span>';
+        card += '<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + timeStr + '</span>';
+        if (s.location) card += '<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' + s.location + '</span>';
+        if (s.duration_minutes) card += '<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 00-.586-1.414L12 12l-4.414 4.414A2 2 0 007 17.828V22"/><path d="M7 2v4.172a2 2 0 00.586 1.414L12 12l4.414-4.414A2 2 0 0017 6.172V2"/></svg>' + s.duration_minutes + ' min</span>';
+        card += '</div>';
+
+        // Footer
+        card += '<div class="card-footer">';
+        card += '<div class="card-price">$' + parseFloat(s.price_per_person).toFixed(2) + '<small> /person</small></div>';
+        if (isFull) {
+          card += '<button class="card-btn card-btn-waitlist" onclick="event.stopPropagation();joinWaitlist(\'' + s.id + '\')">Join Waitlist</button>';
+        } else {
+          card += '<button class="card-btn card-btn-book" onclick="event.stopPropagation();openModal(\'' + s.id + '\')">Book Now</button>';
+        }
+        card += '</div></div></div>';
         return card;
       }).join("");
     }
@@ -250,12 +418,12 @@
       document.getElementById("opt-maybe").classList.remove("active");
       document.getElementById("opt-out").classList.remove("active");
       document.getElementById("modal-title").textContent = activeSession.title;
-      document.getElementById("modal-sub").textContent = "Pick your status - you can update it anytime.";
+      document.getElementById("modal-sub").textContent = "Pick your status — you can update it anytime.";
       document.getElementById("modal-success").style.display = "none";
       document.getElementById("modal-btn").disabled = false;
       var pm = activeSession.payment_mode || "upfront";
       document.getElementById("modal-btn").textContent = pm === "later" ? "Register Free" : "Pay & Book";
-      document.getElementById("modal-btn").style.background = pm === "later" ? "#10B981" : "#3D63FF";
+      document.getElementById("modal-btn").style.background = pm === "later" ? "var(--green)" : "var(--blue)";
       var payLaterNote = document.getElementById("pay-later-note");
       if (payLaterNote) payLaterNote.style.display = pm === "later" ? "block" : "none";
       document.getElementById("modal").classList.add("open");
@@ -280,7 +448,7 @@
       var r = await fetch("/api/validate-promo",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:code,sessionId:activeSession?activeSession.id:null})});
       var data = await r.json();
       msg.style.display = "block";
-      if (data.error) { msg.textContent = "Invalid: "+data.error; msg.style.color = "#DC2626"; appliedPromoId=null; appliedDiscount=0; }
+      if (data.error) { msg.textContent = "Invalid: "+data.error; msg.style.color = "var(--red)"; appliedPromoId=null; appliedDiscount=0; }
       else { msg.textContent = data.discount_percent+"% discount applied!"; msg.style.color = "#065F46"; appliedPromoId=data.promo_id; appliedDiscount=data.discount_percent; }
     }
 
@@ -311,8 +479,6 @@
 
     async function signOut() { await SB.auth.signOut(); window.location.href="/login.html"; }
 
-    init();
-
     async function joinWaitlist(sessionId) {
       if (!currentUser) { window.location.href = "/login.html"; return; }
       var btn = event.target;
@@ -326,12 +492,10 @@
         });
         var data = await r.json();
         if (data.success) {
-          btn.textContent = "On Waitlist";
-          btn.style.background = "#10B981";
-          btn.disabled = true;
+          btn.textContent = "On Waitlist ✓";
+          btn.style.background = "var(--green)";
         } else if (data.error === "Already on waitlist") {
           btn.textContent = "Already Waitlisted";
-          btn.disabled = true;
         } else {
           btn.textContent = "Join Waitlist";
           btn.disabled = false;
@@ -342,6 +506,8 @@
         btn.disabled = false;
       }
     }
+
+    init();
   </script>
 </body>
 </html>
