@@ -9,102 +9,221 @@
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#222;-webkit-font-smoothing:antialiased}
 
-    /* ── Nav ── */
-    .nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:72px}
+    /* ══════════════════════════════════════
+       NAV — Yelp-inspired with glass buttons
+       ══════════════════════════════════════ */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(12,18,32,.65);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border-bottom:1px solid rgba(255,255,255,.06);transition:background .3s}
+    .nav.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom-color:#EBEBEB}
+    .nav-left{display:flex;align-items:center;gap:28px}
     .nav-logo{text-decoration:none;display:flex;align-items:center;gap:8px}
-    .logo-text{font-weight:800;font-size:22px;color:#fff;letter-spacing:-.5px}
+    .logo-text{font-weight:800;font-size:21px;letter-spacing:-.5px;transition:color .3s}
+    .nav:not(.scrolled) .logo-text{color:#fff}
+    .nav.scrolled .logo-text{color:#3B6BFF}
+    .logo-mark-light,.nav.scrolled .logo-mark-dark{display:none}
+    .nav.scrolled .logo-mark-light,.logo-mark-dark{display:block}
+    .nav:not(.scrolled) .logo-mark-light{display:block}
+    .nav:not(.scrolled) .logo-mark-dark{display:none}
+
+    /* Nav dropdowns */
+    .nav-menus{display:flex;align-items:center;gap:4px}
+    .nav-menu{position:relative}
+    .nav-menu-btn{display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
+    .nav:not(.scrolled) .nav-menu-btn{color:rgba(255,255,255,.8);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+    .nav:not(.scrolled) .nav-menu-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+    .nav.scrolled .nav-menu-btn{color:#222;background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.06)}
+    .nav.scrolled .nav-menu-btn:hover{background:rgba(0,0,0,.06)}
+    .nav-menu-btn svg{width:12px;height:12px;transition:transform .2s}
+    .nav-menu.open .nav-menu-btn svg{transform:rotate(180deg)}
+    .nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:200px;background:#fff;border:1px solid #EBEBEB;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);padding:8px;display:none;z-index:10}
+    .nav-menu.open .nav-dropdown{display:block}
+    .nav-drop-item{display:block;padding:10px 14px;border-radius:8px;font-size:14px;font-weight:500;color:#222;text-decoration:none;transition:background .1s}
+    .nav-drop-item:hover{background:#f7f7f7}
+    .nav-drop-item span{display:block;font-size:12px;color:#6a6a6a;margin-top:2px;font-weight:400}
+
     .nav-right{display:flex;align-items:center;gap:8px}
-    .nav-link{font-size:14px;font-weight:600;color:rgba(255,255,255,.85);text-decoration:none;padding:8px 16px;border-radius:22px;transition:all .15s}
-    .nav-link:hover{background:rgba(255,255,255,.12);color:#fff}
-    .nav-btn{font-size:14px;font-weight:700;padding:9px 20px;border-radius:8px;text-decoration:none;cursor:pointer;font-family:inherit;transition:all .15s}
-    .nav-btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
-    .nav-btn-ghost:hover{background:rgba(255,255,255,.18)}
-    .nav-btn-white{background:#fff;color:#222;border:1px solid #fff}
-    .nav-btn-white:hover{background:#f0f0f0}
+    /* Glass buttons (Apple iOS style) */
+    .glass-btn{padding:8px 18px;border-radius:20px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;font-family:inherit;transition:all .2s;border:none}
+    .nav:not(.scrolled) .glass-btn-ghost{color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px)}
+    .nav:not(.scrolled) .glass-btn-ghost:hover{background:rgba(255,255,255,.16);color:#fff}
+    .nav.scrolled .glass-btn-ghost{color:#222;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.08)}
+    .nav.scrolled .glass-btn-ghost:hover{background:rgba(0,0,0,.07)}
+    .nav:not(.scrolled) .glass-btn-fill{color:#fff;background:rgba(59,107,255,.7);border:1px solid rgba(59,107,255,.5);backdrop-filter:blur(12px)}
+    .nav:not(.scrolled) .glass-btn-fill:hover{background:rgba(59,107,255,.9)}
+    .nav.scrolled .glass-btn-fill{color:#fff;background:#3B6BFF;border:1px solid #3B6BFF}
+    .nav.scrolled .glass-btn-fill:hover{background:#2d5ae6}
+    .nav-biz{font-size:14px;font-weight:600;text-decoration:none;transition:color .15s;padding:8px 12px;border-radius:20px}
+    .nav:not(.scrolled) .nav-biz{color:rgba(255,255,255,.7)}
+    .nav:not(.scrolled) .nav-biz:hover{color:#fff}
+    .nav.scrolled .nav-biz{color:#6a6a6a}
+    .nav.scrolled .nav-biz:hover{color:#222}
 
-    /* ── Hero ── */
-    .hero{position:relative;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#0C1220}
-    .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0C1220 0%,#112040 30%,#1a2d5c 60%,#0C1220 100%);z-index:0}
-    .hero-glow1{position:absolute;top:-20%;right:10%;width:500px;height:500px;background:radial-gradient(circle,rgba(59,107,255,.2) 0%,transparent 70%);z-index:1;pointer-events:none}
-    .hero-glow2{position:absolute;bottom:-10%;left:5%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.12) 0%,transparent 70%);z-index:1;pointer-events:none}
-    .hero-content{position:relative;z-index:2;text-align:center;max-width:720px;padding:100px 24px 60px}
-    .hero-tag{display:inline-block;padding:6px 16px;border-radius:99px;background:rgba(59,107,255,.15);border:1px solid rgba(59,107,255,.25);color:#3B6BFF;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:20px}
-    .hero-title{font-size:clamp(36px,6vw,56px);font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1.1;margin-bottom:16px}
-    .hero-title span{color:#3B6BFF}
-    .hero-sub{font-size:18px;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto 36px;line-height:1.5;font-weight:500}
+    /* ══════════════════════════════════════
+       HERO — Dark with Airbnb search
+       ══════════════════════════════════════ */
+    .hero{position:relative;padding:140px 32px 60px;overflow:hidden;background:#0C1220}
+    .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#0C1220 0%,#0f1b35 35%,#162654 65%,#0C1220 100%)}
+    .hero-orb1{position:absolute;top:-15%;right:5%;width:600px;height:600px;background:radial-gradient(circle,rgba(59,107,255,.14) 0%,transparent 70%);pointer-events:none}
+    .hero-orb2{position:absolute;bottom:-10%;left:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(59,107,255,.08) 0%,transparent 70%);pointer-events:none}
+    .hero-inner{position:relative;z-index:2;max-width:760px;margin:0 auto;text-align:center}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:99px;background:rgba(59,107,255,.1);border:1px solid rgba(59,107,255,.2);color:#6B8EFF;font-size:12px;font-weight:700;letter-spacing:.03em;margin-bottom:20px}
+    .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:#3B6BFF;animation:pulse-dot 2s infinite}
+    @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+    .hero-title{font-size:clamp(32px,5.5vw,52px);font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1.1;margin-bottom:14px}
+    .hero-title em{font-style:normal;color:#3B6BFF}
+    .hero-sub{font-size:17px;color:rgba(255,255,255,.45);max-width:500px;margin:0 auto 32px;line-height:1.55;font-weight:500}
 
-    /* Search capsule */
-    .search-capsule{max-width:600px;margin:0 auto;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:60px;overflow:hidden;backdrop-filter:blur(8px);transition:all .2s}
-    .search-capsule:focus-within{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
-    .search-seg{flex:1;padding:14px 24px}
-    .search-seg input{width:100%;border:none;outline:none;background:transparent;font-size:15px;font-family:inherit;color:#fff}
-    .search-seg input::placeholder{color:rgba(255,255,255,.4)}
-    .search-seg-divider{width:1px;height:24px;background:rgba(255,255,255,.12);flex-shrink:0}
-    .search-go{width:48px;height:48px;border-radius:50%;background:#3B6BFF;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:4px;flex-shrink:0;transition:all .15s}
-    .search-go:hover{background:#2d5ae6;transform:scale(1.05)}
-    .search-go svg{color:#fff;width:20px;height:20px}
+    /* Airbnb search capsule */
+    .search-bar{max-width:680px;margin:0 auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:60px;display:flex;align-items:center;overflow:hidden;transition:all .2s}
+    .search-bar:focus-within{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+    .sb-seg{flex:1;padding:14px 24px;position:relative}
+    .sb-seg:not(:last-of-type)::after{content:'';position:absolute;right:0;top:14px;bottom:14px;width:1px;background:rgba(255,255,255,.08)}
+    .sb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.45);margin-bottom:2px}
+    .sb-seg input,.sb-seg select{width:100%;border:none;outline:none;background:transparent;font-size:14px;font-family:inherit;color:#fff;padding:0}
+    .sb-seg input::placeholder{color:rgba(255,255,255,.3)}
+    .sb-seg select{color:rgba(255,255,255,.3);-webkit-appearance:none;appearance:none;cursor:pointer}
+    .sb-seg select option{color:#222;background:#fff}
+    .sb-go{width:48px;height:48px;border-radius:50%;background:#3B6BFF;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:4px 6px 4px 0;flex-shrink:0;transition:all .15s}
+    .sb-go:hover{background:#2d5ae6;transform:scale(1.05)}
+    .sb-go svg{width:20px;height:20px;color:#fff}
 
-    .hero-cats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-    .hero-cat{padding:7px 16px;border-radius:99px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none}
-    .hero-cat:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)}
+    /* ══════════════════════════════════════
+       SESSIONS GRID — Airbnb with heart + review + popular
+       ══════════════════════════════════════ */
+    .sessions-section{max-width:1280px;margin:0 auto;padding:48px 32px 0}
+    .ss-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+    .ss-title{font-size:26px;font-weight:800;letter-spacing:-.03em}
+    .ss-link{font-size:14px;font-weight:600;color:#222;text-decoration:underline;display:flex;align-items:center;gap:4px}
+    .ss-link:hover{color:#3B6BFF}
+    .ss-link svg{width:16px;height:16px}
+    .ss-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .ss-card{cursor:pointer;transition:all .2s;position:relative}
+    .ss-card:hover .ss-img{transform:scale(1.03)}
+    .ss-img-wrap{position:relative;border-radius:14px;overflow:hidden}
+    .ss-img{width:100%;aspect-ratio:3/2;background-size:cover;background-position:center;background-color:#0C1220;transition:transform .3s}
+    .ss-placeholder{width:100%;aspect-ratio:3/2;background:linear-gradient(135deg,#0C1220,#1a2d50);display:flex;align-items:center;justify-content:center;font-size:2.4rem;transition:transform .3s}
+    .ss-card:hover .ss-placeholder{transform:scale(1.03)}
+    /* Heart button */
+    .ss-heart{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.15);backdrop-filter:blur(4px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:2}
+    .ss-heart:hover{background:rgba(0,0,0,.3);transform:scale(1.1)}
+    .ss-heart svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+    .ss-heart.liked svg{fill:#ff385c;stroke:#ff385c}
+    /* Popular badge */
+    .ss-popular{position:absolute;top:10px;left:10px;padding:5px 12px;border-radius:6px;background:#fff;color:#222;font-size:11px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.1);z-index:2}
+    /* Info */
+    .ss-info{padding:12px 4px 0}
+    .ss-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:3px}
+    .ss-name{font-size:16px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+    .ss-rating{display:flex;align-items:center;gap:3px;font-size:13px;font-weight:600;color:#222;flex-shrink:0}
+    .ss-rating svg{width:12px;height:12px;fill:#222}
+    .ss-provider{font-size:14px;color:#6a6a6a;margin-bottom:2px}
+    .ss-date{font-size:14px;color:#6a6a6a;margin-bottom:5px}
+    .ss-price{font-size:17px;font-weight:800;color:#222}
+    .ss-price small{font-size:14px;font-weight:400;color:#6a6a6a}
+    .ss-empty{text-align:center;padding:48px;color:#b0b0b0;font-size:14px}
 
-    /* ── Content ── */
-    .content{max-width:1280px;margin:0 auto;padding:48px 24px 0}
-    .section{margin-bottom:56px}
-    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-    .section-title{font-size:24px;font-weight:800;color:#222;letter-spacing:-.03em}
-    .section-link{font-size:14px;font-weight:600;color:#222;text-decoration:underline;cursor:pointer;display:flex;align-items:center;gap:4px;transition:color .15s}
-    .section-link:hover{color:#3B6BFF}
-    .section-link svg{width:16px;height:16px;transition:transform .15s}
-    .section-link:hover svg{transform:translateX(3px)}
 
-    /* Session cards (Airbnb style) */
-    .sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
-    .s-card{cursor:pointer;transition:all .2s}
-    .s-card:hover .s-card-img{transform:scale(1.02)}
-    .s-card-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:12px;background-color:#0C1220;transition:transform .25s;position:relative;overflow:hidden}
-    .s-card-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#0C1220,#1a2d50);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;transition:transform .25s;position:relative;overflow:hidden}
-    .s-card:hover .s-card-placeholder{transform:scale(1.02)}
-    .s-card-badge{position:absolute;top:10px;left:10px}
-    .s-badge{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;background:#fff;color:#222;box-shadow:0 2px 4px rgba(0,0,0,.08)}
-    .s-card-info{padding:10px 2px 0}
-    .s-card-title{font-size:15px;font-weight:700;color:#222;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .s-card-provider{font-size:13px;color:#6a6a6a;margin-bottom:2px}
-    .s-card-date{font-size:13px;color:#6a6a6a;margin-bottom:4px}
-    .s-card-price{font-size:15px;font-weight:800;color:#222}
-    .s-card-price small{font-size:13px;font-weight:400;color:#6a6a6a}
+    /* ══════════════════════════════════════
+       PROVIDER SHOWCASE — Stripe bento grid
+       ══════════════════════════════════════ */
+    .showcase{max-width:1280px;margin:64px auto 0;padding:0 32px}
+    .showcase-header{text-align:center;margin-bottom:48px}
+    .showcase-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:8px}
+    .showcase-title{font-size:clamp(28px,4.5vw,44px);font-weight:800;letter-spacing:-.04em;color:#222;margin-bottom:12px;line-height:1.1}
+    .showcase-title em{font-style:normal;color:#6a6a6a;font-weight:500}
+    .showcase-sub{font-size:16px;color:#6a6a6a;max-width:540px;margin:0 auto;line-height:1.6}
+    .bento{display:grid;gap:16px}
+    .bento-row1{grid-template-columns:1.35fr 1fr}
+    .bento-row2{grid-template-columns:1fr 1.35fr}
+    .bento+.bento{margin-top:16px}
+    .sc-card{border:1px solid #EBEBEB;border-radius:16px;overflow:hidden;transition:border-color .2s;display:flex;flex-direction:column}
+    .sc-card:hover{border-color:#c8c8c8}
+    .sc-card-head{padding:28px 28px 0}
+    .sc-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3B6BFF;margin-bottom:6px}
+    .sc-heading{font-size:21px;font-weight:800;letter-spacing:-.03em;color:#222;margin-bottom:6px;line-height:1.2}
+    .sc-desc{font-size:13px;color:#6a6a6a;line-height:1.55}
+    .sc-link{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#3B6BFF;text-decoration:none;margin-top:10px;transition:gap .15s}
+    .sc-link:hover{gap:8px}
+    .sc-link svg{width:14px;height:14px}
+    .sc-preview{background:#0C1220;border-radius:12px;margin:16px;flex:1;min-height:260px;position:relative;overflow:hidden;user-select:none}
+    .sc-screen{position:relative;z-index:1;height:100%}
+    .sc-chrome{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+    .sc-dot{width:7px;height:7px;border-radius:50%}
+    .sc-dot-r{background:#ff5f57}
+    .sc-dot-y{background:#febc2e}
+    .sc-dot-g{background:#28c840}
+    .sc-chrome-title{margin-left:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.2)}
+    .sc-body{padding:14px;position:relative}
+    .sc-glow{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(59,107,255,.1) 0%,transparent 70%);pointer-events:none;z-index:0}
+    /* Interactive elements */
+    .ix-stat-row{display:flex;gap:6px;margin-bottom:8px}
+    .ix-stat{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:9px;cursor:pointer;transition:all .15s}
+    .ix-stat:hover{background:rgba(255,255,255,.07);border-color:rgba(59,107,255,.2)}
+    .ix-stat.active{border-color:rgba(59,107,255,.4);background:rgba(59,107,255,.08)}
+    .ix-stat-label{font-size:8px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+    .ix-stat-num{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;transition:all .3s}
+    .ix-row{display:flex;align-items:center;gap:7px;padding:7px 9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:6px;margin-bottom:4px;cursor:pointer;transition:all .15s}
+    .ix-row:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+    .ix-row.highlight{border-color:rgba(59,107,255,.3);background:rgba(59,107,255,.06)}
+    .ix-av{width:22px;height:22px;border-radius:50%;flex-shrink:0}
+    .ix-name{flex:1;font-size:11px;font-weight:600;color:rgba(255,255,255,.5)}
+    .ix-pill{padding:2px 7px;border-radius:8px;font-size:8px;font-weight:700;flex-shrink:0;transition:all .2s}
+    .ix-btn{padding:4px 10px;border-radius:5px;font-size:9px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
+    .ix-btn-blue{background:rgba(59,107,255,.15);color:#3B6BFF}
+    .ix-btn-blue:hover{background:rgba(59,107,255,.25)}
+    .ix-btn-green{background:rgba(16,185,129,.15);color:#10B981}
+    .ix-btn-green:hover{background:rgba(16,185,129,.25)}
+    .ix-notif{display:flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;margin-top:6px;transition:all .3s;opacity:0;transform:translateY(4px)}
+    .ix-notif.show{opacity:1;transform:translateY(0)}
+    .ix-notif-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .ix-notif-text{font-size:10px;color:rgba(255,255,255,.4)}
+    .ix-notif-text b{color:rgba(255,255,255,.7)}
+    .ix-bar-track{height:5px;border-radius:3px;background:rgba(255,255,255,.04);overflow:hidden}
+    .ix-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+    .ix-chart{display:flex;align-items:flex-end;gap:3px;height:80px;margin-bottom:6px}
+    .ix-chart-bar{flex:1;border-radius:3px 3px 0 0;cursor:pointer;transition:all .2s;position:relative;min-height:3px}
+    .ix-chart-bar:hover{filter:brightness(1.4)}
+    .ix-chart-tooltip{position:absolute;top:-20px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.9);color:#0C1220;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
+    .ix-chart-bar:hover .ix-chart-tooltip{opacity:1}
+    .ix-tabs{display:flex;gap:3px;margin-bottom:8px}
+    .ix-tab{padding:4px 10px;border-radius:5px;font-size:9px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .15s;font-family:inherit}
+    .ix-tab:hover{color:rgba(255,255,255,.5)}
+    .ix-tab.active{color:#3B6BFF;background:rgba(59,107,255,.1);border-color:rgba(59,107,255,.2)}
+    .ix-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.06);outline:none;margin:6px 0 3px}
+    .ix-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#3B6BFF;cursor:pointer;border:2px solid #0C1220}
+    .ix-meta{display:flex;justify-content:space-between;font-size:8px;color:rgba(255,255,255,.18)}
 
-    .loading-text{text-align:center;padding:40px;color:#b0b0b0;font-size:14px}
-
-    /* ── Categories Grid ── */
-    .cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-    .cat-card{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 16px;border:1px solid #EBEBEB;border-radius:12px;cursor:pointer;transition:all .15s;text-decoration:none;color:#222}
-    .cat-card:hover{border-color:#3B6BFF;background:#f8f9ff}
-    .cat-icon{font-size:28px}
-    .cat-name{font-size:13px;font-weight:700;text-align:center}
-
-    /* ── Provider CTA ── */
-    .provider-cta{background:#0C1220;border-radius:20px;padding:60px 40px;display:flex;align-items:center;justify-content:space-between;gap:40px;margin-bottom:56px;position:relative;overflow:hidden}
-    .provider-cta-glow{position:absolute;right:-5%;top:-30%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.2) 0%,transparent 70%);pointer-events:none}
-    .provider-cta-content{position:relative;z-index:1;max-width:480px}
-    .provider-cta-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:12px;line-height:1.2}
-    .provider-cta-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:24px}
-    .provider-cta-btn{display:inline-block;padding:14px 32px;background:#3B6BFF;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;font-family:inherit}
-    .provider-cta-btn:hover{background:#2d5ae6;transform:translateY(-1px)}
-    .provider-cta-stats{position:relative;z-index:1;display:flex;gap:32px}
-    .pcs{text-align:center}
-    .pcs-num{font-size:32px;font-weight:800;color:#3B6BFF}
-    .pcs-label{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px}
-
-    /* ── How It Works ── */
+    /* ══════════════════════════════════════
+       HOW IT WORKS
+       ══════════════════════════════════════ */
+    .how-section{max-width:1080px;margin:64px auto 0;padding:0 32px}
+    .how-header{text-align:center;margin-bottom:40px}
+    .how-title{font-size:28px;font-weight:800;letter-spacing:-.03em}
     .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
     .how-card{text-align:center;padding:32px 20px}
-    .how-num{width:40px;height:40px;border-radius:50%;background:#EEF2FF;color:#3B6BFF;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-    .how-title{font-size:16px;font-weight:800;color:#222;margin-bottom:8px}
+    .how-num{width:44px;height:44px;border-radius:50%;background:#0C1220;color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .how-name{font-size:17px;font-weight:800;color:#222;margin-bottom:8px}
     .how-desc{font-size:14px;color:#6a6a6a;line-height:1.6}
 
-    /* ── Footer ── */
-    .footer{background:#fafafa;border-top:1px solid #EBEBEB;padding:40px 24px;margin-top:24px}
+    /* ══════════════════════════════════════
+       CTA BANNER
+       ══════════════════════════════════════ */
+    .cta-banner{max-width:1080px;margin:56px auto 0;padding:0 32px}
+    .cta-inner{background:#0C1220;border-radius:20px;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;position:relative;overflow:hidden}
+    .cta-glow{position:absolute;right:-5%;top:-40%;width:420px;height:420px;background:radial-gradient(circle,rgba(59,107,255,.18) 0%,transparent 70%);pointer-events:none}
+    .cta-content{position:relative;z-index:1;max-width:460px}
+    .cta-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.2;margin-bottom:10px}
+    .cta-sub{font-size:15px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:24px}
+    .cta-btn{display:inline-block;padding:14px 32px;background:#3B6BFF;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;font-family:inherit}
+    .cta-btn:hover{background:#2d5ae6;transform:translateY(-1px)}
+    .cta-stats{position:relative;z-index:1;display:flex;gap:32px}
+    .cta-stat{text-align:center}
+    .cta-stat-num{font-size:32px;font-weight:800;color:#3B6BFF}
+    .cta-stat-label{font-size:13px;color:rgba(255,255,255,.45);margin-top:4px}
+
+    /* ══════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════ */
+    .footer{background:#fafafa;border-top:1px solid #EBEBEB;padding:40px 32px;margin-top:56px}
     .footer-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
     .footer-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
     .footer-logo-text{font-weight:800;font-size:18px;color:#3B6BFF;letter-spacing:-.5px}
@@ -113,166 +232,315 @@
     .footer-link{font-size:13px;font-weight:600;color:#6a6a6a;text-decoration:none;transition:color .15s}
     .footer-link:hover{color:#222}
 
-    /* ── Mobile ── */
+    /* ══════════════════════════════════════
+       MOBILE
+       ══════════════════════════════════════ */
+    @media(max-width:1100px){
+      .ss-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:900px){
+      .bento-row1,.bento-row2{grid-template-columns:1fr}
+    }
     @media(max-width:768px){
       .nav{padding:0 16px;height:60px}
-      .nav-link{display:none}
-      .hero{min-height:480px}
-      .hero-content{padding:80px 20px 40px}
-      .hero-title{font-size:32px}
-      .hero-sub{font-size:16px}
-      .search-capsule{flex-direction:column;border-radius:16px;gap:0}
-      .search-seg{padding:12px 20px}
-      .search-seg-divider{width:100%;height:1px}
-      .search-go{width:100%;border-radius:12px;margin:8px;height:44px}
-      .hero-cats{display:none}
-      .content{padding:32px 16px 0}
-      .section-title{font-size:20px}
-      .sessions-grid{grid-template-columns:1fr 1fr;gap:16px}
-      .cats-grid{grid-template-columns:repeat(3,1fr)}
+      .nav-menus{display:none}
+      .nav-biz{display:none}
+      .hero{padding:100px 20px 40px}
+      .hero-title{font-size:30px}
+      .hero-sub{font-size:15px}
+      .search-bar{flex-direction:column;border-radius:16px}
+      .sb-seg::after{display:none !important}
+      .sb-seg{padding:12px 20px}
+      .sb-go{width:100%;border-radius:12px;margin:8px;height:44px}
+      .sessions-section,.showcase,.how-section,.cta-banner{padding-left:16px;padding-right:16px}
+      .ss-grid{grid-template-columns:1fr 1fr;gap:16px}
+      .sc-card{grid-template-columns:1fr}
+      .bento-row1,.bento-row2{grid-template-columns:1fr}
       .how-grid{grid-template-columns:1fr;gap:8px}
-      .provider-cta{flex-direction:column;padding:40px 24px;text-align:center}
-      .provider-cta-stats{justify-content:center}
+      .cta-inner{flex-direction:column;padding:36px 24px;text-align:center}
+      .cta-stats{justify-content:center}
       .footer-inner{flex-direction:column;gap:16px;text-align:center}
       .footer-links{justify-content:center}
     }
     @media(max-width:480px){
-      .sessions-grid{grid-template-columns:1fr}
-      .cats-grid{grid-template-columns:repeat(2,1fr)}
+      .ss-grid{grid-template-columns:1fr}
     }
 
-    /* ── Animations ── */
+    /* ══════════════════════════════════════
+       ANIMATIONS
+       ══════════════════════════════════════ */
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-    .hero-content{animation:fadeUp .5s ease both}
-    .section{animation:fadeUp .4s ease both}
-    .section:nth-child(1){animation-delay:.1s}
-    .section:nth-child(2){animation-delay:.15s}
-    .section:nth-child(3){animation-delay:.2s}
+    .hero-inner{animation:fadeUp .5s ease both}
+    .sessions-section{animation:fadeUp .4s ease both;animation-delay:.1s}
   </style>
 </head>
 <body>
 
-  <!-- Nav (overlays hero) -->
-  <nav class="nav">
-    <a class="nav-logo" href="/">
-      <svg width="36" height="36" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#fff"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
-      <span class="logo-text">Sortora</span>
-    </a>
+  <!-- ════ NAV ════ -->
+  <nav class="nav" id="nav">
+    <div class="nav-left">
+      <a class="nav-logo" href="/">
+        <svg class="logo-mark-light" width="32" height="32" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#fff"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+        <svg class="logo-mark-dark" width="32" height="32" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+        <span class="logo-text">Sortora</span>
+      </a>
+      <div class="nav-menus">
+        <div class="nav-menu" id="menu-services">
+          <button class="nav-menu-btn" onclick="toggleMenu('menu-services')">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="nav-dropdown">
+            <a class="nav-drop-item" href="/browse.html">Photography<span>Team & event shoots</span></a>
+            <a class="nav-drop-item" href="/browse.html">Fitness<span>Personal trainers & group classes</span></a>
+            <a class="nav-drop-item" href="/browse.html">Yoga & Wellness<span>Instructors & retreats</span></a>
+            <a class="nav-drop-item" href="/browse.html">Coaching<span>Sports, life & career</span></a>
+            <a class="nav-drop-item" href="/browse.html">Workshops<span>Creative classes & skills</span></a>
+            <a class="nav-drop-item" href="/browse.html">DJ & Music<span>Events & private sessions</span></a>
+          </div>
+        </div>
+        <div class="nav-menu" id="menu-browse">
+          <button class="nav-menu-btn" onclick="toggleMenu('menu-browse')">Browse <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="nav-dropdown">
+            <a class="nav-drop-item" href="/browse.html">All Sessions<span>See everything available</span></a>
+            <a class="nav-drop-item" href="/browse.html">Near Me<span>Local providers in your area</span></a>
+            <a class="nav-drop-item" href="/browse.html">Group Funded<span>Split the cost with your team</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="nav-right">
-      <a class="nav-link" href="/browse.html">Browse</a>
-      <a class="nav-link" href="/signup.html?role=provider">List your service</a>
-      <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
-      <a class="nav-btn nav-btn-white" href="/signup.html">Sign up</a>
+      <a class="nav-biz" href="/signup.html?role=provider">For Business</a>
+      <a class="glass-btn glass-btn-ghost" href="/login.html">Log in</a>
+      <a class="glass-btn glass-btn-fill" href="/signup.html">Sign up</a>
     </div>
   </nav>
 
-  <!-- Hero -->
+  <!-- ════ HERO ════ -->
   <div class="hero">
     <div class="hero-bg"></div>
-    <div class="hero-glow1"></div>
-    <div class="hero-glow2"></div>
-    <div class="hero-content">
-      <div class="hero-tag">Book together, save together</div>
-      <div class="hero-title">Find and book <span>local sessions</span> as a group</div>
-      <div class="hero-sub">From photographers to fitness coaches — discover pros near you and split the cost with your team.</div>
-      <div class="search-capsule">
-        <div class="search-seg">
-          <input type="text" id="hero-search" placeholder="What are you looking for?" onkeydown="if(event.key==='Enter')goSearch()"/>
+    <div class="hero-orb1"></div>
+    <div class="hero-orb2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Now live in Seattle</div>
+      <h1 class="hero-title">Book <em>local sessions</em> together</h1>
+      <p class="hero-sub">Discover photographers, trainers, coaches and more — then split the cost with your group.</p>
+      <div class="search-bar">
+        <div class="sb-seg">
+          <div class="sb-label">Where</div>
+          <input type="text" id="sb-where" placeholder="City or location"/>
         </div>
-        <div class="search-seg-divider"></div>
-        <div class="search-seg">
-          <input type="text" id="hero-location" placeholder="City or location"/>
+        <div class="sb-seg">
+          <div class="sb-label">When</div>
+          <input type="date" id="sb-when" style="color:rgba(255,255,255,.3)"/>
         </div>
-        <button class="search-go" onclick="goSearch()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-      </div>
-      <div class="hero-cats">
-        <a class="hero-cat" href="/browse.html">Photography</a>
-        <a class="hero-cat" href="/browse.html">Fitness</a>
-        <a class="hero-cat" href="/browse.html">Yoga</a>
-        <a class="hero-cat" href="/browse.html">Coaching</a>
-        <a class="hero-cat" href="/browse.html">Workshops</a>
+        <div class="sb-seg">
+          <div class="sb-label">Service</div>
+          <select id="sb-service">
+            <option value="">Any type</option>
+            <option value="photography">Photography</option>
+            <option value="fitness">Fitness</option>
+            <option value="yoga">Yoga</option>
+            <option value="dj">DJ / Music</option>
+            <option value="coaching">Coaching</option>
+            <option value="chef">Private Chef</option>
+            <option value="workshop">Workshop</option>
+          </select>
+        </div>
+        <button class="sb-go" onclick="goSearch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
       </div>
     </div>
   </div>
 
-  <!-- Content -->
-  <div class="content">
 
-    <!-- Available Sessions -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title" id="sessions-title">Available near you</div>
-        <a class="section-link" href="/browse.html">Show all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
-      </div>
-      <div class="sessions-grid" id="sessions-grid">
-        <div class="loading-text">Loading sessions...</div>
-      </div>
+  <!-- ════ SESSIONS GRID ════ -->
+  <div class="sessions-section">
+    <div class="ss-header">
+      <div class="ss-title" id="ss-title">Sessions near you</div>
+      <a class="ss-link" href="/browse.html">Show all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
     </div>
-
-    <!-- Browse by Category -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">Browse by category</div>
-      </div>
-      <div class="cats-grid">
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">📸</div><div class="cat-name">Photography</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">💪</div><div class="cat-name">Fitness</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">🧘</div><div class="cat-name">Yoga</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">🎵</div><div class="cat-name">DJ / Music</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">👨‍🍳</div><div class="cat-name">Private Chef</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">🏆</div><div class="cat-name">Coaching</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">🎨</div><div class="cat-name">Workshops</div></a>
-        <a class="cat-card" href="/browse.html"><div class="cat-icon">🎯</div><div class="cat-name">Other</div></a>
-      </div>
+    <div class="ss-grid" id="ss-grid">
+      <div class="ss-empty">Loading sessions...</div>
     </div>
+  </div>
 
-    <!-- How It Works -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">How Sortora works</div>
-      </div>
-      <div class="how-grid">
-        <div class="how-card">
-          <div class="how-num">1</div>
-          <div class="how-title">Find a session</div>
-          <div class="how-desc">Browse local providers and pick a session that fits your team's schedule and budget.</div>
+
+  <!-- ════ PROVIDER SHOWCASE — Stripe bento grid ════ -->
+  <div class="showcase">
+    <div class="showcase-header">
+      <div class="showcase-label">For Providers</div>
+      <div class="showcase-title">Everything you need to run your business. <em>From bookings to payouts, all in one place.</em></div>
+      <div class="showcase-sub">Sortora isn't just a marketplace — it's your session management, payment, and growth platform.</div>
+    </div>
+    <!-- Row 1: Dashboard (wide) + Analytics -->
+    <div class="bento bento-row1">
+      <div class="sc-card">
+        <div class="sc-card-head">
+          <div class="sc-tag">Dashboard</div>
+          <div class="sc-heading">Your command center</div>
+          <div class="sc-desc">See bookings, revenue, and session performance at a glance. Create sessions, manage spots, and track who's coming.</div>
+          <a class="sc-link" href="/signup.html?role=provider">Get started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
-        <div class="how-card">
-          <div class="how-num">2</div>
-          <div class="how-title">Book together</div>
-          <div class="how-desc">Share the session link with your group. Everyone chips in — the session unlocks when spots fill up.</div>
-        </div>
-        <div class="how-card">
-          <div class="how-num">3</div>
-          <div class="how-title">Show up and enjoy</div>
-          <div class="how-desc">The provider handles everything. You just show up, have a great experience, and split the cost.</div>
+        <div class="sc-preview" id="demo-dash">
+          <div class="sc-glow" style="top:-30%;right:-20%"></div>
+          <div class="sc-screen">
+            <div class="sc-chrome"><div class="sc-dot sc-dot-r"></div><div class="sc-dot sc-dot-y"></div><div class="sc-dot sc-dot-g"></div><span class="sc-chrome-title">Sortora Dashboard</span></div>
+            <div class="sc-body">
+              <div class="ix-stat-row">
+                <div class="ix-stat active" onclick="demoDashTab(0)"><div class="ix-stat-label">Sessions</div><div class="ix-stat-num" id="dd-sessions" style="color:#fff">12</div></div>
+                <div class="ix-stat" onclick="demoDashTab(1)"><div class="ix-stat-label">Bookings</div><div class="ix-stat-num" id="dd-bookings" style="color:#3B6BFF">48</div></div>
+                <div class="ix-stat" onclick="demoDashTab(2)"><div class="ix-stat-label">Revenue</div><div class="ix-stat-num" id="dd-revenue" style="color:#10B981">$2,400</div></div>
+              </div>
+              <div id="dd-feed">
+                <div class="ix-row" onclick="demoAccept(this)"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sarah M. — Team Shoot</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();demoAccept(this.parentElement)">Accept</button></div>
+                <div class="ix-row"><div class="ix-av" style="background:#6B8EFF"></div><div class="ix-name">Jake R. — Yoga Flow</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Going</div></div>
+                <div class="ix-row" onclick="demoAccept(this)"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Mia L. — Group Photo</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();demoAccept(this.parentElement)">Accept</button></div>
+                <div class="ix-row"><div class="ix-av" style="background:#8b5cf6"></div><div class="ix-name">Chris P. — Fitness PT</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Going</div></div>
+              </div>
+              <div class="ix-notif" id="dd-notif"><div class="ix-notif-dot" style="background:#10B981"></div><div class="ix-notif-text"><b>Click a booking</b> to manage it</div></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Provider CTA -->
-    <div class="provider-cta">
-      <div class="provider-cta-glow"></div>
-      <div class="provider-cta-content">
-        <div class="provider-cta-title">Run your business on Sortora</div>
-        <div class="provider-cta-sub">List your services, manage bookings, accept group payments, and grow your client base — all in one platform built for local professionals.</div>
-        <a class="provider-cta-btn" href="/signup.html?role=provider">Get started free</a>
+      <div class="sc-card">
+        <div class="sc-card-head">
+          <div class="sc-tag">Analytics</div>
+          <div class="sc-heading">Know what's working</div>
+          <div class="sc-desc">Track revenue trends, conversion rates, and session fill rates.</div>
+          <a class="sc-link" href="/signup.html?role=provider">See analytics <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="sc-preview" id="demo-analytics">
+          <div class="sc-glow" style="bottom:-30%;left:-15%"></div>
+          <div class="sc-screen">
+            <div class="sc-chrome"><div class="sc-dot sc-dot-r"></div><div class="sc-dot sc-dot-y"></div><div class="sc-dot sc-dot-g"></div><span class="sc-chrome-title">Analytics</span></div>
+            <div class="sc-body">
+              <div class="ix-tabs">
+                <button class="ix-tab active" onclick="demoChartTab('revenue',this)">Revenue</button>
+                <button class="ix-tab" onclick="demoChartTab('bookings',this)">Bookings</button>
+                <button class="ix-tab" onclick="demoChartTab('conversion',this)">Conversion</button>
+              </div>
+              <div class="ix-stat-row">
+                <div class="ix-stat"><div class="ix-stat-label">Total</div><div class="ix-stat-num" id="da-total" style="color:#10B981">$2,840</div></div>
+                <div class="ix-stat"><div class="ix-stat-label">This month</div><div class="ix-stat-num" id="da-month" style="color:#3B6BFF">$840</div></div>
+              </div>
+              <div class="ix-chart" id="da-chart"></div>
+              <div class="ix-meta"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+              <div class="ix-bar-track" style="margin-top:6px"><div class="ix-bar-fill" id="da-bar" style="width:78%;background:linear-gradient(90deg,#3B6BFF,#6B8EFF)"></div></div>
+              <div class="ix-meta" style="margin-top:2px"><span>Conversion rate</span><span id="da-pct">78%</span></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="provider-cta-stats">
-        <div class="pcs"><div class="pcs-num">0%</div><div class="pcs-label">Listing fees</div></div>
-        <div class="pcs"><div class="pcs-num">95%</div><div class="pcs-label">Payout rate</div></div>
-        <div class="pcs"><div class="pcs-num">24h</div><div class="pcs-label">Fast payouts</div></div>
+    </div>
+    <!-- Row 2: Clients + Payments (wide) -->
+    <div class="bento bento-row2">
+      <div class="sc-card">
+        <div class="sc-card-head">
+          <div class="sc-tag">Clients</div>
+          <div class="sc-heading">Build real relationships</div>
+          <div class="sc-desc">See who's returning, who's new. Every booking builds your client roster automatically.</div>
+          <a class="sc-link" href="/signup.html?role=provider">Start managing <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="sc-preview" id="demo-clients">
+          <div class="sc-glow" style="top:-25%;right:-10%"></div>
+          <div class="sc-screen">
+            <div class="sc-chrome"><div class="sc-dot sc-dot-r"></div><div class="sc-dot sc-dot-y"></div><div class="sc-dot sc-dot-g"></div><span class="sc-chrome-title">Client Roster</span></div>
+            <div class="sc-body">
+              <div class="ix-tabs">
+                <button class="ix-tab active" onclick="demoFilterClients('all',this)">All</button>
+                <button class="ix-tab" onclick="demoFilterClients('returning',this)">Returning</button>
+                <button class="ix-tab" onclick="demoFilterClients('new',this)">New</button>
+              </div>
+              <div id="dc-list">
+                <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Alex T. — 3 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
+                <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#10B981"></div><div class="ix-name">Maria K. — 5 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
+                <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Chris P. — first session</div><div class="ix-pill" style="background:rgba(251,191,36,.12);color:#FBBF24">New</div></div>
+                <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#8b5cf6"></div><div class="ix-name">Dana W. — 2 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
+                <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sam J. — first session</div><div class="ix-pill" style="background:rgba(251,191,36,.12);color:#FBBF24">New</div></div>
+              </div>
+              <div class="ix-notif show" id="dc-notif"><div class="ix-notif-dot" style="background:#3B6BFF"></div><div class="ix-notif-text"><b>5 clients</b> — 3 returning, 2 new</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-card-head">
+          <div class="sc-tag">Payments</div>
+          <div class="sc-heading">Get paid without the hassle</div>
+          <div class="sc-desc">Stripe-powered payouts, group payment splitting, promo codes. You keep 95% of every booking.</div>
+          <a class="sc-link" href="/signup.html?role=provider">Connect payouts <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </div>
+        <div class="sc-preview" id="demo-payments">
+          <div class="sc-glow" style="bottom:-25%;left:-15%"></div>
+          <div class="sc-screen">
+            <div class="sc-chrome"><div class="sc-dot sc-dot-r"></div><div class="sc-dot sc-dot-y"></div><div class="sc-dot sc-dot-g"></div><span class="sc-chrome-title">Payout Calculator</span></div>
+            <div class="sc-body">
+              <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Session price per person</div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px"><span style="font-size:26px;font-weight:800;color:#fff" id="dp-price">$50</span><span style="font-size:11px;color:rgba(255,255,255,.25)">/person</span></div>
+              <input type="range" class="ix-slider" id="dp-slider" min="10" max="200" value="50" step="5" oninput="demoCalcPayout()"/>
+              <div class="ix-meta"><span>$10</span><span>$200</span></div>
+              <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px">Group size</div>
+              <div style="display:flex;gap:5px;margin-bottom:10px" id="dp-group">
+                <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(5,this)" style="flex:1">5</button>
+                <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(10,this)" style="flex:1;background:rgba(59,107,255,.3)">10</button>
+                <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(15,this)" style="flex:1">15</button>
+                <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(20,this)" style="flex:1">20</button>
+              </div>
+              <div class="ix-stat-row">
+                <div class="ix-stat"><div class="ix-stat-label">Session total</div><div class="ix-stat-num" id="dp-total" style="color:#fff">$500</div></div>
+                <div class="ix-stat"><div class="ix-stat-label">You earn (95%)</div><div class="ix-stat-num" id="dp-earn" style="color:#10B981">$475</div></div>
+              </div>
+              <div class="ix-bar-track" style="height:5px"><div class="ix-bar-fill" id="dp-bar" style="width:95%;background:linear-gradient(90deg,#3B6BFF,#10B981)"></div></div>
+              <div class="ix-meta" style="margin-top:2px"><span>Platform: <b id="dp-fee" style="color:rgba(255,255,255,.45)">$25</b></span><span>Your payout: <b id="dp-payout" style="color:#10B981">$475</b></span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
+
+  <!-- ════ HOW IT WORKS ════ -->
+  <div class="how-section">
+    <div class="how-header"><div class="how-title">How Sortora works</div></div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">1</div>
+        <div class="how-name">Find a session</div>
+        <div class="how-desc">Browse local providers by category, location, and date. Every listing shows price, spots, and real reviews.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">2</div>
+        <div class="how-name">Book together</div>
+        <div class="how-desc">Share the link with your team. Everyone chips in — the session unlocks when enough people commit.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">3</div>
+        <div class="how-name">Show up and enjoy</div>
+        <div class="how-desc">The provider handles everything. You just show up, have a great experience, and pay your fair share.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ CTA BANNER ════ -->
+  <div class="cta-banner">
+    <div class="cta-inner">
+      <div class="cta-glow"></div>
+      <div class="cta-content">
+        <div class="cta-title">List your service on Sortora</div>
+        <div class="cta-sub">Create sessions, accept group bookings, manage clients, and grow your business — free to start.</div>
+        <a class="cta-btn" href="/signup.html?role=provider">Get started free</a>
+      </div>
+      <div class="cta-stats">
+        <div class="cta-stat"><div class="cta-stat-num">0%</div><div class="cta-stat-label">Listing fees</div></div>
+        <div class="cta-stat"><div class="cta-stat-num">95%</div><div class="cta-stat-label">Payout rate</div></div>
+        <div class="cta-stat"><div class="cta-stat-num">24h</div><div class="cta-stat-label">Fast payouts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ FOOTER ════ -->
   <footer class="footer">
     <div class="footer-inner">
       <a class="footer-logo" href="/">
-        <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+        <svg width="24" height="24" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
         <span class="footer-logo-text">Sortora</span>
       </a>
       <div class="footer-copy">&copy; 2026 Sortora. All rights reserved.</div>
@@ -286,75 +554,188 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    var SB = window.supabase.createClient(
-      'https://gzwyzocfohtnejttkglg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
-    );
+    var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
 
-    async function loadSessions() {
-      var r = await SB.from('sessions')
-        .select('*, providers(business_name, category, slug, avatar_url)')
-        .eq('status', 'open')
-        .gte('session_date', new Date().toISOString())
-        .order('session_date', {ascending: true})
-        .limit(8);
+    /* ── Nav scroll behavior ── */
+    window.addEventListener('scroll', function() {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+    });
 
-      var sessions = r.data || [];
-      var grid = document.getElementById('sessions-grid');
-
-      if (!sessions.length) {
-        grid.innerHTML = '<div class="loading-text">No sessions available yet. Check back soon!</div>';
-        return;
-      }
-
-      grid.innerHTML = sessions.map(function(s) {
-        var d = new Date(s.session_date);
-        var dateStr = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
-        var timeStr = d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
-        var pName = s.providers ? s.providers.business_name : 'Provider';
-        var card = '<div class="s-card" onclick="window.location.href=\'/session.html?id=' + s.id + '\'">';
-        if (s.image_url) {
-          card += '<div class="s-card-img" style="background-image:url(' + s.image_url + ')">';
-        } else {
-          card += '<div class="s-card-placeholder">';
-        }
-        if (s.is_group_funded) card += '<div class="s-card-badge"><span class="s-badge">Group Funded</span></div>';
-        card += '</div>';
-        card += '<div class="s-card-info">';
-        card += '<div class="s-card-title">' + s.title + '</div>';
-        card += '<div class="s-card-provider">' + pName + '</div>';
-        card += '<div class="s-card-date">' + dateStr + ' · ' + timeStr;
-        if (s.duration_minutes) card += ' · ' + s.duration_minutes + ' min';
-        card += '</div>';
-        card += '<div class="s-card-price">$' + parseFloat(s.price_per_person).toFixed(0) + ' <small>per person</small></div>';
-        card += '</div></div>';
-        return card;
-      }).join('');
+    /* ── Dropdown menus ── */
+    function toggleMenu(id) {
+      var menu = document.getElementById(id);
+      var wasOpen = menu.classList.contains('open');
+      document.querySelectorAll('.nav-menu').forEach(function(m){m.classList.remove('open')});
+      if (!wasOpen) menu.classList.add('open');
     }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-menu')) {
+        document.querySelectorAll('.nav-menu').forEach(function(m){m.classList.remove('open')});
+      }
+    });
 
+    /* ── Search ── */
     function goSearch() {
-      var q = document.getElementById('hero-search').value.trim();
-      var loc = document.getElementById('hero-location').value.trim();
+      var loc = document.getElementById('sb-where').value.trim();
       var url = '/browse.html';
       if (loc) url += '?city=' + encodeURIComponent(loc);
       window.location.href = url;
     }
 
-    // Check if logged in — redirect appropriately
+    /* ── Load sessions ── */
+    async function loadSessions() {
+      var r = await SB.from('sessions').select('*, providers(business_name, category, slug)').eq('status','open').gte('session_date', new Date().toISOString()).order('session_date',{ascending:true}).limit(8);
+      var sessions = r.data || [];
+      var grid = document.getElementById('ss-grid');
+      if (!sessions.length) {
+        grid.innerHTML = '<div class="ss-empty">No sessions available yet. Check back soon!</div>';
+        return;
+      }
+      grid.innerHTML = sessions.map(function(s, i) {
+        var d = new Date(s.session_date);
+        var dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        var timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+        var pName = s.providers ? s.providers.business_name : 'Provider';
+        var isPopular = i < 2;
+
+        var h = '<div class="ss-card" onclick="window.location.href=\'/session.html?id=' + s.id + '\'">';
+        h += '<div class="ss-img-wrap">';
+        if (s.image_url) h += '<div class="ss-img" style="background-image:url(' + s.image_url + ')">';
+        else h += '<div class="ss-placeholder">';
+        h += '</div>';
+        h += '<button class="ss-heart" onclick="event.stopPropagation();this.classList.toggle(\'liked\')"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>';
+        if (isPopular) h += '<div class="ss-popular">Popular</div>';
+        h += '</div>';
+        h += '<div class="ss-info">';
+        h += '<div class="ss-top"><div class="ss-name">' + s.title + '</div>';
+        h += '<div class="ss-rating"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>New</div>';
+        h += '</div>';
+        h += '<div class="ss-provider">' + pName + '</div>';
+        h += '<div class="ss-date">' + dateStr + ' · ' + timeStr;
+        if (s.duration_minutes) h += ' · ' + s.duration_minutes + ' min';
+        h += '</div>';
+        h += '<div class="ss-price">$' + parseFloat(s.price_per_person).toFixed(0) + ' <small>per person</small></div>';
+        h += '</div></div>';
+        return h;
+      }).join('');
+    }
+
+    /* ── Auth check — update nav for logged-in users ── */
     async function checkAuth() {
       var r = await SB.auth.getSession();
       if (r.data.session) {
         var pr = await SB.from('profiles').select('role').eq('id', r.data.session.user.id).single();
         if (pr.data) {
-          // Update nav for logged-in users
-          var navRight = document.querySelector('.nav-right');
+          var right = document.querySelector('.nav-right');
           if (pr.data.role === 'provider') {
-            navRight.innerHTML = '<a class="nav-link" href="/dashboard.html">Dashboard</a><a class="nav-link" href="/profile.html">Profile</a><a class="nav-btn nav-btn-white" href="/dashboard.html">Go to Dashboard</a>';
+            right.innerHTML = '<a class="nav-biz" href="/dashboard.html">Dashboard</a><a class="glass-btn glass-btn-ghost" href="/profile.html">Profile</a><a class="glass-btn glass-btn-fill" href="/dashboard.html">Go to Dashboard</a>';
           } else {
-            navRight.innerHTML = '<a class="nav-link" href="/browse.html">Browse</a><a class="nav-link" href="/bookings.html">Bookings</a><a class="nav-btn nav-btn-white" href="/browse.html">Browse Sessions</a>';
+            right.innerHTML = '<a class="glass-btn glass-btn-ghost" href="/bookings.html">My Bookings</a><a class="glass-btn glass-btn-fill" href="/browse.html">Browse Sessions</a>';
           }
         }
       }
+    }
+
+    /* ══════════════════════════════════════
+       INTERACTIVE SHOWCASE DEMOS
+       ══════════════════════════════════════ */
+
+    /* ── Dashboard: Accept bookings ── */
+    var ddBookings = 48, ddRevenue = 2400;
+    function demoAccept(row) {
+      var pill = row.querySelector('.ix-pill');
+      var btn = row.querySelector('.ix-btn');
+      if (pill.textContent === 'Going') return;
+      pill.textContent = 'Going';
+      pill.style.background = 'rgba(16,185,129,.12)';
+      pill.style.color = '#10B981';
+      if (btn) btn.remove();
+      row.classList.add('highlight');
+      setTimeout(function(){ row.classList.remove('highlight'); }, 800);
+      ddBookings++;
+      ddRevenue += 50;
+      document.getElementById('dd-bookings').textContent = ddBookings;
+      document.getElementById('dd-revenue').textContent = '$' + ddRevenue.toLocaleString();
+      var notif = document.getElementById('dd-notif');
+      notif.classList.add('show');
+      notif.querySelector('.ix-notif-text').innerHTML = '<b>Booking confirmed!</b> ' + ddBookings + ' total bookings';
+    }
+    function demoDashTab(i) {
+      document.querySelectorAll('#demo-dash .ix-stat').forEach(function(s,j){s.classList.toggle('active',j===i)});
+    }
+
+    /* ── Analytics: Interactive chart with tabs ── */
+    var chartData = {
+      revenue: {values:[320,480,380,640,520,840],total:'$2,840',month:'$840',labels:['$320','$480','$380','$640','$520','$840'],pct:'78%'},
+      bookings: {values:[8,12,10,15,14,18],total:'77',month:'18',labels:['8','12','10','15','14','18'],pct:'85%'},
+      conversion: {values:[65,72,68,78,74,82],total:'82%',month:'82%',labels:['65%','72%','68%','78%','74%','82%'],pct:'82%'}
+    };
+    var currentChart = 'revenue';
+    function buildChart(key) {
+      var d = chartData[key];
+      var max = Math.max.apply(null, d.values);
+      var chart = document.getElementById('da-chart');
+      chart.innerHTML = d.values.map(function(v, i) {
+        var h = Math.max(8, (v / max) * 100);
+        var opacity = 0.12 + (v / max) * 0.5;
+        return '<div class="ix-chart-bar" style="height:' + h + '%;background:rgba(59,107,255,' + opacity.toFixed(2) + ')" onclick="chartBarClick(' + i + ')"><div class="ix-chart-tooltip">' + d.labels[i] + '</div></div>';
+      }).join('');
+      document.getElementById('da-total').textContent = d.total;
+      document.getElementById('da-month').textContent = d.month;
+      document.getElementById('da-bar').style.width = d.pct;
+      document.getElementById('da-pct').textContent = d.pct;
+    }
+    function demoChartTab(key, btn) {
+      currentChart = key;
+      document.querySelectorAll('#demo-analytics .ix-tab').forEach(function(t){t.classList.remove('active')});
+      btn.classList.add('active');
+      document.getElementById('da-total').style.color = key === 'revenue' ? '#10B981' : key === 'bookings' ? '#3B6BFF' : '#fff';
+      buildChart(key);
+    }
+    function chartBarClick(i) {
+      var d = chartData[currentChart];
+      document.getElementById('da-month').textContent = d.labels[i];
+    }
+    setTimeout(function(){ buildChart('revenue'); }, 100);
+
+    /* ── Clients: Filter roster ── */
+    function demoFilterClients(type, btn) {
+      document.querySelectorAll('#demo-clients .ix-tab').forEach(function(t){t.classList.remove('active')});
+      btn.classList.add('active');
+      var rows = document.querySelectorAll('#dc-list .ix-row');
+      var shown = 0, returning = 0, newC = 0;
+      rows.forEach(function(r) {
+        var t = r.getAttribute('data-type');
+        var show = type === 'all' || t === type;
+        r.style.display = show ? 'flex' : 'none';
+        if (show) shown++;
+        if (t === 'returning') returning++;
+        if (t === 'new') newC++;
+      });
+      var notif = document.getElementById('dc-notif');
+      if (type === 'all') notif.querySelector('.ix-notif-text').innerHTML = '<b>' + (returning+newC) + ' clients</b> — ' + returning + ' returning, ' + newC + ' new';
+      else if (type === 'returning') notif.querySelector('.ix-notif-text').innerHTML = '<b>' + returning + ' returning</b> clients';
+      else notif.querySelector('.ix-notif-text').innerHTML = '<b>' + newC + ' new</b> clients this period';
+    }
+
+    /* ── Payments: Payout calculator ── */
+    var dpGroup = 10;
+    function demoCalcPayout() {
+      var price = parseInt(document.getElementById('dp-slider').value);
+      var total = price * dpGroup;
+      var earn = Math.round(total * 0.95);
+      var fee = total - earn;
+      document.getElementById('dp-price').textContent = '$' + price;
+      document.getElementById('dp-total').textContent = '$' + total.toLocaleString();
+      document.getElementById('dp-earn').textContent = '$' + earn.toLocaleString();
+      document.getElementById('dp-fee').textContent = '$' + fee;
+      document.getElementById('dp-payout').textContent = '$' + earn.toLocaleString();
+    }
+    function demoSetGroup(n, btn) {
+      dpGroup = n;
+      document.querySelectorAll('#dp-group .ix-btn').forEach(function(b){b.style.background='rgba(59,107,255,.15)'});
+      btn.style.background = 'rgba(59,107,255,.35)';
+      demoCalcPayout();
     }
 
     loadSessions();
