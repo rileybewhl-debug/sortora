@@ -204,7 +204,7 @@
   }
 
   function doAuthCheck() {
-    var SB = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    var SB = window._sortoraSB || window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); window._sortoraSB = SB;
     SB.auth.getSession().then(function(r) {
       if (!r.data.session) return;
       SB.from('profiles').select('role,full_name').eq('id', r.data.session.user.id).single().then(function(pr) {
