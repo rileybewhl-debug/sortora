@@ -134,9 +134,50 @@
     .ss-price small{font-size:14px;font-weight:400;color:#6a6a6a}
     .ss-empty{text-align:center;padding:48px;color:#b0b0b0;font-size:14px}
 
+    /* ══════════════════════════════════════
+       NAVAN-STYLE FEATURE CAROUSEL
+       ══════════════════════════════════════ */
+    .feat-carousel{padding:64px 0;background:#f7f8fa;margin-top:48px;overflow:hidden}
+    .feat-carousel-header{text-align:center;max-width:600px;margin:0 auto 40px;padding:0 32px}
+    .feat-carousel-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:8px}
+    .feat-carousel-title{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.04em;color:#222;line-height:1.1;margin-bottom:10px}
+    .feat-carousel-sub{font-size:16px;color:#6a6a6a;line-height:1.55}
+    .fc-track-wrap{position:relative;padding:0 32px}
+    .fc-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;padding:8px 0 16px}
+    .fc-track::-webkit-scrollbar{display:none}
+    .fc-slide{flex-shrink:0;width:340px;scroll-snap-align:center}
+    .fc-card{background:#fff;border:1px solid #EBEBEB;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04);transition:all .2s;height:100%;display:flex;flex-direction:column}
+    .fc-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:#d0d0d0;transform:translateY(-2px)}
+    .fc-card-icon{width:40px;height:40px;border-radius:10px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+    .fc-card-icon svg{width:20px;height:20px;stroke:#3B6BFF;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .fc-card-title{font-size:17px;font-weight:800;color:#222;margin-bottom:6px;letter-spacing:-.02em}
+    .fc-card-desc{font-size:13px;color:#6a6a6a;line-height:1.5;margin-bottom:14px}
+    .fc-card-preview{background:#f7f8fa;border-radius:10px;padding:14px;flex:1;min-height:140px;position:relative;overflow:hidden}
+    /* Mini light mockup elements inside carousel */
+    .fc-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:12px}
+    .fc-stat:last-child{border-bottom:none}
+    .fc-stat-label{color:#6a6a6a;font-weight:500}
+    .fc-stat-value{font-weight:800;color:#222}
+    .fc-stat-value.blue{color:#3B6BFF}
+    .fc-stat-value.green{color:#10B981}
+    .fc-mini-row{display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;margin-bottom:4px}
+    .fc-mini-av{width:20px;height:20px;border-radius:50%;flex-shrink:0}
+    .fc-mini-name{flex:1;font-size:11px;font-weight:600;color:#222}
+    .fc-mini-pill{padding:2px 6px;border-radius:6px;font-size:8px;font-weight:700}
+    .fc-mini-bar{height:4px;border-radius:2px;background:#f0f0f0;margin-top:6px;overflow:hidden}
+    .fc-mini-bar-fill{height:100%;border-radius:2px}
+    .fc-mini-chart{display:flex;align-items:flex-end;gap:3px;height:50px}
+    .fc-mini-chart-bar{flex:1;border-radius:2px 2px 0 0;background:rgba(59,107,255,.15);min-height:2px}
+    .fc-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+    .fc-dot{width:8px;height:8px;border-radius:50%;background:#d0d0d0;cursor:pointer;transition:all .15s}
+    .fc-dot.active{background:#3B6BFF;transform:scale(1.2)}
+    .fc-arrows{display:flex;gap:8px;position:absolute;right:32px;top:-48px}
+    .fc-arrow{width:36px;height:36px;border-radius:50%;border:1px solid #EBEBEB;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+    .fc-arrow:hover{border-color:#b0b0b0;background:#f7f7f7}
+    .fc-arrow svg{width:16px;height:16px;color:#222}
 
     /* ══════════════════════════════════════
-       PROVIDER SHOWCASE — Stripe bento grid
+       PROVIDER SHOWCASE — Light bento grid
        ══════════════════════════════════════ */
     .showcase{max-width:1280px;margin:64px auto 0;padding:0 32px}
     .showcase-header{text-align:center;margin-bottom:48px}
@@ -157,53 +198,54 @@
     .sc-link{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#3B6BFF;text-decoration:none;margin-top:10px;transition:gap .15s}
     .sc-link:hover{gap:8px}
     .sc-link svg{width:14px;height:14px}
-    .sc-preview{background:#0C1220;border-radius:12px;margin:16px;flex:1;min-height:260px;position:relative;overflow:hidden;user-select:none}
+    /* LIGHT demo panels */
+    .sc-preview{background:#f7f8fa;border-radius:12px;margin:16px;flex:1;min-height:260px;position:relative;overflow:hidden;user-select:none}
     .sc-screen{position:relative;z-index:1;height:100%}
-    .sc-chrome{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+    .sc-chrome{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(0,0,0,.02);border-bottom:1px solid #EBEBEB}
     .sc-dot{width:7px;height:7px;border-radius:50%}
     .sc-dot-r{background:#ff5f57}
     .sc-dot-y{background:#febc2e}
     .sc-dot-g{background:#28c840}
-    .sc-chrome-title{margin-left:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.2)}
+    .sc-chrome-title{margin-left:6px;font-size:10px;font-weight:600;color:#b0b0b0}
     .sc-body{padding:14px;position:relative}
-    .sc-glow{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(59,107,255,.1) 0%,transparent 70%);pointer-events:none;z-index:0}
-    /* Interactive elements */
+    .sc-glow{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(59,107,255,.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+    /* Light interactive elements */
     .ix-stat-row{display:flex;gap:6px;margin-bottom:8px}
-    .ix-stat{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:9px;cursor:pointer;transition:all .15s}
-    .ix-stat:hover{background:rgba(255,255,255,.07);border-color:rgba(59,107,255,.2)}
-    .ix-stat.active{border-color:rgba(59,107,255,.4);background:rgba(59,107,255,.08)}
-    .ix-stat-label{font-size:8px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
-    .ix-stat-num{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;transition:all .3s}
-    .ix-row{display:flex;align-items:center;gap:7px;padding:7px 9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:6px;margin-bottom:4px;cursor:pointer;transition:all .15s}
-    .ix-row:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
-    .ix-row.highlight{border-color:rgba(59,107,255,.3);background:rgba(59,107,255,.06)}
+    .ix-stat{flex:1;background:#fff;border:1px solid #EBEBEB;border-radius:7px;padding:9px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .ix-stat:hover{border-color:rgba(59,107,255,.25);box-shadow:0 2px 8px rgba(59,107,255,.08)}
+    .ix-stat.active{border-color:rgba(59,107,255,.4);background:rgba(59,107,255,.04)}
+    .ix-stat-label{font-size:8px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+    .ix-stat-num{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;transition:all .3s;color:#222}
+    .ix-row{display:flex;align-items:center;gap:7px;padding:7px 9px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .ix-row:hover{background:#fafbff;border-color:#d0d0d0}
+    .ix-row.highlight{border-color:rgba(59,107,255,.3);background:rgba(59,107,255,.04)}
     .ix-av{width:22px;height:22px;border-radius:50%;flex-shrink:0}
-    .ix-name{flex:1;font-size:11px;font-weight:600;color:rgba(255,255,255,.5)}
+    .ix-name{flex:1;font-size:11px;font-weight:600;color:#555}
     .ix-pill{padding:2px 7px;border-radius:8px;font-size:8px;font-weight:700;flex-shrink:0;transition:all .2s}
     .ix-btn{padding:4px 10px;border-radius:5px;font-size:9px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
-    .ix-btn-blue{background:rgba(59,107,255,.15);color:#3B6BFF}
-    .ix-btn-blue:hover{background:rgba(59,107,255,.25)}
-    .ix-btn-green{background:rgba(16,185,129,.15);color:#10B981}
-    .ix-btn-green:hover{background:rgba(16,185,129,.25)}
-    .ix-notif{display:flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;margin-top:6px;transition:all .3s;opacity:0;transform:translateY(4px)}
+    .ix-btn-blue{background:rgba(59,107,255,.1);color:#3B6BFF}
+    .ix-btn-blue:hover{background:rgba(59,107,255,.2)}
+    .ix-btn-green{background:rgba(16,185,129,.1);color:#10B981}
+    .ix-btn-green:hover{background:rgba(16,185,129,.2)}
+    .ix-notif{display:flex;align-items:center;gap:6px;padding:7px 10px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;margin-top:6px;transition:all .3s;opacity:0;transform:translateY(4px);box-shadow:0 1px 3px rgba(0,0,0,.04)}
     .ix-notif.show{opacity:1;transform:translateY(0)}
     .ix-notif-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .ix-notif-text{font-size:10px;color:rgba(255,255,255,.4)}
-    .ix-notif-text b{color:rgba(255,255,255,.7)}
-    .ix-bar-track{height:5px;border-radius:3px;background:rgba(255,255,255,.04);overflow:hidden}
+    .ix-notif-text{font-size:10px;color:#6a6a6a}
+    .ix-notif-text b{color:#222}
+    .ix-bar-track{height:5px;border-radius:3px;background:#EBEBEB;overflow:hidden}
     .ix-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
     .ix-chart{display:flex;align-items:flex-end;gap:3px;height:80px;margin-bottom:6px}
     .ix-chart-bar{flex:1;border-radius:3px 3px 0 0;cursor:pointer;transition:all .2s;position:relative;min-height:3px}
-    .ix-chart-bar:hover{filter:brightness(1.4)}
-    .ix-chart-tooltip{position:absolute;top:-20px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.9);color:#0C1220;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
+    .ix-chart-bar:hover{filter:brightness(.9)}
+    .ix-chart-tooltip{position:absolute;top:-20px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:4px;background:#222;color:#fff;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
     .ix-chart-bar:hover .ix-chart-tooltip{opacity:1}
     .ix-tabs{display:flex;gap:3px;margin-bottom:8px}
-    .ix-tab{padding:4px 10px;border-radius:5px;font-size:9px;font-weight:700;color:rgba(255,255,255,.3);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .15s;font-family:inherit}
-    .ix-tab:hover{color:rgba(255,255,255,.5)}
-    .ix-tab.active{color:#3B6BFF;background:rgba(59,107,255,.1);border-color:rgba(59,107,255,.2)}
-    .ix-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.06);outline:none;margin:6px 0 3px}
-    .ix-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#3B6BFF;cursor:pointer;border:2px solid #0C1220}
-    .ix-meta{display:flex;justify-content:space-between;font-size:8px;color:rgba(255,255,255,.18)}
+    .ix-tab{padding:4px 10px;border-radius:5px;font-size:9px;font-weight:700;color:#b0b0b0;background:#fff;border:1px solid #f0f0f0;cursor:pointer;transition:all .15s;font-family:inherit}
+    .ix-tab:hover{color:#6a6a6a}
+    .ix-tab.active{color:#3B6BFF;background:rgba(59,107,255,.06);border-color:rgba(59,107,255,.2)}
+    .ix-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:#EBEBEB;outline:none;margin:6px 0 3px}
+    .ix-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#3B6BFF;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+    .ix-meta{display:flex;justify-content:space-between;font-size:8px;color:#b0b0b0}
 
     /* ══════════════════════════════════════
        HOW IT WORKS
@@ -266,6 +308,9 @@
       .sb-seg{padding:12px 20px}
       .sb-go{width:100%;border-radius:12px;margin:8px;height:44px}
       .sessions-section,.showcase,.how-section,.cta-banner{padding-left:16px;padding-right:16px}
+      .fc-slide{width:280px}
+      .fc-track-wrap{padding:0 16px}
+      .fc-arrows{display:none}
       .ss-grid{grid-template-columns:1fr 1fr;gap:16px}
       .sc-card{grid-template-columns:1fr}
       .bento-row1,.bento-row2{grid-template-columns:1fr}
@@ -398,6 +443,115 @@
   </div>
 
 
+  <!-- ════ NAVAN-STYLE FEATURE CAROUSEL ════ -->
+  <div class="feat-carousel">
+    <div class="feat-carousel-header">
+      <div class="feat-carousel-label">Platform</div>
+      <div class="feat-carousel-title">The all-in-one platform for local service providers</div>
+      <div class="feat-carousel-sub">From session discovery to group payments — everything your business needs, beautifully connected.</div>
+    </div>
+    <div class="fc-track-wrap" style="position:relative">
+      <div class="fc-arrows">
+        <button class="fc-arrow" onclick="fcScroll(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="fc-arrow" onclick="fcScroll(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></button>
+      </div>
+      <div class="fc-track" id="fc-track">
+        <!-- 1: Group Booking -->
+        <div class="fc-slide">
+          <div class="fc-card">
+            <div class="fc-card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="fc-card-title">Group Booking</div>
+            <div class="fc-card-desc">Teams pool funds together. The session unlocks when spots fill up.</div>
+            <div class="fc-card-preview">
+              <div class="fc-mini-row"><div class="fc-mini-av" style="background:#3B6BFF"></div><div class="fc-mini-name">Sarah M.</div><div class="fc-mini-pill" style="background:rgba(16,185,129,.1);color:#10B981">Paid</div></div>
+              <div class="fc-mini-row"><div class="fc-mini-av" style="background:#6B8EFF"></div><div class="fc-mini-name">Jake R.</div><div class="fc-mini-pill" style="background:rgba(16,185,129,.1);color:#10B981">Paid</div></div>
+              <div class="fc-mini-row"><div class="fc-mini-av" style="background:#f59e0b"></div><div class="fc-mini-name">Mia L.</div><div class="fc-mini-pill" style="background:#f0f0f0;color:#6a6a6a">Pending</div></div>
+              <div class="fc-mini-bar"><div class="fc-mini-bar-fill" style="width:67%;background:linear-gradient(90deg,#3B6BFF,#6B8EFF)"></div></div>
+              <div style="font-size:10px;color:#6a6a6a;margin-top:4px;text-align:center">2 of 3 spots filled</div>
+            </div>
+          </div>
+        </div>
+        <!-- 2: Session Discovery -->
+        <div class="fc-slide">
+          <div class="fc-card">
+            <div class="fc-card-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            <div class="fc-card-title">Session Discovery</div>
+            <div class="fc-card-desc">Browse by category, location, and date. Photo-first cards with real pricing.</div>
+            <div class="fc-card-preview">
+              <div class="fc-stat"><span class="fc-stat-label">Photography</span><span class="fc-stat-value">12 sessions</span></div>
+              <div class="fc-stat"><span class="fc-stat-label">Fitness</span><span class="fc-stat-value">8 sessions</span></div>
+              <div class="fc-stat"><span class="fc-stat-label">Yoga</span><span class="fc-stat-value">5 sessions</span></div>
+              <div class="fc-stat"><span class="fc-stat-label">Coaching</span><span class="fc-stat-value">3 sessions</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- 3: Revenue Analytics -->
+        <div class="fc-slide">
+          <div class="fc-card">
+            <div class="fc-card-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <div class="fc-card-title">Revenue Analytics</div>
+            <div class="fc-card-desc">Track monthly revenue, conversion rates, and session performance.</div>
+            <div class="fc-card-preview">
+              <div class="fc-stat"><span class="fc-stat-label">This month</span><span class="fc-stat-value green">$840</span></div>
+              <div class="fc-stat"><span class="fc-stat-label">Conversion</span><span class="fc-stat-value blue">78%</span></div>
+              <div class="fc-mini-chart">
+                <div class="fc-mini-chart-bar" style="height:30%"></div>
+                <div class="fc-mini-chart-bar" style="height:45%"></div>
+                <div class="fc-mini-chart-bar" style="height:38%"></div>
+                <div class="fc-mini-chart-bar" style="height:62%"></div>
+                <div class="fc-mini-chart-bar" style="height:55%"></div>
+                <div class="fc-mini-chart-bar" style="height:80%;background:rgba(59,107,255,.3)"></div>
+                <div class="fc-mini-chart-bar" style="height:90%;background:#3B6BFF"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 4: Payments -->
+        <div class="fc-slide">
+          <div class="fc-card">
+            <div class="fc-card-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="fc-card-title">Stripe Payments</div>
+            <div class="fc-card-desc">Accept payments, split costs, and get 95% payouts directly to your bank.</div>
+            <div class="fc-card-preview">
+              <div class="fc-stat"><span class="fc-stat-label">Total earned</span><span class="fc-stat-value green">$4,280</span></div>
+              <div class="fc-stat"><span class="fc-stat-label">Your share</span><span class="fc-stat-value">95%</span></div>
+              <div class="fc-mini-bar" style="height:6px"><div class="fc-mini-bar-fill" style="width:95%;background:linear-gradient(90deg,#3B6BFF,#10B981)"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#b0b0b0;margin-top:4px"><span>Fee: 5%</span><span>You keep: $4,066</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- 5: Client Roster -->
+        <div class="fc-slide">
+          <div class="fc-card">
+            <div class="fc-card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="fc-card-title">Client Roster</div>
+            <div class="fc-card-desc">Automatic client list built from bookings. See who's returning and who's new.</div>
+            <div class="fc-card-preview">
+              <div class="fc-mini-row"><div class="fc-mini-av" style="background:#f59e0b"></div><div class="fc-mini-name">Alex T. — 3 sessions</div><div class="fc-mini-pill" style="background:rgba(16,185,129,.1);color:#10B981">Returning</div></div>
+              <div class="fc-mini-row"><div class="fc-mini-av" style="background:#10B981"></div><div class="fc-mini-name">Maria K. — 5 sessions</div><div class="fc-mini-pill" style="background:rgba(16,185,129,.1);color:#10B981">Returning</div></div>
+              <div class="fc-mini-row"><div class="fc-mini-av" style="background:#ef4444"></div><div class="fc-mini-name">Chris P. — 1st session</div><div class="fc-mini-pill" style="background:rgba(245,158,11,.1);color:#d97706">New</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- 6: Promo Codes -->
+        <div class="fc-slide">
+          <div class="fc-card">
+            <div class="fc-card-icon"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+            <div class="fc-card-title">Promo Codes</div>
+            <div class="fc-card-desc">Create discounts, set limits, and track usage to drive bookings.</div>
+            <div class="fc-card-preview">
+              <div class="fc-mini-row"><div class="fc-mini-name" style="font-weight:800">FIRST10</div><div class="fc-mini-pill" style="background:rgba(59,107,255,.1);color:#3B6BFF">10% off</div><div class="fc-mini-pill" style="background:rgba(16,185,129,.1);color:#10B981">Active</div></div>
+              <div class="fc-mini-row"><div class="fc-mini-name" style="font-weight:800">TEAM25</div><div class="fc-mini-pill" style="background:rgba(59,107,255,.1);color:#3B6BFF">25% off</div><div class="fc-mini-pill" style="background:rgba(16,185,129,.1);color:#10B981">Active</div></div>
+              <div class="fc-mini-row"><div class="fc-mini-name" style="font-weight:800">SUMMER</div><div class="fc-mini-pill" style="background:rgba(59,107,255,.1);color:#3B6BFF">15% off</div><div class="fc-mini-pill" style="background:#f0f0f0;color:#6a6a6a">Expired</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-dots" id="fc-dots"></div>
+    </div>
+  </div>
+
+
   <!-- ════ PROVIDER SHOWCASE — Stripe bento grid ════ -->
   <div class="showcase">
     <div class="showcase-header">
@@ -420,14 +574,14 @@
             <div class="sc-chrome"><div class="sc-dot sc-dot-r"></div><div class="sc-dot sc-dot-y"></div><div class="sc-dot sc-dot-g"></div><span class="sc-chrome-title">Sortora Dashboard</span></div>
             <div class="sc-body">
               <div class="ix-stat-row">
-                <div class="ix-stat active" onclick="demoDashTab(0)"><div class="ix-stat-label">Sessions</div><div class="ix-stat-num" id="dd-sessions" style="color:#fff">12</div></div>
+                <div class="ix-stat active" onclick="demoDashTab(0)"><div class="ix-stat-label">Sessions</div><div class="ix-stat-num" id="dd-sessions" style="color:#222">12</div></div>
                 <div class="ix-stat" onclick="demoDashTab(1)"><div class="ix-stat-label">Bookings</div><div class="ix-stat-num" id="dd-bookings" style="color:#3B6BFF">48</div></div>
                 <div class="ix-stat" onclick="demoDashTab(2)"><div class="ix-stat-label">Revenue</div><div class="ix-stat-num" id="dd-revenue" style="color:#10B981">$2,400</div></div>
               </div>
               <div id="dd-feed">
-                <div class="ix-row" onclick="demoAccept(this)"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sarah M. — Team Shoot</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();demoAccept(this.parentElement)">Accept</button></div>
+                <div class="ix-row" onclick="demoAccept(this)"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sarah M. — Team Shoot</div><div class="ix-pill" style="background:#f0f0f0;color:#6a6a6a">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();demoAccept(this.parentElement)">Accept</button></div>
                 <div class="ix-row"><div class="ix-av" style="background:#6B8EFF"></div><div class="ix-name">Jake R. — Yoga Flow</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Going</div></div>
-                <div class="ix-row" onclick="demoAccept(this)"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Mia L. — Group Photo</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();demoAccept(this.parentElement)">Accept</button></div>
+                <div class="ix-row" onclick="demoAccept(this)"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Mia L. — Group Photo</div><div class="ix-pill" style="background:#f0f0f0;color:#6a6a6a">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();demoAccept(this.parentElement)">Accept</button></div>
                 <div class="ix-row"><div class="ix-av" style="background:#8b5cf6"></div><div class="ix-name">Chris P. — Fitness PT</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Going</div></div>
               </div>
               <div class="ix-notif" id="dd-notif"><div class="ix-notif-dot" style="background:#10B981"></div><div class="ix-notif-text"><b>Click a booking</b> to manage it</div></div>
@@ -487,9 +641,9 @@
               <div id="dc-list">
                 <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Alex T. — 3 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
                 <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#10B981"></div><div class="ix-name">Maria K. — 5 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
-                <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Chris P. — first session</div><div class="ix-pill" style="background:rgba(251,191,36,.12);color:#FBBF24">New</div></div>
+                <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Chris P. — first session</div><div class="ix-pill" style="background:rgba(245,158,11,.1);color:#d97706">New</div></div>
                 <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#8b5cf6"></div><div class="ix-name">Dana W. — 2 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
-                <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sam J. — first session</div><div class="ix-pill" style="background:rgba(251,191,36,.12);color:#FBBF24">New</div></div>
+                <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sam J. — first session</div><div class="ix-pill" style="background:rgba(245,158,11,.1);color:#d97706">New</div></div>
               </div>
               <div class="ix-notif show" id="dc-notif"><div class="ix-notif-dot" style="background:#3B6BFF"></div><div class="ix-notif-text"><b>5 clients</b> — 3 returning, 2 new</div></div>
             </div>
@@ -508,23 +662,23 @@
           <div class="sc-screen">
             <div class="sc-chrome"><div class="sc-dot sc-dot-r"></div><div class="sc-dot sc-dot-y"></div><div class="sc-dot sc-dot-g"></div><span class="sc-chrome-title">Payout Calculator</span></div>
             <div class="sc-body">
-              <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Session price per person</div>
-              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px"><span style="font-size:26px;font-weight:800;color:#fff" id="dp-price">$50</span><span style="font-size:11px;color:rgba(255,255,255,.25)">/person</span></div>
+              <div style="font-size:9px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Session price per person</div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px"><span style="font-size:26px;font-weight:800;color:#222" id="dp-price">$50</span><span style="font-size:11px;color:#b0b0b0">/person</span></div>
               <input type="range" class="ix-slider" id="dp-slider" min="10" max="200" value="50" step="5" oninput="demoCalcPayout()"/>
               <div class="ix-meta"><span>$10</span><span>$200</span></div>
-              <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px">Group size</div>
+              <div style="font-size:9px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px">Group size</div>
               <div style="display:flex;gap:5px;margin-bottom:10px" id="dp-group">
                 <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(5,this)" style="flex:1">5</button>
-                <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(10,this)" style="flex:1;background:rgba(59,107,255,.3)">10</button>
+                <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(10,this)" style="flex:1;background:rgba(59,107,255,.2)">10</button>
                 <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(15,this)" style="flex:1">15</button>
                 <button class="ix-btn ix-btn-blue" onclick="demoSetGroup(20,this)" style="flex:1">20</button>
               </div>
               <div class="ix-stat-row">
-                <div class="ix-stat"><div class="ix-stat-label">Session total</div><div class="ix-stat-num" id="dp-total" style="color:#fff">$500</div></div>
+                <div class="ix-stat"><div class="ix-stat-label">Session total</div><div class="ix-stat-num" id="dp-total" style="color:#222">$500</div></div>
                 <div class="ix-stat"><div class="ix-stat-label">You earn (95%)</div><div class="ix-stat-num" id="dp-earn" style="color:#10B981">$475</div></div>
               </div>
               <div class="ix-bar-track" style="height:5px"><div class="ix-bar-fill" id="dp-bar" style="width:95%;background:linear-gradient(90deg,#3B6BFF,#10B981)"></div></div>
-              <div class="ix-meta" style="margin-top:2px"><span>Platform: <b id="dp-fee" style="color:rgba(255,255,255,.45)">$25</b></span><span>Your payout: <b id="dp-payout" style="color:#10B981">$475</b></span></div>
+              <div class="ix-meta" style="margin-top:2px"><span>Platform: <b id="dp-fee" style="color:#6a6a6a">$25</b></span><span>Your payout: <b id="dp-payout" style="color:#10B981">$475</b></span></div>
             </div>
           </div>
         </div>
@@ -773,6 +927,37 @@
       btn.style.background = 'rgba(59,107,255,.35)';
       demoCalcPayout();
     }
+
+    /* ── Feature Carousel ── */
+    var fcTrack = document.getElementById('fc-track');
+    var fcSlides = document.querySelectorAll('.fc-slide');
+    function fcBuildDots() {
+      var dots = document.getElementById('fc-dots');
+      dots.innerHTML = '';
+      fcSlides.forEach(function(_, i) {
+        var dot = document.createElement('div');
+        dot.className = 'fc-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = function() { fcGoTo(i); };
+        dots.appendChild(dot);
+      });
+    }
+    function fcGoTo(i) {
+      var slide = fcSlides[i];
+      if (!slide) return;
+      fcTrack.scrollTo({ left: slide.offsetLeft - fcTrack.offsetLeft - 32, behavior: 'smooth' });
+    }
+    function fcScroll(dir) {
+      fcTrack.scrollBy({ left: dir * 360, behavior: 'smooth' });
+    }
+    fcTrack.addEventListener('scroll', function() {
+      var center = fcTrack.scrollLeft + fcTrack.offsetWidth / 2;
+      var closest = 0;
+      fcSlides.forEach(function(s, i) {
+        if (Math.abs(s.offsetLeft + s.offsetWidth / 2 - fcTrack.scrollLeft - fcTrack.offsetWidth / 2) < Math.abs(fcSlides[closest].offsetLeft + fcSlides[closest].offsetWidth / 2 - fcTrack.scrollLeft - fcTrack.offsetWidth / 2)) closest = i;
+      });
+      document.querySelectorAll('.fc-dot').forEach(function(d, i) { d.classList.toggle('active', i === closest); });
+    });
+    fcBuildDots();
 
     loadSessions();
     checkAuth();
