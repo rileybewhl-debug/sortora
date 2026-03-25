@@ -226,10 +226,10 @@
   <script src="/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    var SB = window.supabase.createClient(
+    var SB = window._sortoraSB || window.supabase.createClient(
       "https://gzwyzocfohtnejttkglg.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw"
-    );
+    ); window._sortoraSB = SB; var _sbDummy;
     var currentUser = null, allSessions = [];
 
     async function init() {
