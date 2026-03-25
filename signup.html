@@ -1,115 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up — Sortora</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Log in — Sortora</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F6F9FC; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
-    .card { background: white; border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 480px; box-shadow: 0 4px 32px rgba(0,0,0,0.08); }
-    .logo { font-size: 22px; font-weight: 800; color: #0A2540; margin-bottom: 32px; }
-    .logo span { color: #3D63FF; }
-    h1 { font-size: 26px; font-weight: 800; color: #0A2540; margin-bottom: 8px; }
-    p { color: #8898AA; font-size: 15px; margin-bottom: 32px; }
-    .role-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
-    .role-btn { border: 2px solid #E8EDF2; border-radius: 12px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
-    .role-btn:hover { border-color: #3D63FF; }
-    .role-btn.active { border-color: #3D63FF; background: #EEF2FF; }
-    .role-btn .icon { font-size: 28px; margin-bottom: 8px; }
-    .role-btn .label { font-size: 14px; font-weight: 700; color: #0A2540; }
-    .role-btn .sub { font-size: 12px; color: #8898AA; margin-top: 2px; }
-    .field { margin-bottom: 18px; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #0A2540; margin-bottom: 6px; }
-    input, select { width: 100%; padding: 13px 16px; border: 2px solid #E8EDF2; border-radius: 10px; font-size: 15px; font-family: inherit; color: #0A2540; outline: none; transition: border 0.2s; }
-    input:focus, select:focus { border-color: #3D63FF; }
-    .btn { width: 100%; padding: 15px; background: #3D63FF; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.2s; margin-top: 8px; }
-    .btn:hover { background: #2d52ee; }
-    .btn:disabled { background: #8898AA; cursor: not-allowed; }
-    .footer-link { text-align: center; margin-top: 24px; font-size: 14px; color: #8898AA; }
-    .footer-link a { color: #3D63FF; text-decoration: none; font-weight: 600; }
-    .error { background: #FEF2F2; color: #DC2626; padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 16px; display: none; }
-    .provider-fields { display: none; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#0C1220;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    .nav{padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10}
+    .nav-logo{text-decoration:none;display:flex;align-items:center;gap:7px}
+    .nav-logo-text{font-weight:800;font-size:20px;color:#0C1220;letter-spacing:-.5px}
+    .nav-signup{font-size:14px;font-weight:700;color:#fff;text-decoration:none;padding:8px 20px;background:#0C1220;border:2px solid #0C1220;border-radius:24px;transition:all .15s}
+    .nav-signup:hover{background:#1a2540}
+    .page{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 72px)}
+    .form-side{display:flex;align-items:center;justify-content:center;padding:40px 32px 60px}
+    .form-wrap{width:100%;max-width:420px}
+    .form-title{font-size:clamp(28px,4vw,38px);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:8px;color:#0C1220}
+    .form-sub{font-size:15px;color:#6a6a6a;margin-bottom:32px;line-height:1.5}
+    .form-group{margin-bottom:16px}
+    .form-label{font-size:13px;font-weight:600;color:#0C1220;margin-bottom:6px;display:block}
+    .form-input{width:100%;padding:14px 16px;border:2px solid #e0e3e8;border-radius:12px;font-size:15px;font-family:inherit;color:#0C1220;outline:none;transition:border .2s,box-shadow .2s;background:#fff}
+    .form-input:focus{border-color:#3B6BFF;box-shadow:0 0 0 4px rgba(59,107,255,.08)}
+    .form-input::placeholder{color:#b0b5bd}
+    .btn-primary{width:100%;padding:15px;background:#3B6BFF;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+    .btn-primary:hover{background:#2d5ae6;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,107,255,.25)}
+    .btn-primary:disabled{background:#b0b5bd;cursor:not-allowed;transform:none;box-shadow:none}
+    .divider{display:flex;align-items:center;gap:16px;margin:20px 0}
+    .divider-line{flex:1;height:1px;background:#e0e3e8}
+    .divider-text{font-size:13px;color:#b0b5bd;font-weight:500}
+    .btn-dark{width:100%;padding:15px;background:#0C1220;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:10px}
+    .btn-dark:hover{background:#1a2540;transform:translateY(-1px);box-shadow:0 4px 12px rgba(12,18,32,.2)}
+    .btn-dark svg{width:20px;height:20px}
+    .form-terms{font-size:12px;color:#b0b5bd;text-align:center;margin-top:20px;line-height:1.5}
+    .form-terms a{color:#6a6a6a;text-decoration:underline}.form-terms a:hover{color:#0C1220}
+    .form-footer{text-align:center;margin-top:28px;padding-top:20px;border-top:1px solid #f0f0f0}
+    .form-footer-text{font-size:14px;color:#6a6a6a}
+    .form-footer-text a{color:#0C1220;font-weight:700;text-decoration:none}.form-footer-text a:hover{text-decoration:underline}
+    .form-error{background:#fff5f5;border:1px solid #fed7d7;color:#c53030;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;display:none}
+    .showcase-side{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .showcase-bg{position:absolute;inset:0;background:linear-gradient(135deg,#f0f2ff 0%,#e8ecff 40%,#f5f0ff 70%,#f0f4ff 100%)}
+    .showcase-glow1{position:absolute;top:15%;right:-10%;width:450px;height:450px;background:radial-gradient(circle,rgba(59,107,255,.12) 0%,transparent 70%);pointer-events:none}
+    .showcase-glow2{position:absolute;bottom:10%;left:-5%;width:380px;height:380px;background:radial-gradient(circle,rgba(59,107,255,.08) 0%,transparent 70%);pointer-events:none}
+    .showcase-content{position:relative;z-index:1;text-align:center;padding:40px}
+    .showcase-mark{margin-bottom:20px}
+    .showcase-text{font-size:clamp(24px,3vw,32px);font-weight:800;color:#0C1220;letter-spacing:-.03em;line-height:1.2;margin-bottom:10px}
+    .showcase-desc{font-size:15px;color:#6a6a6a;line-height:1.5;max-width:320px;margin:0 auto}
+    @media(max-width:900px){.page{grid-template-columns:1fr}.showcase-side{display:none}}
+    @media(max-width:768px){.nav{padding:16px 20px}.form-side{padding:24px 20px 48px}.form-title{font-size:28px}}
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">Sort<span>ora</span></div>
-    <h1>Create your account</h1>
-    <p>Join Sortora — it's free to get started.</p>
-    <div class="role-select">
-      <div class="role-btn active" onclick="selectRole('customer')" id="role-customer">
-        <div class="icon">🙋</div>
-        <div class="label">I'm a Customer</div>
-        <div class="sub">Browse &amp; book sessions</div>
-      </div>
-      <div class="role-btn" onclick="selectRole('provider')" id="role-provider">
-        <div class="icon">📅</div>
-        <div class="label">I'm a Provider</div>
-        <div class="sub">Offer your services</div>
+
+  <nav class="nav">
+    <a class="nav-logo" href="/">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <span class="nav-logo-text">Sortora</span>
+    </a>
+    <a class="nav-signup" href="/signup.html">Sign up</a>
+  </nav>
+
+  <div class="page">
+    <div class="form-side">
+      <div class="form-wrap">
+        <div class="form-title">Welcome back</div>
+        <div class="form-sub">Log in to manage your sessions, bookings, and clients.</div>
+
+        <div class="form-error" id="form-error"></div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" id="f-email" placeholder="name@company.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="f-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/>
+        </div>
+
+        <button class="btn-primary" id="login-btn" onclick="doLogin()">Log in</button>
+
+        <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
+
+        <button class="btn-dark" onclick="doGoogleLogin()">
+          <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 001 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+
+        <div class="form-terms">By logging in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</div>
+
+        <div class="form-footer">
+          <div class="form-footer-text">Don't have an account? <a href="/signup.html">Sign up</a></div>
+        </div>
       </div>
     </div>
-    <div class="error" id="error-msg"></div>
-    <div class="field"><label>Full Name</label><input type="text" id="full-name" placeholder="Your name" /></div>
-    <div class="field"><label>Email</label><input type="email" id="email" placeholder="you@email.com" /></div>
-    <div class="field"><label>Password</label><input type="password" id="password" placeholder="Min 8 characters" /></div>
-    <div class="field"><label>City</label><input type="text" id="city" placeholder="e.g. Seattle" /></div>
-    <div class="provider-fields" id="provider-fields">
-      <div class="field"><label>Business Name</label><input type="text" id="business-name" placeholder="Your business or brand name" /></div>
-      <div class="field"><label>Category</label>
-        <select id="category">
-          <option value="">Select your service type</option>
-          <option value="photography">Photography</option>
-          <option value="fitness">Fitness / Personal Training</option>
-          <option value="yoga">Yoga / Wellness</option>
-          <option value="dj">DJ / Music</option>
-          <option value="chef">Private Chef</option>
-          <option value="coaching">Coaching</option>
-          <option value="workshop">Workshop / Class</option>
-          <option value="other">Other</option>
-        </select>
+
+    <div class="showcase-side">
+      <div class="showcase-bg"></div>
+      <div class="showcase-glow1"></div>
+      <div class="showcase-glow2"></div>
+      <div class="showcase-content">
+        <div class="showcase-mark">
+          <svg width="72" height="72" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#3B6BFF" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#3B6BFF"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#3B6BFF" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <div class="showcase-text">Book local sessions together</div>
+        <div class="showcase-desc">Discover photographers, trainers, coaches and more — then split the cost with your group.</div>
       </div>
     </div>
-    <button class="btn" onclick="handleSignup()" id="submit-btn">Create Account</button>
-    <div class="footer-link">Already have an account? <a href="/login.html">Sign in</a></div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-var SB=window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');    var selectedRole = 'customer';
-    function selectRole(role) {
-      selectedRole = role;
-      document.getElementById('role-customer').classList.toggle('active', role === 'customer');
-      document.getElementById('role-provider').classList.toggle('active', role === 'provider');
-      document.getElementById('provider-fields').style.display = role === 'provider' ? 'block' : 'none';
+    var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
+
+    function showError(msg) {
+      var el = document.getElementById('form-error');
+      el.textContent = msg; el.style.display = 'block';
     }
-    function showError(msg) { var el = document.getElementById('error-msg'); el.textContent = msg; el.style.display = 'block'; }
-    async function handleSignup() {
-      var btn = document.getElementById('submit-btn');
-      btn.disabled = true; btn.textContent = 'Creating account...';
-      document.getElementById('error-msg').style.display = 'none';
-      var fullName = document.getElementById('full-name').value.trim();
-      var email = document.getElementById('email').value.trim();
-      var password = document.getElementById('password').value;
-      var city = document.getElementById('city').value.trim();
-      if (!fullName || !email || !password || !city) { showError('Please fill in all fields.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      if (password.length < 8) { showError('Password must be at least 8 characters.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      var signUpResult = await SB.auth.signUp({ email: email, password: password });
-      if (signUpResult.error) { showError(signUpResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      var userId = signUpResult.data.user.id;
-      var profileResult = await SB.from('profiles').insert({ id: userId, role: selectedRole, full_name: fullName, city: city });
-      if (profileResult.error) { showError(profileResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-      if (selectedRole === 'provider') {
-        var businessName = document.getElementById('business-name').value.trim();
-        var category = document.getElementById('category').value;
-        if (!businessName || !category) { showError('Please fill in your business name and category.'); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-        var providerResult = await SB.from('providers').insert({ id: userId, business_name: businessName, category: category, location: city });
-        if (providerResult.error) { showError(providerResult.error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
-        window.location.href = '/dashboard.html';
-      } else {
-        window.location.href = '/browse.html';
+
+    async function doLogin() {
+      var btn = document.getElementById('login-btn');
+      var email = document.getElementById('f-email').value.trim();
+      var pass = document.getElementById('f-pass').value;
+      document.getElementById('form-error').style.display = 'none';
+
+      if (!email || !pass) { showError('Please enter your email and password.'); return; }
+
+      btn.disabled = true; btn.textContent = 'Logging in...';
+
+      var r = await SB.auth.signInWithPassword({ email: email, password: pass });
+      if (r.error) { showError(r.error.message); btn.disabled = false; btn.textContent = 'Log in'; return; }
+
+      // Redirect based on role
+      var pr = await SB.from('profiles').select('role').eq('id', r.data.user.id).single();
+      window.location.href = pr.data && pr.data.role === 'provider' ? '/dashboard.html' : '/browse.html';
+    }
+
+    async function doGoogleLogin() {
+      var r = await SB.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + '/browse.html' }
+      });
+      if (r.error) showError(r.error.message);
+    }
+
+    // If already logged in, redirect
+    SB.auth.getSession().then(function(r) {
+      if (r.data.session) {
+        SB.from('profiles').select('role').eq('id', r.data.session.user.id).single().then(function(pr) {
+          if (pr.data) window.location.href = pr.data.role === 'provider' ? '/dashboard.html' : '/browse.html';
+        });
       }
-    }
+    });
   </script>
 </body>
 </html>
