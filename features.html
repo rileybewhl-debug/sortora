@@ -9,23 +9,7 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#222;-webkit-font-smoothing:antialiased}
-    /* Nav */
-    .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid #EBEBEB}
-    .nav-left{display:flex;align-items:center;gap:24px}
-    .nav-logo{text-decoration:none;display:flex;align-items:center;gap:7px}
-    .logo-text{font-weight:800;font-size:20px;color:#3B6BFF;letter-spacing:-.5px}
-    .nav-links{display:flex;gap:4px}
-    .nav-link{padding:7px 14px;font-size:14px;font-weight:600;color:#6a6a6a;text-decoration:none;border-radius:8px;transition:all .12s}
-    .nav-link:hover{color:#222;background:#f7f7f7}
-    .nav-link.active{color:#3B6BFF}
-    .nav-right{display:flex;gap:8px}
-    .nav-btn{padding:8px 18px;border-radius:20px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s;font-family:inherit}
-    .nav-btn-ghost{color:#222;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.08)}
-    .nav-btn-ghost:hover{background:rgba(0,0,0,.07)}
-    .nav-btn-fill{color:#fff;background:#3B6BFF;border:1px solid #3B6BFF}
-    .nav-btn-fill:hover{background:#2d5ae6}
-
-    /* Hero */
+        /* Hero */
     .hero{padding:120px 32px 48px;text-align:center;position:relative;overflow:hidden}
     .hero-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:12px}
     .hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:14px}
@@ -58,59 +42,59 @@
     .feat-link svg{width:14px;height:14px}
 
     /* Demo panel */
-    .demo{background:#0C1220;border-radius:14px;overflow:hidden;flex:1;min-height:320px;position:relative;user-select:none}
-    .demo-chrome{display:flex;align-items:center;gap:6px;padding:10px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.04)}
+    .demo{background:#f7f8fa;border-radius:14px;overflow:hidden;flex:1;min-height:320px;position:relative;user-select:none}
+    .demo-chrome{display:flex;align-items:center;gap:6px;padding:10px 16px;background:rgba(0,0,0,.02);border-bottom:1px solid #EBEBEB}
     .demo-dot{width:7px;height:7px;border-radius:50%}
-    .demo-chrome-title{margin-left:8px;font-size:10px;font-weight:600;color:rgba(255,255,255,.2)}
+    .demo-chrome-title{margin-left:8px;font-size:10px;font-weight:600;color:#b0b0b0}
     .demo-body{padding:16px;position:relative}
-    .demo-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(59,107,255,.1) 0%,transparent 70%);pointer-events:none}
+    .demo-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(59,107,255,.06) 0%,transparent 70%);pointer-events:none}
     /* Full-width demo layout */
     .feat-full{display:grid;grid-template-columns:380px 1fr;gap:32px;align-items:start}
     .feat-full.reverse{grid-template-columns:1fr 380px}
 
     /* Interactive shared */
     .ix-stat-row{display:flex;gap:6px;margin-bottom:10px}
-    .ix-stat{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;cursor:pointer;transition:all .15s}
-    .ix-stat:hover{background:rgba(255,255,255,.07);border-color:rgba(59,107,255,.2)}
-    .ix-stat.active{border-color:rgba(59,107,255,.4);background:rgba(59,107,255,.08)}
-    .ix-stat-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
-    .ix-stat-num{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;transition:all .3s}
-    .ix-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:7px;margin-bottom:5px;cursor:pointer;transition:all .15s}
-    .ix-row:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
-    .ix-row.highlight{border-color:rgba(59,107,255,.3);background:rgba(59,107,255,.06)}
+    .ix-stat{flex:1;background:#fff;border:1px solid #EBEBEB;border-radius:8px;padding:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .ix-stat:hover{border-color:rgba(59,107,255,.25);box-shadow:0 2px 8px rgba(59,107,255,.08)}
+    .ix-stat.active{border-color:rgba(59,107,255,.4);background:rgba(59,107,255,.04)}
+    .ix-stat-label{font-size:9px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+    .ix-stat-num{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;transition:all .3s;color:#222}
+    .ix-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fff;border:1px solid #f0f0f0;border-radius:7px;margin-bottom:5px;cursor:pointer;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .ix-row:hover{background:#fafbff;border-color:#d0d0d0}
+    .ix-row.highlight{border-color:rgba(59,107,255,.3);background:rgba(59,107,255,.04)}
     .ix-av{width:24px;height:24px;border-radius:50%;flex-shrink:0}
-    .ix-name{flex:1;font-size:11px;font-weight:600;color:rgba(255,255,255,.55)}
+    .ix-name{flex:1;font-size:11px;font-weight:600;color:#555}
     .ix-pill{padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;flex-shrink:0;transition:all .2s}
     .ix-btn{padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
     .ix-btn-blue{background:rgba(59,107,255,.15);color:#3B6BFF}.ix-btn-blue:hover{background:rgba(59,107,255,.25)}
     .ix-btn-green{background:rgba(16,185,129,.15);color:#10B981}.ix-btn-green:hover{background:rgba(16,185,129,.25)}
-    .ix-notif{display:flex;align-items:center;gap:7px;padding:8px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:7px;margin-top:6px;transition:all .3s;opacity:0;transform:translateY(4px)}
+    .ix-notif{display:flex;align-items:center;gap:7px;padding:8px 12px;background:#fff;border:1px solid #f0f0f0;border-radius:7px;margin-top:6px;transition:all .3s;opacity:0;transform:translateY(4px);box-shadow:0 1px 3px rgba(0,0,0,.04)}
     .ix-notif.show{opacity:1;transform:translateY(0)}
     .ix-notif-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .ix-notif-text{font-size:10px;color:rgba(255,255,255,.45)}.ix-notif-text b{color:rgba(255,255,255,.75)}
-    .ix-bar-track{height:5px;border-radius:3px;background:rgba(255,255,255,.04);overflow:hidden}
+    .ix-notif-text{font-size:10px;color:#6a6a6a}.ix-notif-text b{color:#222}
+    .ix-bar-track{height:5px;border-radius:3px;background:#EBEBEB;overflow:hidden}
     .ix-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
     .ix-chart{display:flex;align-items:flex-end;gap:3px;height:100px;margin-bottom:8px}
     .ix-chart-bar{flex:1;border-radius:3px 3px 0 0;cursor:pointer;transition:all .2s;position:relative;min-height:3px}
-    .ix-chart-bar:hover{filter:brightness(1.4)}
-    .ix-chart-tooltip{position:absolute;top:-22px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.9);color:#0C1220;font-size:9px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
-    .ix-chart-bar:hover .ix-chart-tooltip{opacity:1}
+    .ix-chart-bar:hover{filter:brightness(.85)}
+    .ix-chart-tooltip{position:absolute;top:-22px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:4px;background:#222;color:#fff;font-size:9px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
+    .ix-chart-bar:hover .ix-chart-tooltip{position:absolute;top:-22px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:4px;background:#222;color:#fff;font-size:9px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
     .ix-tabs{display:flex;gap:4px;margin-bottom:10px}
-    .ix-tab{padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .15s;font-family:inherit}
-    .ix-tab:hover{color:rgba(255,255,255,.5)}
+    .ix-tab{padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;color:#b0b0b0;background:#fff;border:1px solid #f0f0f0;cursor:pointer;transition:all .15s;font-family:inherit}
+    .ix-tab:hover{color:#6a6a6a}
     .ix-tab.active{color:#3B6BFF;background:rgba(59,107,255,.1);border-color:rgba(59,107,255,.2)}
-    .ix-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.06);outline:none;margin:8px 0 4px}
-    .ix-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#3B6BFF;cursor:pointer;border:2px solid #0C1220}
-    .ix-meta{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.2)}
+    .ix-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:#EBEBEB;outline:none;margin:8px 0 4px}
+    .ix-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#3B6BFF;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+    .ix-meta{display:flex;justify-content:space-between;font-size:9px;color:#b0b0b0}
     /* Form elements inside demos */
-    .ix-input{width:100%;padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:6px;background:rgba(255,255,255,.04);color:#fff;font-size:12px;font-family:inherit;outline:none;transition:border .15s}
-    .ix-input:focus{border-color:rgba(59,107,255,.3)}
-    .ix-input::placeholder{color:rgba(255,255,255,.2)}
-    .ix-select{padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:6px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);font-size:12px;font-family:inherit;outline:none;-webkit-appearance:none;width:100%;cursor:pointer}
-    .ix-select option{background:#0C1220;color:#fff}
+    .ix-input{width:100%;padding:8px 12px;border:1px solid #e0e3e8;border-radius:6px;background:#fff;color:#222;font-size:12px;font-family:inherit;outline:none;transition:border .15s}
+    .ix-input:focus{border-color:rgba(59,107,255,.4)}
+    .ix-input::placeholder{color:#b0b5bd}
+    .ix-select{padding:8px 12px;border:1px solid #e0e3e8;border-radius:6px;background:#fff;color:#555;font-size:12px;font-family:inherit;outline:none;-webkit-appearance:none;width:100%;cursor:pointer}
+    .ix-select option{background:#fff;color:#222}
     .ix-form-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
     .ix-form-group{margin-bottom:6px}
-    .ix-form-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+    .ix-form-label{font-size:9px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
 
     /* Customer features grid */
     .cust-section{max-width:1280px;margin:0 auto;padding:64px 32px;scroll-margin-top:128px}
@@ -128,7 +112,7 @@
     .cta-inner{background:#0C1220;border-radius:20px;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;position:relative;overflow:hidden}
     .cta-glow{position:absolute;right:-5%;top:-40%;width:420px;height:420px;background:radial-gradient(circle,rgba(59,107,255,.18) 0%,transparent 70%);pointer-events:none}
     .cta-content{position:relative;z-index:1;max-width:460px}
-    .cta h2{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.2;margin-bottom:10px}
+    .cta h2{font-size:28px;font-weight:800;color:#222;letter-spacing:-.03em;line-height:1.2;margin-bottom:10px}
     .cta p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:24px}
     .cta-btn{display:inline-block;padding:14px 32px;background:#3B6BFF;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .15s}
     .cta-btn:hover{background:#2d5ae6}
@@ -205,16 +189,16 @@
         <div class="demo-chrome"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div><span class="demo-chrome-title">Sortora Dashboard</span></div>
         <div class="demo-body">
           <div class="ix-stat-row">
-            <div class="ix-stat active" onclick="dTab(0)"><div class="ix-stat-label">Sessions</div><div class="ix-stat-num" style="color:#fff" id="dd-s">12</div></div>
+            <div class="ix-stat active" onclick="dTab(0)"><div class="ix-stat-label">Sessions</div><div class="ix-stat-num" style="color:#222" id="dd-s">12</div></div>
             <div class="ix-stat" onclick="dTab(1)"><div class="ix-stat-label">Bookings</div><div class="ix-stat-num" style="color:#3B6BFF" id="dd-b">48</div></div>
             <div class="ix-stat" onclick="dTab(2)"><div class="ix-stat-label">Revenue</div><div class="ix-stat-num" style="color:#10B981" id="dd-r">$2,400</div></div>
           </div>
           <div id="dd-feed">
-            <div class="ix-row" onclick="dAccept(this)"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sarah M. — Team Shoot</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();dAccept(this.parentElement)">Accept</button></div>
+            <div class="ix-row" onclick="dAccept(this)"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sarah M. — Team Shoot</div><div class="ix-pill" style="background:#f0f0f0;color:#6a6a6a">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();dAccept(this.parentElement)">Accept</button></div>
             <div class="ix-row"><div class="ix-av" style="background:#6B8EFF"></div><div class="ix-name">Jake R. — Yoga Flow</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Going</div></div>
-            <div class="ix-row" onclick="dAccept(this)"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Mia L. — Group Photo</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();dAccept(this.parentElement)">Accept</button></div>
+            <div class="ix-row" onclick="dAccept(this)"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Mia L. — Group Photo</div><div class="ix-pill" style="background:#f0f0f0;color:#6a6a6a">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();dAccept(this.parentElement)">Accept</button></div>
             <div class="ix-row"><div class="ix-av" style="background:#8b5cf6"></div><div class="ix-name">Chris P. — Fitness PT</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Going</div></div>
-            <div class="ix-row" onclick="dAccept(this)"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Dana W. — Portrait Session</div><div class="ix-pill" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();dAccept(this.parentElement)">Accept</button></div>
+            <div class="ix-row" onclick="dAccept(this)"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Dana W. — Portrait Session</div><div class="ix-pill" style="background:#f0f0f0;color:#6a6a6a">Pending</div><button class="ix-btn ix-btn-green" onclick="event.stopPropagation();dAccept(this.parentElement)">Accept</button></div>
           </div>
           <div class="ix-notif" id="dd-notif"><div class="ix-notif-dot" style="background:#10B981"></div><div class="ix-notif-text"><b>Click Accept</b> on a pending booking</div></div>
         </div>
@@ -232,12 +216,12 @@
           <div class="ix-form-group"><div class="ix-form-label">Title</div><input class="ix-input" id="cs-title" placeholder="e.g. Team Sports Photography" oninput="csUpdate()"/></div>
           <div class="ix-form-row"><div><div class="ix-form-label">Price / person</div><input class="ix-input" id="cs-price" type="number" placeholder="50" oninput="csUpdate()"/></div><div><div class="ix-form-label">Max spots</div><input class="ix-input" id="cs-spots" type="number" placeholder="10" oninput="csUpdate()"/></div></div>
           <div class="ix-form-row"><div><div class="ix-form-label">Date</div><input class="ix-input" type="date" id="cs-date"/></div><div><div class="ix-form-label">Type</div><select class="ix-select"><option>Standard</option><option>Group Funded</option></select></div></div>
-          <div id="cs-preview" style="margin-top:10px;padding:10px;border:1px solid rgba(255,255,255,.06);border-radius:8px;display:none">
-            <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:6px">Live Preview</div>
-            <div style="font-size:14px;font-weight:800;color:#fff" id="cs-p-title">Session Title</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:2px" id="cs-p-meta">$50/person · 10 spots</div>
+          <div id="cs-preview" style="margin-top:10px;padding:10px;border:1px solid #EBEBEB;border-radius:8px;display:none">
+            <div style="font-size:10px;font-weight:700;color:#b0b0b0;text-transform:uppercase;margin-bottom:6px">Live Preview</div>
+            <div style="font-size:14px;font-weight:800;color:#222" id="cs-p-title">Session Title</div>
+            <div style="font-size:12px;color:#6a6a6a;margin-top:2px" id="cs-p-meta">$50/person · 10 spots</div>
             <div class="ix-bar-track" style="margin-top:8px;height:4px"><div class="ix-bar-fill" id="cs-p-bar" style="width:0%;background:#3B6BFF"></div></div>
-            <div style="font-size:10px;color:rgba(255,255,255,.2);margin-top:3px">0 / <span id="cs-p-spots">10</span> spots filled</div>
+            <div style="font-size:10px;color:#b0b0b0;margin-top:3px">0 / <span id="cs-p-spots">10</span> spots filled</div>
           </div>
           <button class="ix-btn ix-btn-blue" onclick="csCreate()" id="cs-btn" style="width:100%;padding:10px;margin-top:10px;font-size:12px">Create Session</button>
           <div class="ix-notif" id="cs-notif"><div class="ix-notif-dot" style="background:#10B981"></div><div class="ix-notif-text"><b>Session created!</b> Now visible on your profile</div></div>
@@ -311,9 +295,9 @@
           <div id="dc-list">
             <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#f59e0b"></div><div class="ix-name">Alex T. — 3 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
             <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#10B981"></div><div class="ix-name">Maria K. — 5 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
-            <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Chris P. — first session</div><div class="ix-pill" style="background:rgba(251,191,36,.12);color:#FBBF24">New</div></div>
+            <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#ef4444"></div><div class="ix-name">Chris P. — first session</div><div class="ix-pill" style="background:rgba(245,158,11,.1);color:#d97706">New</div></div>
             <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#8b5cf6"></div><div class="ix-name">Dana W. — 2 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
-            <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sam J. — first session</div><div class="ix-pill" style="background:rgba(251,191,36,.12);color:#FBBF24">New</div></div>
+            <div class="ix-row" data-type="new" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#3B6BFF"></div><div class="ix-name">Sam J. — first session</div><div class="ix-pill" style="background:rgba(245,158,11,.1);color:#d97706">New</div></div>
             <div class="ix-row" data-type="returning" onclick="this.classList.toggle('highlight')"><div class="ix-av" style="background:#ec4899"></div><div class="ix-name">Leah R. — 4 sessions</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Returning</div></div>
           </div>
           <div class="ix-notif show" id="dc-notif"><div class="ix-notif-dot" style="background:#3B6BFF"></div><div class="ix-notif-text"><b>6 clients</b> — 4 returning, 2 new</div></div>
@@ -353,14 +337,14 @@
         <div class="demo-glow" style="bottom:-20%;left:-10%"></div>
         <div class="demo-chrome"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div><span class="demo-chrome-title">Payout Calculator</span></div>
         <div class="demo-body">
-          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Session price per person</div>
-          <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px"><span style="font-size:28px;font-weight:800;color:#fff" id="dp-price">$50</span><span style="font-size:12px;color:rgba(255,255,255,.25)">/person</span></div>
+          <div style="font-size:10px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Session price per person</div>
+          <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px"><span style="font-size:28px;font-weight:800;color:#222" id="dp-price">$50</span><span style="font-size:12px;color:#b0b0b0">/person</span></div>
           <input type="range" class="ix-slider" id="dp-slider" min="10" max="200" value="50" step="5" oninput="pCalc()"/>
           <div class="ix-meta"><span>$10</span><span>$200</span></div>
-          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 6px">Group size</div>
+          <div style="font-size:10px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.04em;margin:10px 0 6px">Group size</div>
           <div style="display:flex;gap:6px;margin-bottom:12px" id="dp-group">
             <button class="ix-btn ix-btn-blue" onclick="pGroup(5,this)" style="flex:1">5</button>
-            <button class="ix-btn ix-btn-blue" onclick="pGroup(10,this)" style="flex:1;background:rgba(59,107,255,.3)">10</button>
+            <button class="ix-btn ix-btn-blue" onclick="pGroup(10,this)" style="flex:1;background:rgba(59,107,255,.2)">10</button>
             <button class="ix-btn ix-btn-blue" onclick="pGroup(15,this)" style="flex:1">15</button>
             <button class="ix-btn ix-btn-blue" onclick="pGroup(20,this)" style="flex:1">20</button>
           </div>
@@ -369,7 +353,7 @@
             <div class="ix-stat"><div class="ix-stat-label">You earn (95%)</div><div class="ix-stat-num" id="dp-earn" style="color:#10B981">$475</div></div>
           </div>
           <div class="ix-bar-track" style="height:6px"><div class="ix-bar-fill" id="dp-bar" style="width:95%;background:linear-gradient(90deg,#3B6BFF,#10B981)"></div></div>
-          <div class="ix-meta" style="margin-top:3px"><span>Platform: <b id="dp-fee" style="color:rgba(255,255,255,.5)">$25</b></span><span>Your payout: <b id="dp-payout" style="color:#10B981">$475</b></span></div>
+          <div class="ix-meta" style="margin-top:3px"><span>Platform: <b id="dp-fee" style="color:#6a6a6a">$25</b></span><span>Your payout: <b id="dp-payout" style="color:#10B981">$475</b></span></div>
         </div>
       </div>
     </div>
@@ -385,8 +369,8 @@
           <div class="ix-form-row"><div><div class="ix-form-label">Code</div><input class="ix-input" id="pr-code" placeholder="SUMMER20" style="text-transform:uppercase"/></div><div><div class="ix-form-label">Discount %</div><input class="ix-input" id="pr-disc" type="number" placeholder="20"/></div></div>
           <button class="ix-btn ix-btn-blue" onclick="prCreate()" style="width:100%;padding:8px;margin:6px 0">Create Code</button>
           <div id="pr-list">
-            <div class="ix-row"><div style="font-size:13px;font-weight:800;color:#fff;flex:1">FIRST10</div><div class="ix-pill" style="background:rgba(59,107,255,.12);color:#3B6BFF">10% off</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Active</div></div>
-            <div class="ix-row"><div style="font-size:13px;font-weight:800;color:#fff;flex:1">TEAM25</div><div class="ix-pill" style="background:rgba(59,107,255,.12);color:#3B6BFF">25% off</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Active</div></div>
+            <div class="ix-row"><div style="font-size:13px;font-weight:800;color:#222;flex:1">FIRST10</div><div class="ix-pill" style="background:rgba(59,107,255,.12);color:#3B6BFF">10% off</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Active</div></div>
+            <div class="ix-row"><div style="font-size:13px;font-weight:800;color:#222;flex:1">TEAM25</div><div class="ix-pill" style="background:rgba(59,107,255,.12);color:#3B6BFF">25% off</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Active</div></div>
           </div>
           <div class="ix-notif" id="pr-notif"><div class="ix-notif-dot" style="background:#10B981"></div><div class="ix-notif-text" id="pr-notif-text"><b>2 codes</b> active</div></div>
         </div>
@@ -490,7 +474,7 @@
     function pGroup(n,btn){dpG=n;document.querySelectorAll('#dp-group .ix-btn').forEach(function(b){b.style.background='rgba(59,107,255,.15)'});btn.style.background='rgba(59,107,255,.35)';pCalc()}
 
     /* ── Promos ── */
-    function prCreate(){var code=document.getElementById('pr-code').value.trim().toUpperCase();var disc=document.getElementById('pr-disc').value;if(!code||!disc)return;var list=document.getElementById('pr-list');var row=document.createElement('div');row.className='ix-row';row.innerHTML='<div style="font-size:13px;font-weight:800;color:#fff;flex:1">'+code+'</div><div class="ix-pill" style="background:rgba(59,107,255,.12);color:#3B6BFF">'+disc+'% off</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Active</div>';list.appendChild(row);document.getElementById('pr-code').value='';document.getElementById('pr-disc').value='';var n=document.getElementById('pr-notif');n.classList.add('show');var count=list.querySelectorAll('.ix-row').length;document.getElementById('pr-notif-text').innerHTML='<b>'+count+' codes</b> active';setTimeout(function(){n.classList.remove('show')},2500)}
+    function prCreate(){var code=document.getElementById('pr-code').value.trim().toUpperCase();var disc=document.getElementById('pr-disc').value;if(!code||!disc)return;var list=document.getElementById('pr-list');var row=document.createElement('div');row.className='ix-row';row.innerHTML='<div style="font-size:13px;font-weight:800;color:#222;flex:1">'+code+'</div><div class="ix-pill" style="background:rgba(59,107,255,.12);color:#3B6BFF">'+disc+'% off</div><div class="ix-pill" style="background:rgba(16,185,129,.12);color:#10B981">Active</div>';list.appendChild(row);document.getElementById('pr-code').value='';document.getElementById('pr-disc').value='';var n=document.getElementById('pr-notif');n.classList.add('show');var count=list.querySelectorAll('.ix-row').length;document.getElementById('pr-notif-text').innerHTML='<b>'+count+' codes</b> active';setTimeout(function(){n.classList.remove('show')},2500)}
   </script>
   <script src="/nav.js"></script>
 </body>
