@@ -69,6 +69,12 @@
     .srt-nav.dark:not(.scrolled) .srt-glass-fill:hover{background:rgba(59,107,255,.9)}\
     .srt-nav.dark.scrolled .srt-glass-fill,.srt-nav.light .srt-glass-fill{color:#fff;background:#3B6BFF;border:1px solid #3B6BFF}\
     .srt-nav.dark.scrolled .srt-glass-fill:hover,.srt-nav.light .srt-glass-fill:hover{background:#2d5ae6}\
+    .srt-biz:visited,.srt-glass:visited{color:inherit}\
+    .srt-nav.dark:not(.scrolled) .srt-biz:visited{color:rgba(255,255,255,.7)}\
+    .srt-nav.dark.scrolled .srt-biz:visited,.srt-nav.light .srt-biz:visited{color:#6a6a6a}\
+    .srt-nav.dark:not(.scrolled) .srt-glass-ghost:visited{color:rgba(255,255,255,.85)}\
+    .srt-nav.dark.scrolled .srt-glass-ghost:visited,.srt-nav.light .srt-glass-ghost:visited{color:#222}\
+    .srt-glass-fill:visited{color:#fff}\
     @media(max-width:768px){.srt-nav{padding:0 16px;height:56px}.srt-menus{display:none}.srt-biz{display:none}}\
   ';
   document.head.appendChild(style);
