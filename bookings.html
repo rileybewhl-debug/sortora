@@ -78,6 +78,32 @@
       .bk-card{flex-direction:column;align-items:flex-start}
       .bk-card-right{align-items:flex-start;width:100%;flex-direction:row;justify-content:space-between}
     }
+  
+    /* Review modal */
+    .review-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+    .review-overlay.open{display:flex}
+    .review-modal{background:#fff;border-radius:16px;padding:32px;max-width:440px;width:90%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+    .review-modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:#f7f8fa;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#6a6a6a;transition:background .12s}
+    .review-modal-close:hover{background:#EBEBEB}
+    .review-modal h3{font-size:20px;font-weight:800;margin-bottom:4px;letter-spacing:-.02em}
+    .review-modal-sub{font-size:14px;color:#6a6a6a;margin-bottom:20px}
+    .stars-input{display:flex;gap:4px;margin-bottom:16px}
+    .star-btn{width:36px;height:36px;border-radius:8px;border:1px solid #EBEBEB;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+    .star-btn:hover,.star-btn.active{border-color:#3B6BFF;background:rgba(59,107,255,.06)}
+    .star-btn svg{width:20px;height:20px;fill:#d0d0d0;transition:fill .12s}
+    .star-btn.active svg{fill:#3B6BFF}
+    .review-textarea{width:100%;padding:12px 14px;border:2px solid #e8ecf0;border-radius:10px;font-size:14px;font-family:inherit;color:#0C1220;outline:none;resize:vertical;min-height:80px;transition:border .15s}
+    .review-textarea:focus{border-color:#3B6BFF}
+    .review-textarea::placeholder{color:#b0b5bd}
+    .review-submit{width:100%;padding:12px;background:#3B6BFF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:12px;transition:all .15s}
+    .review-submit:hover{background:#2d5ae6}
+    .review-submit:disabled{background:#d0d0d0;cursor:not-allowed}
+    .btn-review{padding:7px 14px;background:#fff;color:#3B6BFF;border:1px solid rgba(59,107,255,.2);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
+    .btn-review:hover{background:rgba(59,107,255,.04);border-color:#3B6BFF}
+    .btn-review svg{width:14px;height:14px}
+    .reviewed-badge{font-size:12px;color:#10B981;font-weight:600;display:flex;align-items:center;gap:4px}
+    .reviewed-badge svg{width:14px;height:14px;fill:#10B981}
+    
   </style>
 </head>
 <body>
@@ -114,6 +140,18 @@
     </div>
   </div>
 
+  
+  <div class="review-overlay" id="review-overlay" onclick="if(event.target===this)closeReview()">
+    <div class="review-modal">
+      <button class="review-modal-close" onclick="closeReview()">✕</button>
+      <h3>Leave a Review</h3>
+      <div class="review-modal-sub" id="review-session-name">Session name</div>
+      <div class="stars-input" id="stars-input"></div>
+      <textarea class="review-textarea" id="review-comment" placeholder="How was your experience? (optional)"></textarea>
+      <button class="review-submit" id="review-submit" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+
   <script src="/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -136,14 +174,7 @@
       loadWaitlist();
     }
 
-    async function loadBookings() {
-      var r = await SB.from('bookings')
-        .select('*, sessions(id, title, session_date, price_per_person, location, duration_minutes, funding_deadline, payment_mode, is_group_funded, providers(business_name))')
-        .eq('customer_id', currentUser.id)
-        .order('created_at', {ascending: false});
-      allBookings = r.data || [];
-      renderBookings(allBookings);
-    }
+    // loadBookings defined below
 
     function filterTab(status, btn) {
       currentFilter = status;
@@ -168,6 +199,8 @@
         var timeStr = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
         var provider = s.providers ? s.providers.business_name : 'Provider';
         var isPaid = b.status === 'going';
+        var isPast = new Date(s.session_date) < new Date();
+        var hasReview = b._hasReview || false;
 
         var statusBadge = isPaid
           ? '<span class="badge badge-going">Confirmed</span>'
@@ -196,6 +229,8 @@
           + '<div class="bk-price">$' + parseFloat(s.price_per_person).toFixed(0) + '</div>'
           + statusBadge
           + payBtn
+          + (isPast && isPaid && !hasReview ? '<button class="btn-review" onclick="event.stopPropagation();openReview(\''+s.id+'\',\''+b.id+'\',\''+s.title.replace(/'/g,'')+'\',\''+s.providers_id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Leave Review</button>' : '')
+          + (hasReview ? '<div class="reviewed-badge"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="#10B981" stroke-width="2"/></svg>Reviewed</div>' : '')
           + '</div></div>';
       }).join('');
     }
@@ -252,6 +287,65 @@
       if (!confirm('Leave the waitlist for this session?')) return;
       await SB.from('session_waitlist').delete().eq('id', waitlistId);
       loadWaitlist();
+    }
+
+    
+    // ═══ Reviews ═══
+    var _reviewSessionId = null, _reviewBookingId = null, _reviewProviderId = null, _reviewRating = 0;
+
+    async function loadBookings() {
+      var r = await SB.from('bookings')
+        .select('*, sessions(id, title, session_date, price_per_person, location, duration_minutes, funding_deadline, payment_mode, is_group_funded, provider_id, providers(business_name))')
+        .eq('customer_id', currentUser.id)
+        .order('created_at', {ascending: false});
+      allBookings = r.data || [];
+      // Check which bookings have reviews
+      if (allBookings.length) {
+        var sessionIds = allBookings.map(function(b){return b.sessions ? b.sessions.id : null}).filter(Boolean);
+        var rv = await SB.from('reviews').select('session_id').eq('customer_id', currentUser.id).in('session_id', sessionIds);
+        var reviewed = (rv.data || []).map(function(r){return r.session_id});
+        allBookings.forEach(function(b){ if(b.sessions) b._hasReview = reviewed.indexOf(b.sessions.id) !== -1; });
+      }
+      renderBookings(allBookings);
+    }
+
+    function openReview(sessionId, bookingId, sessionName, providerId) {
+      _reviewSessionId = sessionId;
+      _reviewBookingId = bookingId;
+      _reviewProviderId = providerId;
+      _reviewRating = 0;
+      document.getElementById('review-session-name').textContent = sessionName;
+      document.getElementById('review-comment').value = '';
+      var stars = document.getElementById('stars-input');
+      stars.innerHTML = [1,2,3,4,5].map(function(n){
+        return '<button class="star-btn" onclick="setStars('+n+')"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>';
+      }).join('');
+      document.getElementById('review-overlay').classList.add('open');
+    }
+    function closeReview() { document.getElementById('review-overlay').classList.remove('open'); }
+    function setStars(n) {
+      _reviewRating = n;
+      document.querySelectorAll('.star-btn').forEach(function(b,i){ b.classList.toggle('active', i < n); });
+    }
+    async function submitReview() {
+      if (!_reviewRating) { alert('Please select a rating'); return; }
+      var btn = document.getElementById('review-submit');
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      var comment = document.getElementById('review-comment').value.trim();
+      var providerId = null;
+      // Get provider_id from the session
+      var sr = await SB.from('sessions').select('provider_id').eq('id', _reviewSessionId).single();
+      if (sr.data) providerId = sr.data.provider_id;
+      var r = await SB.from('reviews').insert({
+        session_id: _reviewSessionId,
+        customer_id: currentUser.id,
+        provider_id: providerId,
+        rating: _reviewRating,
+        comment: comment || null
+      });
+      if (r.error) { alert(r.error.message); btn.disabled = false; btn.textContent = 'Submit Review'; return; }
+      closeReview();
+      loadBookings();
     }
 
     init();
