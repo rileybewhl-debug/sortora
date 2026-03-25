@@ -3,215 +3,231 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>My Profile — Sortora</title>
+  <title>Edit Profile — Sortora</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F9FC;min-height:100vh}
-    .topbar{background:#fff;border-bottom:1px solid #E8EDF2;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .logo{font-size:20px;font-weight:800;color:#0A2540}.logo span{color:#3D63FF}
-    .topbar-right{display:flex;align-items:center;gap:16px}
-    .nav-link{font-size:13px;font-weight:600;color:#8898AA;text-decoration:none;cursor:pointer}
-    .nav-link:hover{color:#0A2540}
-    .nav-link.active{color:#3D63FF}
-    .user-name{font-size:14px;font-weight:600;color:#0A2540}
-    .main{max-width:800px;margin:0 auto;padding:40px 24px}
-    .page-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:4px}
-    .page-sub{font-size:15px;color:#8898AA;margin-bottom:32px}
-    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-    .card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:24px}
-    .card-title{font-size:16px;font-weight:700;color:#0A2540;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-    .field{margin-bottom:16px}
-    label{display:block;font-size:13px;font-weight:600;color:#0A2540;margin-bottom:6px}
-    input,select,textarea{width:100%;padding:11px 14px;border:2px solid #E8EDF2;border-radius:10px;font-size:14px;font-family:inherit;color:#0A2540;outline:none;transition:border .2s}
-    input:focus,select:focus,textarea:focus{border-color:#3D63FF}
-    textarea{resize:vertical;min-height:100px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{padding:12px 20px;background:#3D63FF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-top:4px}
-    .btn:hover{background:#2d52ee}
-    .btn:disabled{background:#8898AA;cursor:not-allowed}
-    .btn-outline{background:#fff;color:#3D63FF;border:2px solid #3D63FF}
-    .btn-outline:hover{background:#EEF2FF}
-    .success{background:#ECFDF5;color:#065F46;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
-    .error{background:#FEF2F2;color:#DC2626;padding:12px 16px;border-radius:10px;font-size:14px;margin-top:12px;display:none}
-    .preview-card{border-radius:16px;padding:28px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;background-color:#0A2540;background-size:cover;background-position:center}
-    .preview-card-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,37,64,0.82),rgba(26,58,92,0.75))}
-    .preview-card-content{position:relative;z-index:1}
-    .preview-avatar{width:64px;height:64px;border-radius:50%;background:#3D63FF;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;margin-bottom:16px;overflow:hidden}
-    .preview-avatar img{width:100%;height:100%;object-fit:cover}
-    .preview-name{font-size:22px;font-weight:800;margin-bottom:4px}
-    .preview-category{font-size:13px;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
-    .preview-bio{font-size:14px;opacity:.85;line-height:1.6;margin-bottom:16px}
-    .preview-meta{display:flex;gap:16px;flex-wrap:wrap}
-    .preview-meta-item{font-size:13px;opacity:.7;display:flex;align-items:center;gap:4px}
-    .category-badge{display:inline-block;background:rgba(61,99,255,.3);border:1px solid rgba(61,99,255,.5);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:12px}
-    .hint{font-size:12px;color:#8898AA;margin-top:4px}
-    @media(max-width:640px){.two-col,.row{grid-template-columns:1fr}}
-  </style>
-  <style>
-  .photo-upload-section{display:flex;flex-direction:column;gap:20px}
-  .upload-group{display:flex;flex-direction:column;gap:8px}
-  .upload-label{font-weight:600;font-size:.875rem;color:#374151}
-  .cover-upload-area{width:100%;height:140px;border:2px dashed #d1d5db;border-radius:10px;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f9fafb;transition:border-color .2s}
-  .cover-upload-area:hover{border-color:#3D63FF;background:#eff3ff}
-  .cover-bg-preview{position:absolute;inset:0;background-size:cover;background-position:center;display:none}
-  .cover-bg-preview.active{display:block}
-  .avatar-upload-area{display:flex;align-items:center;gap:16px;padding:12px;border:2px dashed #d1d5db;border-radius:10px;cursor:pointer;background:#f9fafb;transition:border-color .2s;width:fit-content}
-  .avatar-upload-area:hover{border-color:#3D63FF;background:#eff3ff}
-  .upload-hint{font-size:.8rem;color:#6b7280;text-align:center}
-  .upload-hint span{font-size:.7rem;color:#9ca3af;display:block}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#0C1220;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+    .page{max-width:960px;margin:0 auto;padding:96px 32px 64px}
+    .page-header{margin-bottom:36px}
+    .page-title{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
+    .page-sub{font-size:15px;color:#6a6a6a;line-height:1.5}
+
+    /* Two column layout: form left, preview right */
+    .layout{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:start}
+
+    /* Cards */
+    .card{background:#fff;border:1px solid #EBEBEB;border-radius:14px;padding:24px;margin-bottom:16px}
+    .card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3B6BFF;margin-bottom:12px}
+
+    /* Form */
+    .form-group{margin-bottom:14px}
+    .form-label{display:block;font-size:13px;font-weight:600;color:#0C1220;margin-bottom:5px}
+    .form-input{width:100%;padding:11px 14px;border:2px solid #e8ecf0;border-radius:10px;font-size:14px;font-family:inherit;color:#0C1220;outline:none;transition:border .15s,box-shadow .15s;background:#fff}
+    .form-input:focus{border-color:#3B6BFF;box-shadow:0 0 0 3px rgba(59,107,255,.07)}
+    .form-input::placeholder{color:#b0b5bd}
+    textarea.form-input{resize:vertical;min-height:90px}
+    select.form-input{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23b0b5bd' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:36px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-hint{font-size:12px;color:#b0b5bd;margin-top:3px}
+
+    /* Photo upload areas */
+    .cover-upload{width:100%;height:120px;border:2px dashed #e0e3e8;border-radius:10px;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fafbfc;transition:all .15s}
+    .cover-upload:hover{border-color:#3B6BFF;background:#f5f7ff}
+    .cover-upload-preview{position:absolute;inset:0;background-size:cover;background-position:center;display:none}
+    .cover-upload-preview.active{display:block}
+    .cover-upload-hint{font-size:13px;color:#b0b5bd;pointer-events:none;text-align:center}
+    .cover-upload-hint small{display:block;font-size:11px;color:#d0d0d0;margin-top:2px}
+    .avatar-upload{display:flex;align-items:center;gap:14px;padding:12px;border:2px dashed #e0e3e8;border-radius:10px;cursor:pointer;background:#fafbfc;transition:all .15s;width:fit-content}
+    .avatar-upload:hover{border-color:#3B6BFF;background:#f5f7ff}
+    .avatar-circle{width:64px;height:64px;border-radius:50%;background:#e8ecf0;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+    .avatar-circle img{width:100%;height:100%;object-fit:cover;display:none}
+    .avatar-circle-letter{font-size:22px;font-weight:800;color:#b0b5bd}
+    .avatar-upload-text{font-size:13px;color:#b0b5bd}
+    .avatar-upload-text small{display:block;font-size:11px;color:#d0d0d0;margin-top:2px}
+
+    /* Buttons */
+    .btn{padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:none;width:100%}
+    .btn-primary{background:#3B6BFF;color:#fff}
+    .btn-primary:hover{background:#2d5ae6;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,107,255,.2)}
+    .btn-primary:disabled{background:#d0d0d0;cursor:not-allowed;transform:none;box-shadow:none}
+    .btn-stripe{background:#0C1220;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-stripe:hover{background:#1a2540}
+    .btn-stripe.connected{background:#10B981;cursor:default}
+
+    .alert{padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none}
+    .alert-success{background:#f0fff4;border:1px solid #c6f6d5;color:#276749}
+    .alert-error{background:#fff5f5;border:1px solid #fed7d7;color:#c53030}
+    .alert a{color:inherit;font-weight:700}
+
+    /* Live Preview Card (sticky) */
+    .preview-wrap{position:sticky;top:96px}
+    .preview-card{border-radius:14px;overflow:hidden;border:1px solid #EBEBEB;background:#fff}
+    .preview-cover{height:100px;background:#f0f2f5;background-size:cover;background-position:center;position:relative}
+    .preview-avatar-wrap{position:absolute;bottom:-28px;left:20px}
+    .preview-avatar{width:56px;height:56px;border-radius:50%;background:#e8ecf0;border:3px solid #fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .preview-avatar img{width:100%;height:100%;object-fit:cover;display:none}
+    .preview-avatar-letter{font-size:20px;font-weight:800;color:#b0b5bd}
+    .preview-body{padding:36px 20px 20px}
+    .preview-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3B6BFF;margin-bottom:4px}
+    .preview-name{font-size:18px;font-weight:800;color:#0C1220;margin-bottom:4px;letter-spacing:-.02em}
+    .preview-bio{font-size:13px;color:#6a6a6a;line-height:1.5;margin-bottom:10px}
+    .preview-meta{display:flex;flex-direction:column;gap:4px}
+    .preview-meta-item{font-size:12px;color:#b0b5bd;display:flex;align-items:center;gap:5px}
+    .preview-meta-item svg{width:13px;height:13px;stroke:#b0b5bd;fill:none;stroke-width:2}
+    .preview-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#b0b5bd;margin-bottom:8px;text-align:center}
+    .preview-link{display:block;text-align:center;font-size:12px;color:#3B6BFF;font-weight:600;text-decoration:none;margin-top:12px;padding:8px;border-radius:8px;background:rgba(59,107,255,.04);transition:background .12s}
+    .preview-link:hover{background:rgba(59,107,255,.08)}
+
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.preview-wrap{position:static}}
+    @media(max-width:640px){.page{padding:80px 16px 48px}.form-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div id="nav-root" data-style="light"></div>
-  <div class="topbar">
-    <div class="logo">Sort<span>ora</span></div>
-    <div class="topbar-right">
-      <a class="nav-link" href="/dashboard.html">Dashboard</a>
-      <a class="nav-link active" href="/profile.html">Profile</a>
-      <span class="user-name" id="user-name"></span>
-      <a class="nav-link" onclick="signOut()">Sign out</a>
-    </div>
-  </div>
 
-  <div class="main">
-    <div class="page-title">My Profile</div>
-    <div class="page-sub">This is how customers will find and see you on Sortora.</div>
-
-    <div class="preview-card" id="preview-card">
-      <div class="preview-card-overlay" id="preview-card-overlay"></div>
-      <div class="preview-card-content">
-        <div class="preview-avatar" id="preview-avatar">
-          <img id="preview-avatar-img" src="" style="display:none">
-          <span id="preview-avatar-letter">?</span>
-        </div>
-        <div class="category-badge" id="preview-category">—</div>
-        <div class="preview-name" id="preview-name">Your Name</div>
-        <div class="preview-bio" id="preview-bio">Your bio will appear here...</div>
-        <div class="preview-meta">
-          <div class="preview-meta-item">📍 <span id="preview-location">Location</span></div>
-          <div class="preview-meta-item" id="preview-ig-wrap">📸 <span id="preview-ig">—</span></div>
-        </div>
-      </div>
+  <div class="page">
+    <div class="page-header">
+      <div class="page-title">Edit Profile</div>
+      <div class="page-sub">This is how customers will find and see you on Sortora.</div>
     </div>
 
-    <div class="card">
-      <div class="card-title">&#128247; Profile Photos</div>
-      <div class="photo-upload-section">
-        <div class="upload-group">
-          <label class="upload-label">Cover Photo</label>
-          <div class="cover-upload-area" id="cover-upload-area" onclick="document.getElementById('cover-file-input').click()">
-            <div id="cover-bg-preview" class="cover-bg-preview"></div>
-            <div class="upload-hint" id="cover-hint">Click to upload cover photo<span>Recommended: 1200x400px</span></div>
+    <div class="alert alert-success" id="save-success">Profile saved! <a id="profile-link" href="#" target="_blank">View your public page →</a></div>
+    <div class="alert alert-error" id="save-error"></div>
+
+    <div class="layout">
+      <!-- Left: Form -->
+      <div>
+        <!-- Photos -->
+        <div class="card">
+          <div class="card-label">Photos</div>
+          <div class="form-group">
+            <div class="form-label">Cover Photo</div>
+            <div class="cover-upload" onclick="document.getElementById('cover-file-input').click()">
+              <div id="cover-bg-preview" class="cover-upload-preview"></div>
+              <div class="cover-upload-hint" id="cover-hint">Click to upload<small>Recommended: 1200×400px</small></div>
+            </div>
+            <input type="file" id="cover-file-input" accept="image/*" style="display:none" onchange="handleCoverSelect(event)"/>
           </div>
-          <input type="file" id="cover-file-input" accept="image/*" style="display:none" onchange="handleCoverSelect(event)">
-        </div>
-        <div class="upload-group">
-          <label class="upload-label">Profile Photo</label>
-          <div class="avatar-upload-area" id="avatar-upload-area" onclick="document.getElementById('avatar-file-input').click()">
-            <img id="avatar-upload-preview" src="" style="display:none;width:72px;height:72px;border-radius:50%;object-fit:cover">
-            <div id="avatar-upload-placeholder" style="width:72px;height:72px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:1.8rem">&#128100;</div>
-            <div class="upload-hint" id="avatar-hint">Click to upload profile photo<span>Square image works best</span></div>
+          <div class="form-group">
+            <div class="form-label">Profile Photo</div>
+            <div class="avatar-upload" onclick="document.getElementById('avatar-file-input').click()">
+              <div class="avatar-circle" id="avatar-circle">
+                <img id="avatar-upload-preview" src=""/>
+                <span class="avatar-circle-letter" id="avatar-upload-placeholder">?</span>
+              </div>
+              <div class="avatar-upload-text" id="avatar-hint">Click to upload<small>Square image works best</small></div>
+            </div>
+            <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="handleAvatarSelect(event)"/>
           </div>
-          <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="handleAvatarSelect(event)">
         </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">🤝 Personal Info</div>
-      <div class="row">
-        <div class="field">
-          <label>Full Name</label>
-          <input type="text" id="full-name" placeholder="Your full name"/>
-        </div>
-        <div class="field">
-          <label>City</label>
-          <input type="text" id="city" placeholder="e.g. Seattle"/>
-        </div>
-      </div>
-    </div>
 
-    <div class="card">
-      <div class="card-title">🏢 Business Info</div>
-      <div class="row">
-        <div class="field">
-          <label>Business Name</label>
-          <input type="text" id="business-name" placeholder="Your brand or business name"/>
+        <!-- Personal -->
+        <div class="card">
+          <div class="card-label">Personal Info</div>
+          <div class="form-row">
+            <div class="form-group"><div class="form-label">Full Name</div><input class="form-input" type="text" id="full-name" placeholder="Your full name"/></div>
+            <div class="form-group"><div class="form-label">City</div><input class="form-input" type="text" id="city" placeholder="e.g. Seattle"/></div>
+          </div>
         </div>
-        <div class="field">
-          <label>Category</label>
-          <select id="category">
-            <option value="">Select type</option>
-            <option value="photography">Photography</option>
-            <option value="fitness">Fitness / Personal Training</option>
-            <option value="yoga">Yoga / Wellness</option>
-            <option value="dj">DJ / Music</option>
-            <option value="chef">Private Chef</option>
-            <option value="coaching">Coaching</option>
-            <option value="workshop">Workshop / Class</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Bio</label>
-        <textarea id="bio" placeholder="Tell customers about yourself, your experience, what makes you great..."></textarea>
-        <div class="hint">Keep it to 2—3 sentences. Customers read this before booking.</div>
-      </div>
-      <div class="field">
-        <label>Location</label>
-        <input type="text" id="location" placeholder="e.g. Seattle, WA"/>
-      </div>
-      <div class="field">
-        <label>Instagram Handle</label>
-        <input type="text" id="instagram" placeholder="@yourhandle"/>
-        <div class="hint">Optional — helps customers find your work.</div>
-      </div>
-    </div>
 
-    <div class="card" id="stripe-card">
-      <div class="card-title">💳 Payouts</div>
-      <div id="stripe-status"></div>
-      <button class="btn" id="connect-btn" onclick="connectStripe()" style="margin-top:0">Connect Bank Account</button>
-      <div class="success" id="connect-success" style="display:none">✅ Stripe connected — you can now receive payouts!</div>
-      <div class="error" id="connect-error" style="display:none">Something went wrong. Please try again.</div>
+        <!-- Business -->
+        <div class="card">
+          <div class="card-label">Business Info</div>
+          <div class="form-row">
+            <div class="form-group"><div class="form-label">Business Name</div><input class="form-input" type="text" id="business-name" placeholder="Your brand or business name"/></div>
+            <div class="form-group"><div class="form-label">Category</div>
+              <select class="form-input" id="category">
+                <option value="">Select type</option>
+                <option value="photography">Photography</option>
+                <option value="fitness">Fitness / Personal Training</option>
+                <option value="yoga">Yoga / Wellness</option>
+                <option value="dj">DJ / Music</option>
+                <option value="chef">Private Chef</option>
+                <option value="coaching">Coaching</option>
+                <option value="workshop">Workshop / Class</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Bio</div>
+            <textarea class="form-input" id="bio" placeholder="Tell customers about yourself, your experience, what makes you great..."></textarea>
+            <div class="form-hint">Keep it to 2–3 sentences. Customers read this before booking.</div>
+          </div>
+          <div class="form-group"><div class="form-label">Location</div><input class="form-input" type="text" id="location" placeholder="e.g. Seattle, WA"/></div>
+          <div class="form-group">
+            <div class="form-label">Instagram Handle</div>
+            <input class="form-input" type="text" id="instagram" placeholder="@yourhandle"/>
+            <div class="form-hint">Optional — helps customers find your work.</div>
+          </div>
+        </div>
+
+        <!-- Payouts -->
+        <div class="card">
+          <div class="card-label">Payouts</div>
+          <p style="font-size:13px;color:#6a6a6a;margin-bottom:12px;line-height:1.5">Connect your bank account via Stripe to receive payouts. You keep 95% of every booking.</p>
+          <button class="btn btn-stripe" id="connect-btn" onclick="connectStripe()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Connect Bank Account
+          </button>
+          <div class="alert alert-success" id="connect-success" style="margin-top:10px">Stripe connected — you can now receive payouts!</div>
+          <div class="alert alert-error" id="connect-error" style="margin-top:10px">Something went wrong. Please try again.</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveProfile()" id="save-btn">Save Profile</button>
+      </div>
+
+      <!-- Right: Live Preview -->
+      <div class="preview-wrap">
+        <div class="preview-label">Live Preview</div>
+        <div class="preview-card">
+          <div class="preview-cover" id="preview-cover"></div>
+          <div class="preview-avatar-wrap">
+            <div class="preview-avatar" id="preview-avatar">
+              <img id="preview-avatar-img" src=""/>
+              <span class="preview-avatar-letter" id="preview-avatar-letter">?</span>
+            </div>
+          </div>
+          <div class="preview-body">
+            <div class="preview-cat" id="preview-category">—</div>
+            <div class="preview-name" id="preview-name">Your Name</div>
+            <div class="preview-bio" id="preview-bio">Your bio will appear here...</div>
+            <div class="preview-meta">
+              <div class="preview-meta-item"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="preview-location">Location</span></div>
+              <div class="preview-meta-item" id="preview-ig-wrap" style="display:none"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span id="preview-ig">—</span></div>
+            </div>
+          </div>
+        </div>
+        <a class="preview-link" id="preview-public-link" href="#" target="_blank">View public page →</a>
+      </div>
     </div>
-    <button class="btn" onclick="saveProfile()" id="save-btn">Save Profile</button>
-    <div class="success" id="save-success">✅ Profile saved! Your public page: <a id="profile-link" href="#" target="_blank" style="color:#065F46;font-weight:700"></a></div>
-    <div class="error" id="save-error"></div>
   </div>
 
   <script src="/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    var SB = window.supabase.createClient(
-      'https://gzwyzocfohtnejttkglg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw'
-    );
+    var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
     var currentUser = null;
-    var _profileAvatarUrl = null;
-    var _profileCoverUrl  = null;
-    var _avatarFile = null;
-    var _coverFile  = null;
+    var _profileAvatarUrl = null, _profileCoverUrl = null;
+    var _avatarFile = null, _coverFile = null;
 
     function handleAvatarSelect(evt) {
-      var file = evt.target.files[0];
-      if (!file) return;
+      var file = evt.target.files[0]; if (!file) return;
       _avatarFile = file;
       var reader = new FileReader();
       reader.onload = function(e) { showAvatarPreview(e.target.result); };
       reader.readAsDataURL(file);
     }
-
     function handleCoverSelect(evt) {
-      var file = evt.target.files[0];
-      if (!file) return;
+      var file = evt.target.files[0]; if (!file) return;
       _coverFile = file;
       var reader = new FileReader();
       reader.onload = function(e) { showCoverPreview(e.target.result); };
       reader.readAsDataURL(file);
     }
-
     function showAvatarPreview(url) {
       var img = document.getElementById('avatar-upload-preview');
       if (img) { img.src = url; img.style.display = 'block'; }
@@ -224,16 +240,14 @@
       var pLetter = document.getElementById('preview-avatar-letter');
       if (pLetter) pLetter.style.display = 'none';
     }
-
     function showCoverPreview(url) {
       var prev = document.getElementById('cover-bg-preview');
       if (prev) { prev.style.backgroundImage = 'url(' + url + ')'; prev.classList.add('active'); }
       var hint = document.getElementById('cover-hint');
       if (hint) hint.style.display = 'none';
-      var card = document.getElementById('preview-card');
+      var card = document.getElementById('preview-cover');
       if (card) card.style.backgroundImage = 'url(' + url + ')';
     }
-
     async function uploadProfilePhotos() {
       var SURL = 'https://gzwyzocfohtnejttkglg.supabase.co';
       var sess = await SB.auth.getSession();
@@ -245,81 +259,34 @@
         var path = uid + '/avatar.' + ext;
         var res = await SB.storage.from('avatars').upload(path, _avatarFile, {upsert:true});
         if (!res.error) _profileAvatarUrl = SURL + '/storage/v1/object/public/avatars/' + path + '?t=' + ts;
-        else console.error('Avatar upload error:', res.error);
       }
       if (_coverFile) {
         var ext2 = _coverFile.name.split('.').pop();
         var path2 = uid + '/cover.' + ext2;
         var res2 = await SB.storage.from('covers').upload(path2, _coverFile, {upsert:true});
         if (!res2.error) _profileCoverUrl = SURL + '/storage/v1/object/public/covers/' + path2 + '?t=' + ts;
-        else console.error('Cover upload error:', res2.error);
       }
     }
-
     async function connectStripe() {
       var btn = document.getElementById('connect-btn');
       btn.disabled = true; btn.textContent = 'Redirecting...';
-      var r = await fetch('/api/connect', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ providerId: currentUser.id })
-      });
+      var r = await fetch('/api/connect', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({providerId:currentUser.id}) });
       var data = await r.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        document.getElementById('connect-error').style.display = 'block';
-        btn.disabled = false; btn.textContent = 'Connect Bank Account';
-      }
+      if (data.url) { window.location.href = data.url; }
+      else { document.getElementById('connect-error').style.display = 'block'; btn.disabled = false; btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Connect Bank Account'; }
     }
-
     async function checkConnectStatus() {
       if (!currentUser) return;
       var pv = await SB.from('providers').select('stripe_account_id').eq('id', currentUser.id).single();
       if (pv.data && pv.data.stripe_account_id) {
-        document.getElementById('connect-btn').textContent = '✅ Stripe Connected';
-        document.getElementById('connect-btn').style.background = '#10B981';
-        document.getElementById('connect-btn').disabled = true;
+        var btn = document.getElementById('connect-btn');
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Stripe Connected';
+        btn.classList.add('connected'); btn.disabled = true;
       }
       var params = new URLSearchParams(window.location.search);
       if (params.get('connect') === 'success') document.getElementById('connect-success').style.display = 'block';
       if (params.get('connect') === 'error') document.getElementById('connect-error').style.display = 'block';
     }
-
-    async function init() {
-      var r = await SB.auth.getSession();
-      if (!r.data.session) { window.location.href = '/login.html'; return; }
-      currentUser = r.data.session.user;
-      var pr = await SB.from('profiles').select('full_name,role,city').eq('id', currentUser.id).single();
-      if (pr.data) {
-        if (pr.data.role !== 'provider') { window.location.href = '/browse.html'; return; }
-        document.getElementById('user-name').textContent = pr.data.full_name;
-        document.getElementById('full-name').value = pr.data.full_name || '';
-        document.getElementById('city').value = pr.data.city || '';
-      }
-      var pv = await SB.from('providers').select('*').eq('id', currentUser.id).single();
-      if (pv.data) {
-        document.getElementById('business-name').value = pv.data.business_name || '';
-        document.getElementById('category').value = pv.data.category || '';
-        document.getElementById('bio').value = pv.data.bio || '';
-        document.getElementById('location').value = pv.data.location || '';
-        document.getElementById('instagram').value = pv.data.instagram || '';
-        if (pv.data.avatar_url) {
-          var aUrl = pv.data.avatar_url.split('?')[0] + '?t=' + Date.now();
-          _profileAvatarUrl = aUrl;
-          showAvatarPreview(aUrl);
-        }
-        if (pv.data.cover_url) {
-          var cUrl = pv.data.cover_url.split('?')[0] + '?t=' + Date.now();
-          _profileCoverUrl = cUrl;
-          showCoverPreview(cUrl);
-        }
-        updatePreview();
-      }
-      checkConnectStatus();
-      addLivePreview();
-    }
-
     function updatePreview() {
       var name = document.getElementById('full-name').value || 'Your Name';
       var biz = document.getElementById('business-name').value || name;
@@ -336,21 +303,18 @@
         var pLetter = document.getElementById('preview-avatar-letter');
         if (pLetter) pLetter.textContent = (biz || name).charAt(0).toUpperCase();
       }
-      if (ig) {
-        document.getElementById('preview-ig').textContent = ig;
-        document.getElementById('preview-ig-wrap').style.display = 'flex';
-      } else {
-        document.getElementById('preview-ig-wrap').style.display = 'none';
-      }
+      if (ig) { document.getElementById('preview-ig').textContent = ig; document.getElementById('preview-ig-wrap').style.display = 'flex'; }
+      else { document.getElementById('preview-ig-wrap').style.display = 'none'; }
+      // Update public link
+      var slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      if (slug) document.getElementById('preview-public-link').href = '/p/' + slug;
     }
-
     function addLivePreview() {
       ['full-name','business-name','category','bio','location','city','instagram'].forEach(function(id) {
         var el = document.getElementById(id);
         if (el) el.addEventListener('input', updatePreview);
       });
     }
-
     async function saveProfile() {
       var btn = document.getElementById('save-btn');
       btn.disabled = true; btn.textContent = 'Saving...';
@@ -368,38 +332,53 @@
         document.getElementById('save-error').style.display = 'block';
         btn.disabled = false; btn.textContent = 'Save Profile'; return;
       }
-      var r1 = await SB.from('profiles').update({full_name: fullName, city: city}).eq('id', currentUser.id);
+      await SB.from('profiles').update({full_name:fullName,city:city}).eq('id',currentUser.id);
       await uploadProfilePhotos();
-      var r2 = await SB.from('providers').update(
-        Object.assign(
-          {business_name:businessName,category:category,bio:bio,location:location,instagram:instagram},
-          (_profileAvatarUrl ? {avatar_url:_profileAvatarUrl} : {}),
-          (_profileCoverUrl ? {cover_url:_profileCoverUrl} : {})
-        )
-      ).eq('id', currentUser.id);
-      if (r1.error || r2.error) {
-        document.getElementById('save-error').textContent = (r1.error || r2.error).message;
+      var updateData = {business_name:businessName,category:category,bio:bio,location:location,instagram:instagram};
+      if (_profileAvatarUrl) updateData.avatar_url = _profileAvatarUrl;
+      if (_profileCoverUrl) updateData.cover_url = _profileCoverUrl;
+      var r2 = await SB.from('providers').update(updateData).eq('id',currentUser.id);
+      if (r2.error) {
+        document.getElementById('save-error').textContent = r2.error.message;
         document.getElementById('save-error').style.display = 'block';
       } else {
-        document.getElementById('save-success').style.display = 'block';
-        var slug = businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        var slug = businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         var link = 'https://sortora.com/p/' + slug;
         document.getElementById('profile-link').href = link;
         document.getElementById('profile-link').textContent = link;
-        document.getElementById('user-name').textContent = fullName;
+        document.getElementById('save-success').style.display = 'block';
         if (_profileAvatarUrl) showAvatarPreview(_profileAvatarUrl);
         if (_profileCoverUrl) showCoverPreview(_profileCoverUrl);
       }
       btn.disabled = false; btn.textContent = 'Save Profile';
-      _avatarFile = null;
-      _coverFile = null;
+      _avatarFile = null; _coverFile = null;
     }
-
-    async function signOut() {
-      await SB.auth.signOut();
-      window.location.href = '/login.html';
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = '/login.html'; return; }
+      currentUser = r.data.session.user;
+      var pr = await SB.from('profiles').select('full_name,role,city').eq('id',currentUser.id).single();
+      if (pr.data) {
+        if (pr.data.role !== 'provider') { window.location.href = '/browse.html'; return; }
+        document.getElementById('full-name').value = pr.data.full_name || '';
+        document.getElementById('city').value = pr.data.city || '';
+      }
+      var pv = await SB.from('providers').select('*').eq('id',currentUser.id).single();
+      if (pv.data) {
+        document.getElementById('business-name').value = pv.data.business_name || '';
+        document.getElementById('category').value = pv.data.category || '';
+        document.getElementById('bio').value = pv.data.bio || '';
+        document.getElementById('location').value = pv.data.location || '';
+        document.getElementById('instagram').value = pv.data.instagram || '';
+        if (pv.data.avatar_url) { var aUrl = pv.data.avatar_url.split('?')[0] + '?t=' + Date.now(); _profileAvatarUrl = aUrl; showAvatarPreview(aUrl); }
+        if (pv.data.cover_url) { var cUrl = pv.data.cover_url.split('?')[0] + '?t=' + Date.now(); _profileCoverUrl = cUrl; showCoverPreview(cUrl); }
+        updatePreview();
+        // Set public link
+        if (pv.data.slug) document.getElementById('preview-public-link').href = '/p/' + pv.data.slug;
+      }
+      checkConnectStatus();
+      addLivePreview();
     }
-
     init();
   </script>
 </body>
