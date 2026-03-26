@@ -226,6 +226,26 @@
   <script src="/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    
+    // Ratings helper
+    var _providerRatings = {};
+    async function fetchRatings() {
+      var rv = await SB.from('reviews').select('provider_id, rating');
+      if (rv.data) {
+        rv.data.forEach(function(r) {
+          if (!_providerRatings[r.provider_id]) _providerRatings[r.provider_id] = {sum:0,count:0};
+          _providerRatings[r.provider_id].sum += r.rating;
+          _providerRatings[r.provider_id].count++;
+        });
+      }
+    }
+    function getRating(providerId) {
+      var rt = _providerRatings[providerId];
+      if (rt && rt.count) return '<svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:#222"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ' + (rt.sum/rt.count).toFixed(1);
+      return '<svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:#222"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> New';
+    }
+    fetchRatings();
+
     var SB = window._sortoraSB || window.supabase.createClient(
       "https://gzwyzocfohtnejttkglg.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw"
