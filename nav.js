@@ -76,6 +76,14 @@
     .srt-nav.dark.scrolled .srt-glass-ghost:visited,.srt-nav.light .srt-glass-ghost:visited{color:#222}\
     .srt-glass-fill:visited{color:#fff}\
     @media(max-width:768px){.srt-nav{padding:0 16px;height:56px}.srt-menus{display:none}.srt-biz{display:none}}\
+    .srt-nav a,.srt-nav a:visited,.srt-nav button,.srt-nav a:link{text-decoration:none}\
+    .srt-nav .srt-biz,.srt-nav .srt-biz:visited,.srt-nav .srt-biz:link{color:inherit !important}\
+    .srt-nav.dark:not(.scrolled) .srt-biz,.srt-nav.dark:not(.scrolled) .srt-biz:visited{color:rgba(255,255,255,.7) !important}\
+    .srt-nav.dark.scrolled .srt-biz,.srt-nav.dark.scrolled .srt-biz:visited,.srt-nav.light .srt-biz,.srt-nav.light .srt-biz:visited{color:#6a6a6a !important}\
+    .srt-nav .srt-glass-ghost,.srt-nav .srt-glass-ghost:visited,.srt-nav .srt-glass-ghost:link{color:inherit !important}\
+    .srt-nav.dark:not(.scrolled) .srt-glass-ghost,.srt-nav.dark:not(.scrolled) .srt-glass-ghost:visited{color:rgba(255,255,255,.85) !important}\
+    .srt-nav.dark.scrolled .srt-glass-ghost,.srt-nav.dark.scrolled .srt-glass-ghost:visited,.srt-nav.light .srt-glass-ghost,.srt-nav.light .srt-glass-ghost:visited{color:#222 !important}\
+    .srt-nav .srt-glass-fill,.srt-nav .srt-glass-fill:visited,.srt-nav .srt-glass-fill:link{color:#fff !important}\\
   ';
   document.head.appendChild(style);
 
