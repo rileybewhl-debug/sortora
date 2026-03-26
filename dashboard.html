@@ -152,7 +152,7 @@
     .mn-item svg{width:20px;height:20px}
     @media(max-width:768px){.mobile-nav{display:block}body{padding-bottom:60px}}
   
-    .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .cal-card{width:100%}.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
     .cal-month{font-size:20px;font-weight:800;letter-spacing:-.02em}
     .cal-nav{display:flex;gap:6px}
     .cal-nav-btn{width:36px;height:36px;border-radius:8px;border:1px solid #EBEBEB;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
@@ -504,7 +504,7 @@
 
       // Next month fill
       var totalCells = firstDay + daysInMonth;
-      var remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+      var remaining = 42 - totalCells;
       for (var n = 1; n <= remaining; n++) {
         grid += '<div class="cal-cell other"><div class="cal-day">' + n + '</div></div>';
       }
