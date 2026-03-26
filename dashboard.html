@@ -493,12 +493,12 @@
         events.slice(0, maxShow).forEach(function(s) {
           var statusCls = s.status === 'open' ? 'open' : s.status === 'funded' ? 'funded' : s.status === 'cancelled' ? 'cancelled' : 'closed';
           var time = new Date(s.session_date).toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
-          evHTML += '<div class="cal-event ' + statusCls + '" onclick="event.stopPropagation();openPanel(\x27"+s.id+"\x27)">' + time + ' ' + s.title + '</div>';
+          evHTML += '<div class="cal-event ' + statusCls + '" onclick="event.stopPropagation();openPanel(&#39;'+s.id+'&#39;)">' + time + ' ' + s.title + '</div>';
         });
         if (events.length > maxShow) {
           evHTML += '<div class="cal-more">+' + (events.length - maxShow) + ' more</div>';
         }
-        grid += '<div class="' + cls + '" onclick="calDayClick(\x27"+dateStr+"\x27)">' +
+        grid += '<div class="' + cls + '" onclick="calDayClick(&#39;'+dateStr+'&#39;)">' +
           '<div class="cal-day">' + i + '</div>' + evHTML + '</div>';
       }
 
@@ -527,7 +527,7 @@
           var t = new Date(s.session_date).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
           var going = (s.bookings||[]).filter(function(b){return b.status==='going'}).length;
           var statusCls = s.status==='open'?'pill-open':s.status==='funded'?'pill-funded':s.status==='cancelled'?'pill-cancelled':'pill-closed';
-          return '<div class="session-row" onclick="openPanel(\x27"+s.id+"\x27)" style="cursor:pointer">'
+          return '<div class="session-row" onclick="openPanel(&#39;'+s.id+'&#39;)" style="cursor:pointer">'
             + '<div class="session-row-info"><div class="session-row-title">' + s.title + '</div>'
             + '<div class="session-row-meta">' + t + (s.location?' \u00B7 '+s.location:'') + '</div></div>'
             + '<div class="session-row-right"><span class="pill ' + statusCls + '">' + s.status + '</span>'
