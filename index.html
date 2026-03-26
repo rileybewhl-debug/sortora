@@ -703,6 +703,19 @@
     async function loadSessions() {
       var r = await SB.from('sessions').select('*, providers(business_name, category, slug)').eq('status','open').gte('session_date', new Date().toISOString()).order('session_date',{ascending:true}).limit(8);
       var sessions = r.data || [];
+      // Fetch ratings for these sessions' providers
+      var providerIds = sessions.map(function(s){return s.provider_id}).filter(Boolean);
+      var ratings = {};
+      if (providerIds.length) {
+        var rv = await SB.from('reviews').select('provider_id, rating');
+        if (rv.data) {
+          rv.data.forEach(function(r) {
+            if (!ratings[r.provider_id]) ratings[r.provider_id] = {sum:0,count:0};
+            ratings[r.provider_id].sum += r.rating;
+            ratings[r.provider_id].count++;
+          });
+        }
+      }
       var grid = document.getElementById('ss-grid');
       if (!sessions.length) {
         grid.innerHTML = '<div class="ss-empty">No sessions available yet. Check back soon!</div>';
