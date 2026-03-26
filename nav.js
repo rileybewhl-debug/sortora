@@ -83,7 +83,7 @@
     .srt-nav .srt-glass-ghost,.srt-nav .srt-glass-ghost:visited,.srt-nav .srt-glass-ghost:link{color:inherit !important}\
     .srt-nav.dark:not(.scrolled) .srt-glass-ghost,.srt-nav.dark:not(.scrolled) .srt-glass-ghost:visited{color:rgba(255,255,255,.85) !important}\
     .srt-nav.dark.scrolled .srt-glass-ghost,.srt-nav.dark.scrolled .srt-glass-ghost:visited,.srt-nav.light .srt-glass-ghost,.srt-nav.light .srt-glass-ghost:visited{color:#222 !important}\
-    .srt-nav .srt-glass-fill,.srt-nav .srt-glass-fill:visited,.srt-nav .srt-glass-fill:link{color:#fff !important}\\
+    .srt-nav .srt-glass-fill,.srt-nav .srt-glass-fill:visited,.srt-nav .srt-glass-fill:link{color:#fff !important}\
   ';
   document.head.appendChild(style);
 
