@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Fire & Clay Pottery — Book a Class</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;color:#222;-webkit-font-smoothing:antialiased}
+    .header{padding:20px 32px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:20px;font-weight:700;color:#2d3436}
+    .nav{display:flex;gap:20px}
+    .nav a{font-size:14px;color:#636e72;text-decoration:none}
+    .hero{padding:40px 32px;max-width:800px;margin:0 auto}
+    .hero img{width:100%;height:300px;object-fit:cover;border-radius:12px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:24px}
+    .hero-placeholder{width:100%;height:300px;border-radius:12px;background:linear-gradient(135deg,#dfe6e9,#b2bec3);display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:24px}
+    h1{font-size:28px;font-weight:700;margin-bottom:8px}
+    .meta{font-size:15px;color:#636e72;margin-bottom:20px}
+    .description{font-size:15px;line-height:1.7;color:#444;margin-bottom:32px}
+    .checkout-box{background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:24px;max-width:800px;margin:0 auto 40px}
+    .checkout-title{font-size:18px;font-weight:700;margin-bottom:16px}
+    .checkout-row{display:flex;justify-content:space-between;padding:8px 0;font-size:15px;border-bottom:1px solid #eee}
+    .checkout-row:last-of-type{border-bottom:none}
+    .checkout-total{font-weight:700;font-size:18px;padding:12px 0 16px;border-top:2px solid #222;margin-top:8px;display:flex;justify-content:space-between}
+    .book-btn{width:100%;padding:14px;background:#2d3436;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:16px;font-family:inherit}
+    .book-btn:hover{background:#1a1a2e}
+    .divider{text-align:center;color:#b0b0b0;font-size:13px;margin:16px 0;font-weight:500}
+    [data-sortora-mount]{margin-bottom:16px}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🏺 Fire & Clay Pottery</div>
+    <div class="nav"><a href="#">Classes</a><a href="#">About</a><a href="#">Contact</a></div>
+  </div>
+  <div class="hero">
+    <div class="hero-placeholder">🎨</div>
+    <h1>Private Group Pottery Class</h1>
+    <div class="meta">Saturday, April 12 · 2:00 PM – 4:00 PM · Portland, OR</div>
+    <div class="description">Join us for a hands-on pottery class with your group! Each person will create their own piece on the wheel, guided by our expert instructors. All materials included. Perfect for birthdays, team outings, or a fun afternoon with friends. Minimum 2 people, maximum 8.</div>
+  </div>
+  <div class="checkout-box">
+    <div class="checkout-title">Booking Summary</div>
+    <div class="checkout-row"><span>Private Group Pottery Class</span><span>$240.00</span></div>
+    <div class="checkout-row"><span>Date</span><span>Apr 12, 2026</span></div>
+    <div class="checkout-row"><span>Duration</span><span>2 hours</span></div>
+    <div class="checkout-total"><span>Total</span><span>$240.00</span></div>
+
+    <!-- ═══ SORTORA WIDGET MOUNTS HERE ═══ -->
+    <div data-sortora-mount></div>
+
+    <div class="divider">— or pay the full amount —</div>
+    <button class="book-btn" type="submit">Book & Pay $240.00</button>
+  </div>
+
+  <!-- One script tag — this is all a business adds -->
+  <script src="/widget.js" data-business-id="demo_fire_clay" data-theme="auto"></script>
+</body>
+</html>
