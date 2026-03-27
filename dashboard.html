@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — Sortora</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#f9fafb;min-height:100vh;-webkit-font-smoothing:antialiased;color:#0C1220;display:flex}
+
+    /* Sidebar */
+    .sidebar{width:240px;background:#fff;border-right:1px solid #EBEBEB;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40}
+    .sb-logo{padding:20px 20px 24px;display:flex;align-items:center;gap:8px;text-decoration:none}
+    .sb-logo-text{font-weight:800;font-size:20px;color:#0C1220;letter-spacing:-.5px}
+    .sb-nav{flex:1;padding:0 12px;display:flex;flex-direction:column;gap:2px}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:600;color:#6a6a6a;cursor:pointer;transition:all .12s;text-decoration:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+    .sb-item:hover{background:#f7f7f7;color:#0C1220}
+    .sb-item.active{background:#EEF2FF;color:#3B6BFF}
+    .sb-item svg{width:18px;height:18px;flex-shrink:0}
+    .sb-divider{height:1px;background:#EBEBEB;margin:12px 0}
+    .sb-plan{margin:0 12px 12px;padding:12px;background:#f7f8fa;border-radius:8px;border:1px solid #EBEBEB}
+    .sb-plan-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#b0b0b0;margin-bottom:4px}
+    .sb-plan-name{font-size:14px;font-weight:800;color:#0C1220}
+    .sb-plan-usage{font-size:11px;color:#6a6a6a;margin-top:4px}
+    .sb-plan-bar{height:4px;border-radius:2px;background:#EBEBEB;margin-top:6px;overflow:hidden}
+    .sb-plan-bar-fill{height:100%;border-radius:2px;background:#3B6BFF;transition:width .3s}
+    .sb-footer{padding:16px;border-top:1px solid #EBEBEB}
+    .sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .12s}
+    .sb-user:hover{background:#f7f7f7}
+    .sb-avatar{width:32px;height:32px;border-radius:50%;background:#3B6BFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+    .sb-user-info{flex:1;min-width:0}
+    .sb-user-name{font-size:13px;font-weight:700;color:#0C1220;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sb-user-role{font-size:11px;color:#6a6a6a}
+
+    /* Main */
+    .main{flex:1;margin-left:240px;min-height:100vh}
+    .view{display:none}
+    .view.active{display:block}
+    .main-header{background:#fff;border-bottom:1px solid #EBEBEB;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+    .main-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .main-actions{display:flex;gap:8px}
+    .header-btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:1px solid #EBEBEB;background:#fff;color:#0C1220;display:flex;align-items:center;gap:6px;text-decoration:none}
+    .header-btn:hover{background:#f7f7f7}
+    .header-btn svg{width:16px;height:16px}
+    .header-btn-primary{background:#3B6BFF;color:#fff;border-color:#3B6BFF}
+    .header-btn-primary:hover{background:#2d5ae6}
+    .main-body{padding:24px 32px 48px}
+
+    /* Stats */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .stat-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px}
+    .stat-label{font-size:12px;font-weight:600;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+    .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
+    .stat-value.blue{color:#3B6BFF}
+    .stat-value.green{color:#10B981}
+    .stat-sub{font-size:12px;color:#b0b0b0;margin-top:4px}
+
+    /* Cards */
+    .card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px;margin-bottom:20px}
+    .card-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+    .card-title small{font-size:13px;font-weight:500;color:#6a6a6a}
+
+    /* Booking rows */
+    .booking-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;transition:background .1s}
+    .booking-row:last-child{border-bottom:none}
+    .booking-row:hover{background:#fafbff;margin:0 -12px;padding:14px 12px;border-radius:8px}
+    .booking-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+    .booking-icon.pending{background:rgba(59,107,255,.08)}
+    .booking-icon.confirmed{background:rgba(16,185,129,.08)}
+    .booking-icon.expired{background:rgba(239,68,68,.06)}
+    .booking-info{flex:1;min-width:0}
+    .booking-title{font-size:14px;font-weight:700;color:#0C1220;margin-bottom:2px}
+    .booking-meta{font-size:12px;color:#6a6a6a}
+    .booking-right{text-align:right;flex-shrink:0}
+    .booking-amount{font-size:16px;font-weight:800;color:#0C1220}
+    .booking-progress{display:flex;align-items:center;gap:6px;margin-top:4px}
+    .booking-prog-track{width:60px;height:4px;border-radius:2px;background:#EBEBEB;overflow:hidden}
+    .booking-prog-fill{height:100%;border-radius:2px;background:#3B6BFF}
+    .booking-prog-text{font-size:11px;color:#6a6a6a;font-weight:600}
+    .badge{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700}
+    .badge-pending{background:rgba(59,107,255,.08);color:#3B6BFF}
+    .badge-confirmed{background:rgba(16,185,129,.08);color:#10B981}
+    .badge-expired{background:rgba(239,68,68,.06);color:#ef4444}
+
+    /* Embed code */
+    .embed-box{background:#0C1220;border-radius:12px;padding:20px;position:relative;overflow:hidden}
+    .embed-glow{position:absolute;top:-30%;right:-20%;width:250px;height:250px;background:radial-gradient(circle,rgba(59,107,255,.08) 0%,transparent 70%);pointer-events:none}
+    .embed-header{display:flex;align-items:center;gap:6px;margin-bottom:12px}
+    .embed-dot{width:7px;height:7px;border-radius:50%}
+    .embed-pre{font-family:'Courier New',monospace;font-size:13px;line-height:1.7;color:rgba(255,255,255,.7);white-space:pre-wrap;word-break:break-all;position:relative;z-index:1}
+    .embed-pre .tag{color:#3B6BFF}
+    .embed-pre .attr{color:#10B981}
+    .embed-pre .val{color:#f59e0b}
+    .embed-copy{position:absolute;top:12px;right:12px;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s;z-index:2}
+    .embed-copy:hover{background:rgba(255,255,255,.14);color:#fff}
+
+    /* Stripe connect */
+    .stripe-box{display:flex;align-items:center;gap:16px;padding:20px;background:#f7f8fa;border:1px solid #EBEBEB;border-radius:12px}
+    .stripe-icon{width:44px;height:44px;border-radius:10px;background:#635BFF;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .stripe-icon svg{width:24px;height:24px}
+    .stripe-info{flex:1}
+    .stripe-title{font-size:14px;font-weight:700;margin-bottom:2px}
+    .stripe-desc{font-size:13px;color:#6a6a6a;line-height:1.4}
+    .stripe-btn{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .15s;flex-shrink:0}
+    .stripe-btn-connect{background:#635BFF;color:#fff}
+    .stripe-btn-connect:hover{background:#524ae0}
+    .stripe-btn-connected{background:#10B981;color:#fff;cursor:default}
+
+    /* Empty state */
+    .empty{text-align:center;padding:40px 24px}
+    .empty-icon{width:48px;height:48px;border-radius:50%;background:#f7f8fa;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+    .empty-icon svg{width:22px;height:22px;stroke:#b0b0b0;fill:none;stroke-width:2}
+    .empty h3{font-size:16px;font-weight:800;margin-bottom:4px}
+    .empty p{font-size:14px;color:#6a6a6a}
+
+    /* Settings form */
+    .form-group{margin-bottom:14px}
+    .form-label{display:block;font-size:13px;font-weight:600;color:#0C1220;margin-bottom:5px}
+    .form-input{width:100%;padding:10px 14px;border:1px solid #e0e3e8;border-radius:8px;font-size:14px;font-family:inherit;color:#0C1220;outline:none;transition:border .15s;background:#fff}
+    .form-input:focus{border-color:#3B6BFF;box-shadow:0 0 0 3px rgba(59,107,255,.08)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:none}
+    .btn-primary{background:#3B6BFF;color:#fff}
+    .btn-primary:hover{background:#2d5ae6}
+    .btn-primary:disabled{background:#d0d0d0;cursor:not-allowed}
+    .alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;display:none}
+    .alert-success{background:#f0fff4;border:1px solid #c6f6d5;color:#276749}
+    .alert-error{background:#fff5f5;border:1px solid #fed7d7;color:#c53030}
+
+    /* Mobile */
+    @media(max-width:768px){
+      .sidebar{display:none}
+      .main{margin-left:0}
+      .main-header{padding:16px 20px}
+      .main-body{padding:16px 20px 40px}
+      .stats-row{grid-template-columns:1fr 1fr}
+      .form-row{grid-template-columns:1fr}
+    }
+    .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EBEBEB;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+    .mobile-nav-inner{display:flex;justify-content:space-around;padding:8px 0}
+    .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:#6a6a6a;cursor:pointer;padding:4px 8px}
+    .mn-item.active{color:#3B6BFF}
+    .mn-item svg{width:20px;height:20px}
+    @media(max-width:768px){.mobile-nav{display:block}body{padding-bottom:60px}}
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <a class="sb-logo" href="/">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <span class="sb-logo-text">Sortora</span>
+    </a>
+    <nav class="sb-nav">
+      <button class="sb-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Overview</button>
+      <button class="sb-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</button>
+      <button class="sb-item" onclick="showView('embed',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Widget</button>
+      <div class="sb-divider"></div>
+      <button class="sb-item" onclick="showView('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</button>
+    </nav>
+    <div class="sb-plan" id="sb-plan">
+      <div class="sb-plan-label">Current plan</div>
+      <div class="sb-plan-name" id="plan-name">Starter</div>
+      <div class="sb-plan-usage" id="plan-usage">0 / 10 splits this month</div>
+      <div class="sb-plan-bar"><div class="sb-plan-bar-fill" id="plan-bar" style="width:0%"></div></div>
+    </div>
+    <div class="sb-footer">
+      <div class="sb-user" onclick="signOut()">
+        <div class="sb-avatar" id="sb-avatar">?</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name" id="sb-name">Business</div>
+          <div class="sb-user-role">Sign out</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <!-- OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="main-header"><div class="main-title" id="welcome-title">Dashboard</div></div>
+      <div class="main-body">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-label">Total Splits</div><div class="stat-value" id="ov-splits">0</div><div class="stat-sub">all time</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value green" id="ov-revenue">$0</div><div class="stat-sub">total collected</div></div>
+          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value blue" id="ov-active">0</div><div class="stat-sub">pending bookings</div></div>
+          <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value" id="ov-confirmed">0</div><div class="stat-sub">completed splits</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Recent Booking Splits <small id="ov-count"></small></div>
+          <div id="ov-list"></div>
+        </div>
+
+        <!-- Stripe connect prompt (if not connected) -->
+        <div class="card" id="stripe-prompt" style="display:none">
+          <div class="card-title">Connect Stripe to receive payments</div>
+          <div class="stripe-box">
+            <div class="stripe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="stripe-info">
+              <div class="stripe-title">Stripe Connect</div>
+              <div class="stripe-desc">Connect your bank account to receive payouts from split bookings. Takes under 5 minutes.</div>
+            </div>
+            <button class="stripe-btn stripe-btn-connect" id="stripe-btn" onclick="connectStripe()">Connect Stripe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div class="view" id="view-bookings">
+      <div class="main-header"><div class="main-title">Bookings</div></div>
+      <div class="main-body">
+        <div class="card">
+          <div class="card-title">All Booking Splits <small id="bk-count"></small></div>
+          <div id="bk-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIDGET / EMBED -->
+    <div class="view" id="view-embed">
+      <div class="main-header"><div class="main-title">Widget</div></div>
+      <div class="main-body">
+        <div class="card">
+          <div class="card-title">Your Embed Code</div>
+          <p style="font-size:14px;color:#6a6a6a;margin-bottom:16px;line-height:1.5">Add this single script tag to your booking page. The Sortora widget will appear automatically at checkout.</p>
+          <div class="embed-box">
+            <div class="embed-glow"></div>
+            <button class="embed-copy" onclick="copyEmbed()">Copy</button>
+            <div class="embed-header"><div class="embed-dot" style="background:#ff5f57"></div><div class="embed-dot" style="background:#febc2e"></div><div class="embed-dot" style="background:#28c840"></div></div>
+            <pre class="embed-pre" id="embed-code"></pre>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Widget Preview</div>
+          <p style="font-size:14px;color:#6a6a6a;margin-bottom:16px;line-height:1.5">This is how the split-payment toggle will appear on your booking page.</p>
+          <div style="background:#f7f8fa;border:1px solid #EBEBEB;border-radius:12px;padding:20px;max-width:400px">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#EEF2FF;border:1px solid rgba(59,107,255,.15);border-radius:10px;margin-bottom:12px">
+              <div style="width:36px;height:20px;border-radius:10px;background:#3B6BFF;position:relative"><div style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,.15)"></div></div>
+              <div style="font-size:13px;font-weight:700;color:#3B6BFF">Split this booking</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border:1px solid #f0f0f0;border-radius:8px">
+                <div style="width:24px;height:24px;border-radius:50%;background:#3B6BFF;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">SL</div>
+                <div style="flex:1;font-size:12px;color:#555">sarah@email.com</div>
+                <div style="font-size:13px;font-weight:800">$60</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border:1px solid #f0f0f0;border-radius:8px">
+                <div style="width:24px;height:24px;border-radius:50%;background:#8b5cf6;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">JR</div>
+                <div style="flex:1;font-size:12px;color:#555">jake@email.com</div>
+                <div style="font-size:13px;font-weight:800">$60</div>
+              </div>
+            </div>
+            <div style="text-align:center;margin-top:10px;font-size:10px;color:#b0b0b0">Powered by <span style="font-weight:800;color:#6a6a6a">Sortora</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="main-header"><div class="main-title">Settings</div></div>
+      <div class="main-body">
+        <div class="card">
+          <div class="card-title">Business Information</div>
+          <div class="form-row">
+            <div class="form-group"><div class="form-label">Business Name</div><input class="form-input" type="text" id="set-biz" placeholder="Your business name"/></div>
+            <div class="form-group"><div class="form-label">Owner Name</div><input class="form-input" type="text" id="set-name" placeholder="Your name"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><div class="form-label">Website</div><input class="form-input" type="url" id="set-website" placeholder="https://yourbusiness.com"/></div>
+            <div class="form-group"><div class="form-label">Category</div>
+              <select class="form-input" id="set-category">
+                <option value="">Select type</option>
+                <option value="fitness">Fitness Studio</option>
+                <option value="photography">Photography Studio</option>
+                <option value="escape_room">Escape Room</option>
+                <option value="cooking">Cooking Class</option>
+                <option value="pottery">Pottery / Workshop</option>
+                <option value="adventure">Adventure / Activities</option>
+                <option value="wellness">Yoga / Wellness</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()" id="save-btn" style="width:100%">Save Changes</button>
+          <div class="alert alert-success" id="save-success">Settings saved!</div>
+          <div class="alert alert-error" id="save-error"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Stripe Payments</div>
+          <div class="stripe-box" id="stripe-box">
+            <div class="stripe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="stripe-info">
+              <div class="stripe-title" id="stripe-title">Connect Stripe</div>
+              <div class="stripe-desc" id="stripe-desc">Link your bank account to receive split-payment payouts.</div>
+            </div>
+            <button class="stripe-btn stripe-btn-connect" id="stripe-btn-settings" onclick="connectStripe()">Connect</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Plan &amp; Billing</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="padding:16px;border:1px solid #EBEBEB;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-starter" onclick="selectPlan('starter')">
+              <div style="font-size:12px;font-weight:700;color:#6a6a6a;text-transform:uppercase;margin-bottom:4px">Starter</div>
+              <div style="font-size:24px;font-weight:800">$29<small style="font-size:13px;color:#b0b0b0">/mo</small></div>
+              <div style="font-size:11px;color:#6a6a6a;margin-top:4px">10 splits/mo · 3% fee</div>
+            </div>
+            <div style="padding:16px;border:2px solid #3B6BFF;border-radius:10px;cursor:pointer;background:rgba(59,107,255,.02)" id="plan-growth" onclick="selectPlan('growth')">
+              <div style="font-size:12px;font-weight:700;color:#3B6BFF;text-transform:uppercase;margin-bottom:4px">Growth</div>
+              <div style="font-size:24px;font-weight:800">$59<small style="font-size:13px;color:#b0b0b0">/mo</small></div>
+              <div style="font-size:11px;color:#6a6a6a;margin-top:4px">50 splits/mo · 2.5% fee</div>
+            </div>
+            <div style="padding:16px;border:1px solid #EBEBEB;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-pro" onclick="selectPlan('pro')">
+              <div style="font-size:12px;font-weight:700;color:#6a6a6a;text-transform:uppercase;margin-bottom:4px">Pro</div>
+              <div style="font-size:24px;font-weight:800">$99<small style="font-size:13px;color:#b0b0b0">/mo</small></div>
+              <div style="font-size:11px;color:#6a6a6a;margin-top:4px">Unlimited · 2% fee</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav"><div class="mobile-nav-inner">
+    <div class="mn-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</div>
+    <div class="mn-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</div>
+    <div class="mn-item" onclick="showView('embed',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Widget</div>
+    <div class="mn-item" onclick="showView('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</div>
+  </div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
+    var currentUser = null, bizData = null;
+
+    function showView(id, el) {
+      document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+      document.getElementById('view-' + id).classList.add('active');
+      document.querySelectorAll('.sb-item').forEach(function(s) { s.classList.remove('active'); });
+      document.querySelectorAll('.mn-item').forEach(function(m) { m.classList.remove('active'); });
+      if (el) el.classList.add('active');
+    }
+
+    async function init() {
+      var r = await SB.auth.getSession();
+      if (!r.data.session) { window.location.href = '/login.html'; return; }
+      currentUser = r.data.session.user;
+
+      var biz = await SB.from('businesses').select('*').eq('id', currentUser.id).single();
+      if (!biz.data) { window.location.href = '/signup.html'; return; }
+      bizData = biz.data;
+
+      // Populate UI
+      document.getElementById('welcome-title').textContent = 'Welcome back, ' + (bizData.owner_name || '').split(' ')[0];
+      document.getElementById('sb-name').textContent = bizData.business_name || 'Business';
+      document.getElementById('sb-avatar').textContent = (bizData.business_name || 'B').charAt(0);
+
+      // Plan info
+      var planLimits = { starter: 10, growth: 50, pro: 999 };
+      var plan = bizData.plan || 'starter';
+      var limit = planLimits[plan] || 10;
+      var used = bizData.splits_this_month || 0;
+      document.getElementById('plan-name').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+      document.getElementById('plan-usage').textContent = used + ' / ' + (plan === 'pro' ? '∞' : limit) + ' splits this month';
+      document.getElementById('plan-bar').style.width = (plan === 'pro' ? 0 : Math.min(used / limit * 100, 100)) + '%';
+
+      // Embed code
+      updateEmbedCode();
+
+      // Settings form
+      document.getElementById('set-biz').value = bizData.business_name || '';
+      document.getElementById('set-name').value = bizData.owner_name || '';
+      document.getElementById('set-website').value = bizData.website || '';
+      document.getElementById('set-category').value = bizData.category || '';
+
+      // Highlight current plan
+      highlightPlan(plan);
+
+      // Stripe status
+      if (bizData.stripe_onboarded) {
+        document.getElementById('stripe-prompt').style.display = 'none';
+        var btn = document.getElementById('stripe-btn-settings');
+        btn.textContent = 'Connected';
+        btn.className = 'stripe-btn stripe-btn-connected';
+        btn.disabled = true;
+        document.getElementById('stripe-title').textContent = 'Stripe Connected';
+        document.getElementById('stripe-desc').textContent = 'Your account is connected and ready to receive payouts.';
+      } else {
+        document.getElementById('stripe-prompt').style.display = 'block';
+      }
+
+      // Check URL params
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('stripe') === 'success') {
+        await SB.from('businesses').update({ stripe_onboarded: true }).eq('id', currentUser.id);
+        window.location.href = '/dashboard.html';
+      }
+
+      loadBookings();
+    }
+
+    function updateEmbedCode() {
+      var code = '<span class="tag">&lt;script</span>\n  <span class="attr">src</span>=<span class="val">"https://js.sortora.com/v1/widget.js"</span>\n  <span class="attr">data-business-id</span>=<span class="val">"' + currentUser.id.substring(0, 12) + '"</span>\n  <span class="attr">data-theme</span>=<span class="val">"auto"</span>\n<span class="tag">&gt;&lt;/script&gt;</span>';
+      document.getElementById('embed-code').innerHTML = code;
+    }
+
+    function copyEmbed() {
+      var text = '<script src="https://js.sortora.com/v1/widget.js" data-business-id="' + currentUser.id.substring(0, 12) + '" data-theme="auto"><\/script>';
+      navigator.clipboard.writeText(text).then(function() {
+        var btn = document.querySelector('.embed-copy');
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      });
+    }
+
+    async function loadBookings() {
+      var r = await SB.from('booking_sessions')
+        .select('*, participants(id, email, amount, status)')
+        .eq('business_id', currentUser.id)
+        .order('created_at', { ascending: false });
+      var bookings = r.data || [];
+
+      // Stats
+      var totalSplits = 0, totalRevenue = 0, active = 0, confirmed = 0;
+      bookings.forEach(function(b) {
+        var parts = b.participants || [];
+        totalSplits += parts.length;
+        parts.forEach(function(p) { if (p.status === 'paid') totalRevenue += parseFloat(p.amount); });
+        if (b.status === 'pending') active++;
+        if (b.status === 'confirmed') confirmed++;
+      });
+
+      document.getElementById('ov-splits').textContent = totalSplits;
+      document.getElementById('ov-revenue').textContent = '$' + totalRevenue.toFixed(0);
+      document.getElementById('ov-active').textContent = active;
+      document.getElementById('ov-confirmed').textContent = confirmed;
+      document.getElementById('ov-count').textContent = bookings.length + ' total';
+      document.getElementById('bk-count').textContent = bookings.length + ' total';
+
+      renderBookingList('ov-list', bookings.slice(0, 5));
+      renderBookingList('bk-list', bookings);
+    }
+
+    function renderBookingList(containerId, bookings) {
+      var el = document.getElementById(containerId);
+      if (!bookings.length) {
+        el.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>No bookings yet</h3><p>Bookings will appear here once customers start splitting payments through your widget.</p></div>';
+        return;
+      }
+      el.innerHTML = bookings.map(function(b) {
+        var parts = b.participants || [];
+        var paid = parts.filter(function(p) { return p.status === 'paid'; }).length;
+        var pct = parts.length ? Math.round(paid / parts.length * 100) : 0;
+        var statusCls = b.status === 'confirmed' ? 'confirmed' : b.status === 'expired' ? 'expired' : 'pending';
+        var icon = b.status === 'confirmed' ? '✓' : b.status === 'expired' ? '✕' : '⏳';
+        var date = new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        return '<div class="booking-row">'
+          + '<div class="booking-icon ' + statusCls + '">' + icon + '</div>'
+          + '<div class="booking-info">'
+          + '<div class="booking-title">' + b.title + '</div>'
+          + '<div class="booking-meta">' + date + ' · ' + parts.length + ' people · <span class="badge badge-' + statusCls + '">' + b.status + '</span></div>'
+          + '</div>'
+          + '<div class="booking-right">'
+          + '<div class="booking-amount">$' + parseFloat(b.total_amount).toFixed(0) + '</div>'
+          + '<div class="booking-progress"><div class="booking-prog-track"><div class="booking-prog-fill" style="width:' + pct + '%"></div></div><div class="booking-prog-text">' + paid + '/' + parts.length + '</div></div>'
+          + '</div></div>';
+      }).join('');
+    }
+
+    async function connectStripe() {
+      var btn = document.getElementById('stripe-btn') || document.getElementById('stripe-btn-settings');
+      btn.disabled = true; btn.textContent = 'Redirecting...';
+      // In production this calls your API endpoint that creates a Stripe Connect onboarding link
+      var r = await fetch('/api/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessId: currentUser.id })
+      });
+      var data = await r.json();
+      if (data.url) { window.location.href = data.url; }
+      else { alert('Could not connect Stripe. Please try again.'); btn.disabled = false; btn.textContent = 'Connect Stripe'; }
+    }
+
+    async function saveSettings() {
+      var btn = document.getElementById('save-btn');
+      btn.disabled = true; btn.textContent = 'Saving...';
+      document.getElementById('save-success').style.display = 'none';
+      document.getElementById('save-error').style.display = 'none';
+      var biz = document.getElementById('set-biz').value.trim();
+      var name = document.getElementById('set-name').value.trim();
+      var website = document.getElementById('set-website').value.trim();
+      var category = document.getElementById('set-category').value;
+      if (!biz) { document.getElementById('save-error').textContent = 'Business name is required.'; document.getElementById('save-error').style.display = 'block'; btn.disabled = false; btn.textContent = 'Save Changes'; return; }
+      var r = await SB.from('businesses').update({ business_name: biz, owner_name: name, website: website, category: category }).eq('id', currentUser.id);
+      if (r.error) { document.getElementById('save-error').textContent = r.error.message; document.getElementById('save-error').style.display = 'block'; }
+      else { document.getElementById('save-success').style.display = 'block'; document.getElementById('sb-name').textContent = biz; }
+      btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+
+    function highlightPlan(plan) {
+      ['starter', 'growth', 'pro'].forEach(function(p) {
+        var el = document.getElementById('plan-' + p);
+        if (p === plan) { el.style.border = '2px solid #3B6BFF'; el.style.background = 'rgba(59,107,255,.02)'; }
+        else { el.style.border = '1px solid #EBEBEB'; el.style.background = '#fff'; }
+      });
+    }
+
+    function selectPlan(plan) {
+      highlightPlan(plan);
+      // In production this would open a Stripe billing portal or plan change flow
+    }
+
+    async function signOut() { await SB.auth.signOut(); window.location.href = '/login.html'; }
+    init();
+  </script>
+</body>
+</html>
