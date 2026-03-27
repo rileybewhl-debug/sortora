@@ -465,10 +465,6 @@
       <a class="marquee-item" href="/for-business.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2l-6 4v5"/><path d="M15 15a3 3 0 106 0"/></svg>Private Chefs</a>
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════
-       HOW IT WORKS — Sticky stacking cards
-       ═══════════════════════════════════════════ -->
   <div class="how" id="how">
     <div class="fw-center reveal">
       <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">How it works</div>
@@ -535,10 +531,6 @@
 
 
   <div class="section-line reveal"></div>
-
-  <!-- ═══════════════════════════════════════════
-       BOLD STAT — replaces Built For grid
-       ═══════════════════════════════════════════ -->
   <div class="fw-section" style="padding:120px 40px">
     <div class="fw-inner">
       <div class="fw-center">
@@ -580,10 +572,6 @@
   <!-- ═══════════════════════════════════════════
 
   <div class="section-line reveal"></div>
-
-  <!-- ═══════════════════════════════════════════
-       USE CASES — story cards
-       ═══════════════════════════════════════════ -->
   <div class="fw-section">
     <div class="fw-inner">
       <div class="fw-center reveal">
@@ -689,20 +677,16 @@
       </div>
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════
-       DEVELOPERS — embed code
-       ═══════════════════════════════════════════ -->
   <div class="fw-section" id="embed">
     <div class="fw-inner">
-      <div class="embed-inner parallax-wrap">
-        <div class="reveal-left parallax-text" data-speed="0.25">
+      <div class="embed-inner">
+        <div class="reveal">
           <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">For developers</div>
           <div class="fw-title" style="font-size:clamp(28px,4vw,44px)">One script tag.<br/><em>That's it.</em></div>
           <div class="fw-sub">No framework dependencies. No CSS conflicts. Shadow DOM isolation. Under 5KB gzipped. Works with any booking page on any platform.</div>
           <a class="fw-btn fw-btn-primary" href="/docs" style="margin-top:8px">Read the docs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
-        <div class="reveal-right parallax-visual" data-speed="-0.12">
+        <div class="reveal">
           <div class="embed-code"><div class="embed-code-glow"></div><div class="embed-code-header"><div class="embed-code-dot" style="background:#ff5f57"></div><div class="embed-code-dot" style="background:#febc2e"></div><div class="embed-code-dot" style="background:#28c840"></div></div>
             <pre><span class="comment">&lt;!-- Add Sortora to your checkout --&gt;</span>
 
@@ -719,10 +703,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════
-       CTA — final push
-       ═══════════════════════════════════════════ -->
   <div class="fw-section">
     <div class="fw-inner">
       <div class="cta-inner reveal-scale">
@@ -734,10 +714,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════
-       FOOTER
-       ═══════════════════════════════════════════ -->
   <footer class="footer">
     <div class="footer-inner">
       <a class="footer-logo" href="/"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Sortora</span></a>
@@ -818,7 +794,8 @@
       if (_twOpen) twUpdate();
     }
     function twUpdate() {
-      var total = parseFloat(document.getElementById('tw-total').value) || 0;
+      var el = document.getElementById('tw-total'); if (!el) return;
+      var total = parseFloat(el.value) || 0;
       var emails = document.getElementById('tw-emails').querySelectorAll('.tw-email-row');
       var count = emails.length + 1;
       document.getElementById('tw-count').value = count;
