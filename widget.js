@@ -12,6 +12,8 @@
   var script = document.currentScript;
   var BUSINESS_ID = script && script.getAttribute('data-business-id');
   var THEME = (script && script.getAttribute('data-theme')) || 'auto';
+  var PRESET_AMOUNT = script && script.getAttribute('data-amount');
+  var PRESET_TITLE = script && script.getAttribute('data-title');
   var API_BASE = (script && script.getAttribute('data-api')) || (window.location.origin + '/api');
 
   if (!BUSINESS_ID) {
@@ -173,6 +175,14 @@
     panel.className = 'st-panel ' + (isOpen ? 'open' : '');
   });
 
+  // Prefill from data attributes
+  if (PRESET_AMOUNT) {
+    totalInput.value = PRESET_AMOUNT;
+    totalInput.disabled = true;
+    totalInput.style.background = '#f7f8fa';
+    totalInput.style.color = '#555';
+  }
+
   // Summary
   function updateSummary() {
     var total = parseFloat(totalInput.value) || 0;
@@ -212,7 +222,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           businessId: BUSINESS_ID,
-          title: document.title || 'Group Booking',
+          title: PRESET_TITLE || document.title || 'Group Booking',
           totalAmount: total,
           totalParticipants: count,
           organizerEmail: email,
