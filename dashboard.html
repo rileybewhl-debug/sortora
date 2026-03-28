@@ -353,7 +353,7 @@
       currentUser = r.data.session.user;
 
       var biz = await SB.from('businesses').select('*').eq('id', currentUser.id).single();
-      if (!biz.data) { window.location.href = '/signup.html'; return; }
+      if (!biz.data) { await SB.from('businesses').upsert({ id: currentUser.id, business_name: currentUser.email.split('@')[0], email: currentUser.email }); biz = await SB.from('businesses').select('*').eq('id', currentUser.id).single(); if (!biz.data) { window.location.href = '/signup.html'; return; } }
       bizData = biz.data;
 
       // Populate UI
