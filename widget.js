@@ -155,11 +155,20 @@
       var status = await statusRes.json();
       if (!status.active) {
         console.warn('[Sortora] Widget disabled: ' + (status.reason || 'inactive'));
-        mount.style.display = 'none';
+        var msgs = {
+          subscription_expired: { title: 'Split payments are currently unavailable', sub: 'The business needs to renew their Sortora subscription.', cta: false },
+          stripe_not_connected: { title: 'Split payments are being set up', sub: 'The business is still connecting their payment account. Check back soon.', cta: false },
+          limit_reached: { title: 'Split payments are temporarily unavailable', sub: 'This business has reached their monthly split limit. Try again next month or contact the business.', cta: false },
+          not_found: { title: 'Split payments unavailable', sub: 'This business has not set up Sortora yet.', cta: false }
+        };
+        var msg = msgs[status.reason] || msgs.not_found;
+        var noticeEl = document.createElement('div');
+        noticeEl.innerHTML = '<div style="padding:16px 20px;border-radius:12px;border:1px solid #e0e3e8;background:#f7f8fa;text-align:center"><div style="font-size:14px;font-weight:700;color:#0C1220;margin-bottom:4px">' + msg.title + '</div><div style="font-size:12px;color:#6a6a6a;line-height:1.4">' + msg.sub + '</div></div>';
+        shadow.querySelector('.sortora-root').innerHTML = '';
+        shadow.querySelector('.sortora-root').appendChild(noticeEl.firstChild);
         return;
       }
     } catch (e) {
-      // If status check fails, still show widget (fail open)
       console.warn('[Sortora] Status check failed, showing widget anyway');
     }
   })();
