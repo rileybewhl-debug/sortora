@@ -304,8 +304,99 @@
     .section-line{width:60px;height:3px;border-radius:2px;background:#EBEBEB;margin:0 auto 48px}
 
     /* ═══ MOBILE ═══ */
-    @media(max-width:900px){.compare-grid,.pricing-grid{grid-template-columns:1fr}.embed-inner,.try-inner{grid-template-columns:1fr}.how-step{position:relative;top:auto !important}.how-step-header{padding:40px 24px 32px}.hv-code{min-height:auto}.hv-code-line{padding:3px 16px;font-size:12px}.hv-code-linenum{width:24px;margin-right:12px;font-size:11px}.hv-widget{padding:32px 20px;min-height:auto}.hv-confirm{padding:48px 20px;min-height:auto}.hv-confirm-stats{flex-direction:column;gap:16px}.fw-section{padding:60px 20px}.hero{padding:48px 20px 40px}.slider-section{padding:0 20px 60px}.compare{padding:60px 20px}.try-section{padding:40px 20px 60px}}
-    @media(max-width:768px){.nav{padding:0 20px}.nav-links{display:none}.hero h1{font-size:36px}.slider-price{font-size:36px}.compare-card-price{font-size:40px}.footer-inner{flex-direction:column;gap:12px;text-align:center}.footer-links{justify-content:center}}
+    @media(max-width:900px){
+      .compare-grid,.pricing-grid{grid-template-columns:1fr}
+      .embed-inner,.try-inner{grid-template-columns:1fr}
+      .how-step{position:relative;top:auto !important}
+      .how-step-header{padding:40px 24px 32px}
+      .how-step-title{font-size:24px}
+      .hv-code{min-height:auto}
+      .hv-code-line{padding:3px 12px;font-size:11px;line-height:1.7}
+      .hv-code-linenum{width:20px;margin-right:10px;font-size:10px}
+      .hv-code-line.highlighted{padding-left:9px}
+      .hv-code-body{padding:20px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .hv-code-badge{margin:16px 12px;font-size:12px;padding:8px 14px}
+      .hv-widget{padding:28px 20px;min-height:auto}
+      .hv-widget-inner{max-width:100%}
+      .hv-widget-booking h4{font-size:16px}
+      .hv-widget-booking .price{font-size:22px}
+      .hv-toggle{padding:12px 14px}
+      .hv-email-row{padding:10px 12px}
+      .hv-confirm{padding:40px 20px;min-height:auto}
+      .hv-confirm-icon{width:64px;height:64px}
+      .hv-confirm-icon svg{width:32px;height:32px}
+      .hv-confirm-title{font-size:22px}
+      .hv-confirm-sub{font-size:14px}
+      .hv-confirm-stats{flex-direction:column;gap:16px}
+      .hv-confirm-stat-value{font-size:28px}
+      .fw-section{padding:60px 20px}
+      .hero{padding:48px 20px 40px}
+      .slider-section{padding:0 20px 48px}
+      .compare{padding:48px 20px}
+      .compare-header{margin-bottom:32px}
+      .compare-card{padding:28px 24px;border-radius:16px}
+      .compare-card-per{font-size:14px;margin-bottom:16px}
+      .compare-stamp{font-size:12px;padding:6px 14px}
+      .compare-widget{padding:16px}
+      .try-section{padding:40px 20px 60px}
+      .try-inner{gap:32px}
+    }
+    @media(max-width:768px){
+      .nav{padding:0 16px;height:60px}
+      .nav-links{display:none}
+      .nav-logo-text{font-size:18px}
+      .nav-btn{padding:7px 14px;font-size:13px}
+      .hero h1{font-size:32px;letter-spacing:-.04em}
+      .hero-sub{font-size:16px;margin-bottom:28px}
+      .hero-badge{font-size:11px;padding:4px 12px}
+      .hero-ctas{flex-direction:column;gap:10px;align-items:stretch}
+      .hero-ctas .btn-primary,.hero-ctas .btn-secondary{justify-content:center;width:100%;padding:16px}
+      .slider-card{padding:24px;border-radius:16px}
+      .slider-row{flex-direction:column;align-items:flex-start;gap:12px}
+      .slider-price{font-size:40px;min-width:auto}
+      .slider-input{width:100%;height:10px}
+      .slider-input::-webkit-slider-thumb{width:36px;height:36px;border-width:5px}
+      .slider-input::-moz-range-thumb{width:36px;height:36px;border-width:5px}
+      .slider-people{flex-wrap:wrap;gap:6px}
+      .slider-people-label{width:100%;font-size:13px}
+      .slider-people-btn{width:44px;height:44px;font-size:15px;border-radius:10px}
+      .slider-result{flex-direction:column;align-items:flex-start;gap:8px}
+      .slider-result-amount{font-size:32px}
+      .slider-result-tag{margin-left:0}
+      .marquee-item{font-size:14px;padding:8px 18px;margin:0 4px}
+      .marquee-item svg{width:16px;height:16px}
+      .marquee-label{font-size:11px;padding:0 20px}
+      .compare-card-price{font-size:36px}
+      .try-body{padding:20px}
+      .try-booking{padding:12px}
+      .try-booking-title{font-size:13px}
+      .try-booking-price{font-size:16px}
+      .tw-toggle{padding:14px}
+      .tw-input,.tw-email-input{padding:12px;font-size:14px}
+      .tw-remove{width:36px;height:36px;font-size:16px}
+      .tw-email-num{width:28px;height:28px;font-size:12px}
+      .tw-add{padding:12px}
+      .tw-cta{padding:16px;font-size:15px}
+      .price-card{padding:28px}
+      .price-amount{font-size:40px}
+      .price-btn{padding:16px;font-size:16px}
+      .price-features li{font-size:14px}
+      .embed-inner{gap:32px}
+      .footer{padding:32px 20px}
+      .footer-inner{flex-direction:column;gap:12px;text-align:center}
+      .footer-links{justify-content:center}
+      .fw-title{font-size:28px}
+      .fw-sub{font-size:16px}
+    }
+    @media(max-width:380px){
+      .hero h1{font-size:28px}
+      .slider-price{font-size:36px}
+      .slider-result-amount{font-size:28px}
+      .compare-card-price{font-size:32px}
+      .fw-title{font-size:24px}
+      .hv-code-line{font-size:10px}
+      .hv-code-linenum{font-size:9px;width:16px;margin-right:8px}
+    }
   </style>
 </head>
 <body>
