@@ -1,46 +1,39 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
+const { corsCheck, applyRateLimit, sanitizeUUID, setSecurityHeaders } = require('./_security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  setSecurityHeaders(res);
+  if (!corsCheck(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!applyRateLimit(req, res, 5, 60000)) return;
 
   try {
-    const { businessId } = req.body;
-    if (!businessId) return res.status(400).json({ error: 'Missing businessId' });
+    var businessId = sanitizeUUID(req.body.businessId);
+    if (!businessId) return res.status(400).json({ error: 'Invalid businessId' });
 
-    // Check if business already has a Stripe account
-    const { data: biz } = await supabase
+    var { data: biz } = await supabase
       .from('businesses')
       .select('stripe_account_id')
       .eq('id', businessId)
       .single();
 
-    let accountId = biz?.stripe_account_id;
+    var accountId = biz && biz.stripe_account_id;
 
-    // Create Stripe Connect account if needed
     if (!accountId) {
-      const account = await stripe.accounts.create({
+      var account = await stripe.accounts.create({
         type: 'standard',
         metadata: { sortora_business_id: businessId }
       });
       accountId = account.id;
-
-      await supabase
-        .from('businesses')
-        .update({ stripe_account_id: accountId })
-        .eq('id', businessId);
+      await supabase.from('businesses').update({ stripe_account_id: accountId }).eq('id', businessId);
     }
 
-    // Create onboarding link
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.vercel.app';
-    const accountLink = await stripe.accountLinks.create({
+    var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
+    var accountLink = await stripe.accountLinks.create({
       account: accountId,
       refresh_url: siteUrl + '/dashboard.html?stripe=refresh',
       return_url: siteUrl + '/dashboard.html?stripe=success',
@@ -50,6 +43,6 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ url: accountLink.url });
   } catch (err) {
     console.error('Connect error:', err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
