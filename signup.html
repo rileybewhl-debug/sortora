@@ -62,8 +62,25 @@
     .sc-mini-av{width:20px;height:20px;border-radius:50%;flex-shrink:0}
     .sc-mini-name{flex:1;font-size:12px;font-weight:600;color:#222}
     .sc-mini-amount{font-size:12px;font-weight:800;color:#10B981}
-    @media(max-width:900px){.page{grid-template-columns:1fr}.showcase-side{display:none}}
-    @media(max-width:768px){.nav{padding:16px 20px}.form-side{padding:24px 20px 48px}.form-row{grid-template-columns:1fr}}
+    
+    .nav-hamburger{display:none;width:40px;height:40px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px;transition:background .12s;flex-shrink:0}
+    .nav-hamburger:hover{background:rgba(0,0,0,.04)}
+    .nav-hamburger span{display:block;width:100%;height:2px;background:#0C1220;border-radius:1px;transition:all .2s}
+    .nav-hamburger span:nth-child(2){margin:5px 0}
+    .mobile-menu{display:none;position:fixed;inset:0;background:#fff;z-index:999;opacity:0;transition:opacity .2s}
+    .mobile-menu.open{opacity:1}
+    .mobile-menu-panel{padding:0;height:100%}
+    .mobile-menu-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:60px;border-bottom:1px solid #f0f0f0}
+    .mobile-menu-close{width:40px;height:40px;border:none;background:none;cursor:pointer;font-size:28px;color:#6a6a6a;display:flex;align-items:center;justify-content:center;border-radius:8px}
+    .mobile-menu-close:hover{background:rgba(0,0,0,.04);color:#0C1220}
+    .mobile-menu-links{display:flex;flex-direction:column;padding:12px 0}
+    .mobile-menu-link{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;font-size:18px;font-weight:700;color:#0C1220;text-decoration:none;border-bottom:1px solid #f0f0f0;transition:background .12s}
+    .mobile-menu-link:hover{background:#f7f8fa}
+    .mobile-menu-link::after{content:"›";font-size:24px;color:#b0b0b0;font-weight:400}
+@media(max-width:900px){.page{grid-template-columns:1fr}.showcase-side{display:none}}
+    @media(max-width:768px){
+      .nav-hamburger{display:flex;flex-direction:column;justify-content:center;gap:0}
+.nav{padding:16px 20px}.form-side{padding:24px 20px 48px}.form-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -74,6 +91,26 @@
     </a>
     <a class="nav-link" href="/login.html">Log in</a>
   </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-panel">
+      <div class="mobile-menu-top">
+        <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
+        <div style="display:flex;align-items:center;gap:8px">
+          <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
+          <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
+          <button class="mobile-menu-close" onclick="toggleMobileMenu()">&times;</button>
+        </div>
+      </div>
+      <div class="mobile-menu-links">
+        <a class="mobile-menu-link" href="/#how">How it works</a>
+        <a class="mobile-menu-link" href="/#pricing">Pricing</a>
+        <a class="mobile-menu-link" href="/for-business.html">For Business</a>
+        <a class="mobile-menu-link" href="/security.html">Security</a>
+        <a class="mobile-menu-link" href="/#embed">Developers</a>
+      </div>
+    </div>
+  </div>
+
   <div class="page">
     <div class="form-side">
       <div class="form-wrap">
@@ -123,7 +160,9 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    function toggleMobileMenu(){var m=document.getElementById("mobile-menu");if(m.style.display==="block"){m.classList.remove("open");setTimeout(function(){m.style.display="none"},250);document.body.style.overflow=""}else{m.style.display="block";setTimeout(function(){m.classList.add("open")},10);document.body.style.overflow="hidden"}}
+  </script>
   <script>
     var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
 
