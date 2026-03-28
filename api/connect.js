@@ -1,6 +1,6 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
-const { corsCheck, applyRateLimit, sanitizeUUID, setSecurityHeaders } = require('./_security');
+const { corsCheck, applyRateLimit, sanitizeUUID, setSecurityHeaders, alertError } = require('./_security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
@@ -42,6 +42,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ url: accountLink.url });
   } catch (err) {
+    alertError('connect', err, req);
     console.error('Connect error:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
