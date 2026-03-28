@@ -209,33 +209,33 @@
     .tw-toggle.off .tw-toggle-text{color:#6a6a6a}
     .tw-toggle.on .tw-toggle-text{color:#3B6BFF}
     .tw-panel{max-height:0;overflow:hidden;transition:max-height .3s ease,opacity .2s;opacity:0}
-    .tw-panel.open{max-height:500px;opacity:1}
+    .tw-panel.open{max-height:600px;opacity:1}
     .tw-field{margin-bottom:8px}
     .tw-label{display:block;font-size:11px;font-weight:600;color:#6a6a6a;margin-bottom:3px}
     .tw-input{width:100%;padding:9px 12px;border:1px solid #e0e3e8;border-radius:8px;font-size:13px;font-family:inherit;color:#0C1220;outline:none;transition:border .15s}
     .tw-input:focus{border-color:#3B6BFF}
     .tw-input::placeholder{color:#b0b5bd}
+    .tw-input:disabled{background:#f7f8fa;color:#555}
     .tw-row{display:flex;gap:8px}
     .tw-row>*{flex:1}
-    .tw-emails{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-    .tw-email-row{display:flex;align-items:center;gap:6px}
-    .tw-email-num{width:22px;height:22px;border-radius:50%;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#3B6BFF;flex-shrink:0}
-    .tw-email-input{flex:1;padding:8px 10px;border:1px solid #e0e3e8;border-radius:7px;font-size:12px;font-family:inherit;color:#0C1220;outline:none;transition:border .15s}
-    .tw-email-input:focus{border-color:#3B6BFF}
-    .tw-email-input::placeholder{color:#b0b5bd}
-    .tw-remove{width:22px;height:22px;border-radius:50%;border:none;background:#f7f8fa;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#b0b0b0;font-size:12px;flex-shrink:0;transition:all .12s}
-    .tw-remove:hover{background:#fee2e2;color:#ef4444}
-    .tw-add{display:flex;align-items:center;gap:5px;padding:7px 12px;border:1px dashed #d0d5dd;border-radius:7px;background:none;cursor:pointer;font-size:12px;font-weight:600;color:#6a6a6a;font-family:inherit;width:100%;justify-content:center;transition:all .12s;margin-bottom:10px}
-    .tw-add:hover{border-color:#3B6BFF;color:#3B6BFF;background:#fafbff}
     .tw-summary{background:#f7f8fa;border:1px solid #EBEBEB;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:none}
     .tw-summary-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
     .tw-summary-row.total{font-size:14px;font-weight:800;border-top:1px solid #e0e3e8;margin-top:4px;padding-top:6px}
     .tw-summary-label{color:#6a6a6a}
     .tw-summary-value{font-weight:700;color:#0C1220}
     .tw-summary-value.blue{color:#3B6BFF}
-    .tw-cta{width:100%;padding:13px;background:#3B6BFF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-    .tw-cta:hover{background:#2d5ae6;transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,107,255,.25)}
-    .tw-cta svg{width:16px;height:16px}
+    .tw-create{width:100%;padding:13px;background:#3B6BFF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+    .tw-create:hover{background:#2d5ae6;transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,107,255,.25)}
+    .tw-create svg{width:16px;height:16px}
+    .tw-share-result{margin-top:12px;padding:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;text-align:center;display:none}
+    .tw-share-title{font-size:13px;font-weight:700;color:#166534;margin-bottom:8px}
+    .tw-share-link{display:flex;gap:6px;margin-bottom:10px}
+    .tw-share-link input{flex:1;padding:8px 10px;border:1px solid #d0d5dd;border-radius:7px;font-size:12px;font-family:inherit;color:#555;background:#fff;outline:none}
+    .tw-share-link button{padding:8px 14px;border:none;background:#0C1220;color:#fff;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+    .tw-share-cta{width:100%;padding:11px;background:#3B6BFF;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .12s}
+    .tw-share-cta:hover{background:#2d5ae6}
+    .tw-share-cta svg{width:14px;height:14px}
+    .tw-share-spots{font-size:11px;color:#6a6a6a;margin-top:8px}
     .tw-footer{text-align:center;margin-top:8px;font-size:10px;color:#b0b0b0}
 
     /* ═══ SECTIONS ═══ */
@@ -307,7 +307,11 @@
     @media(max-width:900px){
       .compare-grid,.pricing-grid{grid-template-columns:1fr}
       .embed-inner,.try-inner{grid-template-columns:1fr}
-      .how-step{position:relative;top:auto !important}
+      .how-step{position:sticky !important}
+      .how-step:nth-child(1){top:16px !important}
+      .how-step:nth-child(2){top:32px !important}
+      .how-step:nth-child(3){top:48px !important}
+      .how-step{margin-bottom:24px;border-radius:16px}
       .how-step-header{padding:40px 24px 32px}
       .how-step-title{font-size:24px}
       .hv-code{min-height:auto}
@@ -371,13 +375,8 @@
       .try-booking{padding:12px}
       .try-booking-title{font-size:13px}
       .try-booking-price{font-size:16px}
-      .tw-toggle{padding:14px}
-      .tw-input,.tw-email-input{padding:12px;font-size:14px}
-      .tw-remove{width:36px;height:36px;font-size:16px}
-      .tw-email-num{width:28px;height:28px;font-size:12px}
-      .tw-add{padding:12px}
-      .tw-cta{padding:16px;font-size:15px}
-      .price-card{padding:28px}
+            .tw-input{padding:12px;font-size:14px}
+                              .price-card{padding:28px}
       .price-amount{font-size:40px}
       .price-btn{padding:16px;font-size:16px}
       .price-features li{font-size:14px}
@@ -556,7 +555,7 @@
       <div class="reveal-left">
         <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">Try it yourself</div>
         <div class="fw-title" style="font-size:clamp(28px,4vw,44px)">See what your<br/>customers see.</div>
-        <div class="fw-sub">This is the actual Sortora widget. Toggle it on, add emails, watch the split calculate live.</div>
+        <div class="fw-sub">This is the actual Sortora widget. Enter a total, pick the group size, and create a shareable split link — just like your customers will.</div>
         <a class="btn-primary" href="/signup.html">Build yours today <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
       <div class="reveal-right">
@@ -567,18 +566,17 @@
             <div class="try-booking"><div class="try-booking-title">Private Group Experience</div><div class="try-booking-meta">Your date · Your time · Your location</div><div class="try-booking-price">$240 <small>total</small></div></div>
             <div class="tw-toggle on" id="tw-toggle" onclick="twToggle()"><div class="tw-switch on" id="tw-switch"><div class="tw-knob"></div></div><div class="tw-toggle-text">Split this booking with your group</div></div>
             <div class="tw-panel open" id="tw-panel">
-              <div class="tw-row"><div class="tw-field"><div class="tw-label">Total ($)</div><input class="tw-input" type="number" id="tw-total" placeholder="240" value="240" oninput="twUpdate()"/></div><div class="tw-field"><div class="tw-label">People</div><input class="tw-input" type="number" id="tw-count" placeholder="4" min="2" max="20" value="4" oninput="twSyncEmails()"/></div></div>
-              <div class="tw-field"><div class="tw-label">Your email (organizer)</div><input class="tw-input" type="email" placeholder="you@email.com"/></div>
-              <div class="tw-label" style="margin-top:10px;margin-bottom:4px">Group emails</div>
-              <div class="tw-emails" id="tw-emails">
-                <div class="tw-email-row"><div class="tw-email-num">2</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button></div>
-                <div class="tw-email-row"><div class="tw-email-num">3</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button></div>
-                <div class="tw-email-row"><div class="tw-email-num">4</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button></div>
+              <div class="tw-row">
+                <div class="tw-field"><div class="tw-label">Total ($)</div><input class="tw-input" type="number" id="tw-total" value="240" disabled style="background:#f7f8fa;color:#555"/></div>
+                <div class="tw-field"><div class="tw-label">People</div><input class="tw-input" type="number" id="tw-count" value="4" min="2" max="20" oninput="twUpdate()"/></div>
               </div>
-              <button class="tw-add" onclick="twAddEmail()">+ Add another person</button>
+              <div class="tw-row">
+                <div class="tw-field"><div class="tw-label">Your name</div><input class="tw-input" type="text" id="tw-name" placeholder="Your name"/></div>
+                <div class="tw-field"><div class="tw-label">Your email</div><input class="tw-input" type="email" id="tw-email" placeholder="you@email.com"/></div>
+              </div>
               <div class="tw-summary" id="tw-summary"><div class="tw-summary-row"><span class="tw-summary-label">Booking total</span><span class="tw-summary-value" id="tw-sum-total">$240.00</span></div><div class="tw-summary-row"><span class="tw-summary-label">Split between</span><span class="tw-summary-value" id="tw-sum-count">4 people</span></div><div class="tw-summary-row total"><span class="tw-summary-label">Each person pays</span><span class="tw-summary-value blue" id="tw-sum-each">$60.00</span></div></div>
-              <a class="tw-cta" href="/signup.html">This is your widget — Build yours today <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
-              <div class="tw-footer">Powered by Sortora</div>
+              <a class="tw-create" href="/signup.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Create & share split link</a>
+              <div class="tw-footer">Powered by Sortora · This is your widget</div>
             </div>
           </div>
         </div>
@@ -713,9 +711,8 @@
     function twUpdate() {
       var el = document.getElementById('tw-total'); if (!el) return;
       var total = parseFloat(el.value) || 0;
-      var emails = document.getElementById('tw-emails').querySelectorAll('.tw-email-row');
-      var count = emails.length + 1;
-      document.getElementById('tw-count').value = count;
+      var count = parseInt(document.getElementById('tw-count').value) || 2;
+      if (count < 2) count = 2;
       if (total > 0 && count >= 2) {
         var each = total / count;
         document.getElementById('tw-sum-total').textContent = '$' + total.toFixed(2);
@@ -724,23 +721,6 @@
         document.getElementById('tw-summary').style.display = 'block';
       } else { document.getElementById('tw-summary').style.display = 'none'; }
     }
-    function twSyncEmails() {
-      var target = parseInt(document.getElementById('tw-count').value) || 2;
-      if (target < 2) target = 2; if (target > 20) target = 20;
-      var container = document.getElementById('tw-emails'); var needed = target - 1;
-      while (container.children.length < needed) twAddEmail();
-      while (container.children.length > needed && container.children.length > 1) container.removeChild(container.lastChild);
-      twRenumber(); twUpdate();
-    }
-    function twAddEmail() {
-      var container = document.getElementById('tw-emails');
-      if (container.children.length >= 19) return;
-      var row = document.createElement('div'); row.className = 'tw-email-row';
-      row.innerHTML = '<div class="tw-email-num">' + (container.children.length + 2) + '</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button>';
-      container.appendChild(row); twUpdate();
-    }
-    function twRemoveEmail(btn) { btn.parentElement.remove(); twRenumber(); twUpdate(); }
-    function twRenumber() { document.getElementById('tw-emails').querySelectorAll('.tw-email-row').forEach(function(r, i) { r.querySelector('.tw-email-num').textContent = i + 2; }); }
     twUpdate();
   </script>
 </body>
