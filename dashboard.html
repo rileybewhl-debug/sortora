@@ -408,7 +408,7 @@
     function updateEmbedCode() {
       var title = document.getElementById('embed-title').value.trim();
       var amount = document.getElementById('embed-amount').value.trim();
-      var code = '<span class="tag">&lt;script</span>\n  <span class="attr">src</span>=<span class="val">"https://js.sortora.com/v1/widget.js"</span>\n  <span class="attr">data-business-id</span>=<span class="val">"' + currentUser.id + '"</span>';
+      var code = '<span class="tag">&lt;script</span>\n  <span class="attr">src</span>=<span class="val">"https://sortora.com/widget.js"</span>\n  <span class="attr">data-business-id</span>=<span class="val">"' + currentUser.id + '"</span>';
       if (amount) code += '\n  <span class="attr">data-amount</span>=<span class="val">"' + amount + '"</span>';
       if (title) code += '\n  <span class="attr">data-title</span>=<span class="val">"' + title + '"</span>';
       code += '\n  <span class="attr">data-theme</span>=<span class="val">"auto"</span>\n<span class="tag">&gt;&lt;/script&gt;</span>';
@@ -418,7 +418,7 @@
     function copyEmbed() {
       var title = document.getElementById('embed-title').value.trim();
       var amount = document.getElementById('embed-amount').value.trim();
-      var text = '<script src="https://js.sortora.com/v1/widget.js" data-business-id="' + currentUser.id + '"';
+      var text = '<script src="https://sortora.com/widget.js" data-business-id="' + currentUser.id + '"';
       if (amount) text += ' data-amount="' + amount + '"';
       if (title) text += ' data-title="' + title + '"';
       text += ' data-theme="auto"><\/script>';
