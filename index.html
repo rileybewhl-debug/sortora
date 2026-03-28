@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Sortora — Split-payment checkout for group bookings</title>
+  <title>Sortora — Charge more. Split it at checkout.</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafbfc;color:#0C1220;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+    /* ═══ NAV ═══ */
     .nav{padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.04)}
     .nav-left{display:flex;align-items:center;gap:32px}
     .nav-logo{display:flex;align-items:center;gap:7px;text-decoration:none}
@@ -20,57 +22,44 @@
     .nav-btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
     .nav-btn-ghost{color:#0C1220}.nav-btn-ghost:hover{background:rgba(0,0,0,.04)}
     .nav-btn-fill{color:#fff;background:#0C1220;border:1px solid #0C1220}.nav-btn-fill:hover{background:#1a2540}
-    .hero{padding:72px 40px 80px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:rgba(59,107,255,.06);color:#3B6BFF;font-size:12px;font-weight:700;margin-bottom:20px}
+
+    /* ═══ HERO — "charge more" ═══ */
+    .hero{padding:80px 40px 60px;max-width:1200px;margin:0 auto;text-align:center}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:rgba(59,107,255,.06);color:#3B6BFF;font-size:12px;font-weight:700;margin-bottom:24px}
     .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:#3B6BFF;animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-    .hero h1{font-size:clamp(36px,4.5vw,56px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:18px}
+    .hero h1{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-.05em;line-height:1.05;margin-bottom:20px;max-width:900px;margin-left:auto;margin-right:auto}
+    .hero h1 .dim{color:#b0b5bd}
     .hero h1 em{font-style:normal;color:#3B6BFF}
-    .hero-sub{font-size:18px;color:#6a6a6a;line-height:1.55;margin-bottom:28px;max-width:480px}
-    .hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
-    .btn-primary{padding:13px 28px;background:#3B6BFF;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit}
-    .btn-primary:hover{background:#2d5ae6;transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,107,255,.25)}
-    .btn-secondary{padding:13px 28px;background:#fff;color:#0C1220;border:2px solid #e0e3e8;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+    .hero-sub{font-size:clamp(16px,1.8vw,20px);color:#6a6a6a;line-height:1.55;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto}
+    .hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{padding:15px 32px;background:#3B6BFF;color:#fff;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit}
+    .btn-primary:hover{background:#2d5ae6;transform:translateY(-2px);box-shadow:0 6px 20px rgba(59,107,255,.25)}
+    .btn-secondary{padding:15px 32px;background:#fff;color:#0C1220;border:2px solid #e0e3e8;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
     .btn-secondary:hover{border-color:#0C1220}
-    .hero-note{font-size:13px;color:#b0b0b0;margin-top:14px}
-    .hero-demo{background:#f7f8fa;border:1px solid #EBEBEB;border-radius:16px;padding:28px;position:relative;overflow:hidden}
-    .hero-demo-glow{position:absolute;top:-40%;right:-30%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.06) 0%,transparent 70%);pointer-events:none}
-    .demo-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3B6BFF;margin-bottom:14px}
-    .demo-business{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
-    .demo-biz-logo{width:36px;height:36px;border-radius:8px;background:#0C1220;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
-    .demo-biz-name{font-size:14px;font-weight:700;color:#0C1220}
-    .demo-biz-type{font-size:12px;color:#6a6a6a}
-    .demo-booking{background:#fff;border:1px solid #f0f0f0;border-radius:10px;padding:16px;margin-bottom:14px}
-    .demo-booking-title{font-size:15px;font-weight:800;color:#0C1220;margin-bottom:4px}
-    .demo-booking-meta{font-size:12px;color:#6a6a6a}
-    .demo-booking-price{font-size:22px;font-weight:800;color:#0C1220;margin-top:8px}
-    .demo-booking-price small{font-size:13px;font-weight:500;color:#b0b0b0}
-    .demo-toggle{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#EEF2FF;border:1px solid rgba(59,107,255,.15);border-radius:10px;margin-bottom:14px}
-    .demo-toggle-switch{width:36px;height:20px;border-radius:10px;background:#3B6BFF;position:relative;flex-shrink:0}
-    .demo-toggle-knob{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
-    .demo-toggle-text{font-size:13px;font-weight:700;color:#3B6BFF}
-    .demo-splits{display:flex;flex-direction:column;gap:6px}
-    .demo-split-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border:1px solid #f0f0f0;border-radius:8px;animation:splitIn .4s ease both}
-    .demo-split-row:nth-child(2){animation-delay:.1s}
-    .demo-split-row:nth-child(3){animation-delay:.2s}
-    .demo-split-row:nth-child(4){animation-delay:.3s}
-    
-    .demo-split-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
-    .demo-split-email{flex:1;font-size:12px;color:#555;font-weight:500}
-    .demo-split-amount{font-size:13px;font-weight:800;color:#0C1220}
-    .demo-split-check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .demo-split-check.paid{background:#10B981}
-    .demo-split-check.paid svg{stroke:#fff}
-    .demo-split-check.pending{background:#f0f0f0}
-    .demo-split-check.pending svg{stroke:#b0b0b0}
-    .demo-split-check svg{width:12px;height:12px;fill:none;stroke-width:2.5}
-    .demo-progress{margin-top:12px}
-    .demo-prog-label{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:4px}
-    .demo-prog-label span:first-child{color:#6a6a6a}
-    .demo-prog-label span:last-child{color:#3B6BFF}
-    .demo-prog-track{height:6px;border-radius:3px;background:#f0f0f0;overflow:hidden}
-    .demo-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#3B6BFF,#6B8EFF);transition:width 1.5s ease;width:0}
-    .demo-prog-fill.animate{width:75%}
+
+    /* ═══ PRICE SLIDER ═══ */
+    .slider-section{max-width:680px;margin:0 auto;padding:0 40px 80px}
+    .slider-card{background:#fff;border:1px solid #EBEBEB;border-radius:20px;padding:40px;box-shadow:0 8px 40px rgba(0,0,0,.04)}
+    .slider-label{font-size:13px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
+    .slider-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .slider-price{font-size:48px;font-weight:800;letter-spacing:-.04em;min-width:120px}
+    .slider-price small{font-size:16px;font-weight:500;color:#b0b0b0}
+    .slider-input{flex:1;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:linear-gradient(90deg,#3B6BFF var(--pct,50%),#EBEBEB var(--pct,50%));outline:none;cursor:pointer}
+    .slider-input::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#3B6BFF;border:4px solid #fff;box-shadow:0 2px 8px rgba(59,107,255,.3);cursor:grab}
+    .slider-input::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#3B6BFF;border:4px solid #fff;box-shadow:0 2px 8px rgba(59,107,255,.3);cursor:grab}
+    .slider-people{display:flex;align-items:center;gap:8px;margin-bottom:24px}
+    .slider-people-label{font-size:14px;font-weight:600;color:#6a6a6a}
+    .slider-people-btns{display:flex;gap:4px}
+    .slider-people-btn{width:36px;height:36px;border-radius:8px;border:1px solid #EBEBEB;background:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;font-family:inherit;color:#0C1220;display:flex;align-items:center;justify-content:center}
+    .slider-people-btn.active{background:#3B6BFF;color:#fff;border-color:#3B6BFF}
+    .slider-people-btn:hover:not(.active){border-color:#c0c0c0}
+    .slider-divider{height:1px;background:#f0f0f0;margin:20px 0}
+    .slider-result{display:flex;align-items:center;justify-content:space-between}
+    .slider-result-label{font-size:16px;color:#6a6a6a}
+    .slider-result-amount{font-size:36px;font-weight:800;color:#3B6BFF;letter-spacing:-.03em}
+    .slider-result-tag{display:inline-flex;padding:4px 10px;background:rgba(16,185,129,.08);border-radius:6px;font-size:12px;font-weight:700;color:#10B981;margin-left:8px}
+
     /* ═══ MARQUEE ═══ */
     .marquee-section{padding:40px 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;overflow:hidden;position:relative}
     .marquee-label{font-size:12px;font-weight:600;color:#b0b0b0;text-transform:uppercase;letter-spacing:.06em;text-align:center;margin-bottom:20px;padding:0 40px}
@@ -83,133 +72,114 @@
     .marquee-item svg{width:20px;height:20px;flex-shrink:0;opacity:.5;transition:opacity .25s}
     .marquee-item:hover svg{opacity:1}
     .marquee-fade-l,.marquee-fade-r{position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
-    .marquee-fade-l{left:0;background:linear-gradient(90deg,#fff 0%,transparent 100%)}
-    .marquee-fade-r{right:0;background:linear-gradient(270deg,#fff 0%,transparent 100%)}
-    .how{max-width:1200px;margin:0 auto;padding:80px 40px 0}
-    .section-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px}
-    .section-title{font-size:clamp(28px,3.5vw,42px);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:12px}
-    .section-sub{font-size:16px;color:#6a6a6a;line-height:1.55;max-width:520px;margin-bottom:48px}
+    .marquee-fade-l{left:0;background:linear-gradient(90deg,#fafbfc 0%,transparent 100%)}
+    .marquee-fade-r{right:0;background:linear-gradient(270deg,#fafbfc 0%,transparent 100%)}
+
+    /* ═══ SIDE BY SIDE — abandoned vs sortora ═══ */
+    .compare{max-width:1200px;margin:0 auto;padding:100px 40px}
+    .compare-header{text-align:center;max-width:700px;margin:0 auto 56px}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .compare-card{border-radius:20px;padding:40px;position:relative;overflow:hidden}
+    .compare-card.bad{background:#fff;border:1px solid #EBEBEB}
+    .compare-card.good{background:#0C1220;color:#fff}
+    .compare-card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:20px}
+    .compare-card.bad .compare-card-label{color:#ef4444}
+    .compare-card.good .compare-card-label{color:#3B6BFF}
+    .compare-card-price{font-size:clamp(48px,6vw,72px);font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:6px}
+    .compare-card.good .compare-card-price{color:#fff}
+    .compare-card-per{font-size:16px;margin-bottom:24px}
+    .compare-card.bad .compare-card-per{color:#6a6a6a}
+    .compare-card.good .compare-card-per{color:rgba(255,255,255,.5)}
+    .compare-stamp{display:inline-flex;padding:8px 18px;border-radius:8px;font-size:14px;font-weight:800;transform:rotate(-3deg);margin-top:16px}
+    .stamp-bad{background:#fef2f2;color:#ef4444;border:2px solid #ef4444}
+    .stamp-good{background:rgba(16,185,129,.1);color:#10B981;border:2px solid #10B981}
+    .compare-widget{margin-top:24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px}
+    .cw-toggle{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+    .cw-switch{width:32px;height:18px;border-radius:9px;background:#3B6BFF;position:relative}
+    .cw-knob{width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px}
+    .cw-label{font-size:13px;font-weight:700;color:#3B6BFF}
+    .cw-rows{display:flex;flex-direction:column;gap:4px}
+    .cw-row{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.05);border-radius:6px}
+    .cw-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0}
+    .cw-name{flex:1;font-size:11px;color:rgba(255,255,255,.6)}
+    .cw-amount{font-size:12px;font-weight:800;color:#fff}
+    .cw-check{width:16px;height:16px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .cw-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3}
+    .compare-abandoned{margin-top:24px;display:flex;flex-direction:column;gap:8px}
+    .ca-line{height:10px;border-radius:5px;background:#f0f0f0}
+    .ca-btn{margin-top:12px;padding:14px;background:#EBEBEB;border-radius:10px;text-align:center;font-size:14px;font-weight:700;color:#b0b0b0;text-decoration:line-through}
+
+    /* ═══ HOW IT WORKS — Sticky stacking ═══ */
+    .how{max-width:1200px;margin:0 auto;padding:100px 40px 40px}
     .how-steps{display:flex;flex-direction:column;gap:0;padding-bottom:40px}
-    .how-step{position:sticky;background:#fff;border-radius:20px;border:1px solid #EBEBEB;box-shadow:0 -4px 30px rgba(0,0,0,.06);margin-bottom:40px;overflow:hidden;transition:box-shadow .3s}
-    .how-step:nth-child(1){top:80px;z-index:1}
-    .how-step:nth-child(2){top:100px;z-index:2}
-    .how-step:nth-child(3){top:120px;z-index:3}
-    .how-step-header{text-align:center;max-width:640px;margin:0 auto;padding:56px 40px 40px}
-    .how-step-num{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#EEF2FF;font-size:18px;font-weight:800;color:#3B6BFF;margin-bottom:18px}
-    .how-step-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:12px}
+    .how-step{position:sticky;background:#fff;border-radius:24px;border:1px solid #EBEBEB;box-shadow:0 -4px 40px rgba(0,0,0,.07);margin-bottom:48px;overflow:hidden}
+    .how-step:nth-child(1){top:32px;z-index:1}
+    .how-step:nth-child(2){top:56px;z-index:2}
+    .how-step:nth-child(3){top:80px;z-index:3}
+    .how-step-header{text-align:center;max-width:700px;margin:0 auto;padding:64px 48px 48px}
+    .how-step-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:#EEF2FF;font-size:20px;font-weight:800;color:#3B6BFF;margin-bottom:20px}
+    .how-step-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:12px}
     .how-step-desc{font-size:17px;color:#6a6a6a;line-height:1.55}
     .how-step-visual{border-top:1px solid #f0f0f0}
-    /* Step 1: Code embed visual */
-    .hv-code{background:#0C1220;padding:40px;position:relative;overflow:hidden;min-height:340px}
-    .hv-code-glow{position:absolute;top:-30%;right:-20%;width:350px;height:350px;background:radial-gradient(circle,rgba(59,107,255,.1) 0%,transparent 70%);pointer-events:none}
-    .hv-code-header{display:flex;align-items:center;gap:6px;margin-bottom:20px}
+    /* Linear-style code block */
+    .hv-code{background:#0a0e1a;padding:0;position:relative;overflow:hidden;min-height:380px}
+    .hv-code-glow{position:absolute;top:-20%;right:-15%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.07) 0%,transparent 70%);pointer-events:none}
+    .hv-code-glow2{position:absolute;bottom:-20%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(16,185,129,.05) 0%,transparent 70%);pointer-events:none}
+    .hv-code-header{display:flex;align-items:center;gap:6px;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
     .hv-code-dot{width:8px;height:8px;border-radius:50%}
-    .hv-code-title{margin-left:10px;font-size:12px;color:rgba(255,255,255,.25);font-weight:600}
-    .hv-code pre{font-family:'Courier New',monospace;font-size:15px;line-height:1.8;color:rgba(255,255,255,.7);position:relative;z-index:1}
-    .hv-code pre .tag{color:#3B6BFF}
-    .hv-code pre .attr{color:#10B981}
-    .hv-code pre .val{color:#f59e0b}
-    .hv-code pre .comment{color:rgba(255,255,255,.2)}
-    .hv-code pre .highlight{background:rgba(59,107,255,.1);padding:2px 6px;border-radius:4px}
-    .hv-code-badge{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:10px 18px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:14px;font-weight:700;color:#10B981}
+    .hv-code-title{margin-left:10px;font-size:13px;color:rgba(255,255,255,.3);font-weight:600;font-family:'Courier New',monospace}
+    .hv-code-body{padding:28px 0}
+    .hv-code-line{display:flex;padding:3px 28px;font-family:'Courier New',monospace;font-size:14px;line-height:2;transition:background .15s}
+    .hv-code-line:hover{background:rgba(255,255,255,.03)}
+    .hv-code-line.highlighted{background:rgba(59,107,255,.08);border-left:3px solid #3B6BFF;padding-left:25px}
+    .hv-code-linenum{width:36px;text-align:right;color:rgba(255,255,255,.15);font-size:13px;margin-right:20px;flex-shrink:0;user-select:none}
+    .hv-code-content{color:rgba(255,255,255,.6);white-space:pre}
+    .hv-code-content .tag{color:#3B6BFF}
+    .hv-code-content .attr{color:#10B981}
+    .hv-code-content .val{color:#f59e0b}
+    .hv-code-content .comment{color:rgba(255,255,255,.18)}
+    .hv-code-content .str{color:#f472b6}
+    .hv-code-badge{display:inline-flex;align-items:center;gap:6px;margin:20px 28px;padding:10px 18px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);border-radius:8px;font-size:14px;font-weight:700;color:#10B981}
     .hv-code-badge svg{width:16px;height:16px;stroke:#10B981;fill:none;stroke-width:2}
-    /* Step 2: Widget toggle visual */
-    .hv-widget{background:#f7f8fa;padding:48px 40px;min-height:380px}
-    .hv-widget-inner{max-width:440px;margin:0 auto}
-    .hv-widget-biz{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-    .hv-widget-biz-logo{width:40px;height:40px;border-radius:10px;background:#0C1220;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff}
-    .hv-widget-biz-name{font-size:15px;font-weight:700}
-    .hv-widget-biz-sub{font-size:12px;color:#6a6a6a}
-    .hv-widget-booking{background:#fff;border:1px solid #f0f0f0;border-radius:12px;padding:18px;margin-bottom:16px}
-    .hv-widget-booking h4{font-size:17px;font-weight:800;margin-bottom:4px}
-    .hv-widget-booking p{font-size:13px;color:#6a6a6a}
-    .hv-widget-booking .price{font-size:24px;font-weight:800;margin-top:8px}
-    .hv-widget-booking .price small{font-size:14px;font-weight:500;color:#b0b0b0}
-    .hv-toggle{display:flex;align-items:center;gap:10px;padding:14px 18px;background:#EEF2FF;border:1px solid rgba(59,107,255,.15);border-radius:12px;margin-bottom:14px}
-    .hv-toggle-switch{width:40px;height:22px;border-radius:11px;background:#3B6BFF;position:relative;flex-shrink:0}
-    .hv-toggle-knob{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
-    .hv-toggle-text{font-size:14px;font-weight:700;color:#3B6BFF}
-    .hv-emails{display:flex;flex-direction:column;gap:6px}
-    .hv-email-row{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#fff;border:1px solid #f0f0f0;border-radius:8px}
-    .hv-email-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
-    .hv-email-text{flex:1;font-size:13px;color:#555;font-weight:500}
-    .hv-email-amount{font-size:14px;font-weight:800;color:#0C1220}
-    /* Step 3: Confirmation visual */
-    .hv-confirm{background:#fff;padding:56px 40px;text-align:center;min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .hv-confirm-icon{width:80px;height:80px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
-    .hv-confirm-icon svg{width:40px;height:40px;stroke:#fff;fill:none;stroke-width:2.5}
-    .hv-confirm-title{font-size:28px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
-    .hv-confirm-sub{font-size:16px;color:#6a6a6a;margin-bottom:28px;line-height:1.5;max-width:440px}
-    .hv-confirm-stats{display:flex;justify-content:center;gap:48px}
+    /* Widget visual enlarged */
+    .hv-widget{background:#f7f8fa;padding:56px 48px;min-height:420px}
+    .hv-widget-inner{max-width:480px;margin:0 auto}
+    .hv-widget-biz{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+    .hv-widget-biz-logo{width:44px;height:44px;border-radius:12px;background:#0C1220;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
+    .hv-widget-biz-name{font-size:16px;font-weight:700}
+    .hv-widget-biz-sub{font-size:13px;color:#6a6a6a}
+    .hv-widget-booking{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:22px;margin-bottom:18px}
+    .hv-widget-booking h4{font-size:19px;font-weight:800;margin-bottom:5px}
+    .hv-widget-booking p{font-size:14px;color:#6a6a6a}
+    .hv-widget-booking .price{font-size:28px;font-weight:800;margin-top:10px}
+    .hv-widget-booking .price small{font-size:15px;font-weight:500;color:#b0b0b0}
+    .hv-toggle{display:flex;align-items:center;gap:10px;padding:16px 20px;background:#EEF2FF;border:1px solid rgba(59,107,255,.15);border-radius:14px;margin-bottom:16px}
+    .hv-toggle-switch{width:44px;height:24px;border-radius:12px;background:#3B6BFF;position:relative;flex-shrink:0}
+    .hv-toggle-knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+    .hv-toggle-text{font-size:15px;font-weight:700;color:#3B6BFF}
+    .hv-emails{display:flex;flex-direction:column;gap:8px}
+    .hv-email-row{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;border:1px solid #f0f0f0;border-radius:10px}
+    .hv-email-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+    .hv-email-text{flex:1;font-size:14px;color:#555;font-weight:500}
+    .hv-email-amount{font-size:16px;font-weight:800;color:#0C1220}
+    /* Confirmation enlarged */
+    .hv-confirm{background:#fff;padding:72px 48px;text-align:center;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .hv-confirm-icon{width:88px;height:88px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
+    .hv-confirm-icon svg{width:44px;height:44px;stroke:#fff;fill:none;stroke-width:2.5}
+    .hv-confirm-title{font-size:32px;font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
+    .hv-confirm-sub{font-size:17px;color:#6a6a6a;margin-bottom:32px;line-height:1.5;max-width:480px}
+    .hv-confirm-stats{display:flex;justify-content:center;gap:56px}
     .hv-confirm-stat{text-align:center}
-    .hv-confirm-stat-value{font-size:32px;font-weight:800;letter-spacing:-.02em}
+    .hv-confirm-stat-value{font-size:36px;font-weight:800;letter-spacing:-.02em}
     .hv-confirm-stat-value.blue{color:#3B6BFF}
     .hv-confirm-stat-value.green{color:#10B981}
-    .hv-confirm-stat-label{font-size:13px;color:#6a6a6a;margin-top:4px}
-    .hv-confirm-bar{max-width:400px;width:100%;margin:28px auto 0}
-    .hv-confirm-bar-track{height:8px;border-radius:4px;background:#EBEBEB;overflow:hidden}
-    .hv-confirm-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#3B6BFF,#10B981);width:100%}
-    .problem{max-width:1100px;margin:0 auto;padding:0 40px 80px}
-    .ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-    .ps-card{border-radius:14px;padding:32px}
-    .ps-card.before{background:#faf5f5;border:1px solid #f0e0e0}
-    .ps-card.after{background:#f0faf5;border:1px solid #d0f0e0}
-    .ps-card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
-    .ps-card.before .ps-card-label{color:#c53030}
-    .ps-card.after .ps-card-label{color:#10B981}
-    .ps-card h3{font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
-    .ps-card p{font-size:14px;line-height:1.6}
-    .ps-card.before p{color:#7a4a4a}
-    .ps-card.after p{color:#4a7a5a}
-    .built-for{background:#f7f8fa;padding:80px 40px}
-    .built-for-inner{max-width:1100px;margin:0 auto}
-    .pricing{max-width:1100px;margin:0 auto;padding:80px 40px}
-    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-    .price-card{border:1px solid #EBEBEB;border-radius:14px;padding:32px;transition:all .15s;position:relative}
-    .price-card:hover{border-color:#d0d0d0}
-    .price-card.featured{border-color:#3B6BFF;box-shadow:0 0 0 1px #3B6BFF}
-    .price-popular{position:absolute;top:-11px;left:50%;transform:translateX(-50%);padding:3px 14px;background:#3B6BFF;color:#fff;font-size:11px;font-weight:700;border-radius:6px}
-    .price-name{font-size:13px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
-    .price-amount{font-size:40px;font-weight:800;letter-spacing:-.04em;margin-bottom:2px}
-    .price-amount small{font-size:16px;font-weight:500;color:#b0b0b0}
-    .price-desc{font-size:14px;color:#6a6a6a;margin-bottom:20px;line-height:1.5}
-    .price-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
-    .price-features li{display:flex;align-items:center;gap:8px;font-size:14px;color:#555}
-    .price-features li svg{width:16px;height:16px;stroke:#10B981;fill:none;stroke-width:2.5;flex-shrink:0}
-    .price-btn{display:block;width:100%;padding:12px;border-radius:10px;font-size:14px;font-weight:700;text-align:center;text-decoration:none;transition:all .15s;font-family:inherit;cursor:pointer;border:none}
-    .price-btn-outline{background:#fff;color:#0C1220;border:2px solid #e0e3e8}.price-btn-outline:hover{border-color:#0C1220}
-    .price-btn-fill{background:#3B6BFF;color:#fff}.price-btn-fill:hover{background:#2d5ae6}
-    .price-fee{font-size:12px;color:#b0b0b0;margin-top:10px;text-align:center}
-    .embed{max-width:1100px;margin:0 auto;padding:0 40px 80px}
-    .embed-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-    .embed-code{background:#0C1220;border-radius:14px;padding:28px;font-family:'Courier New',monospace;position:relative;overflow:hidden}
-    .embed-code-glow{position:absolute;top:-20%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(59,107,255,.08) 0%,transparent 70%);pointer-events:none}
-    .embed-code-header{display:flex;align-items:center;gap:6px;margin-bottom:14px}
-    .embed-code-dot{width:7px;height:7px;border-radius:50%}
-    .embed-code pre{font-size:13px;line-height:1.7;color:rgba(255,255,255,.7);white-space:pre-wrap;word-break:break-all;position:relative;z-index:1}
-    .embed-code pre .tag{color:#3B6BFF}
-    .embed-code pre .attr{color:#10B981}
-    .embed-code pre .val{color:#f59e0b}
-    .embed-code pre .comment{color:rgba(255,255,255,.2)}
-    .cta{max-width:1100px;margin:0 auto;padding:0 40px 80px}
-    .cta-inner{background:#0C1220;border-radius:20px;padding:64px 48px;text-align:center;position:relative;overflow:hidden}
-    .cta-glow1{position:absolute;top:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.12) 0%,transparent 70%);pointer-events:none}
-    .cta-glow2{position:absolute;bottom:-30%;right:-10%;width:350px;height:350px;background:radial-gradient(circle,rgba(59,107,255,.08) 0%,transparent 70%);pointer-events:none}
-    .cta-inner h2{font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:12px;position:relative;z-index:1}
-    .cta-inner p{font-size:16px;color:rgba(255,255,255,.5);margin-bottom:28px;position:relative;z-index:1}
-    .cta-inner .btn-primary{position:relative;z-index:1;font-size:16px;padding:15px 36px}
-    .footer{border-top:1px solid #f0f0f0;padding:32px 40px}
-    .footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-    .footer-logo{display:flex;align-items:center;gap:6px;text-decoration:none}
-    .footer-logo span{font-weight:800;font-size:16px;color:#0C1220;letter-spacing:-.5px}
-    .footer-copy{font-size:12px;color:#b0b0b0}
-    .footer-links{display:flex;gap:16px}
-    .footer-link{font-size:12px;font-weight:600;color:#6a6a6a;text-decoration:none}.footer-link:hover{color:#0C1220}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    .hero{animation:fadeUp .5s ease both}
-    .hero-demo{animation:fadeUp .6s ease .15s both}
-    /* ═══ INTERACTIVE DEMO ═══ */
-    .try-section{max-width:1100px;margin:0 auto;padding:0 40px 80px}
+    .hv-confirm-stat-label{font-size:14px;color:#6a6a6a;margin-top:4px}
+    .hv-confirm-bar{max-width:440px;width:100%;margin:32px auto 0}
+    .hv-confirm-bar-track{height:10px;border-radius:5px;background:#EBEBEB;overflow:hidden}
+    .hv-confirm-bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#3B6BFF,#10B981);width:100%}
+
+    /* ═══ TRY IT ═══ */
+    .try-section{max-width:1200px;margin:0 auto;padding:60px 40px 100px}
     .try-inner{display:grid;grid-template-columns:1fr 480px;gap:48px;align-items:center}
     .try-browser{border:1px solid #EBEBEB;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.08)}
     .try-chrome{display:flex;align-items:center;gap:6px;padding:10px 16px;background:#f7f8fa;border-bottom:1px solid #EBEBEB}
@@ -225,7 +195,6 @@
     .try-booking-meta{font-size:11px;color:#6a6a6a}
     .try-booking-price{font-size:18px;font-weight:800;margin-top:6px}
     .try-booking-price small{font-size:12px;color:#b0b0b0;font-weight:500}
-    /* Widget toggle */
     .tw-toggle{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;cursor:pointer;transition:all .15s;user-select:none;margin-bottom:12px}
     .tw-toggle.off{background:#f7f8fa;border:1px solid #e0e3e8}
     .tw-toggle.off:hover{border-color:#c0c5cc}
@@ -239,7 +208,6 @@
     .tw-toggle-text{font-size:13px;font-weight:600}
     .tw-toggle.off .tw-toggle-text{color:#6a6a6a}
     .tw-toggle.on .tw-toggle-text{color:#3B6BFF}
-    /* Widget panel */
     .tw-panel{max-height:0;overflow:hidden;transition:max-height .3s ease,opacity .2s;opacity:0}
     .tw-panel.open{max-height:500px;opacity:1}
     .tw-field{margin-bottom:8px}
@@ -270,85 +238,17 @@
     .tw-cta svg{width:16px;height:16px}
     .tw-footer{text-align:center;margin-top:8px;font-size:10px;color:#b0b0b0}
 
-    
-    /* Hero split row cascade */
-    .demo-split-row{opacity:0;animation:splitCascade .5s ease forwards}
-    .demo-split-row:nth-child(1){animation-delay:.3s}
-    .demo-split-row:nth-child(2){animation-delay:.5s}
-    .demo-split-row:nth-child(3){animation-delay:.7s}
-    .demo-split-row:nth-child(4){animation-delay:.9s}
-    @keyframes splitCascade{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
-    /* Use case cards mobile */
-    @media(max-width:900px){[style*="grid-template-columns: 1fr 1.2fr"],[style*="grid-template-columns: 1.2fr 1fr"],[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr !important}}
-
-    /* ═══ SCROLL ANIMATIONS ═══ */
-    .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
-    .reveal.visible{opacity:1;transform:translateY(0)}
-    .reveal-delay-1{transition-delay:.1s}
-    .reveal-delay-2{transition-delay:.2s}
-    .reveal-delay-3{transition-delay:.3s}
-    .reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s ease,transform .8s ease}
-    .reveal-left.visible{opacity:1;transform:translateX(0)}
-    .reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s ease,transform .8s ease}
-    .reveal-right.visible{opacity:1;transform:translateX(0)}
-    .reveal-scale{opacity:0;transform:scale(.92);transition:opacity .7s ease,transform .7s ease}
-    .reveal-scale.visible{opacity:1;transform:scale(1)}
-    /* Text grow effect — title scales up as it enters */
-    .text-grow{opacity:0;transform:scale(.85);transition:opacity .6s ease,transform .8s cubic-bezier(.16,1,.3,1)}
-    .text-grow.visible{opacity:1;transform:scale(1)}
-    /* Word-by-word fade */
-    .word-reveal span{display:inline-block;opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
-    .word-reveal.visible span{opacity:1;transform:translateY(0)}
-    /* Parallax containers */
-    .parallax-wrap{position:relative}
-    .parallax-text{position:relative;z-index:2;will-change:transform}
-    .parallax-visual{position:relative;z-index:1;will-change:transform}
-    /* Subtle line separator between major sections */
-    .section-line{width:60px;height:3px;border-radius:2px;background:#EBEBEB;margin:0 auto 48px}
-
-    /* ═══ FULL-WIDTH SECTIONS ═══ */
-    .fw-section{padding:100px 40px;position:relative;overflow:hidden;background:transparent}
-    
-    
-    
+    /* ═══ SECTIONS ═══ */
+    .fw-section{padding:100px 40px;position:relative;overflow:hidden}
     .fw-inner{max-width:1200px;margin:0 auto}
     .fw-center{text-align:center;max-width:700px;margin:0 auto}
     .fw-title{font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px}
     .fw-title em{font-style:normal;color:#3B6BFF}
-    
-    .fw-sub{font-size:18px;line-height:1.55;margin-bottom:32px}
-    .fw-section:not(.dark) .fw-sub{color:#6a6a6a}
-    
-    .fw-btn{display:inline-flex;align-items:center;gap:8px;padding:15px 32px;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;border:none;cursor:pointer;font-family:inherit}
-    .fw-btn:hover{transform:translateY(-2px)}
-    .fw-btn-primary{background:#3B6BFF;color:#fff;box-shadow:0 4px 14px rgba(59,107,255,.2)}
-    .fw-btn-primary:hover{background:#2d5ae6;box-shadow:0 6px 20px rgba(59,107,255,.3)}
-    .fw-btn-outline{background:transparent;color:#0C1220;border:2px solid #0C1220}
-    .fw-btn-outline:hover{background:#0C1220;color:#fff}
-    .fw-btn-primary{background:#fff;color:#0C1220;box-shadow:0 4px 14px rgba(0,0,0,.1)}
-    .fw-btn-primary:hover{box-shadow:0 6px 20px rgba(0,0,0,.15)}
-    .fw-btn svg{width:18px;height:18px}
+    .fw-sub{font-size:18px;color:#6a6a6a;line-height:1.55;margin-bottom:32px}
 
-    /* ═══ PROBLEM SECTION — full width dark ═══ */
-    .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:48px;border-radius:20px;overflow:hidden}
-    .problem-card{padding:56px 48px}
-    .problem-card.before{background:#fff;border:1px solid #f0e0e0}
-    .problem-card.after{background:#fff;border:1px solid #d0f0e0}
-    .problem-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
-    .problem-card.before .problem-label{color:#dc2626}
-    .problem-card.after .problem-label{color:#10B981}
-    .problem-card h3{font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-.03em;margin-bottom:14px;line-height:1.15}
-    .problem-card p{font-size:16px;line-height:1.65}
-    .problem-card.before p{color:#7a4a4a}
-    .problem-card.after p{color:#4a7a5a}
-    .problem-card .emoji{font-size:40px;margin-bottom:16px;display:block}
-
-
-
-    /* ═══ PRICING — bigger ═══ */
+    /* ═══ PRICING ═══ */
     .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-    .price-card{background:#fff;border:1px solid #EBEBEB;border-radius:16px;padding:40px;transition:all .15s;position:relative}
-    .price-card:hover{border-color:#d0d0d0}
+    .price-card{background:#fff;border:1px solid #EBEBEB;border-radius:16px;padding:40px;position:relative}
     .price-card.featured{border-color:#3B6BFF;box-shadow:0 0 0 1px #3B6BFF}
     .price-popular{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;background:#3B6BFF;color:#fff;font-size:12px;font-weight:700;border-radius:8px}
     .price-name{font-size:14px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
@@ -363,17 +263,13 @@
     .price-btn-fill{background:#3B6BFF;color:#fff}.price-btn-fill:hover{background:#2d5ae6}
     .price-fee{font-size:13px;color:#b0b0b0;margin-top:12px;text-align:center}
 
-    /* ═══ EMBED — side by side ═══ */
+    /* ═══ EMBED ═══ */
     .embed-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-    .embed-code{background:#0C1220;border-radius:16px;padding:36px;font-family:'Courier New',monospace;position:relative;overflow:hidden}
-    .embed-code-glow{position:absolute;top:-20%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(59,107,255,.08) 0%,transparent 70%);pointer-events:none}
-    .embed-code-header{display:flex;align-items:center;gap:6px;margin-bottom:16px}
+    .embed-code{background:#0a0e1a;border-radius:16px;padding:0;font-family:'Courier New',monospace;position:relative;overflow:hidden}
+    .embed-code-glow{position:absolute;top:-20%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(59,107,255,.07) 0%,transparent 70%);pointer-events:none}
+    .embed-code-header{display:flex;align-items:center;gap:6px;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
     .embed-code-dot{width:8px;height:8px;border-radius:50%}
-    .embed-code pre{font-size:14px;line-height:1.8;color:rgba(255,255,255,.7);white-space:pre-wrap;word-break:break-all;position:relative;z-index:1}
-    .embed-code pre .tag{color:#3B6BFF}
-    .embed-code pre .attr{color:#10B981}
-    .embed-code pre .val{color:#f59e0b}
-    .embed-code pre .comment{color:rgba(255,255,255,.2)}
+
 
     /* ═══ CTA ═══ */
     .cta-inner{background:#0C1220;border-radius:24px;padding:80px 48px;text-align:center;position:relative;overflow:hidden}
@@ -389,11 +285,31 @@
     .footer-links{display:flex;gap:16px}
     .footer-link{font-size:13px;font-weight:600;color:#6a6a6a;text-decoration:none}.footer-link:hover{color:#0C1220}
 
-    @media(max-width:900px){.problem-grid,.pricing-grid{grid-template-columns:1fr}.embed-inner{grid-template-columns:1fr}.how-step{position:relative;top:auto !important}.how-step-header{padding:40px 24px 32px}.hv-code{padding:24px}.hv-widget{padding:32px 20px}.hv-confirm{padding:40px 20px}.hv-confirm-stats{flex-direction:column;gap:16px}.fw-section{padding:60px 20px}.problem-card{padding:40px 28px}.try-inner{grid-template-columns:1fr}}
-    @media(max-width:768px){.nav{padding:0 20px}.nav-links{display:none}.hero{grid-template-columns:1fr;gap:40px;padding:48px 24px 48px}.hero h1{font-size:32px}.footer-inner{flex-direction:column;gap:12px;text-align:center}.footer-links{justify-content:center}}
+    /* ═══ ANIMATIONS ═══ */
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:.1s}
+    .reveal-delay-2{transition-delay:.2s}
+    .reveal-delay-3{transition-delay:.3s}
+    .reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s ease,transform .8s ease}
+    .reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s ease,transform .8s ease}
+    .reveal-right.visible{opacity:1;transform:translateX(0)}
+    .reveal-scale{opacity:0;transform:scale(.92);transition:opacity .7s ease,transform .7s ease}
+    .reveal-scale.visible{opacity:1;transform:scale(1)}
+    .text-grow{opacity:0;transform:scale(.85);transition:opacity .6s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+    .text-grow.visible{opacity:1;transform:scale(1)}
+    .word-reveal span{display:inline-block;opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
+    .word-reveal.visible span{opacity:1;transform:translateY(0)}
+    .section-line{width:60px;height:3px;border-radius:2px;background:#EBEBEB;margin:0 auto 48px}
+
+    /* ═══ MOBILE ═══ */
+    @media(max-width:900px){.compare-grid,.pricing-grid{grid-template-columns:1fr}.embed-inner,.try-inner{grid-template-columns:1fr}.how-step{position:relative;top:auto !important}.how-step-header{padding:40px 24px 32px}.hv-code{min-height:auto}.hv-code-line{padding:3px 16px;font-size:12px}.hv-code-linenum{width:24px;margin-right:12px;font-size:11px}.hv-widget{padding:32px 20px;min-height:auto}.hv-confirm{padding:48px 20px;min-height:auto}.hv-confirm-stats{flex-direction:column;gap:16px}.fw-section{padding:60px 20px}.hero{padding:48px 20px 40px}.slider-section{padding:0 20px 60px}.compare{padding:60px 20px}.try-section{padding:40px 20px 60px}}
+    @media(max-width:768px){.nav{padding:0 20px}.nav-links{display:none}.hero h1{font-size:36px}.slider-price{font-size:36px}.compare-card-price{font-size:40px}.footer-inner{flex-direction:column;gap:12px;text-align:center}.footer-links{justify-content:center}}
   </style>
 </head>
 <body>
+
   <nav class="nav">
     <div class="nav-left">
       <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
@@ -409,45 +325,43 @@
       <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
     </div>
   </nav>
+
   <div class="hero">
-    <div>
-      <div class="hero-badge"><span class="hero-badge-dot"></span> Now accepting early businesses</div>
-      <h1>Nobody should have to <em>front the bill.</em></h1>
-      <p class="hero-sub">Stop losing group bookings to Venmo chaos. One embed gives your checkout a native split-payment flow. Everyone pays their share. Booking confirms automatically.</p>
-      <div class="hero-ctas">
-        <a class="btn-primary" href="/signup.html">Start free trial <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
-        <a class="btn-secondary" href="#how">See how it works</a>
-      </div>
-      <div class="hero-note">Free for 14 days · No credit card required · 5 minute setup</div>
+    <div class="hero-badge"><div class="hero-badge-dot"></div>Split-payment checkout for group bookings</div>
+    <h1><span class="dim">Your customers don't see</span> $300. <br/><span class="dim">They see</span> <em>$50.</em></h1>
+    <p class="hero-sub">When the cost splits, the price doesn't matter. Add split payments to your checkout and unlock higher price points for every group booking.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="/signup.html">Start charging more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="btn-secondary" href="#how">See how it works</a>
     </div>
-    <div class="hero-demo">
-      <div class="hero-demo-glow"></div>
-      <div class="demo-label">Live widget preview</div>
-      <div class="demo-business">
-        <div class="demo-biz-logo">FC</div>
-        <div><div class="demo-biz-name">Fire &amp; Clay Pottery</div><div class="demo-biz-type">Pottery Studio · Portland, OR</div></div>
+  </div>
+
+  <div class="slider-section">
+    <div class="slider-card reveal-scale">
+      <div class="slider-label">Drag the price — watch the per-person cost</div>
+      <div class="slider-row">
+        <div class="slider-price" id="sl-price">$300</div>
+        <input class="slider-input" type="range" id="sl-range" min="100" max="800" value="300" step="10" oninput="updateSlider()"/>
       </div>
-      <div class="demo-booking">
-        <div class="demo-booking-title">Private Group Pottery Class</div>
-        <div class="demo-booking-meta">Sat, Apr 12 · 2:00 PM · 2 hours</div>
-        <div class="demo-booking-price">$240 <small>total</small></div>
+      <div class="slider-people">
+        <div class="slider-people-label">People in group:</div>
+        <div class="slider-people-btns" id="sl-btns">
+          <button class="slider-people-btn" onclick="setPeople(2)">2</button>
+          <button class="slider-people-btn" onclick="setPeople(3)">3</button>
+          <button class="slider-people-btn" onclick="setPeople(4)">4</button>
+          <button class="slider-people-btn active" onclick="setPeople(6)">6</button>
+          <button class="slider-people-btn" onclick="setPeople(8)">8</button>
+          <button class="slider-people-btn" onclick="setPeople(10)">10</button>
+        </div>
       </div>
-      <div class="demo-toggle">
-        <div class="demo-toggle-switch"><div class="demo-toggle-knob"></div></div>
-        <div class="demo-toggle-text">Split this booking — $60 each</div>
-      </div>
-      <div class="demo-splits">
-        <div class="demo-split-row"><div class="demo-split-av" style="background:#3B6BFF">SL</div><div class="demo-split-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfccdecdded7ffdad2ded6d391dcd0d2">[email&#160;protected]</a> (you)</div><div class="demo-split-amount">$60</div><div class="demo-split-check paid"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-        <div class="demo-split-row"><div class="demo-split-av" style="background:#8b5cf6">JR</div><div class="demo-split-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1771657e72797357727a767e7b3974787a">[email&#160;protected]</a></div><div class="demo-split-amount">$60</div><div class="demo-split-check paid"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-        <div class="demo-split-row"><div class="demo-split-av" style="background:#f59e0b">ML</div><div class="demo-split-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="96fbfff7d6f3fbf7fffab8f5f9fb">[email&#160;protected]</a></div><div class="demo-split-amount">$60</div><div class="demo-split-check paid"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-        <div class="demo-split-row"><div class="demo-split-av" style="background:#10B981">CP</div><div class="demo-split-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="30535842594370555d51595c1e535f5d">[email&#160;protected]</a></div><div class="demo-split-amount">$60</div><div class="demo-split-check pending"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/></svg></div></div>
-      </div>
-      <div class="demo-progress">
-        <div class="demo-prog-label"><span>3 of 4 paid</span><span>75%</span></div>
-        <div class="demo-prog-track"><div class="demo-prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="slider-divider"></div>
+      <div class="slider-result">
+        <div class="slider-result-label">Each person pays</div>
+        <div><span class="slider-result-amount" id="sl-each">$50</span><span class="slider-result-tag" id="sl-tag">feels easy</span></div>
       </div>
     </div>
   </div>
+
   <div class="marquee-section">
     <div class="marquee-label">Built for experience-based businesses</div>
     <div class="marquee-fade-l"></div>
@@ -465,170 +379,115 @@
       <a class="marquee-item" href="/for-business.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2l-6 4v5"/><path d="M15 15a3 3 0 106 0"/></svg>Private Chefs</a>
     </div>
   </div>
+
+  <div class="compare reveal">
+    <div class="compare-header">
+      <div class="fw-title text-grow">Same booking. <em>Different outcome.</em></div>
+      <div class="fw-sub word-reveal">A $300 group experience looks expensive to one person. Split it six ways and it's a no-brainer.</div>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-card bad reveal-left">
+        <div class="compare-card-label">Without Sortora</div>
+        <div class="compare-card-price">$300</div>
+        <div class="compare-card-per">Entire cost on one person</div>
+        <div class="compare-abandoned">
+          <div class="ca-line" style="width:100%"></div>
+          <div class="ca-line" style="width:80%"></div>
+          <div class="ca-line" style="width:60%"></div>
+          <div class="ca-btn">Book & Pay $300.00</div>
+        </div>
+        <div class="compare-stamp stamp-bad">Cart abandoned</div>
+      </div>
+      <div class="compare-card good reveal-right">
+        <div class="compare-card-label">With Sortora</div>
+        <div class="compare-card-price">$50<span style="font-size:20px;color:rgba(255,255,255,.4)">/person</span></div>
+        <div class="compare-card-per">Split between 6 people</div>
+        <div class="compare-widget">
+          <div class="cw-toggle"><div class="cw-switch"><div class="cw-knob"></div></div><div class="cw-label">Split this booking — $50 each</div></div>
+          <div class="cw-rows">
+            <div class="cw-row"><div class="cw-av" style="background:#3B6BFF">S</div><div class="cw-name">sar***@email.com</div><div class="cw-amount">$50</div><div class="cw-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+            <div class="cw-row"><div class="cw-av" style="background:#8b5cf6">J</div><div class="cw-name">jak***@email.com</div><div class="cw-amount">$50</div><div class="cw-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+            <div class="cw-row"><div class="cw-av" style="background:#f59e0b">M</div><div class="cw-name">mia***@email.com</div><div class="cw-amount">$50</div><div class="cw-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+            <div class="cw-row"><div class="cw-av" style="background:#10B981">C</div><div class="cw-name">chr***@email.com</div><div class="cw-amount">$50</div><div class="cw-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+            <div class="cw-row"><div class="cw-av" style="background:#ec4899">L</div><div class="cw-name">lis***@email.com</div><div class="cw-amount">$50</div><div class="cw-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+            <div class="cw-row"><div class="cw-av" style="background:#6366f1">D</div><div class="cw-name">dan***@email.com</div><div class="cw-amount">$50</div><div class="cw-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+          </div>
+        </div>
+        <div class="compare-stamp stamp-good">6/6 paid — Confirmed</div>
+      </div>
+    </div>
+  </div>
+
   <div class="how" id="how">
-    <div class="fw-center reveal">
+    <div class="fw-center reveal" style="margin-bottom:20px">
       <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">How it works</div>
       <div class="fw-title text-grow">Three steps. Five minutes.<br/><em>That's all it takes.</em></div>
     </div>
     <div class="how-steps">
       <div class="how-step">
-        <div class="how-step-header"><div class="how-step-num">1</div><div class="how-step-title">Install the widget</div><div class="how-step-desc">Add one script tag to your booking page. Connect your Stripe account. No developer needed — if you can paste a line of code, you're done.</div></div>
-        <div class="how-step-visual">
-          <div class="hv-code"><div class="hv-code-glow"></div><div class="hv-code-header"><div class="hv-code-dot" style="background:#ff5f57"></div><div class="hv-code-dot" style="background:#febc2e"></div><div class="hv-code-dot" style="background:#28c840"></div><div class="hv-code-title">your-booking-page.html</div></div>
-            <pre>
-<span class="comment">&lt;!-- Your existing checkout page --&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"checkout-form"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;h2&gt;</span>Complete your booking<span class="tag">&lt;/h2&gt;</span>
-  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>Book Now<span class="tag">&lt;/button&gt;</span>
-
-  <span class="highlight"><span class="comment">&lt;!-- Add Sortora — just this one line --&gt;</span>
-  <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://js.sortora.com/v1/widget.js"</span>
-    <span class="attr">data-business-id</span>=<span class="val">"your_id"</span><span class="tag">&gt;&lt;/script&gt;</span></span>
-<span class="tag">&lt;/div&gt;</span></pre>
-            <div class="hv-code-badge"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> That's the entire integration</div>
-          </div>
-        </div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-header"><div class="how-step-num">2</div><div class="how-step-title">Customer toggles split</div><div class="how-step-desc">At checkout, a split-payment toggle appears. Your customer enters their group's emails. Each person receives a unique payment link.</div></div>
-        <div class="how-step-visual">
-          <div class="hv-widget"><div class="hv-widget-inner">
-            <div class="hv-widget-biz"><div class="hv-widget-biz-logo">FC</div><div><div class="hv-widget-biz-name">Fire &amp; Clay Pottery</div><div class="hv-widget-biz-sub">Checkout</div></div></div>
-            <div class="hv-widget-booking"><h4>Private Group Pottery Class</h4><p>Sat, Apr 12 · 2:00 PM · Portland, OR</p><div class="price">$240 <small>total</small></div></div>
-            <div class="hv-toggle"><div class="hv-toggle-switch"><div class="hv-toggle-knob"></div></div><div class="hv-toggle-text">Split this booking — $60 each</div></div>
-            <div class="hv-emails">
-              <div class="hv-email-row"><div class="hv-email-av" style="background:#3B6BFF">SL</div><div class="hv-email-text">sarah@email.com (organizer)</div><div class="hv-email-amount">$60</div></div>
-              <div class="hv-email-row"><div class="hv-email-av" style="background:#8b5cf6">JR</div><div class="hv-email-text">jake@email.com</div><div class="hv-email-amount">$60</div></div>
-              <div class="hv-email-row"><div class="hv-email-av" style="background:#f59e0b">ML</div><div class="hv-email-text">mia@email.com</div><div class="hv-email-amount">$60</div></div>
-              <div class="hv-email-row"><div class="hv-email-av" style="background:#10B981">CP</div><div class="hv-email-text">chris@email.com</div><div class="hv-email-amount">$60</div></div>
+        <div class="how-step-header"><div class="how-step-num">1</div><div class="how-step-title">Install the widget</div><div class="how-step-desc">Add one script tag to your booking page. Connect your Stripe account. No developer needed.</div></div>
+        <div class="how-step-visual"><div class="hv-code"><div class="hv-code-glow"></div><div class="hv-code-glow2"></div>
+            <div class="hv-code-header"><div class="hv-code-dot" style="background:#ff5f57"></div><div class="hv-code-dot" style="background:#febc2e"></div><div class="hv-code-dot" style="background:#28c840"></div><div class="hv-code-title">your-booking-page.html</div></div>
+            <div class="hv-code-body">
+              <div class="hv-code-line"><span class="hv-code-linenum">01</span><span class="hv-code-content"><span class="comment">&lt;!-- Your existing booking page --&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">02</span><span class="hv-code-content"><span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">03</span><span class="hv-code-content"><span class="tag">&lt;body&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">04</span><span class="hv-code-content">  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"checkout"</span><span class="tag">&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">05</span><span class="hv-code-content">    <span class="tag">&lt;h2&gt;</span>Complete your booking<span class="tag">&lt;/h2&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">06</span><span class="hv-code-content">    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">placeholder</span>=<span class="val">"Name"</span> <span class="tag">/&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">07</span><span class="hv-code-content">    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span> <span class="attr">placeholder</span>=<span class="val">"Email"</span> <span class="tag">/&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">08</span><span class="hv-code-content">    <span class="tag">&lt;button&gt;</span>Book Now<span class="tag">&lt;/button&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">09</span><span class="hv-code-content"></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">10</span><span class="hv-code-content">    <span class="comment">&lt;!-- Add Sortora — just this one line --&gt;</span></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">11</span><span class="hv-code-content">    <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://js.sortora.com/v1/widget.js"</span></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">12</span><span class="hv-code-content">      <span class="attr">data-business-id</span>=<span class="val">"your_id"</span><span class="tag">&gt;&lt;/script&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">13</span><span class="hv-code-content"></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">14</span><span class="hv-code-content">  <span class="tag">&lt;/div&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">15</span><span class="hv-code-content"><span class="tag">&lt;/body&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">16</span><span class="hv-code-content"><span class="tag">&lt;/html&gt;</span></span></div>
             </div>
+            <div class="hv-code-badge"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 3 lines. That's the entire integration.</div>
           </div></div>
-        </div>
       </div>
       <div class="how-step">
-        <div class="how-step-header"><div class="how-step-num">3</div><div class="how-step-title">Everyone pays, booking confirms</div><div class="how-step-desc">When all shares are collected, the booking confirms automatically. You receive full payment via Stripe. Nobody fronted anything.</div></div>
-        <div class="how-step-visual">
-          <div class="hv-confirm">
-            <div class="hv-confirm-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="hv-confirm-title">Booking confirmed!</div>
-            <div class="hv-confirm-sub">All 4 participants have paid. Full payment of $240.00 has been deposited to your Stripe account.</div>
-            <div class="hv-confirm-stats">
-              <div class="hv-confirm-stat"><div class="hv-confirm-stat-value">4/4</div><div class="hv-confirm-stat-label">Participants paid</div></div>
-              <div class="hv-confirm-stat"><div class="hv-confirm-stat-value green">$240</div><div class="hv-confirm-stat-label">Collected</div></div>
-              <div class="hv-confirm-stat"><div class="hv-confirm-stat-value blue">$228</div><div class="hv-confirm-stat-label">Your payout (95%)</div></div>
-            </div>
-            <div class="hv-confirm-bar"><div class="hv-confirm-bar-track"><div class="hv-confirm-bar-fill"></div></div></div>
-          </div>
-        </div>
+        <div class="how-step-header"><div class="how-step-num">2</div><div class="how-step-title">Customer toggles split</div><div class="how-step-desc">A split-payment toggle appears at checkout. Your customer enters their group's emails. Each person gets a unique payment link.</div></div>
+        <div class="how-step-visual"><div class="hv-widget"><div class="hv-widget-inner"><div class="hv-widget-biz"><div class="hv-widget-biz-logo">YB</div><div><div class="hv-widget-biz-name">Your Business</div><div class="hv-widget-biz-sub">Checkout</div></div></div><div class="hv-widget-booking"><h4>Group Experience</h4><p>Your date · Your time</p><div class="price">$300 <small>total</small></div></div><div class="hv-toggle"><div class="hv-toggle-switch"><div class="hv-toggle-knob"></div></div><div class="hv-toggle-text">Split this booking — $50 each</div></div><div class="hv-emails"><div class="hv-email-row"><div class="hv-email-av" style="background:#3B6BFF">S</div><div class="hv-email-text">organizer@email.com</div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#8b5cf6">J</div><div class="hv-email-text">friend1@email.com</div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#f59e0b">M</div><div class="hv-email-text">friend2@email.com</div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#10B981">C</div><div class="hv-email-text">friend3@email.com</div><div class="hv-email-amount">$50</div></div></div></div></div></div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-header"><div class="how-step-num">3</div><div class="how-step-title">Everyone pays, booking confirms</div><div class="how-step-desc">When all shares are collected, the booking confirms automatically. You receive full payment via Stripe.</div></div>
+        <div class="how-step-visual"><div class="hv-confirm"><div class="hv-confirm-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="hv-confirm-title">Booking confirmed!</div><div class="hv-confirm-sub">All participants paid. Full payment deposited to your Stripe account.</div><div class="hv-confirm-stats"><div class="hv-confirm-stat"><div class="hv-confirm-stat-value">6/6</div><div class="hv-confirm-stat-label">Paid</div></div><div class="hv-confirm-stat"><div class="hv-confirm-stat-value green">$300</div><div class="hv-confirm-stat-label">Collected</div></div><div class="hv-confirm-stat"><div class="hv-confirm-stat-value blue">$285</div><div class="hv-confirm-stat-label">Your payout</div></div></div><div class="hv-confirm-bar"><div class="hv-confirm-bar-track"><div class="hv-confirm-bar-fill"></div></div></div></div></div>
       </div>
     </div>
   </div>
 
-  <div class="section-line reveal"></div>
-
-  <!-- ═══════════════════════════════════════════
-
-
-
-  <div class="section-line reveal"></div>
-  <div class="fw-section" style="padding:120px 40px">
-    <div class="fw-inner">
-      <div class="fw-center">
-        <div class="fw-title text-grow" style="font-size:clamp(40px,6vw,72px);margin-bottom:24px"><em>67%</em> of group bookings<br/>are abandoned at checkout.</div>
-        <div class="fw-sub word-reveal" style="font-size:20px;max-width:580px;margin:0 auto 36px">The reason? Payment coordination. One person has to front the cost, chase everyone, and hope they pay back. Sortora eliminates this entirely.</div>
-        <a class="fw-btn fw-btn-primary" href="/signup.html">Fix your checkout <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <div class="try-section" id="try">
+    <div class="try-inner">
+      <div class="reveal-left">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">Try it yourself</div>
+        <div class="fw-title" style="font-size:clamp(28px,4vw,44px)">See what your<br/>customers see.</div>
+        <div class="fw-sub">This is the actual Sortora widget. Toggle it on, add emails, watch the split calculate live.</div>
+        <a class="btn-primary" href="/signup.html">Build yours today <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
-    </div>
-  </div>
-
-       THE PROBLEM — full width before/after
-       ═══════════════════════════════════════════ -->
-  <div class="fw-section">
-    <div class="fw-inner">
-      <div class="fw-center reveal">
-        <div class="fw-title text-grow">The payment problem<br/><em>every group booking has.</em></div>
-        <div class="fw-sub word-reveal">One person always gets stuck paying. That ends now.</div>
-      </div>
-      <div class="problem-grid">
-        <div class="problem-card before reveal-left">
-          <span class="emoji">😤</span>
-          <div class="problem-label">Before Sortora</div>
-          <h3>One person fronts $300 and chases everyone</h3>
-          <p>Someone pays the full amount on their card, then spends a week texting five people for $50 each. Two forget. One ghosts. The organizer swears they'll never plan another group outing. You lose the rebooking.</p>
-        </div>
-        <div class="problem-card after reveal-right">
-          <span class="emoji">🎉</span>
-          <div class="problem-label">With Sortora</div>
-          <h3>Everyone pays their share. Booking confirms automatically.</h3>
-          <p>Each person gets a clean payment link for exactly their portion. One click, one payment. When everyone's paid, the booking confirms. Nobody fronts. Nobody chases. You get paid in full, every time.</p>
-        </div>
-      </div>
-      <div style="text-align:center;margin-top:48px" class="reveal">
-        <a class="fw-btn fw-btn-primary" href="/signup.html">Fix your group checkout <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════
-
-  <div class="section-line reveal"></div>
-  <div class="fw-section">
-    <div class="fw-inner">
-      <div class="fw-center reveal">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">Real results</div>
-        <div class="fw-title text-grow">How businesses use Sortora.</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:24px;margin-top:48px">
-        <div class="reveal-left" style="display:grid;grid-template-columns:1fr 1.2fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid #EBEBEB">
-          <div style="padding:48px;display:flex;flex-direction:column;justify-content:center">
-            <div style="font-size:48px;font-weight:800;color:#3B6BFF;letter-spacing:-.04em;margin-bottom:8px">+34%</div>
-            <div style="font-size:12px;font-weight:700;color:#3B6BFF;text-transform:uppercase;letter-spacing:.04em;margin-bottom:16px">More group bookings confirmed</div>
-            <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px">Fire & Clay Pottery</div>
-            <div style="font-size:15px;color:#6a6a6a;line-height:1.6;margin-bottom:16px">A Portland pottery studio added Sortora to their private class checkout. Groups of 4-8 now split the $240 fee instantly — no more waiting for one person to pay and coordinate Venmo.</div>
-            <div style="font-size:13px;color:#b0b0b0">Pottery Studio · Portland, OR</div>
-          </div>
-          <div style="background:#f7f8fa;padding:40px;display:flex;align-items:center;justify-content:center">
-            <div style="background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:20px;width:100%;max-width:320px;box-shadow:0 4px 20px rgba(0,0,0,.04)">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f0f0f0"><div style="width:32px;height:32px;border-radius:8px;background:#0C1220;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff">FC</div><div><div style="font-size:13px;font-weight:700">Fire & Clay</div><div style="font-size:11px;color:#6a6a6a">Group Class · $240</div></div></div>
-              <div style="display:flex;flex-direction:column;gap:4px">
-                <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:#f7f8fa;border-radius:6px"><div style="width:18px;height:18px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1;font-size:11px;color:#555">4 of 4 paid</div><div style="font-size:12px;font-weight:800;color:#10B981">$240</div></div>
+      <div class="reveal-right">
+        <div class="try-browser">
+          <div class="try-chrome"><div class="try-dot" style="background:#ff5f57"></div><div class="try-dot" style="background:#febc2e"></div><div class="try-dot" style="background:#28c840"></div><div class="try-url">yourbusiness.com/book</div></div>
+          <div class="try-body">
+            <div class="try-biz"><div class="try-biz-logo">YB</div><div><div class="try-biz-name">Your Business Name</div><div class="try-biz-sub">Booking Checkout</div></div></div>
+            <div class="try-booking"><div class="try-booking-title">Private Group Experience</div><div class="try-booking-meta">Your date · Your time · Your location</div><div class="try-booking-price">$240 <small>total</small></div></div>
+            <div class="tw-toggle on" id="tw-toggle" onclick="twToggle()"><div class="tw-switch on" id="tw-switch"><div class="tw-knob"></div></div><div class="tw-toggle-text">Split this booking with your group</div></div>
+            <div class="tw-panel open" id="tw-panel">
+              <div class="tw-row"><div class="tw-field"><div class="tw-label">Total ($)</div><input class="tw-input" type="number" id="tw-total" placeholder="240" value="240" oninput="twUpdate()"/></div><div class="tw-field"><div class="tw-label">People</div><input class="tw-input" type="number" id="tw-count" placeholder="4" min="2" max="20" value="4" oninput="twSyncEmails()"/></div></div>
+              <div class="tw-field"><div class="tw-label">Your email (organizer)</div><input class="tw-input" type="email" placeholder="you@email.com"/></div>
+              <div class="tw-label" style="margin-top:10px;margin-bottom:4px">Group emails</div>
+              <div class="tw-emails" id="tw-emails">
+                <div class="tw-email-row"><div class="tw-email-num">2</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button></div>
+                <div class="tw-email-row"><div class="tw-email-num">3</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button></div>
+                <div class="tw-email-row"><div class="tw-email-num">4</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button></div>
               </div>
-              <div style="height:6px;border-radius:3px;background:#EBEBEB;margin-top:10px;overflow:hidden"><div style="height:100%;width:100%;border-radius:3px;background:linear-gradient(90deg,#3B6BFF,#10B981)"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="reveal-right" style="display:grid;grid-template-columns:1.2fr 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid #EBEBEB">
-          <div style="background:#0C1220;padding:40px;display:flex;align-items:center;justify-content:center">
-            <div style="text-align:center">
-              <div style="font-size:64px;font-weight:800;color:#fff;letter-spacing:-.04em">$12k</div>
-              <div style="font-size:14px;color:rgba(255,255,255,.4);margin-top:4px">processed in first month</div>
-              <div style="display:flex;justify-content:center;gap:24px;margin-top:20px">
-                <div><div style="font-size:24px;font-weight:800;color:#3B6BFF">47</div><div style="font-size:11px;color:rgba(255,255,255,.3)">splits</div></div>
-                <div><div style="font-size:24px;font-weight:800;color:#10B981">98%</div><div style="font-size:11px;color:rgba(255,255,255,.3)">completion</div></div>
-              </div>
-            </div>
-          </div>
-          <div style="padding:48px;display:flex;flex-direction:column;justify-content:center">
-            <div style="font-size:12px;font-weight:700;color:#3B6BFF;text-transform:uppercase;letter-spacing:.04em;margin-bottom:16px">Escape room venue</div>
-            <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px">Locked In Seattle</div>
-            <div style="font-size:15px;color:#6a6a6a;line-height:1.6;margin-bottom:16px">An escape room venue with 6 themed rooms. Groups of 4-10 book private sessions at $180-320 each. Before Sortora, 40% of group bookings were abandoned. Now they convert.</div>
-            <div style="font-size:13px;color:#b0b0b0">Escape Room · Seattle, WA</div>
-          </div>
-        </div>
-
-        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid #EBEBEB">
-          <div style="padding:48px;display:flex;flex-direction:column;justify-content:center">
-            <div style="font-size:12px;font-weight:700;color:#3B6BFF;text-transform:uppercase;letter-spacing:.04em;margin-bottom:16px">Fitness studio</div>
-            <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px">Peak Performance Training</div>
-            <div style="font-size:15px;color:#6a6a6a;line-height:1.6;margin-bottom:16px">A personal training studio offering group sessions at $75/person. Teams of coworkers split the cost at checkout. The trainer gets paid in full without chasing anyone.</div>
-            <div style="font-size:13px;color:#b0b0b0">Personal Training · Austin, TX</div>
-          </div>
-          <div style="background:#f7f8fa;padding:48px;display:flex;align-items:center;justify-content:center">
-            <div style="display:flex;gap:20px;text-align:center">
-              <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 20px"><div style="font-size:32px;font-weight:800;color:#3B6BFF">5 min</div><div style="font-size:12px;color:#6a6a6a;margin-top:4px">setup time</div></div>
-              <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 20px"><div style="font-size:32px;font-weight:800;color:#10B981">$0</div><div style="font-size:12px;color:#6a6a6a;margin-top:4px">upfront cost</div></div>
-              <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 20px"><div style="font-size:32px;font-weight:800;color:#0C1220">95%</div><div style="font-size:12px;color:#6a6a6a;margin-top:4px">payout rate</div></div>
+              <button class="tw-add" onclick="twAddEmail()">+ Add another person</button>
+              <div class="tw-summary" id="tw-summary"><div class="tw-summary-row"><span class="tw-summary-label">Booking total</span><span class="tw-summary-value" id="tw-sum-total">$240.00</span></div><div class="tw-summary-row"><span class="tw-summary-label">Split between</span><span class="tw-summary-value" id="tw-sum-count">4 people</span></div><div class="tw-summary-row total"><span class="tw-summary-label">Each person pays</span><span class="tw-summary-value blue" id="tw-sum-each">$60.00</span></div></div>
+              <a class="tw-cta" href="/signup.html">This is your widget — Build yours today <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+              <div class="tw-footer">Powered by Sortora</div>
             </div>
           </div>
         </div>
@@ -636,11 +495,6 @@
     </div>
   </div>
 
-
-  <div class="section-line reveal"></div>
-
-       PRICING
-       ═══════════════════════════════════════════ -->
   <div class="fw-section" id="pricing">
     <div class="fw-inner">
       <div class="fw-center reveal">
@@ -649,71 +503,56 @@
         <div class="fw-sub word-reveal">Start free. Upgrade as you grow. Cancel anytime.</div>
       </div>
       <div class="pricing-grid">
-        <div class="price-card reveal reveal-delay-1">
-          <div class="price-name">Starter</div>
-          <div class="price-amount">$29 <small>/mo</small></div>
-          <div class="price-desc">For businesses just getting started with group bookings.</div>
-          <ul class="price-features"><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 10 splits/month</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Stripe Connect payouts</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Email notifications</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Booking dashboard</li></ul>
-          <button class="price-btn price-btn-outline" onclick="location.href='/signup.html'">Start free trial</button>
-          <div class="price-fee">+ 3% transaction fee</div>
-        </div>
-        <div class="price-card featured reveal reveal-delay-2">
-          <div class="price-popular">Most popular</div>
-          <div class="price-name">Growth</div>
-          <div class="price-amount">$59 <small>/mo</small></div>
-          <div class="price-desc">For growing businesses with regular group bookings.</div>
-          <ul class="price-features"><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 50 splits/month</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Custom branding on widget</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Revenue analytics</li></ul>
-          <button class="price-btn price-btn-fill" onclick="location.href='/signup.html'">Start free trial</button>
-          <div class="price-fee">+ 2.5% transaction fee</div>
-        </div>
-        <div class="price-card reveal reveal-delay-3">
-          <div class="price-name">Pro</div>
-          <div class="price-amount">$99 <small>/mo</small></div>
-          <div class="price-desc">For high-volume businesses that depend on group bookings.</div>
-          <ul class="price-features"><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Unlimited splits</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Everything in Growth</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>API access</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Webhooks &amp; integrations</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dedicated support</li></ul>
-          <button class="price-btn price-btn-outline" onclick="location.href='/signup.html'">Start free trial</button>
-          <div class="price-fee">+ 2% transaction fee</div>
-        </div>
+        <div class="price-card reveal reveal-delay-1"><div class="price-name">Starter</div><div class="price-amount">$29 <small>/mo</small></div><div class="price-desc">For businesses getting started with group bookings.</div><ul class="price-features"><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 10 splits/month</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Stripe Connect payouts</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Email notifications</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Booking dashboard</li></ul><button class="price-btn price-btn-outline" onclick="location.href='/signup.html'">Start free trial</button><div class="price-fee">+ 3% transaction fee</div></div>
+        <div class="price-card featured reveal reveal-delay-2"><div class="price-popular">Most popular</div><div class="price-name">Growth</div><div class="price-amount">$59 <small>/mo</small></div><div class="price-desc">For growing businesses with regular group bookings.</div><ul class="price-features"><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 50 splits/month</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Custom branding</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Revenue analytics</li></ul><button class="price-btn price-btn-fill" onclick="location.href='/signup.html'">Start free trial</button><div class="price-fee">+ 2.5% transaction fee</div></div>
+        <div class="price-card reveal reveal-delay-3"><div class="price-name">Pro</div><div class="price-amount">$99 <small>/mo</small></div><div class="price-desc">For high-volume businesses that depend on group bookings.</div><ul class="price-features"><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Unlimited splits</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Everything in Growth</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>API access</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Webhooks &amp; integrations</li><li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dedicated support</li></ul><button class="price-btn price-btn-outline" onclick="location.href='/signup.html'">Start free trial</button><div class="price-fee">+ 2% transaction fee</div></div>
       </div>
     </div>
   </div>
+
   <div class="fw-section" id="embed">
     <div class="fw-inner">
       <div class="embed-inner">
-        <div class="reveal">
+        <div class="reveal-left">
           <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:10px">For developers</div>
           <div class="fw-title" style="font-size:clamp(28px,4vw,44px)">One script tag.<br/><em>That's it.</em></div>
-          <div class="fw-sub">No framework dependencies. No CSS conflicts. Shadow DOM isolation. Under 5KB gzipped. Works with any booking page on any platform.</div>
-          <a class="fw-btn fw-btn-primary" href="/docs" style="margin-top:8px">Read the docs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+          <div class="fw-sub">No framework dependencies. Shadow DOM isolation. Under 5KB gzipped. Works with any booking page.</div>
+          <a class="btn-secondary" href="#" style="margin-top:8px">Read the docs <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
         </div>
-        <div class="reveal">
-          <div class="embed-code"><div class="embed-code-glow"></div><div class="embed-code-header"><div class="embed-code-dot" style="background:#ff5f57"></div><div class="embed-code-dot" style="background:#febc2e"></div><div class="embed-code-dot" style="background:#28c840"></div></div>
-            <pre><span class="comment">&lt;!-- Add Sortora to your checkout --&gt;</span>
-
-<span class="tag">&lt;script</span>
-  <span class="attr">src</span>=<span class="val">"https://js.sortora.com/v1/widget.js"</span>
-  <span class="attr">data-business-id</span>=<span class="val">"biz_a1b2c3d4"</span>
-  <span class="attr">data-theme</span>=<span class="val">"auto"</span>
-<span class="tag">&gt;&lt;/script&gt;</span>
-
-<span class="comment">&lt;!-- That's it. Sortora handles
-     the rest automatically. --&gt;</span></pre>
+        <div class="reveal-right">
+          <div class="embed-code"><div class="embed-code-glow"></div><div class="embed-code-header"><div class="embed-code-dot" style="background:#ff5f57"></div><div class="embed-code-dot" style="background:#febc2e"></div><div class="embed-code-dot" style="background:#28c840"></div><span style="margin-left:10px;font-size:13px;color:rgba(255,255,255,.3);font-weight:600;font-family:'Courier New',monospace">integration.html</span></div>
+            <div style="padding:24px 0">
+              <div class="hv-code-line"><span class="hv-code-linenum">01</span><span class="hv-code-content"><span class="comment">&lt;!-- Add Sortora to any checkout --&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">02</span><span class="hv-code-content"></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">03</span><span class="hv-code-content"><span class="tag">&lt;script</span></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">04</span><span class="hv-code-content">  <span class="attr">src</span>=<span class="val">"https://js.sortora.com/v1/widget.js"</span></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">05</span><span class="hv-code-content">  <span class="attr">data-business-id</span>=<span class="val">"biz_a1b2c3d4"</span></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">06</span><span class="hv-code-content">  <span class="attr">data-theme</span>=<span class="val">"auto"</span></span></div>
+              <div class="hv-code-line highlighted"><span class="hv-code-linenum">07</span><span class="hv-code-content"><span class="tag">&gt;&lt;/script&gt;</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">08</span><span class="hv-code-content"></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">09</span><span class="hv-code-content"><span class="comment">&lt;!-- That's it. Sortora handles</span></span></div>
+              <div class="hv-code-line"><span class="hv-code-linenum">10</span><span class="hv-code-content"><span class="comment">     the rest automatically. --&gt;</span></span></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="fw-section">
+
+  <div class="fw-section" style="padding:120px 40px">
     <div class="fw-inner">
-      <div class="cta-inner reveal-scale">
-        <div class="cta-glow1"></div>
-        <div class="cta-glow2"></div>
-        <div class="fw-title text-grow" style="color:#fff;position:relative;z-index:1">Stop losing group bookings<br/>to <em>payment friction.</em></div>
-        <div class="fw-sub" style="color:rgba(255,255,255,.5);max-width:500px;margin:0 auto 32px;position:relative;z-index:1">Install Sortora in 5 minutes. Start converting group bookings today. Free for 14 days.</div>
-        <a class="fw-btn fw-btn-primary" href="/signup.html" style="position:relative;z-index:1;font-size:18px;padding:17px 40px">Get started free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <div class="fw-center reveal">
+        <div class="fw-title text-grow" style="font-size:clamp(36px,5.5vw,64px)">Your customers don't see the price.<br/><em>They see their share.</em></div>
+        <div style="font-size:18px;color:#6a6a6a;max-width:480px;margin:0 auto 40px;line-height:1.55">Install Sortora in 5 minutes. Your customers split it. You get paid in full. Free for 14 days.</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a class="btn-primary" href="/signup.html" style="font-size:18px;padding:17px 40px">Get started free <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+          <a class="btn-secondary" href="#how" style="font-size:18px;padding:17px 40px">See how it works</a>
+        </div>
+        <div style="margin-top:20px;font-size:13px;color:#b0b0b0">No credit card required · Cancel anytime</div>
       </div>
     </div>
   </div>
+
   <footer class="footer">
     <div class="footer-inner">
       <a class="footer-logo" href="/"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Sortora</span></a>
@@ -727,65 +566,52 @@
     var revealObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
         if (e.isIntersecting) { e.target.classList.add('visible'); }
+        else { e.target.classList.remove('visible'); }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.text-grow,.section-line').forEach(function(el) {
       revealObserver.observe(el);
     });
 
-    // ═══ Word-by-word reveal for subtitles ═══
+    // ═══ Word reveal ═══
     document.querySelectorAll('.word-reveal').forEach(function(el) {
       var words = el.textContent.trim().split(/\s+/);
-      el.innerHTML = words.map(function(w, i) {
-        return '<span style="transition-delay:' + (i * 0.06) + 's">' + w + '</span> ';
-      }).join('');
+      el.innerHTML = words.map(function(w, i) { return '<span style="transition-delay:' + (i * 0.06) + 's">' + w + '</span> '; }).join('');
       revealObserver.observe(el);
     });
 
-    // ═══ Parallax scroll — text and visual move at different speeds ═══
-    var parallaxElements = document.querySelectorAll('[data-speed]');
-    var ticking = false;
-    function updateParallax() {
-      var scrollY = window.scrollY;
-      var winH = window.innerHeight;
-      parallaxElements.forEach(function(el) {
-        var rect = el.getBoundingClientRect();
-        var center = rect.top + rect.height / 2;
-        var offset = (center - winH / 2) * parseFloat(el.dataset.speed);
-        el.style.transform = 'translateY(' + offset + 'px)';
-      });
-      ticking = false;
-    }
-    window.addEventListener('scroll', function() {
-      if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
-    }, { passive: true });
-
-    // ═══ Hero progress bar ═══
-    var progObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { document.getElementById('prog-fill').classList.add('animate'); progObserver.disconnect(); }
-      });
-    }, { threshold: 0.5 });
-    progObserver.observe(document.querySelector('.hero-demo'));
-
     // ═══ Smooth scroll ═══
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-      a.addEventListener('click', function(e) {
-        e.preventDefault();
-        var target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      a.addEventListener('click', function(e) { e.preventDefault(); var t = document.querySelector(this.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     });
 
-    // ═══ Marquee infinite loop ═══
-    (function() {
-      var track = document.getElementById('marquee-track');
-      var items = track.innerHTML;
-      track.innerHTML = items + items;
-    })();
+    // ═══ Marquee ═══
+    (function() { var t = document.getElementById('marquee-track'); t.innerHTML = t.innerHTML + t.innerHTML; })();
 
-    // ═══ Interactive Demo Widget ═══
-    var _twOpen = false;
+    // ═══ Price slider ═══
+    var slPeople = 6;
+    function updateSlider() {
+      var val = parseInt(document.getElementById('sl-range').value);
+      var each = Math.round(val / slPeople);
+      var pct = ((val - 100) / 700 * 100);
+      document.getElementById('sl-price').innerHTML = '$' + val;
+      document.getElementById('sl-each').textContent = '$' + each;
+      document.getElementById('sl-range').style.setProperty('--pct', pct + '%');
+      var tag = document.getElementById('sl-tag');
+      if (each <= 30) { tag.textContent = 'impulse buy'; tag.style.background = 'rgba(16,185,129,.08)'; tag.style.color = '#10B981'; }
+      else if (each <= 60) { tag.textContent = 'feels easy'; tag.style.background = 'rgba(16,185,129,.08)'; tag.style.color = '#10B981'; }
+      else if (each <= 100) { tag.textContent = 'reasonable'; tag.style.background = 'rgba(59,107,255,.08)'; tag.style.color = '#3B6BFF'; }
+      else { tag.textContent = 'still worth it'; tag.style.background = 'rgba(245,158,11,.08)'; tag.style.color = '#f59e0b'; }
+    }
+    function setPeople(n) {
+      slPeople = n;
+      document.querySelectorAll('.slider-people-btn').forEach(function(b) { b.classList.toggle('active', parseInt(b.textContent) === n); });
+      updateSlider();
+    }
+    updateSlider();
+
+    // ═══ Interactive demo ═══
+    var _twOpen = true;
     function twToggle() {
       _twOpen = !_twOpen;
       document.getElementById('tw-toggle').className = 'tw-toggle ' + (_twOpen ? 'on' : 'off');
@@ -810,8 +636,7 @@
     function twSyncEmails() {
       var target = parseInt(document.getElementById('tw-count').value) || 2;
       if (target < 2) target = 2; if (target > 20) target = 20;
-      var container = document.getElementById('tw-emails');
-      var needed = target - 1;
+      var container = document.getElementById('tw-emails'); var needed = target - 1;
       while (container.children.length < needed) twAddEmail();
       while (container.children.length > needed && container.children.length > 1) container.removeChild(container.lastChild);
       twRenumber(); twUpdate();
@@ -820,15 +645,11 @@
       var container = document.getElementById('tw-emails');
       if (container.children.length >= 19) return;
       var row = document.createElement('div'); row.className = 'tw-email-row';
-      var num = container.children.length + 2;
-      row.innerHTML = '<div class="tw-email-num">' + num + '</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button>';
+      row.innerHTML = '<div class="tw-email-num">' + (container.children.length + 2) + '</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button>';
       container.appendChild(row); twUpdate();
     }
     function twRemoveEmail(btn) { btn.parentElement.remove(); twRenumber(); twUpdate(); }
-    function twRenumber() {
-      var rows = document.getElementById('tw-emails').querySelectorAll('.tw-email-row');
-      for (var i = 0; i < rows.length; i++) rows[i].querySelector('.tw-email-num').textContent = i + 2;
-    }
+    function twRenumber() { document.getElementById('tw-emails').querySelectorAll('.tw-email-row').forEach(function(r, i) { r.querySelector('.tw-email-num').textContent = i + 2; }); }
     twUpdate();
   </script>
 </body>
