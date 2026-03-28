@@ -14,8 +14,8 @@
   var script = document.currentScript;
   var BUSINESS_ID = script && script.getAttribute('data-business-id');
   var THEME = (script && script.getAttribute('data-theme')) || 'auto';
-  var API_BASE = 'https://sortora.com/api';
-  var PAY_BASE = 'https://sortora.com/pay.html';
+  var API_BASE = (window.location.origin || 'https://sortora.vercel.app') + '/api';
+  var PAY_BASE = (window.location.origin || 'https://sortora.vercel.app') + '/pay.html';
 
   if (!BUSINESS_ID) {
     console.warn('[Sortora] Missing data-business-id attribute.');
