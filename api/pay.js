@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
 
     var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
     var amountCents = Math.round(parseFloat(participant.amount) * 100);
-    var feePercent = 0.025;
+    var feePercent = 0.03;
     var applicationFee = Math.round(amountCents * feePercent);
 
     var checkoutSession = await stripe.checkout.sessions.create({
