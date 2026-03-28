@@ -1,18 +1,18 @@
 const { createClient } = require('@supabase/supabase-js');
+const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, setSecurityHeaders } = require('./_security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  setSecurityHeaders(res);
+  if (!corsCheck(req, res)) return;
 
-  // GET — fetch session info for the join page
   if (req.method === 'GET') {
+    if (!applyRateLimit(req, res, 30, 60000)) return;
+
     try {
-      var sessionId = req.query.session;
-      if (!sessionId) return res.status(400).json({ error: 'Missing session ID' });
+      var sessionId = sanitizeUUID(req.query.session);
+      if (!sessionId) return res.status(400).json({ error: 'Invalid session ID' });
 
       var sessionResult = await supabase
         .from('booking_sessions')
@@ -23,7 +23,6 @@ module.exports = async function handler(req, res) {
       if (!sessionResult.data) return res.status(404).json({ error: 'Split not found' });
       var session = sessionResult.data;
 
-      // Get participants (names + status only, no tokens)
       var partsResult = await supabase
         .from('participants')
         .select('id, name, email, status, paid_at')
@@ -51,29 +50,29 @@ module.exports = async function handler(req, res) {
           paidCount: session.paid_count,
           status: session.status,
           deadline: session.deadline,
-          businessName: session.businesses?.business_name || 'Business'
+          businessName: session.businesses && session.businesses.business_name || 'Business'
         },
         participants: participants
       });
     } catch (err) {
       console.error('Join GET error:', err);
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 
-  // POST — join the split
   if (req.method === 'POST') {
+    if (!applyRateLimit(req, res, 10, 60000)) return;
+
     try {
       var body = req.body;
-      var sessionId = body.sessionId;
-      var name = body.name;
-      var email = body.email;
+      var sessionId = sanitizeUUID(body.sessionId);
+      var name = sanitizeString(body.name, 100);
+      var email = sanitizeEmail(body.email);
 
-      if (!sessionId || !name || !email) {
-        return res.status(400).json({ error: 'Name and email are required' });
-      }
+      if (!sessionId) return res.status(400).json({ error: 'Invalid session ID' });
+      if (!name) return res.status(400).json({ error: 'Name is required' });
+      if (!email) return res.status(400).json({ error: 'Valid email is required' });
 
-      // Get session
       var sessionResult = await supabase
         .from('booking_sessions')
         .select('id, total_participants, per_person_amount, status')
@@ -86,7 +85,6 @@ module.exports = async function handler(req, res) {
       if (session.status === 'expired') return res.status(400).json({ error: 'This split has expired' });
       if (session.status === 'confirmed') return res.status(400).json({ error: 'This booking is already confirmed' });
 
-      // Check if spots are available
       var countResult = await supabase
         .from('participants')
         .select('id, email')
@@ -97,17 +95,15 @@ module.exports = async function handler(req, res) {
         return res.status(400).json({ error: 'All spots are filled' });
       }
 
-      // Check if email already joined
       var alreadyJoined = existing.find(function(p) { return p.email === email; });
       if (alreadyJoined) {
-        // Return their existing payment token
         var tokenResult = await supabase
           .from('participants')
           .select('payment_token')
           .eq('id', alreadyJoined.id)
           .single();
 
-        var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.vercel.app';
+        var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
         return res.status(200).json({
           success: true,
           alreadyJoined: true,
@@ -115,7 +111,6 @@ module.exports = async function handler(req, res) {
         });
       }
 
-      // Add participant
       var insertResult = await supabase
         .from('participants')
         .insert({
@@ -133,7 +128,7 @@ module.exports = async function handler(req, res) {
         return res.status(500).json({ error: 'Failed to join split' });
       }
 
-      var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.vercel.app';
+      var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
       return res.status(200).json({
         success: true,
         payUrl: siteUrl + '/pay.html?token=' + insertResult.data.payment_token,
@@ -141,7 +136,7 @@ module.exports = async function handler(req, res) {
       });
     } catch (err) {
       console.error('Join POST error:', err);
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 
