@@ -1,5 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
-const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, setSecurityHeaders } = require('./_security');
+const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, setSecurityHeaders, alertError } = require('./_security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -55,7 +55,8 @@ module.exports = async function handler(req, res) {
         participants: participants
       });
     } catch (err) {
-      console.error('Join GET error:', err);
+      alertError('join', err, req);
+    console.error('Join GET error:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -124,7 +125,8 @@ module.exports = async function handler(req, res) {
         .single();
 
       if (insertResult.error) {
-        console.error('Join insert error:', insertResult.error);
+        alertError('join', err, req);
+    console.error('Join insert error:', insertResult.error);
         return res.status(500).json({ error: 'Failed to join split' });
       }
 
@@ -135,7 +137,8 @@ module.exports = async function handler(req, res) {
         spotsLeft: session.total_participants - existing.length - 1
       });
     } catch (err) {
-      console.error('Join POST error:', err);
+      alertError('join', err, req);
+    console.error('Join POST error:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
