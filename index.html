@@ -23,6 +23,24 @@
     .nav-btn-ghost{color:#0C1220}.nav-btn-ghost:hover{background:rgba(0,0,0,.04)}
     .nav-btn-fill{color:#fff;background:#0C1220;border:1px solid #0C1220}.nav-btn-fill:hover{background:#1a2540}
 
+    /* Hamburger */
+    .nav-hamburger{display:none;width:40px;height:40px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px;transition:background .12s;flex-shrink:0}
+    .nav-hamburger:hover{background:rgba(0,0,0,.04)}
+    .nav-hamburger span{display:block;width:100%;height:2px;background:#0C1220;border-radius:1px;transition:all .2s}
+    .nav-hamburger span:nth-child(2){margin:5px 0}
+
+    /* Mobile menu overlay */
+    .mobile-menu{display:none;position:fixed;inset:0;background:#fff;z-index:999;opacity:0;transition:opacity .2s}
+    .mobile-menu.open{opacity:1}
+    .mobile-menu-panel{padding:0;height:100%}
+    .mobile-menu-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:60px;border-bottom:1px solid #f0f0f0}
+    .mobile-menu-close{width:40px;height:40px;border:none;background:none;cursor:pointer;font-size:28px;color:#6a6a6a;display:flex;align-items:center;justify-content:center;border-radius:8px}
+    .mobile-menu-close:hover{background:rgba(0,0,0,.04);color:#0C1220}
+    .mobile-menu-links{display:flex;flex-direction:column;padding:12px 0}
+    .mobile-menu-link{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;font-size:18px;font-weight:700;color:#0C1220;text-decoration:none;border-bottom:1px solid #f0f0f0;transition:background .12s}
+    .mobile-menu-link:hover{background:#f7f8fa}
+    .mobile-menu-link::after{content:'›';font-size:24px;color:#b0b0b0;font-weight:400}
+
     /* ═══ HERO — "charge more" ═══ */
     .hero{padding:80px 40px 60px;max-width:1200px;margin:0 auto;text-align:center}
     .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:rgba(59,107,255,.06);color:#3B6BFF;font-size:12px;font-weight:700;margin-bottom:24px}
@@ -350,6 +368,7 @@
       .nav-links{display:none}
       .nav-logo-text{font-size:18px}
       .nav-btn{padding:7px 14px;font-size:13px}
+      .nav-hamburger{display:flex;flex-direction:column;justify-content:center;gap:0}
       .hero h1{font-size:32px;letter-spacing:-.04em}
       .hero-sub{font-size:16px;margin-bottom:28px}
       .hero-badge{font-size:11px;padding:4px 12px}
@@ -405,16 +424,38 @@
       <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
       <div class="nav-links">
         <a class="nav-link" href="#how">How it works</a>
-        <a class="nav-link" href="#try">Try it</a>
         <a class="nav-link" href="#pricing">Pricing</a>
+        <a class="nav-link" href="/for-business.html">For Business</a>
+        <a class="nav-link" href="/security.html">Security</a>
         <a class="nav-link" href="#embed">Developers</a>
       </div>
     </div>
     <div class="nav-right">
       <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
       <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
+      <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-panel">
+      <div class="mobile-menu-top">
+        <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
+        <div style="display:flex;align-items:center;gap:8px">
+          <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
+          <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
+          <button class="mobile-menu-close" onclick="toggleMobileMenu()">&times;</button>
+        </div>
+      </div>
+      <div class="mobile-menu-links">
+        <a class="mobile-menu-link" href="#how" onclick="toggleMobileMenu()">How it works</a>
+        <a class="mobile-menu-link" href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
+        <a class="mobile-menu-link" href="/for-business.html">For Business</a>
+        <a class="mobile-menu-link" href="/security.html">Security</a>
+        <a class="mobile-menu-link" href="#embed" onclick="toggleMobileMenu()">Developers</a>
+      </div>
+    </div>
+  </div>
 
   <div class="hero">
     <div class="hero-badge"><div class="hero-badge-dot"></div>Split-payment checkout for group bookings</div>
@@ -646,11 +687,25 @@
     <div class="footer-inner">
       <a class="footer-logo" href="/"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Sortora</span></a>
       <div class="footer-copy">&copy; 2026 Sortora. All rights reserved.</div>
-      <div class="footer-links"><a class="footer-link" href="#">Privacy</a><a class="footer-link" href="/security.html">Security</a><a class="footer-link" href="/security.html">Security</a><a class="footer-link" href="#">Terms</a><a class="footer-link" href="#">Contact</a></div>
+      <div class="footer-links"><a class="footer-link" href="/security.html">Security</a><a class="footer-link" href="#">Privacy</a><a class="footer-link" href="#">Terms</a><a class="footer-link" href="#">Contact</a></div>
     </div>
   </footer>
 
   <script>
+    // ═══ Mobile menu ═══
+    function toggleMobileMenu() {
+      var menu = document.getElementById('mobile-menu');
+      if (menu.style.display === 'block') {
+        menu.classList.remove('open');
+        setTimeout(function() { menu.style.display = 'none'; }, 250);
+        document.body.style.overflow = '';
+      } else {
+        menu.style.display = 'block';
+        setTimeout(function() { menu.classList.add('open'); }, 10);
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
     // ═══ Scroll reveal ═══
     var revealObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
