@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Privacy Policy — Sortora</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafbfc;color:#0C1220;-webkit-font-smoothing:antialiased}
+    .nav{padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.04)}
+    .nav-left{display:flex;align-items:center;gap:32px}
+    .nav-logo{display:flex;align-items:center;gap:7px;text-decoration:none}
+    .nav-logo-text{font-weight:800;font-size:20px;color:#0C1220;letter-spacing:-.5px}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+    .nav-btn-ghost{color:#0C1220}.nav-btn-ghost:hover{background:rgba(0,0,0,.04)}
+    .nav-btn-fill{color:#fff;background:#0C1220;border:1px solid #0C1220}.nav-btn-fill:hover{background:#1a2540}
+    .nav-back{font-size:14px;font-weight:600;color:#6a6a6a;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .12s}
+    .nav-back:hover{color:#0C1220}
+    .nav-back svg{width:16px;height:16px}
+    .nav-hamburger{display:none;width:40px;height:40px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px;transition:background .12s;flex-shrink:0}
+    .nav-hamburger:hover{background:rgba(0,0,0,.04)}
+    .nav-hamburger span{display:block;width:100%;height:2px;background:#0C1220;border-radius:1px;transition:all .2s}
+    .nav-hamburger span:nth-child(2){margin:5px 0}
+    .mobile-menu{display:none;position:fixed;inset:0;background:#fff;z-index:999;opacity:0;transition:opacity .2s}
+    .mobile-menu.open{opacity:1}
+    .mobile-menu-panel{padding:0;height:100%}
+    .mobile-menu-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:60px;border-bottom:1px solid #f0f0f0}
+    .mobile-menu-close{width:40px;height:40px;border:none;background:none;cursor:pointer;font-size:28px;color:#6a6a6a;display:flex;align-items:center;justify-content:center;border-radius:8px}
+    .mobile-menu-close:hover{background:rgba(0,0,0,.04);color:#0C1220}
+    .mobile-menu-links{display:flex;flex-direction:column;padding:12px 0}
+    .mobile-menu-link{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;font-size:18px;font-weight:700;color:#0C1220;text-decoration:none;border-bottom:1px solid #f0f0f0;transition:background .12s}
+    .mobile-menu-link:hover{background:#f7f8fa}
+    .mobile-menu-link::after{content:"›";font-size:24px;color:#b0b0b0;font-weight:400}
+
+    .hero{padding:80px 40px 48px;max-width:800px;margin:0 auto;text-align:center}
+    .hero h1{font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-.05em;line-height:1.1;margin-bottom:8px}
+    .hero-date{font-size:14px;color:#6a6a6a}
+    .content{max-width:720px;margin:0 auto;padding:0 40px 80px}
+    .content h2{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 12px}
+    .content h2:first-child{margin-top:0}
+    .content p{font-size:15px;color:#444;line-height:1.75;margin-bottom:12px}
+    .content p:last-child{margin-bottom:0}
+    .content a{color:#3B6BFF;text-decoration:none;font-weight:600}
+    .content a:hover{text-decoration:underline}
+
+    .footer{border-top:1px solid #f0f0f0;padding:40px}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-logo{display:flex;align-items:center;gap:6px;text-decoration:none}
+    .footer-logo span{font-weight:800;font-size:16px;color:#0C1220;letter-spacing:-.5px}
+    .footer-copy{font-size:12px;color:#b0b0b0}
+    .footer-links{display:flex;gap:16px}
+    .footer-link{font-size:13px;font-weight:600;color:#6a6a6a;text-decoration:none}.footer-link:hover{color:#0C1220}
+
+    @media(max-width:768px){
+      .nav-hamburger{display:flex;flex-direction:column;justify-content:center;gap:0}
+      .nav{padding:0 16px;height:60px}.hero{padding:48px 20px 32px}.hero h1{font-size:32px}.content{padding:0 20px 60px}.footer-inner{flex-direction:column;gap:12px;text-align:center}.footer-links{justify-content:center}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-left">
+      <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
+      <a class="nav-back" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Home</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
+      <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
+      <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu"><div class="mobile-menu-panel"><div class="mobile-menu-top"><a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a><div style="display:flex;align-items:center;gap:8px"><a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a><a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a><button class="mobile-menu-close" onclick="toggleMobileMenu()">&times;</button></div></div><div class="mobile-menu-links"><a class="mobile-menu-link" href="/#how">How it works</a><a class="mobile-menu-link" href="/#pricing">Pricing</a><a class="mobile-menu-link" href="/for-business.html">For Business</a><a class="mobile-menu-link" href="/security.html">Security</a><a class="mobile-menu-link" href="/#embed">Developers</a></div></div></div>
+
+  <div class="hero"><h1>Privacy Policy</h1><div class="hero-date">Last updated: March 28, 2026</div></div>
+
+  <div class="content">
+    <h2>What we collect</h2>
+    <p>When you create a Sortora business account, we collect your name, email address, and business name. When participants pay through a Sortora split, we collect their name and email address to coordinate the payment.</p>
+    <p>We do not collect or store credit card numbers, bank account details, or any payment card data. All payment processing is handled directly by Stripe, our PCI Level 1 certified payment processor.</p>
+
+    <h2>How we use your data</h2>
+    <p>We use your information to operate the Sortora platform: creating booking sessions, sending payment link emails, processing split payments, and confirming bookings. We also use your email to send transactional messages like payment confirmations and booking updates.</p>
+    <p>We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+
+    <h2>Third-party services</h2>
+    <p>Sortora uses the following third-party services to operate:</p>
+    <p><strong>Stripe</strong> processes all payments. When you pay through Sortora, your payment data is handled by Stripe under their <a href="https://stripe.com/privacy" target="_blank">privacy policy</a>. Sortora never receives your card details.</p>
+    <p><strong>Supabase</strong> hosts our database and authentication system. Your account data is stored in Supabase's encrypted, SOC 2 compliant infrastructure.</p>
+    <p><strong>Vercel</strong> hosts our website and API. All connections use TLS encryption.</p>
+    <p><strong>Resend</strong> delivers transactional emails (payment links, confirmations). Your email address is shared with Resend solely for email delivery.</p>
+
+    <h2>Data security</h2>
+    <p>All data transmitted to and from Sortora is encrypted with TLS 1.2 or higher. We enforce HSTS headers to prevent connection downgrades. Our API endpoints are protected with rate limiting, CORS enforcement, and input validation. For full details, see our <a href="/security.html">Security page</a>.</p>
+
+    <h2>Data retention</h2>
+    <p>We retain your account data for as long as your account is active. Booking session data is retained for 12 months after the booking date for record-keeping purposes. You can request deletion of your account and associated data at any time by emailing <a href="mailto:privacy@sortora.com">privacy@sortora.com</a>.</p>
+
+    <h2>Cookies</h2>
+    <p>Sortora uses essential cookies for authentication (maintaining your login session). We do not use advertising cookies, tracking cookies, or third-party analytics cookies.</p>
+
+    <h2>Your rights</h2>
+    <p>You have the right to access, correct, or delete your personal data. You can also request a copy of all data we hold about you. To exercise any of these rights, contact us at <a href="mailto:privacy@sortora.com">privacy@sortora.com</a>.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>We may update this privacy policy from time to time. We will notify you of any material changes by posting the updated policy on this page with a revised date.</p>
+
+    <h2>Contact</h2>
+    <p>If you have questions about this privacy policy or our data practices, contact us at <a href="mailto:privacy@sortora.com">privacy@sortora.com</a>.</p>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><a class="footer-logo" href="/"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Sortora</span></a><div class="footer-copy">&copy; 2026 Sortora. All rights reserved.</div><div class="footer-links"><a class="footer-link" href="/security.html">Security</a><a class="footer-link" href="/privacy.html">Privacy</a><a class="footer-link" href="/terms.html">Terms</a></div></div></footer>
+
+  <script>
+    function toggleMobileMenu(){var m=document.getElementById("mobile-menu");if(m.style.display==="block"){m.classList.remove("open");setTimeout(function(){m.style.display="none"},250);document.body.style.overflow=""}else{m.style.display="block";setTimeout(function(){m.classList.add("open")},10);document.body.style.overflow="hidden"}}
+  </script>
+</body>
+</html>
