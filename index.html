@@ -128,8 +128,8 @@
     .hv-code-header{display:flex;align-items:center;gap:6px;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
     .hv-code-dot{width:8px;height:8px;border-radius:50%}
     .hv-code-title{margin-left:10px;font-size:13px;color:rgba(255,255,255,.3);font-weight:600;font-family:'Courier New',monospace}
-    .hv-code-body{padding:28px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .hv-code-line{display:flex;padding:3px 28px;font-family:'Courier New',monospace;font-size:14px;line-height:2;transition:background .15s;min-width:fit-content}
+    .hv-code-body{padding:28px 0}
+    .hv-code-line{display:flex;padding:3px 28px;font-family:'Courier New',monospace;font-size:14px;line-height:2;transition:background .15s}
     .hv-code-line:hover{background:rgba(255,255,255,.03)}
     .hv-code-line.highlighted{background:rgba(59,107,255,.08);border-left:3px solid #3B6BFF;padding-left:25px}
     .hv-code-linenum{width:36px;text-align:right;color:rgba(255,255,255,.15);font-size:13px;margin-right:20px;flex-shrink:0;user-select:none}
@@ -277,7 +277,6 @@
     .cta-glow2{position:absolute;bottom:-30%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(59,107,255,.1) 0%,transparent 70%);pointer-events:none}
 
     /* ═══ FOOTER ═══ */
-    #final-cta{padding:120px 40px}
     .footer{border-top:1px solid #f0f0f0;padding:40px}
     .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
     .footer-logo{display:flex;align-items:center;gap:6px;text-decoration:none}
@@ -305,114 +304,8 @@
     .section-line{width:60px;height:3px;border-radius:2px;background:#EBEBEB;margin:0 auto 48px}
 
     /* ═══ MOBILE ═══ */
-    @media(max-width:900px){
-      .compare-grid,.pricing-grid{grid-template-columns:1fr}
-      .embed-inner,.try-inner{grid-template-columns:1fr}
-      .how-step{position:relative;top:auto !important}
-      .how-step-header{padding:40px 24px 32px}
-      .how-step-title{font-size:24px}
-      .hv-code{min-height:auto}
-      .hv-code-line{padding:3px 12px;font-size:11px;line-height:1.7}
-      .hv-code-linenum{width:20px;margin-right:10px;font-size:10px}
-      .hv-code-line.highlighted{padding-left:9px}
-      .hv-code-body{padding:20px 0}
-      .hv-code-badge{margin:16px 12px;font-size:12px;padding:8px 14px}
-      .hv-widget{padding:28px 20px;min-height:auto}
-      .hv-widget-inner{max-width:100%}
-      .hv-widget-booking h4{font-size:16px}
-      .hv-widget-booking .price{font-size:22px}
-      .hv-toggle{padding:12px 14px}
-      .hv-toggle-text{font-size:13px}
-      .hv-email-row{padding:10px 12px}
-      .hv-email-av{width:26px;height:26px;font-size:10px}
-      .hv-email-text{font-size:12px}
-      .hv-email-amount{font-size:14px}
-      .hv-confirm{padding:40px 20px;min-height:auto}
-      .hv-confirm-icon{width:64px;height:64px}
-      .hv-confirm-icon svg{width:32px;height:32px}
-      .hv-confirm-title{font-size:22px}
-      .hv-confirm-sub{font-size:14px}
-      .hv-confirm-stats{flex-direction:column;gap:16px}
-      .hv-confirm-stat-value{font-size:28px}
-      .fw-section{padding:60px 20px}
-      .fw-title{font-size:28px}
-      .fw-sub{font-size:16px}
-      .hero{padding:40px 20px 32px}
-      .slider-section{padding:0 20px 48px}
-      .compare{padding:48px 20px}
-      .compare-header{margin-bottom:32px}
-      .compare-card{padding:28px 24px;border-radius:16px}
-      .compare-card-price{font-size:42px}
-      .compare-card-per{font-size:14px;margin-bottom:16px}
-      .compare-stamp{font-size:12px;padding:6px 14px}
-      .compare-widget{padding:16px}
-      .try-section{padding:40px 20px 60px}
-      #final-cta{padding:60px 20px}
-    }
-    @media(max-width:768px){
-      .nav{padding:0 16px;height:60px}
-      .nav-links{display:none}
-      .nav-logo-text{font-size:18px}
-      .nav-btn{padding:7px 14px;font-size:13px}
-      /* Hero */
-      .hero h1{font-size:32px;letter-spacing:-.04em}
-      .hero-sub{font-size:16px;margin-bottom:28px}
-      .hero-badge{font-size:11px;padding:4px 12px}
-      .hero-ctas{flex-direction:column;gap:10px;align-items:stretch}
-      .hero-ctas .btn-primary,.hero-ctas .btn-secondary{justify-content:center;width:100%;padding:16px}
-      /* Slider */
-      .slider-card{padding:24px;border-radius:16px}
-      .slider-row{flex-direction:column;align-items:flex-start;gap:12px}
-      .slider-price{font-size:40px;min-width:auto}
-      .slider-input{width:100%;height:10px}
-      .slider-input::-webkit-slider-thumb{width:36px;height:36px;border-width:5px}
-      .slider-input::-moz-range-thumb{width:36px;height:36px;border-width:5px}
-      .slider-people{flex-wrap:wrap;gap:6px}
-      .slider-people-label{width:100%;font-size:13px}
-      .slider-people-btn{width:44px;height:44px;font-size:15px;border-radius:10px}
-      .slider-result{flex-direction:column;align-items:flex-start;gap:8px}
-      .slider-result-amount{font-size:32px}
-      .slider-result-tag{margin-left:0}
-      /* Marquee */
-      .marquee-item{font-size:14px;padding:8px 18px;margin:0 4px}
-      .marquee-item svg{width:16px;height:16px}
-      .marquee-label{font-size:11px;padding:0 20px}
-      /* Compare */
-      .compare-card-price{font-size:36px}
-      .cw-row{padding:8px 10px}
-      /* Try it */
-      .try-inner{gap:32px}
-      .try-body{padding:20px}
-      .try-booking{padding:12px}
-      .try-booking-title{font-size:13px}
-      .try-booking-price{font-size:16px}
-      .tw-toggle{padding:14px}
-      .tw-input,.tw-email-input{padding:12px;font-size:14px}
-      .tw-remove{width:36px;height:36px;font-size:16px}
-      .tw-email-num{width:28px;height:28px;font-size:12px}
-      .tw-add{padding:12px}
-      .tw-cta{padding:16px;font-size:15px}
-      /* Pricing */
-      .price-card{padding:28px}
-      .price-amount{font-size:40px}
-      .price-btn{padding:16px;font-size:16px}
-      .price-features li{font-size:14px}
-      /* Embed */
-      .embed-inner{gap:32px}
-      /* Footer */
-      .footer{padding:32px 20px}
-      .footer-inner{flex-direction:column;gap:12px;text-align:center}
-      .footer-links{justify-content:center}
-    }
-    @media(max-width:380px){
-      .hero h1{font-size:28px}
-      .slider-price{font-size:36px}
-      .slider-result-amount{font-size:28px}
-      .compare-card-price{font-size:32px}
-      .fw-title{font-size:24px}
-      .hv-code-line{font-size:10px}
-      .hv-code-linenum{font-size:9px;width:16px;margin-right:8px}
-    }
+    @media(max-width:900px){.compare-grid,.pricing-grid{grid-template-columns:1fr}.embed-inner,.try-inner{grid-template-columns:1fr}.how-step{position:relative;top:auto !important}.how-step-header{padding:40px 24px 32px}.hv-code{min-height:auto}.hv-code-line{padding:3px 16px;font-size:12px}.hv-code-linenum{width:24px;margin-right:12px;font-size:11px}.hv-widget{padding:32px 20px;min-height:auto}.hv-confirm{padding:48px 20px;min-height:auto}.hv-confirm-stats{flex-direction:column;gap:16px}.fw-section{padding:60px 20px}.hero{padding:48px 20px 40px}.slider-section{padding:0 20px 60px}.compare{padding:60px 20px}.try-section{padding:40px 20px 60px}}
+    @media(max-width:768px){.nav{padding:0 20px}.nav-links{display:none}.hero h1{font-size:36px}.slider-price{font-size:36px}.compare-card-price{font-size:40px}.footer-inner{flex-direction:column;gap:12px;text-align:center}.footer-links{justify-content:center}}
   </style>
 </head>
 <body>
@@ -558,7 +451,7 @@
       </div>
       <div class="how-step">
         <div class="how-step-header"><div class="how-step-num">2</div><div class="how-step-title">Customer toggles split</div><div class="how-step-desc">A split-payment toggle appears at checkout. Your customer enters their group's emails. Each person gets a unique payment link.</div></div>
-        <div class="how-step-visual"><div class="hv-widget"><div class="hv-widget-inner"><div class="hv-widget-biz"><div class="hv-widget-biz-logo">YB</div><div><div class="hv-widget-biz-name">Your Business</div><div class="hv-widget-biz-sub">Checkout</div></div></div><div class="hv-widget-booking"><h4>Group Experience</h4><p>Your date · Your time</p><div class="price">$300 <small>total</small></div></div><div class="hv-toggle"><div class="hv-toggle-switch"><div class="hv-toggle-knob"></div></div><div class="hv-toggle-text">Split this booking — $50 each</div></div><div class="hv-emails"><div class="hv-email-row"><div class="hv-email-av" style="background:#3B6BFF">S</div><div class="hv-email-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81eef3e6e0efe8fbe4f3c1e4ece0e8edafe2eeec">[email&#160;protected]</a></div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#8b5cf6">J</div><div class="hv-email-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f492869d919a90c5b49199959d98da979b99">[email&#160;protected]</a></div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#f59e0b">M</div><div class="hv-email-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0d6b7f646863693f4d68606c6461236e6260">[email&#160;protected]</a></div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#10B981">C</div><div class="hv-email-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0761756e6269633447626a666e6b2964686a">[email&#160;protected]</a></div><div class="hv-email-amount">$50</div></div></div></div></div></div>
+        <div class="how-step-visual"><div class="hv-widget"><div class="hv-widget-inner"><div class="hv-widget-biz"><div class="hv-widget-biz-logo">YB</div><div><div class="hv-widget-biz-name">Your Business</div><div class="hv-widget-biz-sub">Checkout</div></div></div><div class="hv-widget-booking"><h4>Group Experience</h4><p>Your date · Your time</p><div class="price">$300 <small>total</small></div></div><div class="hv-toggle"><div class="hv-toggle-switch"><div class="hv-toggle-knob"></div></div><div class="hv-toggle-text">Split this booking — $50 each</div></div><div class="hv-emails"><div class="hv-email-row"><div class="hv-email-av" style="background:#3B6BFF">S</div><div class="hv-email-text">organizer@email.com</div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#8b5cf6">J</div><div class="hv-email-text">friend1@email.com</div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#f59e0b">M</div><div class="hv-email-text">friend2@email.com</div><div class="hv-email-amount">$50</div></div><div class="hv-email-row"><div class="hv-email-av" style="background:#10B981">C</div><div class="hv-email-text">friend3@email.com</div><div class="hv-email-amount">$50</div></div></div></div></div></div>
       </div>
       <div class="how-step">
         <div class="how-step-header"><div class="how-step-num">3</div><div class="how-step-title">Everyone pays, booking confirms</div><div class="how-step-desc">When all shares are collected, the booking confirms automatically. You receive full payment via Stripe.</div></div>
@@ -628,7 +521,7 @@
         </div>
         <div class="reveal-right">
           <div class="embed-code"><div class="embed-code-glow"></div><div class="embed-code-header"><div class="embed-code-dot" style="background:#ff5f57"></div><div class="embed-code-dot" style="background:#febc2e"></div><div class="embed-code-dot" style="background:#28c840"></div><span style="margin-left:10px;font-size:13px;color:rgba(255,255,255,.3);font-weight:600;font-family:'Courier New',monospace">integration.html</span></div>
-            <div style="padding:24px 0;overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <div style="padding:24px 0">
               <div class="hv-code-line"><span class="hv-code-linenum">01</span><span class="hv-code-content"><span class="comment">&lt;!-- Add Sortora to any checkout --&gt;</span></span></div>
               <div class="hv-code-line"><span class="hv-code-linenum">02</span><span class="hv-code-content"></span></div>
               <div class="hv-code-line highlighted"><span class="hv-code-linenum">03</span><span class="hv-code-content"><span class="tag">&lt;script</span></span></div>
@@ -646,12 +539,12 @@
     </div>
   </div>
 
-  <div class="fw-section" id="final-cta">
+  <div class="fw-section" style="padding:120px 40px">
     <div class="fw-inner">
       <div class="fw-center reveal">
         <div class="fw-title text-grow" style="font-size:clamp(36px,5.5vw,64px)">Your customers don't see the price.<br/><em>They see their share.</em></div>
         <div style="font-size:18px;color:#6a6a6a;max-width:480px;margin:0 auto 40px;line-height:1.55">Install Sortora in 5 minutes. Your customers split it. You get paid in full. Free for 14 days.</div>
-        <div class="hero-ctas" style="margin-top:0">
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
           <a class="btn-primary" href="/signup.html" style="font-size:18px;padding:17px 40px">Get started free <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
           <a class="btn-secondary" href="#how" style="font-size:18px;padding:17px 40px">See how it works</a>
         </div>
@@ -668,7 +561,7 @@
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ═══ Scroll reveal ═══
     var revealObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
@@ -752,4 +645,12 @@
       var container = document.getElementById('tw-emails');
       if (container.children.length >= 19) return;
       var row = document.createElement('div'); row.className = 'tw-email-row';
-      row.innerHTML = '<div clas
+      row.innerHTML = '<div class="tw-email-num">' + (container.children.length + 2) + '</div><input class="tw-email-input" placeholder="friend@email.com" oninput="twUpdate()"/><button class="tw-remove" onclick="twRemoveEmail(this)">&times;</button>';
+      container.appendChild(row); twUpdate();
+    }
+    function twRemoveEmail(btn) { btn.parentElement.remove(); twRenumber(); twUpdate(); }
+    function twRenumber() { document.getElementById('tw-emails').querySelectorAll('.tw-email-row').forEach(function(r, i) { r.querySelector('.tw-email-num').textContent = i + 2; }); }
+    twUpdate();
+  </script>
+</body>
+</html>
