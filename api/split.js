@@ -1,6 +1,6 @@
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
-const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, sanitizeNumber, setSecurityHeaders } = require('./_security');
+const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, sanitizeNumber, setSecurityHeaders, alertError } = require('./_security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -64,7 +64,8 @@ module.exports = async function handler(req, res) {
       .single();
 
     if (sessionErr) {
-      console.error('Session insert error:', sessionErr);
+      alertError('split', err, req);
+    console.error('Session insert error:', sessionErr);
       return res.status(500).json({ error: 'Failed to create session' });
     }
 
@@ -84,7 +85,8 @@ module.exports = async function handler(req, res) {
       .select();
 
     if (partsErr) {
-      console.error('Participants insert error:', partsErr);
+      alertError('split', err, req);
+    console.error('Participants insert error:', partsErr);
       return res.status(500).json({ error: 'Failed to create participants' });
     }
 
@@ -123,6 +125,7 @@ module.exports = async function handler(req, res) {
       participantCount: parts.length
     });
   } catch (err) {
+    alertError('split', err, req);
     console.error('Split error:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
