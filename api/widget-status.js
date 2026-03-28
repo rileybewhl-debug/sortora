@@ -1,18 +1,19 @@
 const { createClient } = require('@supabase/supabase-js');
+const { corsCheck, applyRateLimit, sanitizeUUID, setSecurityHeaders } = require('./_security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  setSecurityHeaders(res);
+  if (!corsCheck(req, res)) return;
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+  if (!applyRateLimit(req, res, 60, 60000)) return;
+
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 
   try {
-    var businessId = req.query.id;
-    if (!businessId) return res.status(400).json({ active: false, reason: 'missing_id' });
+    var businessId = sanitizeUUID(req.query.id);
+    if (!businessId) return res.status(200).json({ active: false, reason: 'missing_id' });
 
     var result = await supabase
       .from('businesses')
@@ -20,23 +21,17 @@ module.exports = async function handler(req, res) {
       .eq('id', businessId)
       .single();
 
-    if (!result.data) {
-      return res.status(200).json({ active: false, reason: 'not_found' });
-    }
-
+    if (!result.data) return res.status(200).json({ active: false, reason: 'not_found' });
     var biz = result.data;
 
-    // Check subscription status (if field exists)
     if (biz.subscription_status === 'expired' || biz.subscription_status === 'cancelled') {
       return res.status(200).json({ active: false, reason: 'subscription_expired', businessName: biz.business_name });
     }
 
-    // Check if Stripe is connected
     if (!biz.stripe_onboarded) {
       return res.status(200).json({ active: false, reason: 'stripe_not_connected', businessName: biz.business_name });
     }
 
-    // Check plan limits
     var limits = { starter: 10, growth: 50, pro: Infinity };
     var limit = limits[biz.plan || 'starter'] || 10;
     var used = biz.splits_this_month || 0;
