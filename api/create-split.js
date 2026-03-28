@@ -1,5 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
-const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, sanitizeNumber, setSecurityHeaders } = require('./_security');
+const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, sanitizeNumber, setSecurityHeaders, alertError } = require('./_security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -56,7 +56,8 @@ module.exports = async function handler(req, res) {
       .single();
 
     if (sessionResult.error) {
-      console.error('Session insert error:', sessionResult.error);
+      alertError('create-split', err, req);
+    console.error('Session insert error:', sessionResult.error);
       return res.status(500).json({ error: 'Failed to create session' });
     }
 
@@ -89,6 +90,7 @@ module.exports = async function handler(req, res) {
       spotsFilled: organizerEmail ? 1 : 0
     });
   } catch (err) {
+    alertError('create-split', err, req);
     console.error('Create-split error:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
