@@ -147,6 +147,23 @@
   wrapper.innerHTML = HTML;
   shadow.appendChild(wrapper);
 
+  
+  // Check if business subscription is active before rendering
+  (async function() {
+    try {
+      var statusRes = await fetch(API_BASE + '/widget-status?id=' + BUSINESS_ID);
+      var status = await statusRes.json();
+      if (!status.active) {
+        console.warn('[Sortora] Widget disabled: ' + (status.reason || 'inactive'));
+        mount.style.display = 'none';
+        return;
+      }
+    } catch (e) {
+      // If status check fails, still show widget (fail open)
+      console.warn('[Sortora] Status check failed, showing widget anyway');
+    }
+  })();
+
   // State
   var isOpen = false;
   var shareUrl = null;
