@@ -1,6 +1,6 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
-const { corsCheck, applyRateLimit, sanitizeString, setSecurityHeaders } = require('./_security');
+const { corsCheck, applyRateLimit, sanitizeString, setSecurityHeaders, alertError } = require('./_security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
@@ -74,6 +74,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ url: checkoutSession.url });
   } catch (err) {
+    alertError('pay', err, req);
     console.error('Pay error:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
