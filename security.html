@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Security — Sortora</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafbfc;color:#0C1220;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+    /* Nav */
+    .nav{padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.04)}
+    .nav-left{display:flex;align-items:center;gap:32px}
+    .nav-logo{display:flex;align-items:center;gap:7px;text-decoration:none}
+    .nav-logo-text{font-weight:800;font-size:20px;color:#0C1220;letter-spacing:-.5px}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+    .nav-btn-ghost{color:#0C1220}.nav-btn-ghost:hover{background:rgba(0,0,0,.04)}
+    .nav-btn-fill{color:#fff;background:#0C1220;border:1px solid #0C1220}.nav-btn-fill:hover{background:#1a2540}
+    .nav-back{font-size:14px;font-weight:600;color:#6a6a6a;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .12s}
+    .nav-back:hover{color:#0C1220}
+    .nav-back svg{width:16px;height:16px}
+
+    /* ═══ HERO — Light, matching landing page ═══ */
+    .sec-hero{background:#fafbfc;padding:80px 40px 60px}
+    .sec-hero-inner{max-width:900px;margin:0 auto;text-align:center;position:relative;z-index:1}
+    .sec-hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;background:rgba(59,107,255,.06);margin-bottom:24px}
+    .sec-hero-badge svg{width:14px;height:14px;stroke:#3B6BFF;fill:none;stroke-width:2}
+    .sec-hero-badge span{font-size:12px;font-weight:700;color:#3B6BFF;letter-spacing:.03em}
+    .sec-hero h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-.05em;line-height:1.05;color:#0C1220;margin-bottom:16px}
+    .sec-hero h1 em{font-style:normal;color:#3B6BFF}
+    .sec-hero-sub{font-size:clamp(16px,1.8vw,20px);color:#6a6a6a;line-height:1.55;max-width:580px;margin:0 auto}
+
+    /* ═══ STATS BAR ═══ */
+    .stats-bar{border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;padding:0 40px}
+    .stats-bar-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+    .stat-item{padding:40px 20px;text-align:center;position:relative}
+    .stat-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:#f0f0f0}
+    .stat-num{font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-.04em;color:#0C1220;line-height:1}
+    .stat-num em{font-style:normal;color:#3B6BFF}
+    .stat-label{font-size:13px;color:#6a6a6a;margin-top:8px;line-height:1.4;font-weight:500}
+
+    /* ═══ TABS ═══ */
+    .tabs-section{max-width:1000px;margin:0 auto;padding:80px 40px 0}
+    .tabs-header{text-align:center;margin-bottom:48px}
+    .tabs-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.04em;margin-bottom:12px}
+    .tabs-title em{font-style:normal;color:#3B6BFF}
+    .tabs-sub{font-size:16px;color:#6a6a6a;line-height:1.5;max-width:560px;margin:0 auto}
+    .tab-nav{display:flex;justify-content:center;gap:4px;background:#f0f1f3;border-radius:12px;padding:4px;max-width:600px;margin:0 auto 48px}
+    .tab-btn{flex:1;padding:12px 20px;border:none;background:transparent;border-radius:9px;font-size:14px;font-weight:700;color:#6a6a6a;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+    .tab-btn.active{background:#fff;color:#0C1220;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .tab-btn:hover:not(.active){color:#0C1220}
+
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    .tab-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    .tab-text h3{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+    .tab-text p{font-size:15px;color:#555;line-height:1.7;margin-bottom:16px}
+    .tab-features{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .tab-feat{display:flex;gap:12px;align-items:flex-start}
+    .tab-feat-icon{width:32px;height:32px;border-radius:8px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+    .tab-feat-icon svg{width:16px;height:16px;stroke:#3B6BFF;fill:none;stroke-width:2}
+    .tab-feat-text h4{font-size:14px;font-weight:700;margin-bottom:2px}
+    .tab-feat-text p{font-size:13px;color:#6a6a6a;line-height:1.5;margin:0}
+
+    /* Tab visual panels */
+    .tab-visual{background:#0C1220;border-radius:20px;padding:40px;position:relative;overflow:hidden;min-height:360px;display:flex;align-items:center;justify-content:center}
+    .tab-visual-glow{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.4}
+    .tv-shield{position:relative;z-index:1;text-align:center}
+    .tv-shield-icon{width:80px;height:80px;border-radius:20px;background:rgba(59,107,255,.12);border:1px solid rgba(59,107,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .tv-shield-icon svg{width:40px;height:40px;stroke:#3B6BFF;fill:none;stroke-width:1.5}
+    .tv-shield-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px}
+    .tv-shield-sub{font-size:13px;color:rgba(255,255,255,.4)}
+
+    /* Layers visual */
+    .tv-layers{position:relative;z-index:1;width:100%;max-width:300px}
+    .tv-layer{padding:14px 20px;border-radius:12px;margin-bottom:8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:10px;transition:all .3s}
+    .tv-layer svg{width:16px;height:16px;flex-shrink:0}
+    .tv-layer:nth-child(1){background:rgba(59,107,255,.15);border:1px solid rgba(59,107,255,.25);color:#8baeff}
+    .tv-layer:nth-child(2){background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.2);color:#6ee7b7}
+    .tv-layer:nth-child(3){background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#fbbf24}
+    .tv-layer:nth-child(4){background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:#a78bfa}
+
+    /* Code visual */
+    .tv-code{position:relative;z-index:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;width:100%;max-width:320px}
+    .tv-code-header{display:flex;align-items:center;gap:6px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+    .tv-code-dot{width:7px;height:7px;border-radius:50%}
+    .tv-code-body{padding:16px;font-family:'Courier New',monospace;font-size:11px;line-height:1.8}
+    .tv-code-body .dim{color:rgba(255,255,255,.25)}
+    .tv-code-body .key{color:#3B6BFF}
+    .tv-code-body .val{color:#10B981}
+    .tv-code-body .str{color:#f59e0b}
+
+    /* ═══ CARDS SECTION ═══ */
+    .cards-section{max-width:1000px;margin:0 auto;padding:80px 40px}
+    .cards-header{text-align:center;margin-bottom:48px}
+    .cards-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.04em;margin-bottom:12px}
+    .cards-title em{font-style:normal;color:#3B6BFF}
+    .cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .sec-card{background:#fff;border:1px solid #EBEBEB;border-radius:16px;padding:32px;transition:all .2s;position:relative;overflow:hidden}
+    .sec-card:hover{border-color:#d0d0d0;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.05)}
+    .sec-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .sec-card-icon svg{width:22px;height:22px;fill:none;stroke-width:2}
+    .sec-card h3{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}
+    .sec-card p{font-size:14px;color:#6a6a6a;line-height:1.6}
+
+    /* ═══ COMPLIANCE BANNER ═══ */
+    .compliance{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+    .compliance-inner{background:#fff;border:1px solid #EBEBEB;border-radius:20px;padding:48px;display:flex;align-items:center;gap:48px}
+    .compliance-text{flex:1}
+    .compliance-text h2{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+    .compliance-text p{font-size:15px;color:#6a6a6a;line-height:1.6}
+    .compliance-badges{display:flex;gap:16px;flex-shrink:0}
+    .comp-badge{width:100px;height:100px;border-radius:16px;background:#f7f8fa;border:1px solid #EBEBEB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+    .comp-badge svg{width:28px;height:28px;stroke:#0C1220;fill:none;stroke-width:1.5}
+    .comp-badge span{font-size:10px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;text-align:center;line-height:1.2}
+
+    /* ═══ CTA ═══ */
+    .sec-cta{max-width:1000px;margin:0 auto;padding:0 40px 40px}
+    .btn-primary{padding:15px 32px;background:#3B6BFF;color:#fff;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+    .btn-primary:hover{background:#2d5ae6;transform:translateY(-2px);box-shadow:0 6px 20px rgba(59,107,255,.25)}
+    .btn-secondary{padding:15px 32px;background:#fff;color:#0C1220;border:2px solid #e0e3e8;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+    .btn-secondary:hover{border-color:#0C1220}
+
+    /* ═══ CONTACT ═══ */
+    .sec-contact{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+    .sec-contact-box{text-align:center;padding:40px;background:#f7f8fa;border-radius:16px;border:1px solid #f0f0f0}
+    .sec-contact-box h3{font-size:18px;font-weight:800;margin-bottom:6px}
+    .sec-contact-box p{font-size:14px;color:#6a6a6a;margin-bottom:14px;line-height:1.5}
+    .sec-contact-box a{font-size:15px;font-weight:700;color:#3B6BFF;text-decoration:none}
+    .sec-contact-box a:hover{text-decoration:underline}
+
+    /* Footer */
+    .footer{border-top:1px solid #f0f0f0;padding:40px}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-logo{display:flex;align-items:center;gap:6px;text-decoration:none}
+    .footer-logo span{font-weight:800;font-size:16px;color:#0C1220;letter-spacing:-.5px}
+    .footer-copy{font-size:12px;color:#b0b0b0}
+    .footer-links{display:flex;gap:16px}
+    .footer-link{font-size:13px;font-weight:600;color:#6a6a6a;text-decoration:none}.footer-link:hover{color:#0C1220}
+
+    /* Animations */
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:.1s}
+    .reveal-delay-2{transition-delay:.15s}
+    .reveal-delay-3{transition-delay:.2s}
+    .reveal-delay-4{transition-delay:.25s}
+
+    @media(max-width:900px){
+      .tab-layout{grid-template-columns:1fr}
+      .tab-visual{min-height:280px}
+      .cards-grid{grid-template-columns:1fr}
+      .compliance-inner{flex-direction:column;text-align:center}
+      .compliance-badges{justify-content:center}
+      .stats-bar-inner{grid-template-columns:1fr}
+      .stat-item:not(:last-child)::after{display:none}
+      .stat-item{padding:24px 20px}
+    }
+    @media(max-width:768px){
+      .nav{padding:0 16px;height:60px}
+      .sec-hero{padding:48px 20px 32px}
+      .sec-hero h1{font-size:32px}
+      .stats-bar{padding:0 20px}
+      .tabs-section,.cards-section,.compliance,.sec-cta,.sec-contact{padding-left:20px;padding-right:20px}
+      .tab-nav{flex-direction:column;max-width:100%}
+      .tab-btn{text-align:center}
+      .footer{padding:32px 20px}
+      .footer-inner{flex-direction:column;gap:12px;text-align:center}
+      .footer-links{justify-content:center}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-left">
+      <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
+      <a class="nav-back" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Home</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
+      <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="sec-hero">
+    <div class="sec-hero-inner reveal">
+      <div class="sec-hero-badge"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Security at Sortora</span></div>
+      <h1>Your payments are protected at <em>every layer.</em></h1>
+      <div class="sec-hero-sub">Sortora coordinates group payments. We never see a credit card number. Every API call is rate-limited, validated, and encrypted end-to-end.</div>
+    </div>
+  </div>
+
+  <!-- ═══ STATS BAR ═══ -->
+  <div class="stats-bar">
+    <div class="stats-bar-inner">
+      <div class="stat-item reveal"><div class="stat-num"><em>0</em></div><div class="stat-label">Credit card numbers stored by Sortora</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-num">256<em>-bit</em></div><div class="stat-label">TLS encryption on every connection</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-num">6</div><div class="stat-label">Independent security layers on every API call</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ TABBED SECTIONS ═══ -->
+  <div class="tabs-section">
+    <div class="tabs-header reveal">
+      <div class="tabs-title">How we <em>protect</em> your business</div>
+      <div class="tabs-sub">Multiple security systems work together to keep your revenue, your customers, and your data safe.</div>
+    </div>
+    <div class="tab-nav reveal">
+      <button class="tab-btn active" onclick="showTab('payments')">Payments</button>
+      <button class="tab-btn" onclick="showTab('api')">API Defense</button>
+      <button class="tab-btn" onclick="showTab('widget')">Widget</button>
+      <button class="tab-btn" onclick="showTab('infra')">Infrastructure</button>
+    </div>
+
+    <!-- Tab 1: Payments -->
+    <div class="tab-content active" id="tab-payments">
+      <div class="tab-layout">
+        <div class="tab-text reveal">
+          <h3>Payment data never touches our servers</h3>
+          <p>When a participant pays their share, they're redirected to a Stripe-hosted checkout page. Card details go directly to Stripe's PCI Level 1 certified servers — the highest level in the payments industry.</p>
+          <p>Sortora only receives a webhook confirmation that payment succeeded. We never see, store, or process card numbers, CVVs, or bank details.</p>
+          <div class="tab-features">
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>PCI DSS Level 1</h4><p>Stripe handles all card processing</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Unique payment tokens</h4><p>Cryptographically random, single-use per participant</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Webhook signature verification</h4><p>Only Stripe can trigger payment confirmations</p></div></div>
+          </div>
+        </div>
+        <div class="tab-visual reveal reveal-delay-1">
+          <div class="tab-visual-glow" style="background:#3B6BFF;top:10%;left:60%"></div>
+          <div class="tv-shield">
+            <div class="tv-shield-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="tv-shield-title">Card data → Stripe only</div>
+            <div class="tv-shield-sub">Sortora never sees your card number</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: API -->
+    <div class="tab-content" id="tab-api">
+      <div class="tab-layout">
+        <div class="tab-text reveal">
+          <h3>Six layers of API protection</h3>
+          <p>Every request to Sortora's API passes through multiple security checks before it reaches your data. Automated attacks, injection attempts, and unauthorized access are blocked at the perimeter.</p>
+          <div class="tab-features">
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="tab-feat-text"><h4>Rate limiting</h4><p>Per-IP caps prevent spam and brute-force attacks</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div><div class="tab-feat-text"><h4>CORS enforcement</h4><p>Only authorized domains can call our API</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tab-feat-text"><h4>Input validation</h4><p>Every field sanitized, bounded, and type-checked</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="tab-feat-text"><h4>Security headers</h4><p>HSTS, X-Frame-Options, XSS protection, nosniff</p></div></div>
+          </div>
+        </div>
+        <div class="tab-visual reveal reveal-delay-1">
+          <div class="tab-visual-glow" style="background:#10B981;top:50%;left:20%"></div>
+          <div class="tv-layers">
+            <div class="tv-layer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>TLS Encryption</div>
+            <div class="tv-layer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>CORS Check</div>
+            <div class="tv-layer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rate Limiter</div>
+            <div class="tv-layer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Input Validation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Widget -->
+    <div class="tab-content" id="tab-widget">
+      <div class="tab-layout">
+        <div class="tab-text reveal">
+          <h3>Tamper-proof by design</h3>
+          <p>The Sortora widget is a lightweight form that runs inside a Shadow DOM — a browser-native isolation boundary. The host website can't access the widget's internals, and the widget can't access the host page's data.</p>
+          <p>All logic runs server-side. Even if someone modifies the widget JavaScript, the server enforces platform fees, validates inputs, and checks subscription status on every request.</p>
+          <div class="tab-features">
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Shadow DOM isolation</h4><p>CSS and JS boundaries prevent cross-contamination</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Server-side fee enforcement</h4><p>Fees can't be removed by editing frontend code</p></div></div>
+          </div>
+        </div>
+        <div class="tab-visual reveal reveal-delay-1">
+          <div class="tab-visual-glow" style="background:#8b5cf6;top:30%;left:70%"></div>
+          <div class="tv-code">
+            <div class="tv-code-header"><div class="tv-code-dot" style="background:#ff5f57"></div><div class="tv-code-dot" style="background:#febc2e"></div><div class="tv-code-dot" style="background:#28c840"></div></div>
+            <div class="tv-code-body">
+              <div><span class="dim">// Widget runs in Shadow DOM</span></div>
+              <div><span class="key">mount</span><span class="dim">.</span><span class="val">attachShadow</span><span class="dim">({</span></div>
+              <div>&nbsp;&nbsp;<span class="key">mode</span><span class="dim">: </span><span class="str">'open'</span></div>
+              <div><span class="dim">});</span></div>
+              <div>&nbsp;</div>
+              <div><span class="dim">// All validation server-side</span></div>
+              <div><span class="key">fetch</span><span class="dim">(</span><span class="str">'/api/create-split'</span><span class="dim">, {</span></div>
+              <div>&nbsp;&nbsp;<span class="key">body</span><span class="dim">: </span><span class="val">sanitized</span><span class="dim">(data)</span></div>
+              <div><span class="dim">});</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: Infrastructure -->
+    <div class="tab-content" id="tab-infra">
+      <div class="tab-layout">
+        <div class="tab-text reveal">
+          <h3>Enterprise-grade infrastructure</h3>
+          <p>Sortora runs on Vercel's global edge network with automatic SSL provisioning and DDoS protection. Data is stored in Supabase with Row Level Security policies, encrypted connections, and automated backups.</p>
+          <p>Passwords are hashed with bcrypt using per-password salts. Session tokens are short-lived JWTs validated on every request. Service keys exist only in server-side environment variables — never in client code.</p>
+          <div class="tab-features">
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Vercel Edge Network</h4><p>Global CDN with automatic SSL and DDoS mitigation</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Supabase + Row Level Security</h4><p>Encrypted database with access policies per user</p></div></div>
+            <div class="tab-feat"><div class="tab-feat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tab-feat-text"><h4>Bcrypt + JWT authentication</h4><p>Hashed passwords, short-lived tokens, server-side keys</p></div></div>
+          </div>
+        </div>
+        <div class="tab-visual reveal reveal-delay-1">
+          <div class="tab-visual-glow" style="background:#f59e0b;top:60%;left:40%"></div>
+          <div class="tv-shield">
+            <div class="tv-shield-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
+            <div class="tv-shield-title">SOC 2 Compliant</div>
+            <div class="tv-shield-sub">Vercel + Supabase infrastructure</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EXTRA CARDS ═══ -->
+  <div class="cards-section">
+    <div class="cards-header reveal">
+      <div class="cards-title">Built for <em>trust</em></div>
+    </div>
+    <div class="cards-grid">
+      <div class="sec-card reveal reveal-delay-1">
+        <div class="sec-card-icon" style="background:#EEF2FF"><svg viewBox="0 0 24 24" stroke="#3B6BFF" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h3>Webhook verification</h3>
+        <p>Every incoming Stripe webhook is verified against a cryptographic signing secret. Only Stripe can trigger payment confirmations — not an attacker.</p>
+      </div>
+      <div class="sec-card reveal reveal-delay-2">
+        <div class="sec-card-icon" style="background:#f0fdf4"><svg viewBox="0 0 24 24" stroke="#10B981" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h3>HSTS enforcement</h3>
+        <p>Strict-Transport-Security headers ensure connections can never be downgraded to unencrypted HTTP. Every request uses HTTPS — no exceptions.</p>
+      </div>
+      <div class="sec-card reveal reveal-delay-3">
+        <div class="sec-card-icon" style="background:#fefce8"><svg viewBox="0 0 24 24" stroke="#f59e0b" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>No error leakage</h3>
+        <p>Server errors return generic messages to the browser. Internal details, stack traces, and database errors are logged privately and never exposed to users.</p>
+      </div>
+      <div class="sec-card reveal reveal-delay-4">
+        <div class="sec-card-icon" style="background:#faf5ff"><svg viewBox="0 0 24 24" stroke="#8b5cf6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>Subscription gating</h3>
+        <p>The widget checks subscription status on every load. Expired plans, disconnected Stripe accounts, and limit overages are blocked server-side — not on the frontend.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COMPLIANCE BANNER ═══ -->
+  <div class="compliance reveal">
+    <div class="compliance-inner">
+      <div class="compliance-text">
+        <h2>Compliant infrastructure</h2>
+        <p>Sortora is built on industry-standard infrastructure from Stripe, Vercel, and Supabase — all of which maintain SOC 2 compliance and undergo regular third-party security audits.</p>
+      </div>
+      <div class="compliance-badges">
+        <div class="comp-badge"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>SOC 2</span></div>
+        <div class="comp-badge"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span>PCI DSS<br/>Level 1</span></div>
+        <div class="comp-badge"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><span>TLS 1.2+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CTA ═══ -->
+  <div class="sec-cta reveal">
+    <div style="text-align:center;max-width:700px;margin:0 auto">
+      <div style="font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px">Security is built in,<br/><span style="color:#3B6BFF">not bolted on.</span></div>
+      <div style="font-size:17px;color:#6a6a6a;margin-bottom:36px;line-height:1.55">Start accepting split payments with confidence. Free 14-day trial. No credit card required.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a class="btn-primary" href="/signup.html" style="font-size:18px;padding:17px 40px">Get started free <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <a class="btn-secondary" href="mailto:security@sortora.com" style="font-size:18px;padding:17px 40px">Report a vulnerability</a>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#b0b0b0">security@sortora.com</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <a class="footer-logo" href="/"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Sortora</span></a>
+      <div class="footer-copy">&copy; 2026 Sortora. All rights reserved.</div>
+      <div class="footer-links"><a class="footer-link" href="/security.html">Security</a><a class="footer-link" href="#">Privacy</a><a class="footer-link" href="#">Terms</a><a class="footer-link" href="#">Contact</a></div>
+    </div>
+  </footer>
+
+  <script>
+    function showTab(name) {
+      document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+      document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+      // Re-trigger reveal animations in the new tab
+      document.querySelectorAll('#tab-' + name + ' .reveal').forEach(function(el) {
+        el.classList.remove('visible');
+        setTimeout(function() { revealObserver.observe(el); }, 50);
+      });
+    }
+
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) e.target.classList.add('visible');
+        else e.target.classList.remove('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+  </script>
+</body>
+</html>
