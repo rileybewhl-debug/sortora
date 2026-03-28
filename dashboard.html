@@ -10,6 +10,16 @@
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:#f9fafb;min-height:100vh;-webkit-font-smoothing:antialiased;color:#0C1220;display:flex}
 
+    /* Skeleton loading */
+    @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+    .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite linear;border-radius:6px}
+    .skel-stat{height:36px;width:60px;margin-bottom:4px}
+    .skel-row{height:64px;border-radius:10px;margin-bottom:8px}
+    .skel-text{height:14px;width:80%;margin-bottom:8px}
+    .skel-text-sm{height:11px;width:50%}
+    .skeleton-wrap{transition:opacity .3s}
+    .skeleton-wrap.hidden{opacity:0;pointer-events:none;position:absolute}
+
     /* Sidebar */
     .sidebar{width:240px;background:#fff;border-right:1px solid #EBEBEB;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:40}
     .sb-logo{padding:20px 20px 24px;display:flex;align-items:center;gap:8px;text-decoration:none}
@@ -183,15 +193,26 @@
     <div class="view active" id="view-overview">
       <div class="main-header"><div class="main-title" id="welcome-title">Dashboard</div></div>
       <div class="main-body">
-        <div class="stats-row">
+        <div class="stats-row" id="stats-real" style="display:none">
           <div class="stat-card"><div class="stat-label">Total Splits</div><div class="stat-value" id="ov-splits">0</div><div class="stat-sub">all time</div></div>
           <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value green" id="ov-revenue">$0</div><div class="stat-sub">total collected</div></div>
           <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value blue" id="ov-active">0</div><div class="stat-sub">pending bookings</div></div>
           <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value" id="ov-confirmed">0</div><div class="stat-sub">completed splits</div></div>
         </div>
+        <div class="stats-row skeleton-wrap" id="stats-skeleton">
+          <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div><div class="skeleton skel-text-sm" style="width:40%"></div></div>
+          <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div><div class="skeleton skel-text-sm" style="width:40%"></div></div>
+          <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div><div class="skeleton skel-text-sm" style="width:40%"></div></div>
+          <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div><div class="skeleton skel-text-sm" style="width:40%"></div></div>
+        </div>
         <div class="card">
           <div class="card-title">Recent Booking Splits <small id="ov-count"></small></div>
-          <div id="ov-list"></div>
+          <div id="ov-list" style="display:none"></div>
+          <div class="skeleton-wrap" id="ov-skeleton">
+            <div class="skeleton skel-row"></div>
+            <div class="skeleton skel-row"></div>
+            <div class="skeleton skel-row"></div>
+          </div>
         </div>
 
         <!-- Stripe connect prompt (if not connected) -->
@@ -215,7 +236,14 @@
       <div class="main-body">
         <div class="card">
           <div class="card-title">All Booking Splits <small id="bk-count"></small></div>
-          <div id="bk-list"></div>
+          <div id="bk-list" style="display:none"></div>
+          <div class="skeleton-wrap" id="bk-skeleton">
+            <div class="skeleton skel-row"></div>
+            <div class="skeleton skel-row"></div>
+            <div class="skeleton skel-row"></div>
+            <div class="skeleton skel-row"></div>
+            <div class="skeleton skel-row"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -454,6 +482,14 @@
       document.getElementById('ov-count').textContent = bookings.length + ' total';
       document.getElementById('bk-count').textContent = bookings.length + ' total';
 
+      // Hide skeletons, show real content
+      document.getElementById('stats-skeleton').classList.add('hidden');
+      document.getElementById('stats-real').style.display = '';
+      document.getElementById('ov-skeleton').classList.add('hidden');
+      document.getElementById('ov-list').style.display = '';
+      document.getElementById('bk-skeleton').classList.add('hidden');
+      document.getElementById('bk-list').style.display = '';
+
       renderBookingList('ov-list', bookings.slice(0, 5));
       renderBookingList('bk-list', bookings);
     }
@@ -518,12 +554,23 @@
       ['starter', 'growth', 'pro'].forEach(function(p) {
         var el = document.getElementById('plan-' + p);
         if (p === plan) { el.style.border = '2px solid #3B6BFF'; el.style.background = 'rgba(59,107,255,.02)'; }
-        else { el.style.border = '1px solid #EBEBEB'; el.style.background = '#fff'; }
+        else { el.style.border = '1px solid #EBEBEB'; el.style.background = '#ffff'; }
       });
     }
 
     function selectPlan(plan) {
       highlightPlan(plan);
+    }
+
+    async function subscribePlan(plan) {
+      var r = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessId: currentUser.id, plan: plan })
+      });
+      var data = await r.json();
+      if (data.url) { window.location.href = data.url; }
+      else { alert(data.error || 'Could not start subscription. Please try again.'); }
     }
 
     async function signOut() { await SB.auth.signOut(); window.location.href = '/login.html'; }
