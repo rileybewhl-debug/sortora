@@ -3,6 +3,7 @@
  * - Rate limiting (in-memory per function instance)
  * - CORS lockdown (only allow Sortora domains)
  * - Input sanitization
+ * - Slack error alerts
  */
 
 // ═══ CORS ═══
@@ -16,14 +17,12 @@ var ALLOWED_ORIGINS = [
 
 function corsCheck(req, res) {
   var origin = req.headers.origin || req.headers.referer || '';
-  // Strip trailing slash and path from referer
   origin = origin.replace(/\/+$/, '').replace(/\/[^/]*$/, '').replace(/\/+$/, '');
 
   var allowed = ALLOWED_ORIGINS.some(function(o) {
     return origin === o || origin.startsWith(o);
   });
 
-  // Allow requests with no origin (server-to-server, curl, Stripe webhooks)
   if (!origin) allowed = true;
 
   if (allowed) {
@@ -37,7 +36,7 @@ function corsCheck(req, res) {
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
-    return false; // Signal: don't continue
+    return false;
   }
 
   if (!allowed && origin) {
@@ -45,20 +44,18 @@ function corsCheck(req, res) {
     return false;
   }
 
-  return true; // Signal: continue processing
+  return true;
 }
 
 // ═══ RATE LIMITING ═══
-// In-memory store (resets on cold start, but effective per instance)
 var rateLimitStore = {};
 
 function rateLimit(key, maxRequests, windowMs) {
   maxRequests = maxRequests || 10;
-  windowMs = windowMs || 60000; // 1 minute default
+  windowMs = windowMs || 60000;
 
   var now = Date.now();
 
-  // Clean old entries every 100 calls
   if (Math.random() < 0.01) {
     Object.keys(rateLimitStore).forEach(function(k) {
       if (rateLimitStore[k].resetAt < now) delete rateLimitStore[k];
@@ -73,7 +70,7 @@ function rateLimit(key, maxRequests, windowMs) {
   rateLimitStore[key].count++;
 
   if (rateLimitStore[key].count > maxRequests) {
-    return false; // Rate limited
+    return false;
   }
 
   return true;
@@ -102,8 +99,8 @@ function sanitizeString(str, maxLength) {
   return str
     .trim()
     .substring(0, maxLength)
-    .replace(/<[^>]*>/g, '')     // Strip HTML tags
-    .replace(/[<>"'`;(){}]/g, ''); // Strip dangerous chars
+    .replace(/<[^>]*>/g, '')
+    .replace(/[<>"'`;(){}]/g, '');
 }
 
 function sanitizeEmail(email) {
@@ -139,6 +136,45 @@ function setSecurityHeaders(res) {
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 }
 
+// ═══ SLACK ERROR ALERTS ═══
+var lastAlertTime = {};
+
+function alertError(route, error, req) {
+  var webhookUrl = process.env.SLACK_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  // Throttle: max 1 alert per route per 5 minutes
+  var now = Date.now();
+  if (lastAlertTime[route] && (now - lastAlertTime[route]) < 300000) return;
+  lastAlertTime[route] = now;
+
+  var ip = getRateLimitKey(req);
+  var payload = {
+    text: ':rotating_light: *Sortora API Error*',
+    blocks: [
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: ':rotating_light: *API Error — ' + route + '*\n```' + (error.message || String(error)).substring(0, 500) + '```'
+        }
+      },
+      {
+        type: 'context',
+        elements: [
+          { type: 'mrkdwn', text: '*Route:* ' + route + ' | *IP:* ' + ip + ' | *Time:* ' + new Date().toISOString() }
+        ]
+      }
+    ]
+  };
+
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function() {});
+}
+
 module.exports = {
   corsCheck: corsCheck,
   applyRateLimit: applyRateLimit,
@@ -146,5 +182,6 @@ module.exports = {
   sanitizeEmail: sanitizeEmail,
   sanitizeNumber: sanitizeNumber,
   sanitizeUUID: sanitizeUUID,
-  setSecurityHeaders: setSecurityHeaders
+  setSecurityHeaders: setSecurityHeaders,
+  alertError: alertError
 };
