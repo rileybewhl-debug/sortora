@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Sortora for Your Business</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafbfc;color:#0C1220;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    .nav{padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.04)}
+    .nav-left{display:flex;align-items:center;gap:32px}
+    .nav-logo{display:flex;align-items:center;gap:7px;text-decoration:none}
+    .nav-logo-text{font-weight:800;font-size:20px;color:#0C1220;letter-spacing:-.5px}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+    .nav-btn-ghost{color:#0C1220}.nav-btn-ghost:hover{background:rgba(0,0,0,.04)}
+    .nav-btn-fill{color:#fff;background:#0C1220;border:1px solid #0C1220}.nav-btn-fill:hover{background:#1a2540}
+    .nav-back{font-size:14px;font-weight:600;color:#6a6a6a;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .12s}
+    .nav-back:hover{color:#0C1220}
+    .nav-back svg{width:16px;height:16px}
+    .hero{padding:80px 40px 60px;max-width:1000px;margin:0 auto;text-align:center}
+    .hero-icon{font-size:56px;margin-bottom:20px;display:block}
+    .hero h1{font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-.05em;line-height:1.05;margin-bottom:16px}
+    .hero h1 em{font-style:normal;color:#3B6BFF}
+    .hero-sub{font-size:clamp(16px,1.8vw,20px);color:#6a6a6a;line-height:1.55;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto}
+    .hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{padding:15px 32px;background:#3B6BFF;color:#fff;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+    .btn-primary:hover{background:#2d5ae6;transform:translateY(-2px);box-shadow:0 6px 20px rgba(59,107,255,.25)}
+    .btn-secondary{padding:15px 32px;background:#fff;color:#0C1220;border:2px solid #e0e3e8;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+    .btn-secondary:hover{border-color:#0C1220}
+    .scenario{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+    .scenario-card{background:#fff;border:1px solid #EBEBEB;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.04)}
+    .scenario-header{padding:32px 36px;border-bottom:1px solid #f0f0f0}
+    .scenario-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3B6BFF;margin-bottom:8px}
+    .scenario-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+    .scenario-meta{font-size:14px;color:#6a6a6a}
+    .scenario-body{display:grid;grid-template-columns:1fr 1fr;min-height:280px}
+    .scenario-left{padding:36px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #f0f0f0}
+    .scenario-right{padding:36px;display:flex;flex-direction:column;justify-content:center;background:#fafbff}
+    .sc-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
+    .sc-label.red{color:#ef4444}
+    .sc-label.green{color:#10B981}
+    .sc-price{font-size:48px;font-weight:800;letter-spacing:-.04em;margin-bottom:4px}
+    .sc-per{font-size:15px;color:#6a6a6a;margin-bottom:16px}
+    .sc-result{display:inline-flex;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:800}
+    .sc-result.bad{background:#fef2f2;color:#ef4444;border:1px solid #fecaca}
+    .sc-result.good{background:#f0fdf4;color:#10B981;border:1px solid #bbf7d0}
+    .sc-widget{margin-top:16px}
+    .sc-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fff;border:1px solid #f0f0f0;border-radius:8px;margin-bottom:4px}
+    .sc-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+    .sc-name{flex:1;font-size:12px;color:#555}
+    .sc-amt{font-size:13px;font-weight:800}
+    .sc-check{width:16px;height:16px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sc-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3}
+    .benefits{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+    .benefits-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.04em;text-align:center;margin-bottom:48px}
+    .benefits-title em{font-style:normal;color:#3B6BFF}
+    .benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .benefit-card{background:#fff;border:1px solid #EBEBEB;border-radius:16px;padding:32px;transition:all .15s}
+    .benefit-card:hover{border-color:#d0d0d0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    .benefit-icon{width:44px;height:44px;border-radius:12px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .benefit-icon svg{width:22px;height:22px;stroke:#3B6BFF;fill:none;stroke-width:2}
+    .benefit-card h3{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}
+    .benefit-card p{font-size:14px;color:#6a6a6a;line-height:1.55}
+    .how-mini{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+    .how-mini-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.04em;text-align:center;margin-bottom:48px}
+    .how-mini-title em{font-style:normal;color:#3B6BFF}
+    .how-steps-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .how-step-mini{text-align:center;padding:24px}
+    .how-step-mini-num{width:40px;height:40px;border-radius:50%;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#3B6BFF;margin:0 auto 14px}
+    .how-step-mini h3{font-size:16px;font-weight:800;margin-bottom:6px}
+    .how-step-mini p{font-size:14px;color:#6a6a6a;line-height:1.5}
+    .cta-section{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+    
+    .footer{border-top:1px solid #f0f0f0;padding:40px}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-logo{display:flex;align-items:center;gap:6px;text-decoration:none}
+    .footer-logo span{font-weight:800;font-size:16px;color:#0C1220;letter-spacing:-.5px}
+    .footer-copy{font-size:12px;color:#b0b0b0}
+    .footer-links{display:flex;gap:16px}
+    .footer-link{font-size:13px;font-weight:600;color:#6a6a6a;text-decoration:none}.footer-link:hover{color:#0C1220}
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:.1s}
+    .reveal-delay-2{transition-delay:.2s}
+    .reveal-delay-3{transition-delay:.3s}
+    @media(max-width:900px){.scenario-body,.benefits-grid,.how-steps-mini{grid-template-columns:1fr}.hero{padding:48px 20px 40px}.scenario,.benefits,.how-mini,.cta-section{padding-left:20px;padding-right:20px}}
+    @media(max-width:768px){.nav{padding:0 16px;height:60px}.hero h1{font-size:32px}.hero-ctas{flex-direction:column;align-items:stretch}.hero-ctas .btn-primary,.hero-ctas .btn-secondary{justify-content:center;width:100%}.sc-price{font-size:36px}.scenario-left,.scenario-right{padding:28px 24px}.footer-inner{flex-direction:column;gap:12px;text-align:center}.footer-links{justify-content:center}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-left">
+      <a class="nav-logo" href="/"><svg width="26" height="26" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span class="nav-logo-text">Sortora</span></a>
+      <a class="nav-back" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back to home</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-btn nav-btn-ghost" href="/login.html">Log in</a>
+      <a class="nav-btn nav-btn-fill" href="/signup.html">Get started</a>
+    </div>
+  </nav>
+  <div class="hero reveal">
+    <div class="hero-icon" id="hero-icon"></div>
+    <h1 id="hero-title"></h1>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="/signup.html">Start free trial <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="btn-secondary" href="/#how">See how it works</a>
+    </div>
+  </div>
+  <div class="scenario reveal">
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-label">Example booking</div>
+        <div class="scenario-title" id="sc-title"></div>
+        <div class="scenario-meta" id="sc-meta"></div>
+      </div>
+      <div class="scenario-body">
+        <div class="scenario-left">
+          <div class="sc-label red">Without Sortora</div>
+          <div class="sc-price" id="sc-price-full"></div>
+          <div class="sc-per">Entire cost on one person</div>
+          <div class="sc-result bad">Booking abandoned</div>
+        </div>
+        <div class="scenario-right">
+          <div class="sc-label green">With Sortora</div>
+          <div class="sc-price" id="sc-price-split" style="color:#10B981"></div>
+          <div class="sc-per" id="sc-per-text"></div>
+          <div class="sc-widget" id="sc-widget"></div>
+          <div class="sc-result good" style="margin-top:12px">All paid — Confirmed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="benefits reveal">
+    <div class="benefits-title">Why <em id="benefit-type">businesses</em> love Sortora</div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal reveal-delay-1">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3>Charge more confidently</h3>
+        <p id="benefit-1"></p>
+      </div>
+      <div class="benefit-card reveal reveal-delay-2">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>No more payment chasing</h3>
+        <p id="benefit-2"></p>
+      </div>
+      <div class="benefit-card reveal reveal-delay-3">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3>5-minute install</h3>
+        <p>One script tag on your booking page. No developer needed. Works with any website builder — Squarespace, WordPress, Wix, Shopify, custom.</p>
+      </div>
+    </div>
+  </div>
+  <div class="how-mini reveal">
+    <div class="how-mini-title">How it works for <em id="how-type">your business</em></div>
+    <div class="how-steps-mini">
+      <div class="how-step-mini reveal reveal-delay-1">
+        <div class="how-step-mini-num">1</div>
+        <h3>Add Sortora to your checkout</h3>
+        <p>Paste one line of code on your booking page. Connect your Stripe account. Done in 5 minutes.</p>
+      </div>
+      <div class="how-step-mini reveal reveal-delay-2">
+        <div class="how-step-mini-num">2</div>
+        <h3>Customer creates a split</h3>
+        <p>At checkout, they enter the group size and share a link with their group. Each person opens it and pays their share.</p>
+      </div>
+      <div class="how-step-mini reveal reveal-delay-3">
+        <div class="how-step-mini-num">3</div>
+        <h3>Booking confirms automatically</h3>
+        <p>When everyone has paid, the booking confirms. You receive the full amount via Stripe.</p>
+      </div>
+    </div>
+  </div>
+  <div class="cta-section reveal" style="padding-bottom:40px">
+    <div style="text-align:center;max-width:700px;margin:0 auto">
+      <div style="font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px" id="cta-title"></div>
+      <div style="font-size:17px;color:#6a6a6a;margin-bottom:36px;line-height:1.55">Free 14-day trial. No credit card required. Cancel anytime.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a class="btn-primary" href="/signup.html" style="font-size:18px;padding:17px 40px">Get started free <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <a class="btn-secondary" href="/" style="font-size:18px;padding:17px 40px">Learn more</a>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#b0b0b0">5 minute setup · No developer needed</div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-inner">
+      <a class="footer-logo" href="/"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#0C1220" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#0C1220"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#0C1220" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Sortora</span></a>
+      <div class="footer-copy">&copy; 2026 Sortora. All rights reserved.</div>
+      <div class="footer-links"><a class="footer-link" href="#">Privacy</a><a class="footer-link" href="#">Terms</a><a class="footer-link" href="#">Contact</a></div>
+    </div>
+  </footer>
+  <script>
+    var categories={fitness:{icon:'🏋️',title:'Sortora for <em>Fitness Studios</em>',sub:'Group training sessions, team workouts, private classes — let your clients split the cost at checkout and book more often.',scenarioTitle:'Group HIIT Training Session',scenarioMeta:'Saturday 8:00 AM · 6 people · 60 minutes',price:360,people:6,perPerson:60,names:['Sarah','Jake','Mia','Chris','Lisa','Dan'],benefitType:'fitness studios',howType:'fitness studios',benefit1:'Group training sessions at $300-500 feel expensive for one person. At $50-80 per person, they\'re a no-brainer.',benefit2:'No more "I\'ll Venmo you later" after class. Everyone pays upfront through their own link before the session.',ctaTitle:'Fill more group sessions <em>starting today.</em>'},escape_room:{icon:'🔐',title:'Sortora for <em>Escape Rooms</em>',sub:'Private rooms for groups of 4-10. Nobody should have to front the full booking — let everyone pay their share.',scenarioTitle:'Private Escape Room — The Vault',scenarioMeta:'Friday 7:00 PM · 6 people · 90 minutes',price:300,people:6,perPerson:50,names:['Alex','Sam','Jordan','Taylor','Morgan','Riley'],benefitType:'escape rooms',howType:'escape rooms',benefit1:'A $300 private room sounds expensive. $50 per person for 90 minutes of fun? Everyone\'s in.',benefit2:'The organizer shares a link to the group chat. Everyone pays before game night. No awkward money conversations.',ctaTitle:'Book more private rooms <em>starting today.</em>'},cooking:{icon:'🍳',title:'Sortora for <em>Cooking Classes</em>',sub:'Private group lessons, corporate events, date nights — split the cost at checkout and watch your group bookings grow.',scenarioTitle:'Private Pasta Making Class',scenarioMeta:'Saturday 6:00 PM · 8 people · 2 hours',price:480,people:8,perPerson:60,names:['Emma','Liam','Olivia','Noah','Ava','James','Sophia','Ben'],benefitType:'cooking classes',howType:'cooking classes',benefit1:'A $480 private class for 8 people is actually $60 each — less than dinner out. Split payments make this obvious.',benefit2:'The host shares one link. Each guest pays their $60 before the class. You get paid in full, ingredients ordered.',ctaTitle:'Fill more group classes <em>starting today.</em>'},photography:{icon:'📸',title:'Sortora for <em>Photography Studios</em>',sub:'Team photoshoots, family portraits, event photography — groups split the session fee seamlessly.',scenarioTitle:'Group Portrait Session',scenarioMeta:'Sunday 10:00 AM · 4 people · 90 minutes',price:400,people:4,perPerson:100,names:['Maria','David','Rachel','Tom'],benefitType:'photography studios',howType:'photography studios',benefit1:'A $400 shoot for 4 people is $100 each — totally reasonable. Let the per-person price sell the session.',benefit2:'One person books, shares the link, everyone pays their share. You get the full amount before the shoot.',ctaTitle:'Book more group sessions <em>starting today.</em>'},pottery:{icon:'🎨',title:'Sortora for <em>Pottery & Workshops</em>',sub:'Creative classes, paint nights, craft workshops — make group bookings effortless with split payments.',scenarioTitle:'Private Wheel-Throwing Class',scenarioMeta:'Saturday 2:00 PM · 4 people · 2 hours',price:240,people:4,perPerson:60,names:['Sarah','Jake','Mia','Chris'],benefitType:'pottery studios',howType:'pottery & workshop studios',benefit1:'A $240 private class is just $60 per person — less than brunch. Split payments make booking a no-brainer.',benefit2:'The organizer shares a link to their group. Everyone pays before class. You get paid in full, clay ready.',ctaTitle:'Fill more workshop seats <em>starting today.</em>'},axe_throwing:{icon:'🪓',title:'Sortora for <em>Axe Throwing</em>',sub:'Group sessions, birthday parties, team outings — split the lane fee and watch your bookings grow.',scenarioTitle:'Private Lane — 2 Hours',scenarioMeta:'Saturday 4:00 PM · 8 people · 2 hours',price:320,people:8,perPerson:40,names:['Mike','Anna','Derek','Jen','Kyle','Bri','Zach','Nina'],benefitType:'axe throwing venues',howType:'axe throwing venues',benefit1:'$320 for a private lane sounds like a lot. $40 per person for 2 hours of axe throwing? Everyone\'s in.',benefit2:'One person organizes, shares the link. Eight people pay $40 each. Lane confirmed.',ctaTitle:'Book more group lanes <em>starting today.</em>'},yoga:{icon:'🧘',title:'Sortora for <em>Yoga & Wellness</em>',sub:'Private yoga sessions, meditation groups, wellness workshops — split the cost and make group wellness accessible.',scenarioTitle:'Private Group Yoga Session',scenarioMeta:'Sunday 9:00 AM · 6 people · 75 minutes',price:300,people:6,perPerson:50,names:['Luna','Kai','Aria','Leo','Maya','Sol'],benefitType:'yoga & wellness studios',howType:'yoga & wellness studios',benefit1:'A $300 private session is $50 per person — the price of a drop-in class for a private experience.',benefit2:'The organizer shares a link. Everyone pays their $50 before the session. You get paid in full, mats ready.',ctaTitle:'Fill more private sessions <em>starting today.</em>'},team_building:{icon:'👥',title:'Sortora for <em>Team Building</em>',sub:'Corporate events, offsites, team activities — split costs across participants seamlessly.',scenarioTitle:'Team Building Workshop',scenarioMeta:'Friday 1:00 PM · 10 people · 3 hours',price:500,people:10,perPerson:50,names:['Alex','Sam','Jordan','Taylor','Morgan','Casey','Drew','Pat','Quinn','Blake'],benefitType:'team building companies',howType:'team building experiences',benefit1:'A $500 team event is just $50 per person. Split the cost and make premium experiences accessible.',benefit2:'The organizer shares a link to the team Slack. Everyone pays their share. Event confirmed.',ctaTitle:'Book more team events <em>starting today.</em>'},music:{icon:'🎸',title:'Sortora for <em>Music & DJ Sessions</em>',sub:'Group music lessons, jam sessions, DJ workshops — split the studio fee effortlessly.',scenarioTitle:'Private Group Guitar Lesson',scenarioMeta:'Wednesday 6:00 PM · 4 people · 90 minutes',price:200,people:4,perPerson:50,names:['Ricky','Jade','Marco','Elle'],benefitType:'music studios',howType:'music & DJ sessions',benefit1:'$200 for a private lesson with friends is $50 each — cheaper than individual lessons.',benefit2:'The organizer shares a link. Each musician pays their $50. Session booked.',ctaTitle:'Fill more group sessions <em>starting today.</em>'},private_chef:{icon:'👨‍🍳',title:'Sortora for <em>Private Chefs</em>',sub:'Dinner parties, tasting menus, in-home chef experiences — guests split the cost before the first course.',scenarioTitle:'Private 5-Course Dinner Party',scenarioMeta:'Saturday 7:00 PM · 8 people · 3 hours',price:640,people:8,perPerson:80,names:['Grace','Ethan','Isla','Owen','Chloe','Finn','Nora','Will'],benefitType:'private chefs',howType:'private chef experiences',benefit1:'A $640 dinner party is $80 per person — the price of a nice restaurant, but with a private chef.',benefit2:'The host shares a link. Eight guests each pay $80. You shop for ingredients knowing you\'re fully paid.',ctaTitle:'Book more dinner parties <em>starting today.</em>'}};
+    var defaultCat={icon:'',title:'Sortora for <em>Your Business</em>',sub:'If groups book together on your site, Sortora makes payment seamless. Split the cost at checkout and watch your bookings grow.',scenarioTitle:'Group Experience Booking',scenarioMeta:'Your date · Your time · 6 people',price:300,people:6,perPerson:50,names:['Sarah','Jake','Mia','Chris','Lisa','Dan'],benefitType:'businesses',howType:'your business',benefit1:'When the cost splits, your price doesn\'t feel expensive. Charge what your experience is worth.',benefit2:'The organizer shares a link. Everyone pays their share. You get paid in full before the experience.',ctaTitle:'Start accepting split payments <em>today.</em>'};
+    var colors=['#3B6BFF','#8b5cf6','#f59e0b','#10B981','#ef4444','#ec4899','#6366f1','#14b8a6','#f97316','#06b6d4'];
+    function init(){var type=new URLSearchParams(window.location.search).get('type');var cat=categories[type]||defaultCat;document.title='Sortora — '+cat.title.replace(/<[^>]+>/g,'');var iconEl=document.getElementById('hero-icon');iconEl.textContent=cat.icon;if(!cat.icon)iconEl.style.display='none';document.getElementById('hero-title').innerHTML=cat.title;document.getElementById('hero-sub').textContent=cat.sub;document.getElementById('sc-title').textContent=cat.scenarioTitle;document.getElementById('sc-meta').textContent=cat.scenarioMeta;document.getElementById('sc-price-full').textContent='$'+cat.price;document.getElementById('sc-price-split').textContent='$'+cat.perPerson;document.getElementById('sc-per-text').textContent='$'+cat.price+' split '+cat.people+' ways';var w='';cat.names.forEach(function(n,i){w+='<div class="sc-row"><div class="sc-av" style="background:'+colors[i%colors.length]+'">'+n.charAt(0)+'</div><div class="sc-name">'+n+'</div><div class="sc-amt">$'+cat.perPerson+'</div><div class="sc-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>';});document.getElementById('sc-widget').innerHTML=w;document.getElementById('benefit-type').textContent=cat.benefitType;document.getElementById('benefit-1').textContent=cat.benefit1;document.getElementById('benefit-2').textContent=cat.benefit2;document.getElementById('how-type').textContent=cat.howType;document.getElementById('cta-title').innerHTML=cat.ctaTitle;}
+    var revealObserver=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');else e.target.classList.remove('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){revealObserver.observe(el);});
+    init();
+  </script>
+</body>
+</html>
