@@ -3,6 +3,7 @@ const { Resend } = require('resend');
 const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, sanitizeNumber, setSecurityHeaders, alertError } = require('./_security');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+const emails = require('./_emails');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async function handler(req, res) {
@@ -103,7 +104,7 @@ module.exports = async function handler(req, res) {
         from: 'Sortora <noreply@sortora.com>',
         to: p.email,
         subject: 'Pay your share — ' + title + ' ($' + amount + ')',
-        html: buildPaymentEmail({
+        html: emails.paymentLink({
           businessName: biz.business_name,
           bookingTitle: title,
           amount: amount,
@@ -130,7 +131,3 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-function buildPaymentEmail(data) {
-  return '<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head><body style="margin:0;padding:0;background:#f7f8fa;font-family:-apple-system,BlinkMacSystemFont,sans-serif"><div style="max-width:480px;margin:0 auto;padding:40px 20px"><div style="background:#fff;border-radius:16px;overflow:hidden;border:1px solid #EBEBEB;box-shadow:0 4px 24px rgba(0,0,0,.06)"><div style="padding:28px 32px;border-bottom:1px solid #f0f0f0"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3B6BFF;margin-bottom:8px">You\'ve been invited to split a booking</div><div style="font-size:20px;font-weight:800;color:#0C1220">' + data.bookingTitle + '</div><div style="font-size:14px;color:#6a6a6a;margin-top:4px">Hosted by ' + data.businessName + '</div></div><div style="padding:28px 32px;background:#fafbff;border-bottom:1px solid #f0f0f0"><div style="font-size:13px;font-weight:600;color:#6a6a6a;margin-bottom:4px">Your share</div><div style="font-size:40px;font-weight:800;color:#0C1220">$' + data.amount + '</div><div style="font-size:14px;color:#6a6a6a;margin-top:4px">$' + parseFloat(data.totalAmount).toFixed(0) + ' total · split ' + data.totalParticipants + ' ways</div></div><div style="padding:28px 32px;text-align:center"><a href="' + data.payUrl + '" style="display:inline-block;padding:16px 48px;background:#3B6BFF;color:#fff;border-radius:12px;font-size:17px;font-weight:700;text-decoration:none">Pay $' + data.amount + '</a><div style="margin-top:12px;font-size:12px;color:#b0b0b0">Secure payment powered by Stripe</div></div></div><div style="text-align:center;margin-top:20px;font-size:12px;color:#b0b0b0">Powered by <a href="https://sortora.com" style="color:#6a6a6a;font-weight:700;text-decoration:none">Sortora</a></div></div></body></html>';
-}
