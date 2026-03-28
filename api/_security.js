@@ -16,8 +16,10 @@ var ALLOWED_ORIGINS = [
 ];
 
 function corsCheck(req, res) {
-  var origin = req.headers.origin || req.headers.referer || '';
-  origin = origin.replace(/\/+$/, '').replace(/\/[^/]*$/, '').replace(/\/+$/, '');
+  var origin = req.headers.origin || '';
+  if (!origin && req.headers.referer) {
+    try { origin = new URL(req.headers.referer).origin; } catch(e) { origin = ''; }
+  }
 
   var allowed = ALLOWED_ORIGINS.some(function(o) {
     return origin === o || origin.startsWith(o);
