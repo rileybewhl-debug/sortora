@@ -1,7 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
+const { Resend } = require('resend');
 const { corsCheck, applyRateLimit, sanitizeUUID, sanitizeString, sanitizeEmail, sanitizeNumber, setSecurityHeaders, alertError } = require('./_security');
+const emails = require('./_emails');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async function handler(req, res) {
   setSecurityHeaders(res);
@@ -56,21 +59,49 @@ module.exports = async function handler(req, res) {
       .single();
 
     if (sessionResult.error) {
-      alertError('create-split', err, req);
-    console.error('Session insert error:', sessionResult.error);
+      alertError('create-split', sessionResult.error, req);
+      console.error('Session insert error:', sessionResult.error);
       return res.status(500).json({ error: 'Failed to create session' });
     }
 
     var session = sessionResult.data;
+    var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
+    var joinUrl = siteUrl + '/join.html?session=' + session.id;
+    var organizerPayUrl = null;
 
     if (organizerEmail) {
-      await supabase.from('participants').insert({
-        booking_session_id: session.id,
-        email: organizerEmail,
-        name: organizerName,
-        amount: perPerson,
-        status: 'pending'
-      });
+      var insertResult = await supabase
+        .from('participants')
+        .insert({
+          booking_session_id: session.id,
+          email: organizerEmail,
+          name: organizerName,
+          amount: perPerson,
+          status: 'pending'
+        })
+        .select('payment_token')
+        .single();
+
+      if (insertResult.data && insertResult.data.payment_token) {
+        organizerPayUrl = siteUrl + '/pay.html?token=' + insertResult.data.payment_token;
+
+        // Send organizer their payment link email
+        resend.emails.send({
+          from: 'Sortora <noreply@sortora.com>',
+          to: organizerEmail,
+          subject: 'Pay your share \u2014 ' + title,
+          html: emails.paymentLink({
+            bookingTitle: title,
+            businessName: biz.business_name,
+            amount: perPerson.toFixed(2),
+            totalAmount: totalAmount,
+            totalParticipants: totalParticipants,
+            payUrl: organizerPayUrl
+          })
+        }).catch(function(err) {
+          console.error('Organizer payment link email failed:', err);
+        });
+      }
     }
 
     await supabase
@@ -78,13 +109,11 @@ module.exports = async function handler(req, res) {
       .update({ splits_this_month: (biz.splits_this_month || 0) + 1 })
       .eq('id', businessId);
 
-    var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
-    var joinUrl = siteUrl + '/join.html?session=' + session.id;
-
     return res.status(200).json({
       success: true,
       sessionId: session.id,
       joinUrl: joinUrl,
+      organizerPayUrl: organizerPayUrl,
       perPerson: perPerson,
       spotsTotal: totalParticipants,
       spotsFilled: organizerEmail ? 1 : 0
