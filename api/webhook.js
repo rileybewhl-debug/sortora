@@ -80,6 +80,47 @@ module.exports = async function handler(req, res) {
         })
         .eq('id', participantId);
 
+      // ── Send individual payment receipt ──
+      var { data: paidParticipant } = await supabase
+        .from('participants')
+        .select('email, name, amount, paid_at')
+        .eq('id', participantId)
+        .single();
+
+      var { data: receiptSession } = await supabase
+        .from('booking_sessions')
+        .select('title, total_amount, total_participants, booking_date, metadata, businesses(business_name)')
+        .eq('id', bookingSessionId)
+        .single();
+
+      if (paidParticipant && paidParticipant.email && receiptSession) {
+        var feePercent = 0.03;
+        var shareAmount = parseFloat(paidParticipant.amount);
+        var feeAmount = Math.round(shareAmount * feePercent * 100) / 100;
+        var totalPaid = Math.round((shareAmount + feeAmount) * 100) / 100;
+
+        resend.emails.send({
+          from: 'Sortora <noreply@sortora.com>',
+          to: paidParticipant.email,
+          subject: 'Payment receipt \u2014 ' + receiptSession.title,
+          html: emails.paymentReceipt({
+            participantName: paidParticipant.name || null,
+            amount: totalPaid,
+            shareAmount: shareAmount,
+            feeAmount: feeAmount,
+            bookingTitle: receiptSession.title,
+            businessName: receiptSession.businesses && receiptSession.businesses.business_name || 'Business',
+            paidAt: paidParticipant.paid_at,
+            receiptId: paymentIntentId,
+            date: receiptSession.booking_date || (receiptSession.metadata && receiptSession.metadata.date) || null,
+            location: receiptSession.metadata && receiptSession.metadata.location || null
+          })
+        }).catch(function(err) {
+          console.error('Receipt email failed:', err);
+        });
+      }
+      // ── End receipt email ──
+
       var { data: allParts } = await supabase
         .from('participants')
         .select('id, status')
@@ -87,8 +128,8 @@ module.exports = async function handler(req, res) {
 
       var paidCount = (allParts || []).filter(function(p) { return p.status === 'paid'; }).length;
       var totalCount = (allParts || []).length;
-      var updateData = { paid_count: paidCount };
 
+      var updateData = { paid_count: paidCount };
       if (paidCount >= totalCount) {
         updateData.status = 'confirmed';
       }
@@ -166,15 +207,17 @@ async function sendConfirmationEmails(bookingSessionId, totalCount) {
       from: 'Sortora <noreply@sortora.com>',
       to: p.email,
       subject: 'Booking confirmed! - ' + bookingSession.title,
-              html: emails.bookingConfirmed({
-                bookingTitle: bookingSession.title,
-                businessName: bookingSession.businesses && bookingSession.businesses.business_name || 'Business',
-                totalAmount: bookingSession.total_amount,
-                participantCount: totalCount,
-                date: bookingSession.booking_date || (bookingSession.metadata && bookingSession.metadata.date) || null,
-                location: bookingSession.metadata && bookingSession.metadata.location || null
-              })
-            }).catch(function(err) { console.error('Confirmation email failed:', err); });
+      html: emails.bookingConfirmed({
+        bookingTitle: bookingSession.title,
+        businessName: bookingSession.businesses && bookingSession.businesses.business_name || 'Business',
+        totalAmount: bookingSession.total_amount,
+        participantCount: totalCount,
+        date: bookingSession.booking_date || (bookingSession.metadata && bookingSession.metadata.date) || null,
+        location: bookingSession.metadata && bookingSession.metadata.location || null
+      })
+    }).catch(function(err) {
+      console.error('Confirmation email failed:', err);
+    });
   });
 
   if (bookingSession.businesses && bookingSession.businesses.email) {
@@ -190,7 +233,9 @@ async function sendConfirmationEmails(bookingSessionId, totalCount) {
           date: bookingSession.booking_date || (bookingSession.metadata && bookingSession.metadata.date) || null,
           location: bookingSession.metadata && bookingSession.metadata.location || null
         })
-      }).catch(function(err) { console.error('Business email failed:', err); })
+      }).catch(function(err) {
+        console.error('Business email failed:', err);
+      })
     );
   }
 
