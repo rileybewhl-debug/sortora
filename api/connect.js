@@ -27,17 +27,24 @@ module.exports = async function handler(req, res) {
       var account = await stripe.accounts.create({
         type: 'standard',
         metadata: { sortora_business_id: businessId }
+      }, {
+        idempotencyKey: 'acct_' + businessId
       });
       accountId = account.id;
       await supabase.from('businesses').update({ stripe_account_id: accountId }).eq('id', businessId);
     }
 
     var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
+
+    // Account links expire quickly — use timestamp window so retries within
+    // the same minute reuse the same link, but new attempts get a fresh one
     var accountLink = await stripe.accountLinks.create({
       account: accountId,
       refresh_url: siteUrl + '/dashboard.html?stripe=refresh',
       return_url: siteUrl + '/dashboard.html?stripe=success',
       type: 'account_onboarding'
+    }, {
+      idempotencyKey: 'link_' + accountId + '_' + Math.floor(Date.now() / 60000)
     });
 
     return res.status(200).json({ url: accountLink.url });
