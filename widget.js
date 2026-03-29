@@ -73,6 +73,9 @@
     .st-share-btn{width:100%;padding:12px;background:#3B6BFF;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}\
     .st-share-btn:hover{background:#2d5ae6}\
     .st-share-btn svg{width:16px;height:16px}\
+    .st-pay-btn{width:100%;padding:12px;background:#0C1220;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;text-decoration:none}\
+    .st-pay-btn:hover{background:#1a2540;transform:translateY(-1px);box-shadow:0 4px 14px rgba(12,18,32,.2)}\
+    .st-pay-btn svg{width:16px;height:16px}\
     .st-share-spots{font-size:12px;color:#6a6a6a;margin-top:8px}\
     \
     .st-footer{text-align:center;margin-top:10px}\
@@ -115,6 +118,10 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>\
               Share with your group\
             </button>\
+            <a class="st-pay-btn" id="st-pay-btn" href="#" style="display:none">\
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>\
+              Pay your share\
+            </a>\
             <div class="st-share-spots" id="st-share-spots"></div>\
           </div>\
           <div class="st-footer"><a href="https://sortora.com" target="_blank">\
@@ -192,6 +199,7 @@
   var shareUrlInput = shadow.getElementById('st-share-url');
   var copyBtn = shadow.getElementById('st-copy-btn');
   var shareNativeBtn = shadow.getElementById('st-share-native');
+  var payBtn = shadow.getElementById('st-pay-btn');
 
   // Toggle
   toggle.addEventListener('click', function() {
@@ -264,6 +272,14 @@
         shadow.getElementById('st-share-spots').textContent = (data.spotsTotal - data.spotsFilled) + ' spots left for your group to claim';
         shareResult.style.display = 'block';
         submitBtn.style.display = 'none';
+
+        // Show "Pay your share" button if organizer pay URL returned
+        if (data.organizerPayUrl) {
+          var each = (total / count).toFixed(2);
+          payBtn.href = data.organizerPayUrl;
+          payBtn.querySelector('svg').nextSibling.textContent = ' Pay your share — $' + each;
+          payBtn.style.display = 'flex';
+        }
 
         // Disable form fields
         totalInput.disabled = true;
