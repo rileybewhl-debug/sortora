@@ -67,11 +67,10 @@ function bookingConfirmed(data) {
   return wrapper(
     '<div style="padding:48px 32px;text-align:center">'
     // Checkmark
-    + '<div style="width:64px;height:64px;border-radius:50%;background:' + GREEN + ';display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px">'
-    + '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-    + '</div>'
+    + '<div style="width:64px;height:64px;border-radius:50%;background:' + GREEN + ';display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:32px;color:#fff;line-height:64px">&#10003;</div>'
     + '<div style="font-size:26px;font-weight:800;color:' + DARK + ';letter-spacing:-.03em;margin-bottom:10px">Booking confirmed!</div>'
-    + '<div style="font-size:16px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px">All ' + data.participantCount + ' participants have paid for <strong>' + data.bookingTitle + '</strong> with ' + data.businessName + '.</div>'
+    + '<div style="font-size:16px;color:' + GRAY + ';line-height:1.6;margin-bottom:16px">All ' + data.participantCount + ' participants have paid for <strong>' + data.bookingTitle + '</strong> with ' + data.businessName + '.</div>'
+    + (data.date || data.location ? '<div style="background:' + LIGHT_BG + ';border-radius:10px;padding:14px 20px;margin-bottom:24px;text-align:left">' + (data.date ? '<div style="font-size:13px;color:' + GRAY + ';margin-bottom:4px"><strong style="color:' + DARK + '">Date:</strong> ' + data.date + '</div>' : '') + (data.location ? '<div style="font-size:13px;color:' + GRAY + '"><strong style="color:' + DARK + '">Location:</strong> ' + data.location + '</div>' : '') + '</div>' : '')
     // Details bar
     + '<div style="background:' + LIGHT_BG + ';border-radius:10px;padding:14px 20px;display:inline-block">'
     + '<span style="font-size:14px;color:' + GRAY + '">Total: <strong style="color:' + DARK + '">$' + totalFormatted + '</strong> · ' + data.participantCount + ' people</span>'
@@ -88,7 +87,26 @@ function businessConfirmed(data) {
     '<div style="padding:32px">'
     + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:' + GREEN + ';margin-bottom:12px">New booking confirmed</div>'
     + '<div style="font-size:26px;font-weight:800;color:' + DARK + ';letter-spacing:-.03em;margin-bottom:10px">' + data.bookingTitle + '</div>'
-    + '<div style="font-size:16px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px">All ' + data.participantCount + ' participants have paid. <strong style="color:' + DARK + '">$' + totalFormatted + '</strong> will be deposited to your Stripe account.</div>'
+    + '<div style="font-size:16px;color:' + GRAY + ';line-height:1.6;margin-bottom:16px">All ' + data.participantCount + ' participants have paid. <strong style="color:' + DARK + '">
+    // Stats row
+    + '<div style="display:flex;gap:12px;margin-bottom:24px">'
+    + '<div style="flex:1;background:' + LIGHT_BG + ';border-radius:10px;padding:14px;text-align:center"><div style="font-size:11px;color:' + GRAY + ';margin-bottom:2px">Total</div><div style="font-size:20px;font-weight:800;color:' + DARK + '">$' + totalFormatted + '</div></div>'
+    + '<div style="flex:1;background:' + LIGHT_BG + ';border-radius:10px;padding:14px;text-align:center"><div style="font-size:11px;color:' + GRAY + ';margin-bottom:2px">Participants</div><div style="font-size:20px;font-weight:800;color:' + DARK + '">' + data.participantCount + '</div></div>'
+    + '<div style="flex:1;background:' + LIGHT_BG + ';border-radius:10px;padding:14px;text-align:center"><div style="font-size:11px;color:' + GRAY + ';margin-bottom:2px">Status</div><div style="font-size:20px;font-weight:800;color:' + GREEN + '">Paid</div></div>'
+    + '</div>'
+    // CTA
+    + '<a href="https://sortora.com/dashboard.html" style="display:inline-block;padding:14px 32px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">View in Dashboard</a>'
+    + '</div>'
+  );
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed
+};
+ + totalFormatted + '</strong> will be deposited to your Stripe account.</div>'
+    + (data.date || data.location ? '<div style="background:' + LIGHT_BG + ';border-radius:10px;padding:14px 20px;margin-bottom:24px">' + (data.date ? '<div style="font-size:13px;color:' + GRAY + ';margin-bottom:4px"><strong style="color:' + DARK + '">Date:</strong> ' + data.date + '</div>' : '') + (data.location ? '<div style="font-size:13px;color:' + GRAY + '"><strong style="color:' + DARK + '">Location:</strong> ' + data.location + '</div>' : '') + '</div>' : '')
     // Stats row
     + '<div style="display:flex;gap:12px;margin-bottom:24px">'
     + '<div style="flex:1;background:' + LIGHT_BG + ';border-radius:10px;padding:14px;text-align:center"><div style="font-size:11px;color:' + GRAY + ';margin-bottom:2px">Total</div><div style="font-size:20px;font-weight:800;color:' + DARK + '">$' + totalFormatted + '</div></div>'
