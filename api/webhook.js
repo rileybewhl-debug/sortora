@@ -214,6 +214,20 @@ module.exports = async function handler(req, res) {
   } catch (err) {
     console.error('Webhook processing error:', err);
     alertError('webhook', err, req);
+
+    // Store failed payload in dead letter queue for manual replay
+    await supabase
+      .from('failed_webhooks')
+      .insert({
+        event_id: event.id,
+        event_type: event.type,
+        payload: event,
+        error_message: err.message || String(err)
+      })
+      .catch(function(dlqErr) {
+        console.error('Dead letter queue insert failed:', dlqErr);
+      });
+
     // Still return 200 — we already claimed the event. Returning 500
     // would trigger a Stripe retry that our idempotency check catches.
     return res.status(200).json({ received: true, error: 'Processing failed but event acknowledged' });
