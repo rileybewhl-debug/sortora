@@ -4,7 +4,32 @@
  * - CORS lockdown (only allow Sortora domains)
  * - Input sanitization
  * - Slack error alerts
+ * - Sentry error tracking
  */
+
+// ═══ SENTRY ═══
+var Sentry;
+try {
+  Sentry = require('@sentry/node');
+  if (process.env.SENTRY_DSN) {
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.VERCEL_ENV || 'development',
+      tracesSampleRate: 1.0,
+      beforeSend: function(event) {
+        // Strip sensitive data
+        if (event.request && event.request.headers) {
+          delete event.request.headers['authorization'];
+          delete event.request.headers['cookie'];
+        }
+        return event;
+      }
+    });
+  }
+} catch (e) {
+  // Sentry not installed — continue without it
+  Sentry = null;
+}
 
 // ═══ CORS ═══
 var ALLOWED_ORIGINS = [
@@ -138,10 +163,26 @@ function setSecurityHeaders(res) {
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 }
 
-// ═══ SLACK ERROR ALERTS ═══
+// ═══ ERROR ALERTS (Slack + Sentry) ═══
 var lastAlertTime = {};
 
 function alertError(route, error, req) {
+  // ── Sentry capture ──
+  if (Sentry && process.env.SENTRY_DSN) {
+    Sentry.withScope(function(scope) {
+      scope.setTag('route', route);
+      scope.setTag('method', req && req.method || 'unknown');
+      scope.setExtra('ip', req ? getRateLimitKey(req) : 'unknown');
+      scope.setExtra('url', req && req.url || 'unknown');
+      if (error instanceof Error) {
+        Sentry.captureException(error);
+      } else {
+        Sentry.captureMessage(String(error), 'error');
+      }
+    });
+  }
+
+  // ── Slack alert ──
   var webhookUrl = process.env.SLACK_WEBHOOK_URL;
   if (!webhookUrl) return;
 
@@ -177,6 +218,15 @@ function alertError(route, error, req) {
   }).catch(function() {});
 }
 
+// ═══ SENTRY FLUSH ═══
+// Call before returning from serverless functions
+// Ensures Sentry events are sent before the function instance freezes
+async function flushSentry() {
+  if (Sentry && process.env.SENTRY_DSN) {
+    await Sentry.flush(2000);
+  }
+}
+
 module.exports = {
   corsCheck: corsCheck,
   applyRateLimit: applyRateLimit,
@@ -185,5 +235,6 @@ module.exports = {
   sanitizeNumber: sanitizeNumber,
   sanitizeUUID: sanitizeUUID,
   setSecurityHeaders: setSecurityHeaders,
-  alertError: alertError
+  alertError: alertError,
+  flushSentry: flushSentry
 };
