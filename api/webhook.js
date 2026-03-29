@@ -180,13 +180,7 @@ async function sendConfirmationEmails(bookingSessionId, totalCount) {
       resend.emails.send({
         from: 'Sortora <noreply@sortora.com>',
         to: bookingSession.businesses.email,
-        subject: 'New booking confirmed - ' + bookingSession.title + ' (
-    );
-  }
-
-  await Promise.all(emailPromises);
-}
- + parseFloat(bookingSession.total_amount).toFixed(0) + ')',
+        subject: 'New booking confirmed - ' + bookingSession.title + ' ($' + parseFloat(bookingSession.total_amount).toFixed(0) + ')',
         html: emails.businessConfirmed({
           bookingTitle: bookingSession.title,
           totalAmount: bookingSession.total_amount,
