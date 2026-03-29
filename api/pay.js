@@ -70,6 +70,8 @@ module.exports = async function handler(req, res) {
         participant_id: participant.id,
         booking_session_id: session.id
       }
+    }, {
+      idempotencyKey: 'pay_' + token
     });
 
     return res.status(200).json({ url: checkoutSession.url });
