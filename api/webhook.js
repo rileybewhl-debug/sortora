@@ -192,8 +192,3 @@ async function sendConfirmationEmails(bookingSessionId, totalCount) {
 
   await Promise.all(emailPromises);
 }
-    );
-  }
-
-  await Promise.all(emailPromises);
-}
