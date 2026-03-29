@@ -31,6 +31,8 @@ async function getOrCreatePrice(planKey) {
       name: 'Sortora ' + plan.name,
       description: plan.splits === 'Unlimited' ? 'Unlimited splits per month' : 'Up to ' + plan.splits + ' splits per month',
       metadata: { sortora_plan: planKey }
+    }, {
+      idempotencyKey: 'prod_' + planKey
     });
     productId = product.id;
   }
@@ -50,6 +52,8 @@ async function getOrCreatePrice(planKey) {
     unit_amount: plan.amount,
     currency: 'usd',
     recurring: { interval: 'month' }
+  }, {
+    idempotencyKey: 'price_' + planKey + '_' + plan.amount
   });
 
   priceCache[planKey] = price.id;
@@ -83,6 +87,8 @@ module.exports = async function handler(req, res) {
       var customer = await stripe.customers.create({
         email: biz.email,
         metadata: { sortora_business_id: businessId }
+      }, {
+        idempotencyKey: 'cust_' + businessId
       });
       customerId = customer.id;
       await supabase.from('businesses').update({ stripe_customer_id: customerId }).eq('id', businessId);
@@ -93,6 +99,10 @@ module.exports = async function handler(req, res) {
 
     var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
 
+    // Checkout sessions are unique per attempt — use timestamp to allow retries
+    // after a user cancels and comes back
+    var idempotencyKey = 'sub_' + businessId + '_' + planKey + '_' + Math.floor(Date.now() / 60000);
+
     var session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       customer: customerId,
@@ -101,6 +111,8 @@ module.exports = async function handler(req, res) {
       cancel_url: siteUrl + '/dashboard.html?billing=cancelled',
       metadata: { sortora_business_id: businessId, sortora_plan: planKey },
       subscription_data: { metadata: { sortora_business_id: businessId, sortora_plan: planKey } }
+    }, {
+      idempotencyKey: idempotencyKey
     });
 
     return res.status(200).json({ url: session.url });
