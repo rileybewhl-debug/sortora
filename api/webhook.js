@@ -23,10 +23,11 @@ module.exports = async function handler(req, res) {
   setSecurityHeaders(res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  var event;
+
   try {
     var rawBody = await getRawBody(req);
     var sig = req.headers['stripe-signature'];
-    var event;
 
     if (process.env.STRIPE_WEBHOOK_SECRET) {
       try {
@@ -38,7 +39,36 @@ module.exports = async function handler(req, res) {
     } else {
       event = JSON.parse(rawBody.toString());
     }
+  } catch (err) {
+    console.error('Webhook parse error:', err);
+    return res.status(400).json({ error: 'Invalid request body' });
+  }
 
+  // ── Idempotent processing: check if already handled ──
+  var { data: existing } = await supabase
+    .from('processed_events')
+    .select('id')
+    .eq('id', event.id)
+    .single();
+
+  if (existing) {
+    console.log('Webhook already processed: ' + event.id);
+    return res.status(200).json({ received: true, duplicate: true });
+  }
+
+  // Claim this event — insert first to prevent race conditions
+  var { error: insertErr } = await supabase
+    .from('processed_events')
+    .insert({ id: event.id, event_type: event.type });
+
+  if (insertErr && insertErr.code === '23505') {
+    // Unique constraint violation — another instance already claimed it
+    console.log('Webhook claimed by another instance: ' + event.id);
+    return res.status(200).json({ received: true, duplicate: true });
+  }
+  // ── End idempotency check ──
+
+  try {
     // PAYMENT COMPLETED
     if (event.type === 'checkout.session.completed') {
       var session = event.data.object;
@@ -182,9 +212,11 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ received: true });
   } catch (err) {
-    console.error('Webhook error:', err);
+    console.error('Webhook processing error:', err);
     alertError('webhook', err, req);
-    return res.status(500).json({ error: 'Internal server error' });
+    // Still return 200 — we already claimed the event. Returning 500
+    // would trigger a Stripe retry that our idempotency check catches.
+    return res.status(200).json({ received: true, error: 'Processing failed but event acknowledged' });
   }
 };
 
