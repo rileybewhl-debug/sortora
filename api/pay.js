@@ -22,7 +22,14 @@ module.exports = async function handler(req, res) {
       .single();
 
     if (!participant) return res.status(404).json({ error: 'Payment link not found' });
-    if (participant.status === 'paid') return res.status(400).json({ error: 'Already paid' });
+
+    // ── Edge case: already paid (double-pay prevention) ──
+    if (participant.status === 'paid') {
+      return res.status(400).json({
+        error: 'You\'ve already paid your share. No further action needed.',
+        type: 'already_paid'
+      });
+    }
 
     var { data: session } = await supabase
       .from('booking_sessions')
@@ -31,7 +38,36 @@ module.exports = async function handler(req, res) {
       .single();
 
     if (!session) return res.status(404).json({ error: 'Booking session not found' });
-    if (session.status === 'expired') return res.status(400).json({ error: 'This booking has expired' });
+
+    // ── Edge case: expired split ──
+    if (session.status === 'expired') {
+      return res.status(400).json({
+        error: 'This split payment has expired. Contact the organizer for a new link.',
+        type: 'expired'
+      });
+    }
+
+    if (session.expires_at && new Date(session.expires_at) < new Date()) {
+      // Auto-expire the session in the database
+      await supabase
+        .from('booking_sessions')
+        .update({ status: 'expired' })
+        .eq('id', session.id)
+        .eq('status', 'pending');
+
+      return res.status(400).json({
+        error: 'This split payment has expired. Contact the organizer for a new link.',
+        type: 'expired'
+      });
+    }
+
+    // ── Edge case: booking already fully paid ──
+    if (session.status === 'confirmed') {
+      return res.status(400).json({
+        error: 'This booking is already fully paid.',
+        type: 'already_confirmed'
+      });
+    }
 
     var stripeAccountId = session.businesses && session.businesses.stripe_account_id;
     if (!stripeAccountId) return res.status(400).json({ error: 'Business has not connected Stripe yet' });
@@ -78,8 +114,6 @@ module.exports = async function handler(req, res) {
   } catch (err) {
     // ── 4-Category Stripe Error Handling ──
     if (err.type === 'StripeCardError') {
-      // Card errors (4xx) — user's card was declined
-      // Use a NEW idempotency key on retry (different card/method)
       console.error('Card error:', err.message);
       return res.status(400).json({
         error: 'Your card was declined. Please try a different payment method.',
@@ -90,7 +124,6 @@ module.exports = async function handler(req, res) {
     }
 
     if (err.type === 'StripeInvalidRequestError') {
-      // API errors (4xx) — bad parameters sent to Stripe
       console.error('Stripe API error:', err.message);
       alertError('pay', err, req);
       return res.status(400).json({
@@ -101,8 +134,6 @@ module.exports = async function handler(req, res) {
     }
 
     if (err.type === 'StripeAPIError') {
-      // Server errors (5xx) — Stripe is having issues
-      // Use the SAME idempotency key on retry
       console.error('Stripe server error:', err.message);
       alertError('pay', err, req);
       return res.status(502).json({
@@ -113,8 +144,6 @@ module.exports = async function handler(req, res) {
     }
 
     if (err.type === 'StripeConnectionError') {
-      // Network errors — couldn't reach Stripe
-      // Use the SAME idempotency key on retry
       console.error('Stripe connection error:', err.message);
       alertError('pay', err, req);
       return res.status(503).json({
@@ -125,7 +154,6 @@ module.exports = async function handler(req, res) {
     }
 
     if (err.type === 'StripeRateLimitError') {
-      // Rate limited by Stripe — back off and retry
       console.error('Stripe rate limit:', err.message);
       return res.status(429).json({
         error: 'Too many payment requests. Please wait a moment and try again.',
@@ -135,7 +163,6 @@ module.exports = async function handler(req, res) {
     }
 
     if (err.type === 'StripeAuthenticationError') {
-      // API key issue — critical, alert immediately
       console.error('Stripe auth error:', err.message);
       alertError('pay-critical', err, req);
       return res.status(500).json({
@@ -145,7 +172,6 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Non-Stripe errors (Supabase, network, code bugs)
     console.error('Pay error:', err);
     alertError('pay', err, req);
     return res.status(500).json({
