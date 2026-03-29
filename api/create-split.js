@@ -42,6 +42,9 @@ module.exports = async function handler(req, res) {
 
     var perPerson = Math.round(totalAmount / totalParticipants * 100) / 100;
 
+    // Split expires in 7 days — after this, no new payments accepted
+    var expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
     var sessionResult = await supabase
       .from('booking_sessions')
       .insert({
@@ -52,7 +55,8 @@ module.exports = async function handler(req, res) {
         total_participants: totalParticipants,
         paid_count: 0,
         status: 'pending',
-        deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline: expiresAt,
+        expires_at: expiresAt,
         metadata: {}
       })
       .select()
@@ -85,7 +89,6 @@ module.exports = async function handler(req, res) {
       if (insertResult.data && insertResult.data.payment_token) {
         organizerPayUrl = siteUrl + '/pay.html?token=' + insertResult.data.payment_token;
 
-        // Send organizer their payment link email
         resend.emails.send({
           from: 'Sortora <noreply@sortora.com>',
           to: organizerEmail,
@@ -116,7 +119,8 @@ module.exports = async function handler(req, res) {
       organizerPayUrl: organizerPayUrl,
       perPerson: perPerson,
       spotsTotal: totalParticipants,
-      spotsFilled: organizerEmail ? 1 : 0
+      spotsFilled: organizerEmail ? 1 : 0,
+      expiresAt: expiresAt
     });
   } catch (err) {
     alertError('create-split', err, req);
