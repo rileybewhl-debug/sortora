@@ -76,8 +76,82 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ url: checkoutSession.url });
   } catch (err) {
-    alertError('pay', err, req);
+    // ── 4-Category Stripe Error Handling ──
+    if (err.type === 'StripeCardError') {
+      // Card errors (4xx) — user's card was declined
+      // Use a NEW idempotency key on retry (different card/method)
+      console.error('Card error:', err.message);
+      return res.status(400).json({
+        error: 'Your card was declined. Please try a different payment method.',
+        code: err.code,
+        type: 'card_error',
+        retryable: true
+      });
+    }
+
+    if (err.type === 'StripeInvalidRequestError') {
+      // API errors (4xx) — bad parameters sent to Stripe
+      console.error('Stripe API error:', err.message);
+      alertError('pay', err, req);
+      return res.status(400).json({
+        error: 'There was a problem setting up your payment. Please try again.',
+        type: 'api_error',
+        retryable: true
+      });
+    }
+
+    if (err.type === 'StripeAPIError') {
+      // Server errors (5xx) — Stripe is having issues
+      // Use the SAME idempotency key on retry
+      console.error('Stripe server error:', err.message);
+      alertError('pay', err, req);
+      return res.status(502).json({
+        error: 'Our payment processor is temporarily unavailable. Please try again in a moment.',
+        type: 'server_error',
+        retryable: true
+      });
+    }
+
+    if (err.type === 'StripeConnectionError') {
+      // Network errors — couldn't reach Stripe
+      // Use the SAME idempotency key on retry
+      console.error('Stripe connection error:', err.message);
+      alertError('pay', err, req);
+      return res.status(503).json({
+        error: 'Could not connect to payment processor. Please check your connection and try again.',
+        type: 'network_error',
+        retryable: true
+      });
+    }
+
+    if (err.type === 'StripeRateLimitError') {
+      // Rate limited by Stripe — back off and retry
+      console.error('Stripe rate limit:', err.message);
+      return res.status(429).json({
+        error: 'Too many payment requests. Please wait a moment and try again.',
+        type: 'rate_limit',
+        retryable: true
+      });
+    }
+
+    if (err.type === 'StripeAuthenticationError') {
+      // API key issue — critical, alert immediately
+      console.error('Stripe auth error:', err.message);
+      alertError('pay-critical', err, req);
+      return res.status(500).json({
+        error: 'Payment system configuration error. We\'ve been notified and are fixing it.',
+        type: 'auth_error',
+        retryable: false
+      });
+    }
+
+    // Non-Stripe errors (Supabase, network, code bugs)
     console.error('Pay error:', err);
-    return res.status(500).json({ error: 'Internal server error' });
+    alertError('pay', err, req);
+    return res.status(500).json({
+      error: 'Something went wrong. Please try again.',
+      type: 'internal_error',
+      retryable: true
+    });
   }
 };
