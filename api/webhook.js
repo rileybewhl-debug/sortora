@@ -170,7 +170,9 @@ async function sendConfirmationEmails(bookingSessionId, totalCount) {
                 bookingTitle: bookingSession.title,
                 businessName: bookingSession.businesses && bookingSession.businesses.business_name || 'Business',
                 totalAmount: bookingSession.total_amount,
-                participantCount: totalCount
+                participantCount: totalCount,
+                date: bookingSession.booking_date || (bookingSession.metadata && bookingSession.metadata.date) || null,
+                location: bookingSession.metadata && bookingSession.metadata.location || null
               })
             }).catch(function(err) { console.error('Confirmation email failed:', err); });
   });
@@ -184,7 +186,9 @@ async function sendConfirmationEmails(bookingSessionId, totalCount) {
         html: emails.businessConfirmed({
           bookingTitle: bookingSession.title,
           totalAmount: bookingSession.total_amount,
-          participantCount: totalCount
+          participantCount: totalCount,
+          date: bookingSession.booking_date || (bookingSession.metadata && bookingSession.metadata.date) || null,
+          location: bookingSession.metadata && bookingSession.metadata.location || null
         })
       }).catch(function(err) { console.error('Business email failed:', err); })
     );
