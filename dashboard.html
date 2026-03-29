@@ -347,9 +347,9 @@
           </div>
           <div class="chart-controls">
             <div class="chart-interval">
-              <button class="active" onclick="setInterval('daily',this)">Daily</button>
-              <button onclick="setInterval('weekly',this)">Weekly</button>
-              <button onclick="setInterval('monthly',this)">Monthly</button>
+              <button class="active" onclick="setChartInterval('daily',this)">Daily</button>
+              <button onclick="setChartInterval('weekly',this)">Weekly</button>
+              <button onclick="setChartInterval('monthly',this)">Monthly</button>
             </div>
             <div class="chart-type">
               <button class="active" onclick="setChartType('line',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 8 13 13 9 9 2 16"/></svg>Line</button>
@@ -730,7 +730,7 @@
       });
     }
 
-    function setInterval(interval, el) {
+    function setChartInterval(interval, el) {
       currentInterval = interval;
       el.parentNode.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
       el.classList.add('active');
