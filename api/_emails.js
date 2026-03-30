@@ -385,6 +385,71 @@ function checkIn(data) {
     + '</div>');
 }
 
+
+/* ═══════════════════════════════════════════════════
+ *  10. DUNNING DAY 0 — Friendly heads up
+ * ═══════════════════════════════════════════════════ */
+function dunningDay0(data) {
+  return wrapper(header('Payment Update')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Quick heads up \u2014 your payment for Sortora didn\u2019t go through. This usually happens when a card expires or there\u2019s a temporary hold.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">No action needed on your account yet \u2014 everything is still active. Just update your card when you get a chance:</p>'
+    + '<a href="' + data.updateUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Update payment method</a>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:20px 0 0;font-weight:500">Takes about 30 seconds.</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  11. DUNNING DAY 3 — Helpful with direct link
+ * ═══════════════════════════════════════════════════ */
+function dunningDay3(data) {
+  return wrapper(header('Payment Update')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Following up \u2014 we tried charging your card again but it didn\u2019t go through. Your Sortora account is still fully active, but we\u2019ll need an updated payment method to keep things running.</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:13px;font-weight:700;color:' + DARK + ';margin-bottom:8px">Common fixes:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">\u2022 Check if your card expired recently<br>\u2022 Verify the billing address matches your card<br>\u2022 Try a different card</div>'
+    + '</div>'
+    + '<a href="' + data.updateUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Update card in 30 seconds</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  12. DUNNING DAY 7 — Slightly urgent
+ * ═══════════════════════════════════════════════════ */
+function dunningDay7(data) {
+  return wrapper(header('Action Required')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Your Sortora account needs attention. We\u2019ve been unable to process your payment for a week now, and we\u2019ll need to pause your account soon if we can\u2019t resolve this.</p>'
+    + '<div style="background:#FEF2F2;border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid #FECACA">'
+    + '<div style="font-size:14px;font-weight:700;color:#991B1B;margin-bottom:4px">Your account will be paused in 7 days</div>'
+    + '<div style="font-size:13px;color:#B91C1C;font-weight:500">Active split payments and your widget will stop working if payment isn\u2019t updated.</div>'
+    + '</div>'
+    + '<a href="' + data.updateUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Update payment method now</a>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:20px 0 0;font-weight:500">Questions? Reply to this email \u2014 we\u2019re happy to help.</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  13. DUNNING DAY 14 — Final, empathetic
+ * ═══════════════════════════════════════════════════ */
+function dunningDay14(data) {
+  return wrapper(header('Account Pausing Tomorrow')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">I wanted to reach out personally. We\u2019ll need to pause your Sortora account tomorrow because we haven\u2019t been able to process your payment.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">When paused, your widget will stop accepting new split payments and your dashboard data will be preserved but inaccessible.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">If you\u2019d like to keep using Sortora, just update your payment method \u2014 your account will reactivate instantly:</p>'
+    + '<a href="' + data.updateUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Keep my account active</a>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:24px 0 0;font-weight:500">If Sortora isn\u2019t the right fit right now, no hard feelings. Your data will be saved for 30 days.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:20px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
 module.exports = {
   paymentLink: paymentLink,
   paymentReceipt: paymentReceipt,
@@ -394,5 +459,9 @@ module.exports = {
   quickWin: quickWin,
   socialProof: socialProof,
   featureSpotlight: featureSpotlight,
-  checkIn: checkIn
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
 };
