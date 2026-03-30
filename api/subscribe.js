@@ -6,9 +6,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 var PLANS = {
-  starter: { name: 'Starter', amount: 2900, splits: 10 },
-  growth: { name: 'Growth', amount: 5900, splits: 50 },
-  pro: { name: 'Pro', amount: 9900, splits: 'Unlimited' }
+  starter: { name: 'Starter', amount: 0, splits: 50 },
+  growth: { name: 'Growth', amount: 4900, splits: 500 },
+  scale: { name: 'Scale', amount: 14900, splits: 2000 }
 };
 
 var priceCache = {};
@@ -72,7 +72,7 @@ module.exports = async function handler(req, res) {
     var planKey = sanitizeString(body.plan, 20).toLowerCase();
 
     if (!businessId) return res.status(400).json({ error: 'Invalid businessId' });
-    if (!PLANS[planKey]) return res.status(400).json({ error: 'Invalid plan. Choose starter, growth, or pro.' });
+    if (!PLANS[planKey]) return res.status(400).json({ error: 'Invalid plan. Choose starter, growth, or scale.' });
 
     var { data: biz } = await supabase
       .from('businesses')
@@ -81,6 +81,12 @@ module.exports = async function handler(req, res) {
       .single();
 
     if (!biz) return res.status(404).json({ error: 'Business not found' });
+
+    // Starter plan is free — activate directly without Stripe
+    if (planKey === 'starter') {
+      await supabase.from('businesses').update({ plan: 'starter', subscription_status: 'active' }).eq('id', businessId);
+      return res.status(200).json({ free: true, message: 'Starter plan activated' });
+    }
 
     var customerId = biz.stripe_customer_id;
     if (!customerId) {
