@@ -11,6 +11,25 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!applyRateLimit(req, res, 5, 60000)) return;
 
+  // Route: ?action=session returns embedded onboarding client secret
+  var action = req.query && req.query.action;
+  if (action === 'session') {
+    try {
+      var sid = sanitizeUUID(req.body.businessId);
+      if (!sid) return res.status(400).json({ error: 'Invalid businessId' });
+      var { data: sb } = await supabase.from('businesses').select('stripe_account_id').eq('id', sid).single();
+      if (!sb || !sb.stripe_account_id) return res.status(400).json({ error: 'No Stripe account found.' });
+      var accountSession = await stripe.accountSessions.create({
+        account: sb.stripe_account_id,
+        components: { account_onboarding: { enabled: true }, account_management: { enabled: true } }
+      });
+      return res.status(200).json({ clientSecret: accountSession.client_secret, accountId: sb.stripe_account_id, publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });
+    } catch (sessionErr) {
+      alertError('connect-session', sessionErr, req);
+      return res.status(500).json({ error: 'Session creation failed' });
+    }
+  }
+
   try {
     var businessId = sanitizeUUID(req.body.businessId);
     if (!businessId) return res.status(400).json({ error: 'Invalid businessId' });
