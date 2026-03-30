@@ -184,6 +184,8 @@
       if (r.error) { showError(r.error.message); btn.disabled = false; btn.textContent = 'Create account'; return; }
       if (r.data.user) {
         await SB.from('businesses').upsert({ id: r.data.user.id, owner_name: name, business_name: biz, email: email });
+        // Trigger welcome email series (fire and forget)
+        fetch('/api/welcome-series', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: r.data.user.id }) }).catch(function() {});
       }
       showSuccess('Account created! Redirecting...');
       setTimeout(function() { window.location.href = '/dashboard.html'; }, 1000);
