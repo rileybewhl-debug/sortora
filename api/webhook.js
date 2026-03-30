@@ -88,7 +88,22 @@ module.exports = async function handler(req, res) {
             .eq('id', bizId);
           console.log('Subscription activated: ' + bizId + ' -> ' + plan);
         }
-        return res.status(200).json({ received: true });
+        
+    // Track activation milestones
+    try {
+      if (event.type === 'checkout.session.completed' && event.data.object.metadata) {
+        var meta = event.data.object.metadata;
+        var bizId = meta.sortora_business_id;
+        if (bizId) {
+          var { data: biz } = await supabase.from('businesses').select('first_payment_at, first_split_at').eq('id', bizId).single();
+          if (biz && !biz.first_payment_at) {
+            await supabase.from('businesses').update({ first_payment_at: new Date().toISOString() }).eq('id', bizId);
+          }
+        }
+      }
+    } catch (metricErr) { console.error('Activation metric error:', metricErr); }
+
+    return res.status(200).json({ received: true });
       }
 
       // Split payment checkout
