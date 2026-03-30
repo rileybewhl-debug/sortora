@@ -171,7 +171,14 @@
     .embed-copy{position:absolute;top:12px;right:12px;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s;z-index:2}
     .embed-copy:hover{background:rgba(255,255,255,.14);color:#fff}
 
-    /* ── Stripe connect ── */
+    /* ── Stripe Embedded Onboarding Modal ── */
+.stripe-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
+.stripe-modal-inner{background:#fff;border-radius:16px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.stripe-modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#6a6a6a;transition:all .15s}
+.stripe-modal-close:hover{background:#f5f5f5;color:#0C1220}
+.stripe-modal-title{font-size:18px;font-weight:700;margin-bottom:4px}
+.stripe-modal-desc{font-size:13px;color:#6a6a6a;margin-bottom:24px}
+/* ── Stripe connect ── */
     .stripe-box{display:flex;align-items:center;gap:16px;padding:20px;background:#f7f8fa;border:1px solid #EBEBEB;border-radius:12px}
     .stripe-icon{width:44px;height:44px;border-radius:10px;background:#635BFF;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .stripe-icon svg{width:24px;height:24px}
@@ -386,7 +393,17 @@
           </div>
         </div>
 
-        <!-- Stripe connect prompt -->
+        <!-- Stripe Embedded Onboarding Modal -->
+<div class="stripe-modal" id="stripe-onboarding-modal">
+<div class="stripe-modal-inner">
+<button class="stripe-modal-close" onclick="closeStripeModal()">&times;</button>
+<div class="stripe-modal-title">Connect your Stripe account</div>
+<div class="stripe-modal-desc">Complete the form below to start receiving payouts. Your information goes directly to Stripe.</div>
+<div id="stripe-onboarding-container"></div>
+</div>
+</div>
+
+<!-- Stripe connect prompt -->
         <div class="card" id="stripe-prompt" style="display:none">
           <div class="card-header"><div class="card-title">Connect Stripe to receive payments</div></div>
           <div class="stripe-box">
@@ -1017,11 +1034,62 @@
 
     async function connectStripe() {
       var btn = document.getElementById('stripe-btn') || document.getElementById('stripe-btn-settings');
-      btn.disabled = true; btn.textContent = 'Redirecting...';
-      var r = await fetch('/api/connect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) });
-      var data = await r.json();
-      if (data.url) { window.location.href = data.url; }
-      else { alert('Could not connect Stripe.'); btn.disabled = false; btn.textContent = 'Connect Stripe'; }
+      btn.disabled = true; btn.textContent = 'Setting up...';
+      try {
+        // Step 1: Ensure Stripe account exists
+        var r1 = await fetch('/api/connect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) });
+        var connectData = await r1.json();
+        if (!connectData.accountId) throw new Error('Account creation failed');
+
+        // Step 2: Load Stripe Connect.js if not loaded
+        if (!window.StripeConnect) {
+          await new Promise(function(resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'https://connect-js.stripe.com/v1.0/connect.js';
+            s.onload = resolve;
+            s.onerror = function() { reject(new Error('Failed to load Stripe Connect.js')); };
+            document.head.appendChild(s);
+          });
+        }
+
+        // Step 3: Initialize embedded onboarding
+        var stripeInstance = StripeConnect.init({
+          publishableKey: await (async function() { var r = await fetch('/api/account-session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) }); var d = await r.json(); return d.publishableKey; })(),
+          fetchClientSecret: async function() {
+            var r2 = await fetch('/api/account-session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) });
+            var sessionData = await r2.json();
+            if (!sessionData.clientSecret) throw new Error('Session creation failed');
+            return sessionData.clientSecret;
+          }
+        });
+
+        // Step 4: Mount the embedded component
+        var container = document.getElementById('stripe-onboarding-container');
+        container.innerHTML = '';
+        var onboardingEl = stripeInstance.create('account-onboarding');
+        onboardingEl.addEventListener('exit', async function() {
+          document.getElementById('stripe-onboarding-modal').style.display = 'none';
+          await SB.from('businesses').update({ stripe_onboarded: true }).eq('id', currentUser.id);
+          location.href = '/dashboard.html?stripe=success';
+        });
+        container.appendChild(onboardingEl);
+        document.getElementById('stripe-onboarding-modal').style.display = 'flex';
+        btn.disabled = false; btn.textContent = 'Connect Stripe';
+      } catch (err) {
+        console.error('Stripe connect error:', err);
+        // Fallback: try redirect-based onboarding
+        try {
+          var r3 = await fetch('/api/connect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) });
+          var fallbackData = await r3.json();
+          if (fallbackData.url) { window.location.href = fallbackData.url; return; }
+        } catch(e) {}
+        alert('Could not connect Stripe. Please try again.');
+        btn.disabled = false; btn.textContent = 'Connect Stripe';
+      }
+    }
+
+    function closeStripeModal() {
+      document.getElementById('stripe-onboarding-modal').style.display = 'none';
     }
 
     async function signOut() { await SB.auth.signOut(); window.location.href = '/login.html'; }
