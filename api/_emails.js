@@ -292,9 +292,107 @@ function businessConfirmed(data) {
 }
 
 
+/* ═══════════════════════════════════════════════════
+ *  5. WELCOME — Day 0
+ * ═══════════════════════════════════════════════════ */
+function welcome(data) {
+  return wrapper(header('Welcome to Sortora')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Welcome aboard, ' + data.name + '!</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.65;margin:0 0 20px;font-weight:500">You just took the first step toward eliminating the &ldquo;who\u2019s paying?&rdquo; problem. Here\u2019s what happens next:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:8px 0;font-size:14px"><span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ecfdf5;color:' + GREEN + ';text-align:center;line-height:24px;font-size:12px;font-weight:800;margin-right:12px">\u2713</span><span style="color:' + DARK + ';font-weight:600">Create your account</span></td></tr>'
+    + '<tr><td style="padding:8px 0;font-size:14px"><span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:rgba(59,107,255,.08);color:' + BRAND + ';text-align:center;line-height:24px;font-size:12px;font-weight:800;margin-right:12px">2</span><span style="color:' + DARK + ';font-weight:600">Connect Stripe</span> <span style="color:' + MUTED + ';font-size:12px">&mdash; 3 min</span></td></tr>'
+    + '<tr><td style="padding:8px 0;font-size:14px"><span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:rgba(59,107,255,.08);color:' + BRAND + ';text-align:center;line-height:24px;font-size:12px;font-weight:800;margin-right:12px">3</span><span style="color:' + DARK + ';font-weight:600">Embed the widget</span> <span style="color:' + MUTED + ';font-size:12px">&mdash; 5 min</span></td></tr>'
+    + '<tr><td style="padding:8px 0;font-size:14px"><span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:rgba(59,107,255,.08);color:' + BRAND + ';text-align:center;line-height:24px;font-size:12px;font-weight:800;margin-right:12px">4</span><span style="color:' + DARK + ';font-weight:600">Get paid</span></td></tr>'
+    + '</table></div>'
+    + '<a href="' + data.dashUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Connect Stripe &rarr;</a>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:20px 0 0;font-weight:500">The whole setup takes under 10 minutes.</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  6. QUICK WIN — Day 1
+ * ═══════════════════════════════════════════════════ */
+function quickWin(data) {
+  return wrapper(header('Quick Start Guide')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Create your first split in 2 minutes</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.65;margin:0 0 24px;font-weight:500">Here\u2019s the fastest path to your first split payment, ' + data.name + ':</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="margin-bottom:20px"><div style="font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Step 1</div><div style="font-size:15px;font-weight:700;color:' + DARK + ';margin-bottom:4px">Open your dashboard</div><div style="font-size:13px;color:' + GRAY + '">Click &ldquo;New Split&rdquo; in the top right corner.</div></div>'
+    + '<div style="margin-bottom:20px"><div style="font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Step 2</div><div style="font-size:15px;font-weight:700;color:' + DARK + ';margin-bottom:4px">Enter the booking details</div><div style="font-size:13px;color:' + GRAY + '">Title, total amount, and number of people.</div></div>'
+    + '<div><div style="font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Step 3</div><div style="font-size:15px;font-weight:700;color:' + DARK + ';margin-bottom:4px">Share the payment link</div><div style="font-size:13px;color:' + GRAY + '">Each participant gets a personal link to pay via Stripe.</div></div>'
+    + '</div>'
+    + '<a href="' + data.dashUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Create my first split &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  7. SOCIAL PROOF — Day 3
+ * ═══════════════════════════════════════════════════ */
+function socialProof(data) {
+  return wrapper(header('Customer Spotlight')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">How experience businesses use Sortora</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.65;margin:0 0 24px;font-weight:500">We built Sortora because group bookings shouldn\u2019t mean chasing payments:</p>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:15px;color:' + DARK + ';line-height:1.7;font-style:italic;font-weight:500">&ldquo;Groups of 4-6 people would book, one person would pay the full $180, then spend a week chasing everyone on Venmo. Now everyone pays their own share at checkout.&rdquo;</div>'
+    + '<div style="font-size:13px;color:' + BRAND + ';font-weight:700;margin-top:12px">&mdash; Escape room operator, Seattle WA</div></div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:28px;font-weight:800;color:' + BRAND + '">47%</div><div style="font-size:12px;color:' + GRAY + ';margin-top:4px;font-weight:500">more completed<br>group bookings</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:28px;font-weight:800;color:' + BRAND + '">8 hrs</div><div style="font-size:12px;color:' + GRAY + ';margin-top:4px;font-weight:500">saved per month on<br>payment management</div></td>'
+    + '</tr></table></div>'
+    + '<a href="' + data.dashUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Set up my widget &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  8. FEATURE SPOTLIGHT — Day 5
+ * ═══════════════════════════════════════════════════ */
+function featureSpotlight(data) {
+  return wrapper(header('Feature Spotlight')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Did you know Sortora can do this?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.65;margin:0 0 24px;font-weight:500">Three features ' + data.businessName + ' might find useful:</p>'
+    + '<div style="margin-bottom:16px;padding:20px 24px;background:' + GLASS + ';border-radius:12px;border:1px solid ' + BORDER + '"><div style="font-size:15px;font-weight:700;color:' + DARK + ';margin-bottom:6px">\u26a1 Auto-expiry</div><div style="font-size:13px;color:' + GRAY + ';line-height:1.6">Split payments expire automatically after 7 days. No stale bookings.</div></div>'
+    + '<div style="margin-bottom:16px;padding:20px 24px;background:' + GLASS + ';border-radius:12px;border:1px solid ' + BORDER + '"><div style="font-size:15px;font-weight:700;color:' + DARK + ';margin-bottom:6px">\ud83d\udd17 Shareable payment links</div><div style="font-size:13px;color:' + GRAY + ';line-height:1.6">Each participant gets a unique link. Share via text, email, or WhatsApp.</div></div>'
+    + '<div style="margin-bottom:24px;padding:20px 24px;background:' + GLASS + ';border-radius:12px;border:1px solid ' + BORDER + '"><div style="font-size:15px;font-weight:700;color:' + DARK + ';margin-bottom:6px">\ud83d\udcc8 Real-time tracking</div><div style="font-size:13px;color:' + GRAY + ';line-height:1.6">See who\u2019s paid and who hasn\u2019t. Booking confirms when everyone pays.</div></div>'
+    + '<a href="' + data.dashUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Try it out &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  9. CHECK-IN — Day 7: Personal founder email
+ * ═══════════════════════════════════════════════════ */
+function checkIn(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s Riley, the founder of Sortora. I wanted to personally check in &mdash; how\u2019s everything going?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">I built Sortora because I saw how much friction group payments cause for experience businesses. Every escape room, pottery studio, and cooking class deals with the same problem.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If you\u2019ve had a chance to try it out, I\u2019d love to hear what you think. If you hit any snags, just reply &mdash; it comes straight to me.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 8px;font-weight:500">A few things I can help with:</p>'
+    + '<div style="padding:0 0 0 12px;margin-bottom:20px">'
+    + '<p style="font-size:14px;color:' + GRAY + ';line-height:1.75;margin:4px 0;font-weight:500">\u2022 Getting your widget embedded</p>'
+    + '<p style="font-size:14px;color:' + GRAY + ';line-height:1.75;margin:4px 0;font-weight:500">\u2022 Customizing the checkout flow</p>'
+    + '<p style="font-size:14px;color:' + GRAY + ';line-height:1.75;margin:4px 0;font-weight:500">\u2022 Running your first test split</p>'
+    + '</div>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 24px;font-weight:500">Just hit reply. I read every email.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
 module.exports = {
   paymentLink: paymentLink,
   paymentReceipt: paymentReceipt,
   bookingConfirmed: bookingConfirmed,
-  businessConfirmed: businessConfirmed
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn
 };
