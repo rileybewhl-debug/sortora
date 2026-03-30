@@ -35,7 +35,8 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({
       clientSecret: accountSession.client_secret,
-      accountId: biz.stripe_account_id
+      accountId: biz.stripe_account_id,
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
     });
   } catch (err) {
     alertError('account-session', err, req);
