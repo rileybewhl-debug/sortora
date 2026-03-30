@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
         idempotencyKey: 'acct_' + businessId
       });
       accountId = account.id;
-      await supabase.from('businesses').update({ stripe_account_id: accountId }).eq('id', businessId);
+      await supabase.from('businesses').update({ stripe_account_id: accountId, stripe_connected_at: new Date().toISOString() }).eq('id', businessId);
     }
 
     var siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sortora.com';
