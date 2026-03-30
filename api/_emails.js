@@ -450,6 +450,132 @@ function dunningDay14(data) {
     + '</div>');
 }
 
+
+/* ═══════════════════════════════════════════════════
+ *  14. PRE-DUNNING — Expiring card reminder
+ * ═══════════════════════════════════════════════════ */
+function expiringCard(data) {
+  return wrapper(header('Card Expiring Soon')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Just a heads up \u2014 the card on file for your Sortora account expires ' + (data.expMonth || '') + '/' + (data.expYear || '') + '. To avoid any interruption to your split payments, update it before it expires:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:14px;color:' + DARK + ';font-weight:600">Card ending in ' + (data.last4 || '****') + '</td>'
+    + '<td style="font-size:14px;color:' + MUTED + ';font-weight:500;text-align:right">Expires ' + (data.expMonth || '??') + '/' + (data.expYear || '??') + '</td>'
+    + '</tr></table></div>'
+    + '<a href="' + data.updateUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Update payment method</a>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:20px 0 0;font-weight:500">Takes 30 seconds. Your service won\u2019t be interrupted.</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  15. BEHAVIORAL NUDGE — Stripe connected, no widget
+ * ═══════════════════════════════════════════════════ */
+function widgetNudge(data) {
+  return wrapper(header('Almost There')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">You\u2019re one step away, ' + data.name + '</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">You connected Stripe \u2014 awesome! Now embed the widget on your booking page so customers can split payments at checkout.</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:13px;font-weight:700;color:' + DARK + ';margin-bottom:12px">It\u2019s just a copy-paste:</div>'
+    + '<div style="background:' + DARK + ';border-radius:8px;padding:16px 20px;font-family:SF Mono,Fira Code,Consolas,monospace;font-size:12px;color:#e2e8f0;line-height:1.6;overflow-x:auto">'
+    + '&lt;div id="sortora-checkout"&gt;&lt;/div&gt;<br>'
+    + '&lt;script src="https://cdn.sortora.com/widget.js"&gt;&lt;/script&gt;'
+    + '</div></div>'
+    + '<a href="' + data.dashUrl + '?view=embed" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Get my embed code &rarr;</a>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:20px 0 0;font-weight:500">Need help? Reply to this email and I\u2019ll walk you through it.</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  16. PAYOUT NOTIFICATION
+ * ═══════════════════════════════════════════════════ */
+function payoutNotification(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payout Sent')
+    + '<div style="padding:36px 40px;text-align:center">'
+    + '<div style="width:56px;height:56px;border-radius:50%;background:' + GREEN + ';margin:0 auto 20px;text-align:center;line-height:56px">'
+    + '<span style="font-size:24px;color:#fff;font-family:Arial">$</span></div>'
+    + '<div style="font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Payout initiated</div>'
+    + '<div style="font-size:40px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1;margin-bottom:8px">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
 module.exports = {
   paymentLink: paymentLink,
   paymentReceipt: paymentReceipt,
