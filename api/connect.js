@@ -47,7 +47,7 @@ module.exports = async function handler(req, res) {
       idempotencyKey: 'link_' + accountId + '_' + Math.floor(Date.now() / 60000)
     });
 
-    return res.status(200).json({ url: accountLink.url });
+    return res.status(200).json({ url: accountLink.url, accountId: accountId });
   } catch (err) {
     alertError('connect', err, req);
     console.error('Connect error:', err);
