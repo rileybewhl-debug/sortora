@@ -1069,9 +1069,9 @@ document.getElementById('ob-pct').textContent = pct + '%';
 
         // Step 3: Initialize embedded onboarding
         var stripeInstance = StripeConnect.init({
-          publishableKey: await (async function() { var r = await fetch('/api/account-session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) }); var d = await r.json(); return d.publishableKey; })(),
+          publishableKey: await (async function() { var r = await fetch('/api/connect?action=session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) }); var d = await r.json(); return d.publishableKey; })(),
           fetchClientSecret: async function() {
-            var r2 = await fetch('/api/account-session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) });
+            var r2 = await fetch('/api/connect?action=session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ businessId: currentUser.id }) });
             var sessionData = await r2.json();
             if (!sessionData.clientSecret) throw new Error('Session creation failed');
             return sessionData.clientSecret;
