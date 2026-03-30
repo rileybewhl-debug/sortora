@@ -112,6 +112,15 @@ module.exports = async function handler(req, res) {
       .update({ splits_this_month: (biz.splits_this_month || 0) + 1 })
       .eq('id', businessId);
 
+    
+    // Track first_split_at activation milestone
+    try {
+      var { data: bizCheck } = await supabase.from('businesses').select('first_split_at').eq('id', businessId).single();
+      if (bizCheck && !bizCheck.first_split_at) {
+        await supabase.from('businesses').update({ first_split_at: new Date().toISOString() }).eq('id', businessId);
+      }
+    } catch (metricErr) { console.error('Activation metric error:', metricErr); }
+
     return res.status(200).json({
       success: true,
       sessionId: session.id,
