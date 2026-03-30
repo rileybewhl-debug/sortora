@@ -123,7 +123,18 @@
     .feed-text{font-size:13px;color:#0C1220;font-weight:500;line-height:1.4}
     .feed-text b{font-weight:700}
     .feed-time{font-size:11px;color:#b0b0b0;margin-top:2px}
-    .feed-empty{text-align:center;padding:40px 20px;color:#b0b0b0;font-size:13px}
+    .onboarding-progress{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.onboarding-count{font-size:12px;font-weight:600;color:#3B6BFF}
+.onboarding-pct{font-size:11px;color:#9CA3AF}
+.empty-sample{background:#f8f9fa;border:1px dashed #d0d5dd;border-radius:10px;padding:24px;text-align:center}
+.empty-sample-title{font-size:14px;font-weight:700;color:#0C1220;margin-bottom:6px}
+.empty-sample-desc{font-size:13px;color:#6a6a6a;margin-bottom:16px;line-height:1.5}
+.empty-sample-btn{display:inline-block;padding:10px 20px;background:#3B6BFF;color:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
+.empty-sample-btn:hover{background:#2952cc}
+.empty-sample-preview{display:flex;gap:12px;justify-content:center;margin-bottom:16px;opacity:.5}
+.empty-sample-card{background:#fff;border:1px solid #eee;border-radius:8px;padding:12px 16px;font-size:11px;color:#9CA3AF;min-width:100px;text-align:left}
+.empty-sample-card strong{display:block;font-size:13px;color:#0C1220;margin-bottom:2px}
+.feed-empty{text-align:center;padding:40px 20px;color:#b0b0b0;font-size:13px}
 
     /* ── Booking rows ── */
     .bookings-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
@@ -329,7 +340,8 @@
         <div class="onboarding" id="onboarding">
           <div class="onboarding-title"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Get started with Sortora</div>
           <div class="onboarding-sub">Complete these steps to start receiving split payments.</div>
-          <div class="onboarding-bar"><div class="onboarding-bar-fill" id="ob-bar" style="width:25%"></div></div>
+          <div class="onboarding-progress"><span class="onboarding-count" id="ob-count">1 of 4 complete</span><span class="onboarding-pct" id="ob-pct">25%</span></div>
+<div class="onboarding-bar"><div class="onboarding-bar-fill" id="ob-bar" style="width:25%"></div></div>
           <div class="onboarding-steps" id="ob-steps"></div>
         </div>
 
@@ -388,7 +400,7 @@
               <div class="card-title">Activity</div>
             </div>
             <div class="feed-list" id="feed-list">
-              <div class="feed-empty">No activity yet</div>
+              <div class="empty-sample"><div class="empty-sample-preview"><div class="empty-sample-card"><strong>$450 collected</strong>3 bookings this week</div><div class="empty-sample-card"><strong>87% completion</strong>Split success rate</div></div><div class="empty-sample-title">Your dashboard data will appear here</div><div class="empty-sample-desc">Connect Stripe and create your first split to see live revenue, bookings, and payout data.</div></div>
             </div>
           </div>
         </div>
@@ -651,7 +663,10 @@
         { id: 'split', text: 'Create your first split', done: (bizData.splits_this_month || 0) > 0, action: 'openCreateModal()' }
       ];
       var doneCount = steps.filter(function(s) { return s.done; }).length;
-      document.getElementById('ob-bar').style.width = (doneCount / steps.length * 100) + '%';
+      var pct = Math.round(doneCount / steps.length * 100);
+document.getElementById('ob-bar').style.width = pct + '%';
+document.getElementById('ob-count').textContent = doneCount + ' of ' + steps.length + ' complete';
+document.getElementById('ob-pct').textContent = pct + '%';
       if (doneCount === steps.length) { document.getElementById('onboarding').classList.add('all-done'); return; }
       document.getElementById('ob-steps').innerHTML = steps.map(function(s) {
         return '<div class="ob-step' + (s.done ? ' completed' : '') + '">'
@@ -775,7 +790,7 @@
       });
       events.sort(function(a, b) { return b.time - a.time; });
       var el = document.getElementById('feed-list');
-      if (!events.length) { el.innerHTML = '<div class="feed-empty">No activity yet. Create your first split to get started.</div>'; return; }
+      if (!events.length) { el.innerHTML = '<div class="empty-sample"><div class="empty-sample-preview"><div class="empty-sample-card"><strong>Escape Room - 6 people</strong>$180 total · 4 of 6 paid</div><div class="empty-sample-card"><strong>Pottery Class - 4 people</strong>$120 total · Fully paid ✓</div></div><div class="empty-sample-title">Your activity feed will appear here</div><div class="empty-sample-desc">Once you create your first split payment, you\'ll see real-time updates as participants pay their share.</div><button class="empty-sample-btn" onclick="openCreateModal()">Create my first split</button></div>'; return; }
       el.innerHTML = events.slice(0, 20).map(function(e) {
         var ago = timeAgo(e.time);
         return '<div class="feed-item"><div class="feed-dot ' + e.type + '"></div><div class="feed-info"><div class="feed-text">' + e.text + '</div><div class="feed-time">' + ago + '</div></div></div>';
