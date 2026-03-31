@@ -120,11 +120,11 @@
         <div class="alert alert-error" id="form-error"></div>
         <div class="alert alert-success" id="form-success"></div>
         <div class="form-row">
-          <div class="form-group"><div class="form-label">Your name</div><input class="form-input" type="text" id="f-name" placeholder="Full name"/></div>
-          <div class="form-group"><div class="form-label">Business name</div><input class="form-input" type="text" id="f-biz" placeholder="e.g. Fire & Clay"/></div>
+          <div class="form-group"><div class="form-label">Your name</div><input class="form-input" type="text" id="f-name" inputmode="text" autocomplete="name" placeholder="Full name"/></div>
+          <div class="form-group"><div class="form-label">Business name</div><input class="form-input" type="text" id="f-biz" inputmode="text" autocomplete="organization" placeholder="e.g. Fire & Clay"/></div>
         </div>
-        <div class="form-group"><div class="form-label">Work email</div><input class="form-input" type="email" id="f-email" placeholder="you@business.com"/></div>
-        <div class="form-group"><div class="form-label">Password</div><input class="form-input" type="password" id="f-pass" placeholder="At least 6 characters"/></div>
+        <div class="form-group"><div class="form-label">Work email</div><input class="form-input" type="email" id="f-email" inputmode="email" autocomplete="email" placeholder="you@business.com"/></div>
+        <div class="form-group"><div class="form-label">Password</div><input class="form-input" type="password" id="f-pass" autocomplete="new-password" placeholder="At least 6 characters"/></div>
         <button class="btn-primary" id="signup-btn" onclick="doSignup()">Create account</button>
         <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
         <button class="btn-dark" onclick="doGoogle()">
