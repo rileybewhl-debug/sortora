@@ -88,6 +88,19 @@
 .period-btn{padding:7px 14px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#6a6a6a;cursor:pointer;font-family:inherit;transition:all .15s}
 .period-btn:hover{color:#0C1220}
 .period-btn.active{background:#fff;color:#0C1220;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+/* Split Funnel */
+.funnel-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px;margin-bottom:20px}
+.funnel-title{font-size:15px;font-weight:800;margin-bottom:16px;letter-spacing:-.02em}
+.funnel-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.funnel-label{font-size:13px;font-weight:600;color:#6a6a6a;width:120px;flex-shrink:0}
+.funnel-bar-wrap{flex:1;height:28px;background:#f0f1f3;border-radius:6px;overflow:hidden;position:relative}
+.funnel-bar-fill{height:100%;border-radius:6px;transition:width .6s ease}
+.funnel-bar-fill.step1{background:linear-gradient(90deg,#3B6BFF,#5a85ff)}
+.funnel-bar-fill.step2{background:linear-gradient(90deg,#6B8EFF,#8aabff)}
+.funnel-bar-fill.step3{background:linear-gradient(90deg,#10B981,#34d399)}
+.funnel-bar-fill.step4{background:linear-gradient(90deg,#059669,#10B981)}
+.funnel-count{font-size:13px;font-weight:700;color:#0C1220;width:50px;text-align:right;flex-shrink:0}
+.funnel-pct{font-size:11px;color:#b0b0b0;font-weight:600;width:40px;text-align:right;flex-shrink:0}
 .stat-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px}
     .stat-label{font-size:12px;font-weight:600;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
@@ -369,6 +382,16 @@
           <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div></div>
           <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div></div>
           <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div></div>
+        </div>
+
+        
+        <!-- Split Funnel -->
+        <div class="funnel-card" id="funnel-card" style="display:none">
+          <div class="funnel-title">Split Funnel</div>
+          <div class="funnel-row"><div class="funnel-label">Splits Created</div><div class="funnel-bar-wrap"><div class="funnel-bar-fill step1" id="fn-bar1" style="width:0%"></div></div><div class="funnel-count" id="fn-created">0</div><div class="funnel-pct" id="fn-pct1"></div></div>
+          <div class="funnel-row"><div class="funnel-label">Invites Sent</div><div class="funnel-bar-wrap"><div class="funnel-bar-fill step2" id="fn-bar2" style="width:0%"></div></div><div class="funnel-count" id="fn-invites">0</div><div class="funnel-pct" id="fn-pct2"></div></div>
+          <div class="funnel-row"><div class="funnel-label">Payments Made</div><div class="funnel-bar-wrap"><div class="funnel-bar-fill step3" id="fn-bar3" style="width:0%"></div></div><div class="funnel-count" id="fn-payments">0</div><div class="funnel-pct" id="fn-pct3"></div></div>
+          <div class="funnel-row"><div class="funnel-label">Completed</div><div class="funnel-bar-wrap"><div class="funnel-bar-fill step4" id="fn-bar4" style="width:0%"></div></div><div class="funnel-count" id="fn-completed">0</div><div class="funnel-pct" id="fn-pct4"></div></div>
         </div>
 
         <!-- Revenue Chart -->
@@ -877,6 +900,7 @@ document.getElementById('ob-pct').textContent = pct + '%';
       document.getElementById('ov-revenue').textContent = '$' + totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 0 });
       document.getElementById('ov-active').textContent = active;
       document.getElementById('ov-confirmed').textContent = confirmed;
+      try { updateFunnel(); } catch(e) {}
       document.getElementById('ov-count').textContent = allBookings.length + ' total';
       document.getElementById('bk-count').textContent = allBookings.length + ' total';
 
@@ -1190,6 +1214,37 @@ document.getElementById('ob-pct').textContent = pct + '%';
 
       // Update sub labels
       var periodLabel = currentPeriod === 'all' ? 'all time' : currentPeriod === 'today' ? 'today' : 'last ' + currentPeriod;
+      
+    function updateFunnel() {
+      var filtered = getFilteredBookings();
+      var created = filtered.length;
+      var invites = 0, payments = 0, completed = 0;
+      filtered.forEach(function(b) {
+        var parts = b.participants || [];
+        invites += parts.length;
+        parts.forEach(function(p) { if (p.status === 'paid') payments++; });
+        if (b.status === 'confirmed') completed++;
+      });
+
+      var max = Math.max(created, invites, payments, completed, 1);
+      document.getElementById('fn-created').textContent = created;
+      document.getElementById('fn-invites').textContent = invites;
+      document.getElementById('fn-payments').textContent = payments;
+      document.getElementById('fn-completed').textContent = completed;
+
+      document.getElementById('fn-bar1').style.width = (created / max * 100) + '%';
+      document.getElementById('fn-bar2').style.width = (invites / max * 100) + '%';
+      document.getElementById('fn-bar3').style.width = (payments / max * 100) + '%';
+      document.getElementById('fn-bar4').style.width = (completed / max * 100) + '%';
+
+      document.getElementById('fn-pct1').textContent = '100%';
+      document.getElementById('fn-pct2').textContent = created > 0 ? Math.round(invites / created * 100) + '%' : '—';
+      document.getElementById('fn-pct3').textContent = invites > 0 ? Math.round(payments / invites * 100) + '%' : '—';
+      document.getElementById('fn-pct4').textContent = created > 0 ? Math.round(completed / created * 100) + '%' : '—';
+
+      document.getElementById('funnel-card').style.display = created > 0 ? '' : 'none';
+    }
+
       document.querySelectorAll('#stats-real .stat-sub').forEach(function(el) { el.textContent = periodLabel; });
     }
 
