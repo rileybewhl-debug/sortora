@@ -638,7 +638,7 @@ function monthlySummary(data) {
     + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
     + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
     + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">$' + rev + '</div>'
-    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (};
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
  + prevRev + ')</div>'
     + '</div>'
 
