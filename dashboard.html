@@ -153,6 +153,30 @@
 .funnel-bar-fill.step4{background:linear-gradient(90deg,#059669,#10B981)}
 .funnel-count{font-size:13px;font-weight:700;color:#0C1220;width:50px;text-align:right;flex-shrink:0}
 .funnel-pct{font-size:11px;color:#b0b0b0;font-weight:600;width:40px;text-align:right;flex-shrink:0}
+/* Integrations */
+.int-section{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px;margin-bottom:20px}
+.int-section-title{font-size:16px;font-weight:800;margin-bottom:4px}
+.int-section-sub{font-size:13px;color:#6a6a6a;margin-bottom:16px}
+.int-input-row{display:flex;gap:8px;margin-bottom:12px}
+.int-input{flex:1;padding:10px 14px;border:1px solid #EBEBEB;border-radius:8px;font-size:14px;font-family:inherit;min-height:44px}
+.int-input:focus{outline:none;border-color:#3B6BFF}
+.int-btn{padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;min-height:44px}
+.int-btn-primary{background:#3B6BFF;color:#fff}
+.int-btn-secondary{background:#f0f1f3;color:#0C1220}
+.int-btn-danger{background:#FEE2E2;color:#991B1B}
+.int-events{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.int-event{padding:6px 14px;border:1px solid #EBEBEB;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.int-event.active{background:#EEF2FF;border-color:#3B6BFF;color:#3B6BFF}
+.int-log{border:1px solid #EBEBEB;border-radius:8px;overflow:hidden;margin-top:16px}
+.int-log-header{display:flex;padding:10px 14px;background:#f7f8fa;font-size:12px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em}
+.int-log-row{display:flex;padding:10px 14px;border-top:1px solid #f0f1f3;font-size:13px;align-items:center}
+.int-log-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:10px}
+.int-log-status.delivered{background:#10B981}
+.int-log-status.failed{background:#EF4444}
+.int-zapier{display:flex;align-items:center;gap:16px;padding:16px;background:#FFF5EB;border:1px solid #FFE0B2;border-radius:12px;margin-bottom:16px}
+.int-zapier-icon{font-size:28px}
+.int-zapier-text{font-size:13px;color:#6a6a6a;line-height:1.5}
+.int-zapier-text b{color:#0C1220}
 .stat-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px}
     .stat-label{font-size:12px;font-weight:600;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
@@ -373,6 +397,7 @@
       <div class="sb-section">Tools</div>
       <button class="sb-item" onclick="showView('embed',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Widget</button>
       <div class="sb-divider"></div>
+      <button class="sb-item" onclick="showView('integrations',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>Integrations</button>
       <button class="sb-item" onclick="showView('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</button>
     </nav>
     <div class="sb-plan" id="sb-plan">
@@ -624,6 +649,76 @@
     </div>
 
     <!-- ═══ SETTINGS ═══ -->
+    
+    <!-- Integrations -->
+    <div class="view" id="view-integrations">
+      <div class="main-header">
+        <div><div class="main-title">Integrations</div><div class="main-subtitle">Connect Sortora to your tools</div></div>
+      </div>
+      <div class="main-body">
+        <!-- Zapier / Google Calendar -->
+        <div class="int-section">
+          <div class="int-section-title">Zapier & Google Calendar</div>
+          <div class="int-section-sub">Connect Sortora to 5,000+ apps — including Google Calendar for automatic event creation when bookings are confirmed.</div>
+          <div class="int-zapier">
+            <div class="int-zapier-icon">&#9889;</div>
+            <div class="int-zapier-text"><b>Set up a Zap in 2 minutes:</b> Use the Webhook trigger in Zapier with your webhook URL below, then connect it to Google Calendar, Slack, Notion, or any app.</div>
+          </div>
+        </div>
+
+        <!-- Webhook Config -->
+        <div class="int-section">
+          <div class="int-section-title">Webhook URL</div>
+          <div class="int-section-sub">Sortora will POST event data to this URL when things happen.</div>
+          <div class="int-input-row">
+            <input class="int-input" type="url" id="wh-url" placeholder="https://hooks.zapier.com/..." inputmode="url"/>
+            <button class="int-btn int-btn-primary" onclick="saveWebhookUrl()">Save</button>
+          </div>
+          <div id="wh-save-status" style="font-size:12px;color:#10B981;display:none;margin-bottom:12px">Saved!</div>
+
+          <div class="int-section-title" style="margin-top:20px;font-size:14px">Webhook Secret</div>
+          <div class="int-section-sub">Optional. If set, Sortora signs payloads with HMAC-SHA256 so you can verify they came from us.</div>
+          <div class="int-input-row">
+            <input class="int-input" type="text" id="wh-secret" placeholder="whsec_..." style="font-family:SF Mono,Consolas,monospace;font-size:13px"/>
+            <button class="int-btn int-btn-secondary" onclick="generateSecret()">Generate</button>
+            <button class="int-btn int-btn-primary" onclick="saveWebhookSecret()">Save</button>
+          </div>
+        </div>
+
+        <!-- Event Selector -->
+        <div class="int-section">
+          <div class="int-section-title">Events</div>
+          <div class="int-section-sub">Choose which events trigger your webhook.</div>
+          <div class="int-events" id="wh-events">
+            <div class="int-event active" onclick="toggleEvent(this)" data-event="payment.received">Payment Received</div>
+            <div class="int-event active" onclick="toggleEvent(this)" data-event="booking.confirmed">Booking Confirmed</div>
+            <div class="int-event" onclick="toggleEvent(this)" data-event="booking.created">Booking Created</div>
+            <div class="int-event" onclick="toggleEvent(this)" data-event="payout.sent">Payout Sent</div>
+            <div class="int-event" onclick="toggleEvent(this)" data-event="participant.joined">Participant Joined</div>
+          </div>
+          <button class="int-btn int-btn-primary" onclick="saveWebhookEvents()">Save Events</button>
+        </div>
+
+        <!-- Test Webhook -->
+        <div class="int-section">
+          <div class="int-section-title">Test</div>
+          <div class="int-section-sub">Send a test event to verify your webhook is working.</div>
+          <button class="int-btn int-btn-secondary" onclick="testWebhook()" id="wh-test-btn">Send Test Event</button>
+          <div id="wh-test-result" style="font-size:13px;margin-top:10px;display:none"></div>
+        </div>
+
+        <!-- Delivery Log -->
+        <div class="int-section">
+          <div class="int-section-title">Recent Deliveries</div>
+          <div class="int-section-sub">Last 10 webhook deliveries.</div>
+          <div class="int-log" id="wh-log">
+            <div class="int-log-header"><span style="flex:1">Event</span><span style="width:100px">Status</span><span style="width:140px">Time</span></div>
+            <div style="padding:20px;text-align:center;font-size:13px;color:#b0b0b0">No deliveries yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="view" id="view-settings">
       <div class="main-header"><div><div class="main-title">Settings</div><div class="main-subtitle">Manage your business profile and billing</div></div></div>
       <div class="main-body">
@@ -2213,6 +2308,106 @@ document.getElementById('ob-pct').textContent = pct + '%';
 
     // Apply on load
     try { applyKpiPrefs(); } catch(e) {}
+
+
+    // Integrations / Webhook settings
+    function saveWebhookUrl() {
+      var url = document.getElementById('wh-url').value.trim();
+      if (!url) return;
+      SB.from('businesses').update({ webhook_url: url }).eq('id', currentUser.id).then(function() {
+        var s = document.getElementById('wh-save-status');
+        s.style.display = 'block';
+        setTimeout(function() { s.style.display = 'none'; }, 2000);
+      });
+    }
+
+    function generateSecret() {
+      var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      var secret = 'whsec_';
+      for (var i = 0; i < 32; i++) secret += chars[Math.floor(Math.random() * chars.length)];
+      document.getElementById('wh-secret').value = secret;
+    }
+
+    function saveWebhookSecret() {
+      var secret = document.getElementById('wh-secret').value.trim();
+      SB.from('businesses').update({ webhook_secret: secret }).eq('id', currentUser.id);
+    }
+
+    function toggleEvent(el) {
+      el.classList.toggle('active');
+    }
+
+    function saveWebhookEvents() {
+      var events = [];
+      document.querySelectorAll('.int-event.active').forEach(function(el) {
+        events.push(el.dataset.event);
+      });
+      SB.from('businesses').update({ webhook_events: events }).eq('id', currentUser.id);
+    }
+
+    async function testWebhook() {
+      var btn = document.getElementById('wh-test-btn');
+      var result = document.getElementById('wh-test-result');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      result.style.display = 'none';
+
+      var url = document.getElementById('wh-url').value.trim();
+      if (!url) {
+        result.style.display = 'block';
+        result.style.color = '#EF4444';
+        result.textContent = 'Please save a webhook URL first.';
+        btn.disabled = false;
+        btn.textContent = 'Send Test Event';
+        return;
+      }
+
+      try {
+        var res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Sortora-Event': 'test' },
+          body: JSON.stringify({ event: 'test', timestamp: new Date().toISOString(), data: { message: 'This is a test webhook from Sortora' } })
+        });
+        result.style.display = 'block';
+        result.style.color = res.ok ? '#10B981' : '#F59E0B';
+        result.textContent = res.ok ? 'Success! Your webhook received the test event.' : 'Webhook responded with status ' + res.status;
+      } catch (err) {
+        result.style.display = 'block';
+        result.style.color = '#EF4444';
+        result.textContent = 'Failed to reach webhook URL: ' + err.message;
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Send Test Event';
+    }
+
+    // Load webhook settings when integrations view is shown
+    function loadWebhookSettings() {
+      if (!currentUser) return;
+      SB.from('businesses').select('webhook_url, webhook_secret, webhook_events').eq('id', currentUser.id).single().then(function(r) {
+        if (r.data) {
+          if (r.data.webhook_url) document.getElementById('wh-url').value = r.data.webhook_url;
+          if (r.data.webhook_secret) document.getElementById('wh-secret').value = r.data.webhook_secret;
+          if (r.data.webhook_events && r.data.webhook_events.length) {
+            document.querySelectorAll('.int-event').forEach(function(el) {
+              el.classList.toggle('active', r.data.webhook_events.indexOf(el.dataset.event) > -1);
+            });
+          }
+        }
+      });
+
+      // Load delivery log
+      SB.from('webhook_deliveries').select('*').eq('business_id', currentUser.id).order('delivered_at', { ascending: false }).limit(10).then(function(r) {
+        var log = document.getElementById('wh-log');
+        if (!r.data || !r.data.length) return;
+        var rows = r.data.map(function(d) {
+          var time = new Date(d.delivered_at || d.created_at).toLocaleString();
+          var statusClass = d.status === 'delivered' ? 'delivered' : 'failed';
+          return '<div class="int-log-row"><div class="int-log-status ' + statusClass + '"></div><span style="flex:1">' + d.event_type + '</span><span style="width:100px;color:' + (d.status === 'delivered' ? '#10B981' : '#EF4444') + ';font-weight:600">' + d.status + '</span><span style="width:140px;color:#b0b0b0;font-size:12px">' + time + '</span></div>';
+        }).join('');
+        log.innerHTML = '<div class="int-log-header"><span style="flex:1">Event</span><span style="width:100px">Status</span><span style="width:140px">Time</span></div>' + rows;
+      });
+    }
 
   </script>
 </body>
