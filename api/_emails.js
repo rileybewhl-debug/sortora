@@ -528,21 +528,7 @@ function weeklyDigest(data) {
     + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
     + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
     + '<tr>'
-    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
-  paymentLink: paymentLink,
-  paymentReceipt: paymentReceipt,
-  bookingConfirmed: bookingConfirmed,
-  businessConfirmed: businessConfirmed,
-  welcome: welcome,
-  quickWin: quickWin,
-  socialProof: socialProof,
-  featureSpotlight: featureSpotlight,
-  checkIn: checkIn,
-  dunningDay0: dunningDay0,
-  dunningDay3: dunningDay3,
-  dunningDay7: dunningDay7,
-  dunningDay14: dunningDay14
-};
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">};
  + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
     + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
     + '</tr>'
@@ -652,37 +638,9 @@ function monthlySummary(data) {
 
     + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
     + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
-    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
-  paymentLink: paymentLink,
-  paymentReceipt: paymentReceipt,
-  bookingConfirmed: bookingConfirmed,
-  businessConfirmed: businessConfirmed,
-  welcome: welcome,
-  quickWin: quickWin,
-  socialProof: socialProof,
-  featureSpotlight: featureSpotlight,
-  checkIn: checkIn,
-  dunningDay0: dunningDay0,
-  dunningDay3: dunningDay3,
-  dunningDay7: dunningDay7,
-  dunningDay14: dunningDay14
-};
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">};
  + rev + '</div>'
-    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
-  paymentLink: paymentLink,
-  paymentReceipt: paymentReceipt,
-  bookingConfirmed: bookingConfirmed,
-  businessConfirmed: businessConfirmed,
-  welcome: welcome,
-  quickWin: quickWin,
-  socialProof: socialProof,
-  featureSpotlight: featureSpotlight,
-  checkIn: checkIn,
-  dunningDay0: dunningDay0,
-  dunningDay3: dunningDay3,
-  dunningDay7: dunningDay7,
-  dunningDay14: dunningDay14
-};
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (};
  + prevRev + ')</div>'
     + '</div>'
 
@@ -690,21 +648,7 @@ function monthlySummary(data) {
     + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
     + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
     + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
-    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
-  paymentLink: paymentLink,
-  paymentReceipt: paymentReceipt,
-  bookingConfirmed: bookingConfirmed,
-  businessConfirmed: businessConfirmed,
-  welcome: welcome,
-  quickWin: quickWin,
-  socialProof: socialProof,
-  featureSpotlight: featureSpotlight,
-  checkIn: checkIn,
-  dunningDay0: dunningDay0,
-  dunningDay3: dunningDay3,
-  dunningDay7: dunningDay7,
-  dunningDay14: dunningDay14
-};
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">};
  + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
     + '</tr></table></div>'
 
@@ -728,21 +672,7 @@ function paymentReminder(data) {
     + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
     + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
     + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
-    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
-  paymentLink: paymentLink,
-  paymentReceipt: paymentReceipt,
-  bookingConfirmed: bookingConfirmed,
-  businessConfirmed: businessConfirmed,
-  welcome: welcome,
-  quickWin: quickWin,
-  socialProof: socialProof,
-  featureSpotlight: featureSpotlight,
-  checkIn: checkIn,
-  dunningDay0: dunningDay0,
-  dunningDay3: dunningDay3,
-  dunningDay7: dunningDay7,
-  dunningDay14: dunningDay14
-};
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">};
  + amt + '</td>'
     + '</tr></table></div>'
     + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
