@@ -107,6 +107,22 @@
 .notif-text{font-size:13px;color:#0C1220;font-weight:500;line-height:1.4}
 .notif-time{font-size:11px;color:#b0b0b0;margin-top:2px}
 .notif-empty{padding:40px 16px;text-align:center;font-size:13px;color:#b0b0b0}
+/* Customizable KPIs */
+.kpi-customize{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.kpi-customize-btn{font-size:12px;color:#3B6BFF;font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit;padding:4px 8px;border-radius:6px;transition:background .15s}
+.kpi-customize-btn:hover{background:rgba(59,107,255,.06)}
+.kpi-modal{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:center;justify-content:center}
+.kpi-modal.open{display:flex}
+.kpi-modal-card{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:400px;box-shadow:0 16px 48px rgba(0,0,0,.16)}
+.kpi-modal-title{font-size:16px;font-weight:800;margin-bottom:16px}
+.kpi-option{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f1f3}
+.kpi-option-label{font-size:14px;font-weight:600;color:#0C1220}
+.kpi-option-sub{font-size:11px;color:#b0b0b0}
+.kpi-option input[type="checkbox"]{width:18px;height:18px;accent-color:#3B6BFF}
+.kpi-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.kpi-modal-btn{padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none}
+.kpi-modal-save{background:#3B6BFF;color:#fff}
+.kpi-modal-cancel{background:#f0f1f3;color:#0C1220}
 /* Period selector */
 .period-selector{display:flex;align-items:center;gap:4px;background:#f0f1f3;border-radius:10px;padding:3px;margin-bottom:16px}
 .period-btn{padding:7px 14px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#6a6a6a;cursor:pointer;font-family:inherit;transition:all .15s}
@@ -401,6 +417,7 @@
         </div>
 
         <!-- Stats -->
+        <div class="kpi-customize"><span style="font-size:13px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em">Stats</span><button class="kpi-customize-btn" onclick="openKpiCustomize()">Customize</button></div>
         <div class="period-selector" id="period-selector">
           <button class="period-btn" onclick="setPeriod('today',this)">Today</button>
           <button class="period-btn" onclick="setPeriod('7d',this)">7d</button>
@@ -1802,6 +1819,22 @@ document.getElementById('ob-pct').textContent = pct + '%';
     }
 
   </script>
+
+  <div class="kpi-modal" id="kpi-modal" onclick="if(event.target===this)closeKpiCustomize()">
+    <div class="kpi-modal-card">
+      <div class="kpi-modal-title">Customize Dashboard</div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Total Splits</div><div class="kpi-option-sub">Number of split participants</div></div><input type="checkbox" checked id="kc-splits"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Revenue</div><div class="kpi-option-sub">Total collected amount</div></div><input type="checkbox" checked id="kc-revenue"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Active</div><div class="kpi-option-sub">Pending bookings</div></div><input type="checkbox" checked id="kc-active"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Confirmed</div><div class="kpi-option-sub">Completed splits</div></div><input type="checkbox" checked id="kc-confirmed"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Split Funnel</div><div class="kpi-option-sub">Conversion funnel visualization</div></div><input type="checkbox" checked id="kc-funnel"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Analytics Grid</div><div class="kpi-option-sub">Day of week, group size, rates</div></div><input type="checkbox" checked id="kc-analytics"/></div>
+      <div class="kpi-modal-actions">
+        <button class="kpi-modal-btn kpi-modal-cancel" onclick="closeKpiCustomize()">Cancel</button>
+        <button class="kpi-modal-btn kpi-modal-save" onclick="saveKpiPrefs()">Save</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
  + Math.round(totalRev / filtered.length) : '—';
@@ -2131,6 +2164,56 @@ document.getElementById('ob-pct').textContent = pct + '%';
     });
 
     init();
+
+    // KPI Customization
+    function openKpiCustomize() { document.getElementById('kpi-modal').classList.add('open'); loadKpiPrefs(); }
+    function closeKpiCustomize() { document.getElementById('kpi-modal').classList.remove('open'); }
+
+    function saveKpiPrefs() {
+      var prefs = {
+        splits: document.getElementById('kc-splits').checked,
+        revenue: document.getElementById('kc-revenue').checked,
+        active: document.getElementById('kc-active').checked,
+        confirmed: document.getElementById('kc-confirmed').checked,
+        funnel: document.getElementById('kc-funnel').checked,
+        analytics: document.getElementById('kc-analytics').checked
+      };
+      try { localStorage.setItem('sortora_kpi_prefs', JSON.stringify(prefs)); } catch(e) {}
+      applyKpiPrefs(prefs);
+      closeKpiCustomize();
+    }
+
+    function loadKpiPrefs() {
+      try {
+        var p = JSON.parse(localStorage.getItem('sortora_kpi_prefs'));
+        if (p) {
+          document.getElementById('kc-splits').checked = p.splits !== false;
+          document.getElementById('kc-revenue').checked = p.revenue !== false;
+          document.getElementById('kc-active').checked = p.active !== false;
+          document.getElementById('kc-confirmed').checked = p.confirmed !== false;
+          document.getElementById('kc-funnel').checked = p.funnel !== false;
+          document.getElementById('kc-analytics').checked = p.analytics !== false;
+        }
+      } catch(e) {}
+    }
+
+    function applyKpiPrefs(p) {
+      if (!p) { try { p = JSON.parse(localStorage.getItem('sortora_kpi_prefs')); } catch(e) {} }
+      if (!p) return;
+      var cards = document.querySelectorAll('#stats-real .stat-card');
+      if (cards[0]) cards[0].style.display = p.splits !== false ? '' : 'none';
+      if (cards[1]) cards[1].style.display = p.revenue !== false ? '' : 'none';
+      if (cards[2]) cards[2].style.display = p.active !== false ? '' : 'none';
+      if (cards[3]) cards[3].style.display = p.confirmed !== false ? '' : 'none';
+      var funnel = document.getElementById('funnel-card');
+      if (funnel) funnel.style.display = p.funnel !== false ? '' : 'none';
+      var analytics = document.getElementById('analytics-grid');
+      if (analytics) analytics.style.display = p.analytics !== false ? '' : 'none';
+    }
+
+    // Apply on load
+    try { applyKpiPrefs(); } catch(e) {}
+
   </script>
 </body>
 </html>
