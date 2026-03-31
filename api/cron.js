@@ -1,7 +1,7 @@
 const jobs = require('./_cron-jobs');
 const { setSecurityHeaders } = require('./_security');
 
-// Routes: /api/cron?job=reset|nudge|digest|expiring|reengage|monthly
+// Routes: /api/cron?job=reset|nudge|digest|expiring|reengage|monthly|reminder
 module.exports = async function handler(req, res) {
   setSecurityHeaders(res);
   if (req.method !== 'GET' && req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -13,7 +13,8 @@ module.exports = async function handler(req, res) {
     'digest': jobs.Digest,
     'expiring': jobs.ExpiringCards,
     'reengage': jobs.Reengage,
-    'monthly': jobs.Monthly
+    'monthly': jobs.Monthly,
+    'reminder': jobs.PaymentReminder
   };
 
   if (!job || !map[job]) {
