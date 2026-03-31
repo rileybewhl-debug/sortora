@@ -227,7 +227,67 @@ async function flushSentry() {
   }
 }
 
+
+
+// Webhook dispatch — fires events to business webhook URLs
+async function dispatchWebhook(supabase, businessId, eventType, payload) {
+  try {
+    var { data: biz } = await supabase
+      .from('businesses')
+      .select('webhook_url, webhook_events, webhook_secret')
+      .eq('id', businessId)
+      .single();
+
+    if (!biz || !biz.webhook_url) return;
+
+    // Check if this event type is enabled
+    var events = biz.webhook_events || [];
+    if (events.length > 0 && events.indexOf(eventType) === -1) return;
+
+    var body = JSON.stringify({
+      event: eventType,
+      timestamp: new Date().toISOString(),
+      data: payload
+    });
+
+    // Generate HMAC signature if secret is set
+    var headers = { 'Content-Type': 'application/json', 'X-Sortora-Event': eventType };
+    if (biz.webhook_secret) {
+      var crypto = require('crypto');
+      var sig = crypto.createHmac('sha256', biz.webhook_secret).update(body).digest('hex');
+      headers['X-Sortora-Signature'] = 'sha256=' + sig;
+    }
+
+    // Fire and forget with timeout
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 5000);
+    await fetch(biz.webhook_url, {
+      method: 'POST', headers: headers, body: body, signal: controller.signal
+    }).catch(function() {});
+    clearTimeout(timeout);
+
+    // Log the delivery
+    await supabase.from('webhook_deliveries').insert({
+      business_id: businessId,
+      event_type: eventType,
+      payload: payload,
+      status: 'delivered',
+      delivered_at: new Date().toISOString()
+    }).catch(function() {});
+  } catch (err) {
+    // Log failed delivery
+    await supabase.from('webhook_deliveries').insert({
+      business_id: businessId,
+      event_type: eventType,
+      payload: payload,
+      status: 'failed',
+      error: err.message
+    }).catch(function() {});
+  }
+}
+
 module.exports = {
+  dispatchWebhook: dispatchWebhook,
   corsCheck: corsCheck,
   applyRateLimit: applyRateLimit,
   sanitizeString: sanitizeString,
