@@ -1,7 +1,7 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
-const { setSecurityHeaders, alertError } = require('./_security');
+const { setSecurityHeaders, alertError, dispatchWebhook } = require('./_security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
@@ -153,6 +153,8 @@ module.exports = async function handler(req, res) {
           status: 'paid',
           stripe_payment_intent_id: paymentIntentId,
           paid_at: new Date().toISOString()
+            // Dispatch webhook: payment.received
+            try { var bizId2 = meta.sortora_business_id; if (bizId2) dispatchWebhook(supabase, bizId2, 'payment.received', { participantId: meta.participant_id, bookingId: meta.booking_session_id }); } catch(wd2) {}
         })
         .eq('id', participantId);
 
@@ -209,6 +211,8 @@ module.exports = async function handler(req, res) {
       if (paidCount >= totalCount) {
         updateData.status = 'confirmed';
       }
+            // Dispatch webhook: booking.confirmed
+            try { dispatchWebhook(supabase, bookingSession.business_id, 'booking.confirmed', { bookingId: bookingSession.id, title: bookingSession.title, totalAmount: bookingSession.total_amount, participantCount: bookingSession.participant_count }); } catch(wd) {}
 
       await supabase
         .from('booking_sessions')
