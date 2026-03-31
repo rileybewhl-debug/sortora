@@ -498,7 +498,2225 @@ function payoutNotification(data) {
     + '<div style="width:56px;height:56px;border-radius:50%;background:' + GREEN + ';margin:0 auto 20px;text-align:center;line-height:56px">'
     + '<span style="font-size:24px;color:#fff;font-family:Arial">$</span></div>'
     + '<div style="font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Payout initiated</div>'
-    + '<div style="font-size:40px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1;margin-bottom:8px">;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="font-size:40px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1;margin-bottom:8px">;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Period</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.period || '—') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Destination</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">\u2022\u2022\u2022\u2022 ' + (data.last4Bank || '****') + '</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  17. WEEKLY ACTIVITY DIGEST
+ * ═══════════════════════════════════════════════════ */
+function weeklyDigest(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Weekly Digest')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">Your week at a glance</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">' + (data.weekRange || 'This week') + '</p>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Revenue</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div><div style="font-size:12px;color:' + trendColor + ';font-weight:600;margin-top:4px">' + arrow + ' ' + Math.abs(pct) + '% vs last week</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-bottom:1px solid ' + BORDER + ';border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div><div style="font-size:12px;color:' + MUTED + ';font-weight:500;margin-top:4px">' + (data.confirmedBookings || 0) + ' confirmed</div></td>'
+    + '</tr>'
+    + '<tr>'
+    + '<td style="padding:20px;text-align:center;width:50%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Completion Rate</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:20px;text-align:center;width:50%;border-left:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:600">Avg Group Size</div><div style="font-size:24px;font-weight:800;color:' + DARK + '">' + (data.avgGroupSize || '—') + '</div></td>'
+    + '</tr></table></div>'
+
+    + (data.topExperience ? '<div style="background:rgba(59,107,255,.04);border-radius:10px;padding:14px 20px;margin-bottom:24px;border:1px solid rgba(59,107,255,.12)"><span style="font-size:12px;color:' + BRAND + ';font-weight:700">TOP EXPERIENCE: </span><span style="font-size:13px;color:' + DARK + ';font-weight:600">' + data.topExperience + '</span></div>' : '')
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  18. MILESTONE CELEBRATION
+ * ═══════════════════════════════════════════════════ */
+function milestone(data) {
+  return wrapper(header('Milestone Reached!')
+    + '<div style="padding:48px 40px;text-align:center">'
+    + '<div style="font-size:48px;margin-bottom:16px">\ud83c\udf89</div>'
+    + '<div style="font-size:22px;font-weight:800;color:' + DARK + ';letter-spacing:-.4px;margin-bottom:8px">' + data.title + '</div>'
+    + '<div style="font-size:15px;color:' + GRAY + ';line-height:1.6;margin-bottom:24px;font-weight:500">' + data.message + '</div>'
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;display:inline-block;min-width:200px;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:40px;font-weight:800;color:' + BRAND + ';letter-spacing:-1px;line-height:1">' + data.stat + '</div>'
+    + '<div style="font-size:13px;color:' + MUTED + ';margin-top:8px;font-weight:500">' + data.statLabel + '</div>'
+    + '</div>'
+    + '<div><a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View dashboard</a></div>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  19. RE-ENGAGEMENT — Day 7 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay7(data) {
+  return wrapper(header('We Miss You')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been about a week since you\u2019ve logged in. Just wanted to make sure everything\u2019s working well with ' + data.businessName + '\u2019s split payments.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Here\u2019s what you might have missed:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;color:' + DARK + ';line-height:1.7;font-weight:500">\u2022 Any pending split payments from your customers<br>\u2022 Potential payouts waiting to be reviewed<br>\u2022 Dashboard insights about your booking trends</div></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Check my dashboard &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  20. RE-ENGAGEMENT — Day 14 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay14(data) {
+  return wrapper(header('Quick Check-In')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">It\u2019s been a couple weeks. If you\u2019re having any trouble getting set up, I\u2019m here to help.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">Some businesses find it helpful to do a quick 10-minute setup call. Want me to walk you through embedding the widget? Just reply to this email.</p>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Back to dashboard &rarr;</a>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  21. RE-ENGAGEMENT — Day 30 inactive
+ * ═══════════════════════════════════════════════════ */
+function reengageDay30(data) {
+  return wrapper(
+    '<div style="padding:40px 40px 36px">'
+    + '<p style="font-size:15px;color:' + DARK + ';line-height:1.75;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">It\u2019s been a month. I wanted to check in one more time \u2014 is Sortora still a fit for ' + data.businessName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If the timing wasn\u2019t right, no worries at all. Your account and data will be here whenever you\u2019re ready.</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.75;margin:0 0 16px;font-weight:500">If there\u2019s something we could do better, I\u2019d genuinely love to hear it. Just reply.</p>'
+    + '<p style="font-size:15px;color:' + DARK + ';margin:24px 0 0;font-weight:600">Riley Buell</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:2px 0 0;font-weight:500">Founder, Sortora</p>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  22. FEATURE DISCOVERY
+ * ═══════════════════════════════════════════════════ */
+function featureDiscovery(data) {
+  return wrapper(header('Tip for ' + data.businessName)
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 12px;letter-spacing:-.3px">Have you tried ' + data.featureName + '?</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 24px;font-weight:500">' + data.featureDescription + '</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:14px;font-weight:700;color:' + DARK + ';margin-bottom:8px">How to use it:</div>'
+    + '<div style="font-size:13px;color:' + GRAY + ';line-height:1.7;font-weight:500">' + data.howTo + '</div></div>'
+    + '<a href="' + (data.actionUrl || data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">' + (data.ctaText || 'Try it now') + ' &rarr;</a>'
+    + '</div>');
+}
+
+/* ═══════════════════════════════════════════════════
+ *  23. MONTHLY REVENUE SUMMARY
+ * ═══════════════════════════════════════════════════ */
+function monthlySummary(data) {
+  var rev = parseFloat(data.revenue || 0).toFixed(0);
+  var prevRev = parseFloat(data.prevRevenue || 0).toFixed(0);
+  var pct = data.prevRevenue > 0 ? Math.round((data.revenue - data.prevRevenue) / data.prevRevenue * 100) : 0;
+  var arrow = pct >= 0 ? '\u2191' : '\u2193';
+  var trendColor = pct >= 0 ? GREEN : '#EF4444';
+
+  return wrapper(header('Monthly Summary')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:20px;font-weight:800;color:' + DARK + ';margin:0 0 6px;letter-spacing:-.3px">' + (data.monthName || 'This month') + ' Summary</p>'
+    + '<p style="font-size:13px;color:' + MUTED + ';margin:0 0 24px;font-weight:500">Here\u2019s how ' + data.businessName + ' did this month.</p>'
+
+    + '<div style="background:rgba(59,107,255,.04);border-radius:12px;padding:28px;margin-bottom:24px;text-align:center;border:1px solid rgba(59,107,255,.12)">'
+    + '<div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600">Total Revenue</div>'
+    + '<div style="font-size:44px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + rev + '</div>'
+    + '<div style="font-size:14px;color:' + trendColor + ';font-weight:600;margin-top:8px">' + arrow + ' ' + Math.abs(pct) + '% vs last month (
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + prevRev + ')</div>'
+    + '</div>'
+
+    + '<div style="background:' + GLASS + ';border-radius:12px;overflow:hidden;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Bookings</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.bookings || 0) + '</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%;border-left:1px solid ' + BORDER + ';border-right:1px solid ' + BORDER + '"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Completion</div><div style="font-size:22px;font-weight:800;color:' + DARK + '">' + (data.completionRate || 0) + '%</div></td>'
+    + '<td style="padding:18px;text-align:center;width:33%"><div style="font-size:11px;color:' + MUTED + ';text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600">Payouts</div><div style="font-size:22px;font-weight:800;color:' + GREEN + '">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + parseFloat(data.payouts || 0).toFixed(0) + '</div></td>'
+    + '</tr></table></div>'
+
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
+    + '</div>');
+}
+
+module.exports = {
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
     + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
     + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
     + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Bookings included</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingCount || '—') + '</td></tr>'
