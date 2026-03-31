@@ -118,11 +118,20 @@
     .trust-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#b0b0b0;font-weight:500}
     .trust-item svg{width:12px;height:12px;stroke:#b0b0b0;fill:none;stroke-width:2}
 
+    /* Bottom sheet for mobile */
     @media(max-width:520px){
-      body{padding:12px;align-items:flex-start;padding-top:40px}
+      body{padding:0;align-items:flex-end;background:rgba(0,0,0,.4);min-height:100dvh}
+      .pay-container{max-width:100%;margin:0}
+      .biz-header{display:none}
+      .pay-card{border-radius:20px 20px 0 0;border:none;box-shadow:0 -4px 32px rgba(0,0,0,.12);max-height:92dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:sheetSlide .35s cubic-bezier(.32,.72,0,1)}
+      .sheet-handle{display:block}
       .share-amount{font-size:36px}
-      .booking-band,.share-section,.group-section,.pay-action{padding-left:20px;padding-right:20px}
+      .booking-band,.share-section,.group-section,.pay-action,.express-checkout{padding-left:20px;padding-right:20px}
+      .powered-by{position:fixed;bottom:0;left:0;right:0;display:none}
     }
+    @keyframes sheetSlide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .sheet-handle{display:none;text-align:center;padding:12px 0 4px;cursor:grab}
+    .sheet-handle-bar{width:36px;height:4px;border-radius:2px;background:#d0d5dd;margin:0 auto}
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -136,6 +145,7 @@
     </div>
 
     <div class="pay-card" id="pay-card">
+      <div class="sheet-handle"><div class="sheet-handle-bar"></div></div>
       <!-- Loading state -->
       <div class="loading" id="loading-state">
         <div class="loading-spinner"></div>
@@ -462,6 +472,38 @@
       document.getElementById('paid-state').style.display = 'block';
     } else {
       init();
+    }
+
+    // Bottom sheet swipe-to-dismiss on mobile
+    if (window.innerWidth <= 520) {
+      var card = document.getElementById('pay-card');
+      var startY = 0, currentY = 0, isDragging = false;
+      card.addEventListener('touchstart', function(e) {
+        if (card.scrollTop > 0) return;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+        card.style.transition = 'none';
+      });
+      card.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY - startY;
+        if (currentY > 0) {
+          card.style.transform = 'translateY(' + currentY + 'px)';
+          e.preventDefault();
+        }
+      }, { passive: false });
+      card.addEventListener('touchend', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        card.style.transition = 'transform .3s cubic-bezier(.32,.72,0,1)';
+        if (currentY > 150) {
+          card.style.transform = 'translateY(100%)';
+          setTimeout(function() { window.history.back(); }, 300);
+        } else {
+          card.style.transform = 'translateY(0)';
+        }
+        currentY = 0;
+      });
     }
   </script>
 </body>
