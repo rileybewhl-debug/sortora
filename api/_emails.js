@@ -521,7 +521,8 @@ function payoutNotification(data) {
   reengageDay14: reengageDay14,
   reengageDay30: reengageDay30,
   featureDiscovery: featureDiscovery,
-  monthlySummary: monthlySummary
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
 };
  + amt + '</div>'
     + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">should arrive in ' + (data.arrivalDays || '2-3') + ' business days</div>'
@@ -734,6 +735,46 @@ function monthlySummary(data) {
     + '</tr></table></div>'
 
     + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View full analytics</a>'
+    + '</div>');
+}
+
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+ *  24. PAYMENT REMINDER \u2014 nudge unpaid participants
+ * \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+function paymentReminder(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Reminder')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + data.name + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">Friendly reminder \u2014 you still have an outstanding share to pay for:</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<div style="font-size:16px;font-weight:700;color:' + DARK + ';margin-bottom:6px">' + data.bookingTitle + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';font-weight:500">with ' + (data.businessName || 'the organizer') + '</div>'
+    + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'
+    + '<td style="font-size:13px;color:' + MUTED + ';font-weight:500">Your share</td>'
+    + '<td style="font-size:18px;font-weight:800;color:' + DARK + ';text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14
+};
+ + amt + '</td>'
+    + '</tr></table></div>'
+    + '<div style="margin-top:8px;font-size:13px;color:' + MUTED + ';font-weight:500">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' people have paid</div>'
+    + '</div>'
+    + '<a href="' + data.payUrl + '" style="display:inline-block;padding:14px 36px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">Pay your share &rarr;</a>'
+    + (data.expiresIn ? '<p style="font-size:13px;color:#f59e0b;margin:16px 0 0;font-weight:600">\u23f0 This split expires in ' + data.expiresIn + '</p>' : '')
     + '</div>');
 }
 
