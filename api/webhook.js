@@ -7,6 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 const emails = require('./_emails');
 const resend = new Resend(process.env.RESEND_API_KEY);
+var EMAIL_FROM = process.env.EMAIL_FROM || 'Riley from Sortora <riley@sortora.com>';
 
 module.exports.config = { api: { bodyParser: false } };
 
@@ -109,7 +110,7 @@ module.exports = async function handler(req, res) {
               arrivalDays: '2-3',
               dashUrl: 'https://sortora.com/dashboard.html'
             });
-            await resendClient.emails.send({
+            await resend.emails.send({
               from: EMAIL_FROM, to: payoutBiz.email,
               subject: 'Payout of $' + (payout.amount / 100).toFixed(2) + ' is on its way',
               html: payoutHtml,
@@ -152,7 +153,6 @@ module.exports = async function handler(req, res) {
         .update({
           status: 'paid',
           stripe_payment_intent_id: paymentIntentId,
-          paid_at: new Date().toISOString()
           paid_at: new Date().toISOString()
         })
         .eq('id', participantId);
