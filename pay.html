@@ -88,6 +88,25 @@
     .pay-note svg{width:12px;height:12px;stroke:#b0b0b0;fill:none;stroke-width:2;vertical-align:-2px;margin-right:2px}
 
     
+    
+    /* Progress steps */
+    .progress-steps{display:flex;align-items:center;justify-content:center;gap:0;padding:20px 28px 0}
+    .progress-step{display:flex;align-items:center;gap:0}
+    .progress-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:2px solid #ebebeb;color:#b0b0b0;background:#fff;transition:all .3s;flex-shrink:0}
+    .progress-dot.active{border-color:var(--sortora-primary);color:var(--sortora-primary);background:rgba(59,107,255,.06)}
+    .progress-dot.done{border-color:#10B981;color:#fff;background:#10B981}
+    .progress-dot.done svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3}
+    .progress-line{width:32px;height:2px;background:#ebebeb;flex-shrink:0}
+    .progress-line.done{background:#10B981}
+    .progress-line.active{background:linear-gradient(90deg,#10B981,var(--sortora-primary))}
+    .progress-labels{display:flex;justify-content:space-between;padding:6px 20px 0;font-size:10px;color:#b0b0b0;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    @media(prefers-color-scheme:dark){
+      .progress-dot{border-color:var(--sortora-divider);color:var(--sortora-text-dim);background:var(--sortora-card)}
+      .progress-dot.active{background:rgba(59,107,255,.12)}
+      .progress-line{background:var(--sortora-divider)}
+      .progress-labels{color:var(--sortora-text-dim)}
+    }
+
     /* Trust signals */
     .trust-strip{padding:16px 28px 0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
     .trust-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#f7f8fa;border:1px solid #ebebeb;border-radius:6px;font-size:11px;color:#6a6a6a;font-weight:600}
@@ -245,6 +264,15 @@
 
       <!-- Active payment state -->
       <div id="active-state" style="display:none">
+        <div class="progress-steps" id="progress-steps">
+          <div class="progress-step"><div class="progress-dot done" id="step1"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+          <div class="progress-step"><div class="progress-line done" id="line1"></div></div>
+          <div class="progress-step"><div class="progress-dot active" id="step2">2</div></div>
+          <div class="progress-step"><div class="progress-line" id="line2"></div></div>
+          <div class="progress-step"><div class="progress-dot" id="step3">3</div></div>
+        </div>
+        <div class="progress-labels"><span>Invited</span><span>Pay</span><span>Confirmed</span></div>
+
         <div class="booking-band">
           <div class="booking-label">You've been invited to split a booking</div>
           <div class="booking-title" id="booking-title"></div>
@@ -515,6 +543,20 @@
       }
     }
 
+    
+    // Update progress steps on payment success
+    function updateProgress(step) {
+      if (step >= 2) {
+        document.getElementById('step2').className = 'progress-dot done';
+        document.getElementById('step2').innerHTML = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        document.getElementById('line2').className = 'progress-line done';
+      }
+      if (step >= 3) {
+        document.getElementById('step3').className = 'progress-dot done';
+        document.getElementById('step3').innerHTML = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      }
+    }
+
     async function handlePay() {
       var btn = document.getElementById('pay-btn');
       btn.disabled = true;
@@ -551,6 +593,7 @@
     // Handle return from Stripe
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('success') === 'true') {
+      try { updateProgress(3); } catch(e) {}
       // Payment was successful — the webhook will update the DB
       // Show success state immediately for good UX
       document.getElementById('loading-state').style.display = 'none';
