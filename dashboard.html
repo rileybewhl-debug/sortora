@@ -938,11 +938,27 @@ document.getElementById('ob-pct').textContent = pct + '%';
       // Share link
       html += '<div class="drawer-section"><div class="drawer-section-title">Share Link</div>'
         + '<div style="display:flex;gap:6px"><input style="flex:1;padding:8px 12px;border:1px solid #EBEBEB;border-radius:8px;font-size:12px;font-family:inherit;color:#0C1220;background:#f7f8fa" value="' + (window.location.origin + '/join.html?session=' + b.id) + '" readonly onclick="this.select()"/>'
-        + '<button style="padding:8px 14px;border:none;background:#0C1220;color:#fff;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="navigator.clipboard.writeText(\'' + (window.location.origin + '/join.html?session=' + b.id) + '\');this.textContent=\'Copied!\';var t=this;setTimeout(function(){t.textContent=\'Copy\'},2000)">Copy</button></div></div>';
+        + '<button style="padding:8px 14px;border:none;background:#0C1220;color:#fff;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="navigator.clipboard.writeText(\'' + (window.location.origin + '/join.html?session=' + b.id) + '\')">Share</button>'+'<button style="padding:8px 14px;border:none;background:#0C1220;color:#fff;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="navigator.clipboard.writeText(\'' + (window.location.origin + '/join.html?session=' + b.id) + '\');this.textContent=\'Copied!\';var t=this;setTimeout(function(){t.textContent=\'Copy\'},2000)">Copy</button></div></div>';
 
       document.getElementById('drawer-body').innerHTML = html;
       document.getElementById('drawer-overlay').classList.add('open');
       document.getElementById('drawer').classList.add('open');
+    }
+
+    
+    // Web Share API for native sharing
+    function shareSplitLink(url) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Pay your share',
+          text: 'You\'ve been invited to split a booking on Sortora. Pay your share here:',
+          url: url
+        }).catch(function() {});
+      } else {
+        navigator.clipboard.writeText(url).then(function() {
+          alert('Link copied to clipboard!');
+        });
+      }
     }
 
     function closeDrawer() {
@@ -979,7 +995,7 @@ document.getElementById('ob-pct').textContent = pct + '%';
         var data = await res.json();
         if (data.success) {
           var joinUrl = data.joinUrl;
-          sucEl.innerHTML = 'Split created! Share link: <a href="' + joinUrl + '" target="_blank" style="color:#3B6BFF">' + joinUrl + '</a>';
+          sucEl.innerHTML = 'Split created! <a href="' + joinUrl + '" target="_blank" style="color:#3B6BFF">' + joinUrl + '</a> <button style="margin-left:8px;padding:6px 14px;border:none;background:#3B6BFF;color:#fff;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareSplitLink(\'' + joinUrl + '\')">Share</button>';
           sucEl.style.display = 'block';
           document.getElementById('cs-title').value = '';
           document.getElementById('cs-amount').value = '';
