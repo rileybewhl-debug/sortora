@@ -362,4 +362,76 @@ async function Monthly(req, res) {
 };
 
 
+
+async function PaymentReminder(req, res) {
+  setSecurityHeaders(res);
+  if (process.env.CRON_SECRET && req.headers.authorization !== 'Bearer ' + process.env.CRON_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    // Find unpaid participants in active (non-expired) bookings created 2+ days ago
+    var cutoff = new Date(Date.now() - 2 * 86400000).toISOString();
+
+    var { data: unpaid } = await supabase
+      .from('participants')
+      .select('id, name, email, amount, payment_token, payment_status, reminder_sent, booking_session_id, booking_sessions(id, title, status, expires_at, business_id, businesses(business_name))')
+      .eq('payment_status', 'pending')
+      .lt('created_at', cutoff);
+
+    if (!unpaid || !unpaid.length) return res.status(200).json({ sent: 0 });
+
+    var sent = 0;
+    for (var p of unpaid) {
+      if (p.reminder_sent) continue;
+      if (!p.booking_sessions || p.booking_sessions.status !== 'pending') continue;
+      if (p.booking_sessions.expires_at && new Date(p.booking_sessions.expires_at) < new Date()) continue;
+      if (!p.email) continue;
+
+      var paidCount = 0;
+      var totalCount = 0;
+      try {
+        var { data: allParts } = await supabase.from('participants').select('payment_status').eq('booking_session_id', p.booking_session_id);
+        totalCount = (allParts || []).length;
+        paidCount = (allParts || []).filter(function(x){return x.payment_status==='paid'}).length;
+      } catch(e) {}
+
+      var expiresIn = '';
+      if (p.booking_sessions.expires_at) {
+        var diff = new Date(p.booking_sessions.expires_at) - new Date();
+        var days = Math.ceil(diff / 86400000);
+        if (days > 0) expiresIn = days + ' day' + (days > 1 ? 's' : '');
+      }
+
+      var html = emails.paymentReminder({
+        name: p.name || 'there',
+        bookingTitle: p.booking_sessions.title,
+        businessName: p.booking_sessions.businesses ? p.booking_sessions.businesses.business_name : '',
+        amount: p.amount,
+        payUrl: 'https://sortora.com/pay.html?token=' + p.payment_token,
+        paidCount: paidCount,
+        totalCount: totalCount,
+        expiresIn: expiresIn
+      });
+
+      await resend.emails.send({
+        from: FROM,
+        to: p.email,
+        subject: 'Reminder: Pay your  Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly };
+ + parseFloat(p.amount).toFixed(0) + ' share for ' + p.booking_sessions.title,
+        html: html,
+        tags: [{ name: 'category', value: 'payment-reminder' }]
+      });
+
+      await supabase.from('participants').update({ reminder_sent: true }).eq('id', p.id);
+      sent++;
+    }
+
+    return res.status(200).json({ sent: sent });
+  } catch (err) {
+    alertError('cron-payment-reminder', err, req);
+    return res.status(500).json({ error: 'Failed' });
+  }
+}
+
 module.exports = { Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly };
