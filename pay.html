@@ -9,6 +9,14 @@
   <style>
     :root{--sortora-primary:#3B6BFF;--sortora-primary-hover:#2d5ae6;--sortora-font:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;--sortora-radius:12px;--sortora-card-radius:16px}
     *{margin:0;padding:0;box-sizing:border-box}
+
+    /* Accessibility: min-width + touch targets */
+    .pay-container{min-width:320px}
+    .pay-btn{min-height:48px;min-width:44px}
+    button,a,[role="button"]{min-height:44px;min-width:44px}
+    .group-member{min-height:44px}
+    input,select,textarea{min-height:44px;font-size:16px}
+
     body{font-family:var(--sortora-font);background:#f7f8fa;color:#0C1220;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 
     .pay-container{width:100%;max-width:480px;margin:0 auto}
