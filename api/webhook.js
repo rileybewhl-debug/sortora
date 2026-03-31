@@ -111,7 +111,18 @@ module.exports = async function handler(req, res) {
             });
             await resendClient.emails.send({
               from: EMAIL_FROM, to: payoutBiz.email,
-              subject: 'Payout of  'checkout.session.completed' && event.data.object.metadata) {
+              subject: 'Payout of $' + (payout.amount / 100).toFixed(2) + ' is on its way',
+              html: payoutHtml,
+              tags: [{ name: 'category', value: 'payout-notification' }]
+            });
+          }
+        }
+      } catch (payoutErr) { console.error('Payout notification error:', payoutErr); }
+    }
+
+    // Track activation milestones
+    try {
+      if (event.type === 'checkout.session.completed' && event.data.object.metadata) {
         var meta = event.data.object.metadata;
         var bizId = meta.sortora_business_id;
         if (bizId) {
