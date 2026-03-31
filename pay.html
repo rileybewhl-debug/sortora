@@ -60,7 +60,14 @@
     .group-check.you svg{stroke:#fff}
     .group-check svg{width:12px;height:12px;fill:none;stroke-width:2.5}
 
-    /* Pay button */
+    /* Express checkout (Apple Pay / Google Pay) */
+.express-checkout{padding:0 28px;margin-bottom:0}
+.express-checkout-container{display:none}
+.express-divider{display:flex;align-items:center;gap:12px;margin:16px 0 8px}
+.express-divider-line{flex:1;height:1px;background:#e5e7eb}
+.express-divider-text{font-size:12px;color:#b0b0b0;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+#payment-request-button{min-height:48px}
+/* Pay button */
     .pay-action{padding:24px 28px}
     .pay-btn{width:100%;padding:16px;background:#3B6BFF;color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
     .pay-btn:hover{background:#2d5ae6;transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,107,255,.3)}
@@ -181,6 +188,16 @@
           <div class="group-list" id="group-list"></div>
         </div>
 
+        <div class="express-checkout" id="express-checkout">
+          <div class="express-checkout-container" id="express-container">
+            <div id="payment-request-button"></div>
+            <div class="express-divider">
+              <div class="express-divider-line"></div>
+              <div class="express-divider-text">or pay with card</div>
+              <div class="express-divider-line"></div>
+            </div>
+          </div>
+        </div>
         <div class="pay-action">
           <div class="deadline" id="deadline-warning" style="display:none">
             <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -208,6 +225,7 @@
     </div>
   </div>
 
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
@@ -282,7 +300,7 @@
       var amount = parseFloat(participantData.amount);
       document.getElementById('share-amount').innerHTML = '$' + amount.toFixed(2) + '<small>USD</small>';
       document.getElementById('share-for').innerHTML = 'for <b>' + (participantData.email || '') + '</b>';
-      document.getElementById('pay-btn-amount').textContent = '$' + amount.toFixed(2);
+      document.getElementById('pay-btn-amount').textContent = '
 
       // Group progress
       var paid = allParticipants.filter(function(p) { return p.status === 'paid'; }).length;
@@ -336,6 +354,237 @@
       var parts = email.split('@');
       if (parts[0].length <= 3) return email;
       return parts[0].substring(0, 3) + '***@' + parts[1];
+    }
+
+    
+
+    // Initialize Apple Pay / Google Pay express checkout
+    async function initExpressCheckout() {
+      try {
+        var res = await fetch('/api/pay?mode=intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: participantData.payment_token })
+        });
+        var data = await res.json();
+        if (!data.clientSecret || !data.publishableKey) return;
+
+        var stripeInstance = Stripe(data.publishableKey);
+        var paymentRequest = stripeInstance.paymentRequest({
+          country: 'US',
+          currency: data.currency || 'usd',
+          total: {
+            label: data.label || 'Split Payment',
+            amount: data.amount
+          },
+          requestPayerName: true,
+          requestPayerEmail: true
+        });
+
+        var prButton = stripeInstance.elements().create('paymentRequestButton', {
+          paymentRequest: paymentRequest,
+          style: { paymentRequestButton: { type: 'default', theme: 'dark', height: '48px' } }
+        });
+
+        var canPay = await paymentRequest.canMakePayment();
+        if (canPay) {
+          prButton.mount('#payment-request-button');
+          document.getElementById('express-container').style.display = 'block';
+        }
+
+        paymentRequest.on('paymentmethod', async function(ev) {
+          var confirmResult = await stripeInstance.confirmCardPayment(
+            data.clientSecret,
+            { payment_method: ev.paymentMethod.id },
+            { handleActions: false }
+          );
+
+          if (confirmResult.error) {
+            ev.complete('fail');
+          } else {
+            ev.complete('success');
+            if (confirmResult.paymentIntent.status === 'requires_action') {
+              var actionResult = await stripeInstance.confirmCardPayment(data.clientSecret);
+              if (actionResult.error) {
+                alert('Payment authentication failed. Please try the card button below.');
+              } else {
+                window.location.href = '/pay.html?token=' + participantData.payment_token + '&success=true';
+              }
+            } else {
+              window.location.href = '/pay.html?token=' + participantData.payment_token + '&success=true';
+            }
+          }
+        });
+      } catch (err) {
+        console.log('Express checkout not available:', err);
+      }
+    }
+
+    async function handlePay() {
+      var btn = document.getElementById('pay-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading-spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div> Processing...';
+
+      // In production: call your API to create a Stripe Checkout session
+      // The API creates a checkout session with the participant's amount
+      // and redirects to Stripe's hosted payment page
+      try {
+        var res = await fetch('/api/pay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            participantId: participantData.id,
+            bookingSessionId: sessionData.id,
+            token: participantData.payment_token
+          })
+        });
+        var data = await res.json();
+        if (data.url) {
+          window.location.href = data.url; // Redirect to Stripe Checkout
+        } else {
+          alert(data.error || 'Could not start payment. Please try again.');
+          btn.disabled = false;
+          btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay $' + parseFloat(participantData.amount).toFixed(2);
+        }
+      } catch (e) {
+        alert('Network error. Please check your connection and try again.');
+        btn.disabled = false;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay $' + parseFloat(participantData.amount).toFixed(2);
+      }
+    }
+
+    // Handle return from Stripe
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+      // Payment was successful — the webhook will update the DB
+      // Show success state immediately for good UX
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('paid-state').style.display = 'block';
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
+ + amount.toFixed(2);
+      initExpressCheckout();
+
+      // Group progress
+      var paid = allParticipants.filter(function(p) { return p.status === 'paid'; }).length;
+      var total = allParticipants.length;
+      var pct = total ? Math.round(paid / total * 100) : 0;
+      document.getElementById('group-count').textContent = paid + ' of ' + total + ' paid';
+      document.getElementById('group-bar').style.width = pct + '%';
+
+      document.getElementById('group-list').innerHTML = allParticipants.map(function(p, i) {
+        var isYou = p.id === participantData.id;
+        var isPaid = p.status === 'paid';
+        var initials = (p.email || '').substring(0, 2).toUpperCase();
+        var color = avatarColors[i % avatarColors.length];
+        var checkCls = isPaid ? 'paid' : (isYou ? 'you' : 'pending');
+        var checkIcon = isPaid ? '<polyline points="20 6 9 17 4 12"/>' : (isYou ? '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>' : '<circle cx="12" cy="12" r="1"/>');
+
+        return '<div class="group-member">'
+          + '<div class="group-member-av" style="background:' + color + '">' + initials + '</div>'
+          + '<div class="group-member-info"><div class="group-member-email">' + maskEmail(p.email) + (isYou ? ' <span class="group-member-you">(you)</span>' : '') + '</div></div>'
+          + '<div class="group-member-status"><div class="group-check ' + checkCls + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">' + checkIcon + '</svg></div></div></div>';
+      }).join('');
+
+      // Deadline
+      if (sessionData.deadline) {
+        var dl = new Date(sessionData.deadline);
+        var now = new Date();
+        var daysLeft = Math.ceil((dl - now) / (1000 * 60 * 60 * 24));
+        if (daysLeft > 0 && daysLeft <= 7) {
+          document.getElementById('deadline-warning').style.display = 'flex';
+          document.getElementById('deadline-text').textContent = 'Payment due by ' + dl.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' (' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + ' left)';
+        }
+      }
+
+      // Show correct state
+      if (participantData.status === 'paid') {
+        showState('paid');
+        // Also show the booking details above the paid state
+        document.getElementById('active-state').style.display = 'block';
+        var payBtn = document.getElementById('pay-btn');
+        payBtn.className = 'pay-btn pay-btn-success';
+        payBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Paid — Thank you!';
+        payBtn.disabled = true;
+        document.getElementById('paid-state').style.display = 'none';
+      } else {
+        showState('active');
+      }
+    }
+
+    function maskEmail(email) {
+      if (!email) return '';
+      var parts = email.split('@');
+      if (parts[0].length <= 3) return email;
+      return parts[0].substring(0, 3) + '***@' + parts[1];
+    }
+
+    
+
+    // Initialize Apple Pay / Google Pay express checkout
+    async function initExpressCheckout() {
+      try {
+        var res = await fetch('/api/pay?mode=intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: participantData.payment_token })
+        });
+        var data = await res.json();
+        if (!data.clientSecret || !data.publishableKey) return;
+
+        var stripeInstance = Stripe(data.publishableKey);
+        var paymentRequest = stripeInstance.paymentRequest({
+          country: 'US',
+          currency: data.currency || 'usd',
+          total: {
+            label: data.label || 'Split Payment',
+            amount: data.amount
+          },
+          requestPayerName: true,
+          requestPayerEmail: true
+        });
+
+        var prButton = stripeInstance.elements().create('paymentRequestButton', {
+          paymentRequest: paymentRequest,
+          style: { paymentRequestButton: { type: 'default', theme: 'dark', height: '48px' } }
+        });
+
+        var canPay = await paymentRequest.canMakePayment();
+        if (canPay) {
+          prButton.mount('#payment-request-button');
+          document.getElementById('express-container').style.display = 'block';
+        }
+
+        paymentRequest.on('paymentmethod', async function(ev) {
+          var confirmResult = await stripeInstance.confirmCardPayment(
+            data.clientSecret,
+            { payment_method: ev.paymentMethod.id },
+            { handleActions: false }
+          );
+
+          if (confirmResult.error) {
+            ev.complete('fail');
+          } else {
+            ev.complete('success');
+            if (confirmResult.paymentIntent.status === 'requires_action') {
+              var actionResult = await stripeInstance.confirmCardPayment(data.clientSecret);
+              if (actionResult.error) {
+                alert('Payment authentication failed. Please try the card button below.');
+              } else {
+                window.location.href = '/pay.html?token=' + participantData.payment_token + '&success=true';
+              }
+            } else {
+              window.location.href = '/pay.html?token=' + participantData.payment_token + '&success=true';
+            }
+          }
+        });
+      } catch (err) {
+        console.log('Express checkout not available:', err);
+      }
     }
 
     async function handlePay() {
