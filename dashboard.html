@@ -1460,5 +1460,223 @@ document.getElementById('ob-pct').textContent = pct + '%';
         var parts = b.participants || [];
         parts.forEach(function(p) {
           if (p.status === 'paid') {
-            addNotification((p.name || p.email || 'Someone') + ' paid 
+            addNotification((p.name || p.email || 'Someone') + ' paid $' + parseFloat(p.amount).toFixed(0) + ' for "' + b.title + '"', 'medium', 'paid-' + p.id);
+          }
+        });
+      });
+    }
+
+    // Split Funnel
+    function updateFunnel() {
+      var filtered = getFilteredBookings();
+      var created = filtered.length;
+      var invites = 0, payments = 0, completed = 0;
+      filtered.forEach(function(b) {
+        var parts = b.participants || [];
+        invites += parts.length;
+        parts.forEach(function(p) { if (p.status === 'paid') payments++; });
+        if (b.status === 'confirmed') completed++;
+      });
+      var max = Math.max(created, invites, payments, completed, 1);
+      try {
+        document.getElementById('fn-created').textContent = created;
+        document.getElementById('fn-invites').textContent = invites;
+        document.getElementById('fn-payments').textContent = payments;
+        document.getElementById('fn-completed').textContent = completed;
+        document.getElementById('fn-bar1').style.width = (created / max * 100) + '%';
+        document.getElementById('fn-bar2').style.width = (invites / max * 100) + '%';
+        document.getElementById('fn-bar3').style.width = (payments / max * 100) + '%';
+        document.getElementById('fn-bar4').style.width = (completed / max * 100) + '%';
+        document.getElementById('fn-pct1').textContent = '100%';
+        document.getElementById('fn-pct2').textContent = created > 0 ? Math.round(invites / created * 100) + '%' : '\u2014';
+        document.getElementById('fn-pct3').textContent = invites > 0 ? Math.round(payments / invites * 100) + '%' : '\u2014';
+        document.getElementById('fn-pct4').textContent = created > 0 ? Math.round(completed / created * 100) + '%' : '\u2014';
+        document.getElementById('funnel-card').style.display = created > 0 ? '' : 'none';
+      } catch(e) {}
+    }
+
+    // Analytics
+    function updateAnalytics() {
+      var filtered = getFilteredBookings();
+      try {
+        if (!filtered.length) { document.getElementById('analytics-grid').style.display = 'none'; return; }
+        document.getElementById('analytics-grid').style.display = '';
+        var days = [0,0,0,0,0,0,0];
+        filtered.forEach(function(b) { var d = new Date(b.created_at).getDay(); days[d]++; });
+        var maxDay = Math.max.apply(null, days) || 1;
+        for (var i = 0; i < 7; i++) { document.getElementById('day-' + i).style.height = Math.max(2, (days[i] / maxDay) * 72) + 'px'; }
+        var totalParts = 0;
+        filtered.forEach(function(b) { totalParts += (b.participants || []).length; });
+        document.getElementById('an-group-size').textContent = filtered.length > 0 ? (totalParts / filtered.length).toFixed(1) : '\u2014';
+        var completed = filtered.filter(function(b) { return b.status === 'confirmed'; }).length;
+        document.getElementById('an-completion').textContent = (filtered.length > 0 ? Math.round(completed / filtered.length * 100) : 0) + '%';
+        var totalRev = 0;
+        filtered.forEach(function(b) { (b.participants || []).forEach(function(p) { if (p.status === 'paid') totalRev += parseFloat(p.amount); }); });
+        document.getElementById('an-avg-rev').textContent = filtered.length > 0 ? '$' + Math.round(totalRev / filtered.length) : '\u2014';
+      } catch(e) {}
+    }
+
+    // Milestones
+    function checkMilestones() {
+      var totalSplits = 0, totalRevenue = 0;
+      allBookings.forEach(function(b) {
+        (b.participants || []).forEach(function(p) { totalSplits++; if (p.status === 'paid') totalRevenue += parseFloat(p.amount); });
+      });
+      var milestones = [
+        { key: 'first_split', check: allBookings.length >= 1, emoji: '\ud83c\udf89', title: 'First split created!' },
+        { key: 'ten_bookings', check: allBookings.length >= 10, emoji: '\ud83d\udcaa', title: '10 bookings reached!' },
+        { key: 'rev_1k', check: totalRevenue >= 1000, emoji: '\ud83d\udcb0', title: '$1,000 processed!' },
+        { key: 'rev_10k', check: totalRevenue >= 10000, emoji: '\ud83d\ude80', title: '$10,000 milestone!' }
+      ];
+      var shown = [];
+      try { shown = JSON.parse(localStorage.getItem('sortora_milestones') || '[]'); } catch(e) {}
+      milestones.forEach(function(m) {
+        if (m.check && shown.indexOf(m.key) === -1) {
+          showMilestoneCelebration(m.emoji, m.title);
+          shown.push(m.key);
+          try { localStorage.setItem('sortora_milestones', JSON.stringify(shown)); } catch(e) {}
+        }
+      });
+    }
+
+    function showMilestoneCelebration(emoji, title) {
+      var toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:16px 24px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:9999;display:flex;align-items:center;gap:12px;animation:slideInRight .4s ease;font-family:inherit';
+      toast.innerHTML = '<span style="font-size:28px">' + emoji + '</span><div><div style="font-size:15px;font-weight:800">' + title + '</div><div style="font-size:12px;color:#6a6a6a;margin-top:2px">Keep it up!</div></div>';
+      document.body.appendChild(toast);
+      setTimeout(function() { toast.style.opacity = '0'; toast.style.transition = 'opacity .3s'; setTimeout(function() { toast.remove(); }, 300); }, 4000);
+    }
+
+    // KPI Customization
+    function openKpiCustomize() { document.getElementById('kpi-modal').classList.add('open'); loadKpiPrefs(); }
+    function closeKpiCustomize() { document.getElementById('kpi-modal').classList.remove('open'); }
+    function saveKpiPrefs() {
+      var prefs = { splits: document.getElementById('kc-splits').checked, revenue: document.getElementById('kc-revenue').checked, active: document.getElementById('kc-active').checked, confirmed: document.getElementById('kc-confirmed').checked, funnel: document.getElementById('kc-funnel').checked, analytics: document.getElementById('kc-analytics').checked };
+      try { localStorage.setItem('sortora_kpi_prefs', JSON.stringify(prefs)); } catch(e) {}
+      applyKpiPrefs(prefs);
+      closeKpiCustomize();
+    }
+    function loadKpiPrefs() {
+      try {
+        var p = JSON.parse(localStorage.getItem('sortora_kpi_prefs'));
+        if (p) {
+          document.getElementById('kc-splits').checked = p.splits !== false;
+          document.getElementById('kc-revenue').checked = p.revenue !== false;
+          document.getElementById('kc-active').checked = p.active !== false;
+          document.getElementById('kc-confirmed').checked = p.confirmed !== false;
+          document.getElementById('kc-funnel').checked = p.funnel !== false;
+          document.getElementById('kc-analytics').checked = p.analytics !== false;
+        }
+      } catch(e) {}
+    }
+    function applyKpiPrefs(p) {
+      if (!p) { try { p = JSON.parse(localStorage.getItem('sortora_kpi_prefs')); } catch(e) {} }
+      if (!p) return;
+      var cards = document.querySelectorAll('#stats-real .stat-card');
+      if (cards[0]) cards[0].style.display = p.splits !== false ? '' : 'none';
+      if (cards[1]) cards[1].style.display = p.revenue !== false ? '' : 'none';
+      if (cards[2]) cards[2].style.display = p.active !== false ? '' : 'none';
+      if (cards[3]) cards[3].style.display = p.confirmed !== false ? '' : 'none';
+      var funnel = document.getElementById('funnel-card');
+      if (funnel) funnel.style.display = p.funnel !== false ? '' : 'none';
+      var analytics = document.getElementById('analytics-grid');
+      if (analytics) analytics.style.display = p.analytics !== false ? '' : 'none';
+    }
+    try { applyKpiPrefs(); } catch(e) {}
+
+    // Notification settings
+    function toggleNotifSettings() {
+      var el = document.getElementById('notif-settings');
+      if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+    function saveNotifPrefs() {
+      var prefs = {
+        payments: document.getElementById('ns-payments').checked,
+        confirmed: document.getElementById('ns-confirmed').checked,
+        payouts: document.getElementById('ns-payouts').checked,
+        digest: document.getElementById('ns-digest').checked
+      };
+      try { localStorage.setItem('sortora_notif_prefs', JSON.stringify(prefs)); } catch(e) {}
+    }
+    try {
+      var saved = JSON.parse(localStorage.getItem('sortora_notif_prefs'));
+      if (saved) {
+        if (saved.payments === false && document.getElementById('ns-payments')) document.getElementById('ns-payments').checked = false;
+        if (saved.confirmed === false && document.getElementById('ns-confirmed')) document.getElementById('ns-confirmed').checked = false;
+        if (saved.payouts === false && document.getElementById('ns-payouts')) document.getElementById('ns-payouts').checked = false;
+        if (saved.digest === false && document.getElementById('ns-digest')) document.getElementById('ns-digest').checked = false;
+      }
+    } catch(e) {}
+
+    // Integrations / Webhook settings
+    function saveWebhookUrl() {
+      var url = document.getElementById('wh-url').value.trim();
+      if (!url) return;
+      SB.from('businesses').update({ webhook_url: url }).eq('id', currentUser.id).then(function() {
+        var s = document.getElementById('wh-save-status');
+        s.style.display = 'block';
+        setTimeout(function() { s.style.display = 'none'; }, 2000);
+      });
+    }
+    function generateSecret() {
+      var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      var secret = 'whsec_';
+      for (var i = 0; i < 32; i++) secret += chars[Math.floor(Math.random() * chars.length)];
+      document.getElementById('wh-secret').value = secret;
+    }
+    function saveWebhookSecret() {
+      var secret = document.getElementById('wh-secret').value.trim();
+      SB.from('businesses').update({ webhook_secret: secret }).eq('id', currentUser.id);
+    }
+    function toggleEvent(el) { el.classList.toggle('active'); }
+    function saveWebhookEvents() {
+      var events = [];
+      document.querySelectorAll('.int-event.active').forEach(function(el) { events.push(el.dataset.event); });
+      SB.from('businesses').update({ webhook_events: events }).eq('id', currentUser.id);
+    }
+    async function testWebhook() {
+      var btn = document.getElementById('wh-test-btn');
+      var result = document.getElementById('wh-test-result');
+      btn.disabled = true; btn.textContent = 'Sending...'; result.style.display = 'none';
+      var url = document.getElementById('wh-url').value.trim();
+      if (!url) { result.style.display = 'block'; result.style.color = '#EF4444'; result.textContent = 'Please save a webhook URL first.'; btn.disabled = false; btn.textContent = 'Send Test Event'; return; }
+      try {
+        var res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sortora-Event': 'test' }, body: JSON.stringify({ event: 'test', timestamp: new Date().toISOString(), data: { message: 'This is a test webhook from Sortora' } }) });
+        result.style.display = 'block'; result.style.color = res.ok ? '#10B981' : '#F59E0B'; result.textContent = res.ok ? 'Success! Your webhook received the test event.' : 'Webhook responded with status ' + res.status;
+      } catch (err) { result.style.display = 'block'; result.style.color = '#EF4444'; result.textContent = 'Failed to reach webhook URL: ' + err.message; }
+      btn.disabled = false; btn.textContent = 'Send Test Event';
+    }
+    function loadWebhookSettings() {
+      if (!currentUser) return;
+      SB.from('businesses').select('webhook_url, webhook_secret, webhook_events').eq('id', currentUser.id).single().then(function(r) {
+        if (r.data) {
+          if (r.data.webhook_url) document.getElementById('wh-url').value = r.data.webhook_url;
+          if (r.data.webhook_secret) document.getElementById('wh-secret').value = r.data.webhook_secret;
+          if (r.data.webhook_events && r.data.webhook_events.length) {
+            document.querySelectorAll('.int-event').forEach(function(el) { el.classList.toggle('active', r.data.webhook_events.indexOf(el.dataset.event) > -1); });
+          }
+        }
+      });
+      SB.from('webhook_deliveries').select('*').eq('business_id', currentUser.id).order('delivered_at', { ascending: false }).limit(10).then(function(r) {
+        var log = document.getElementById('wh-log');
+        if (!r.data || !r.data.length) return;
+        var rows = r.data.map(function(d) {
+          var time = new Date(d.delivered_at || d.created_at).toLocaleString();
+          var statusClass = d.status === 'delivered' ? 'delivered' : 'failed';
+          return '<div class="int-log-row"><div class="int-log-status ' + statusClass + '"></div><span style="flex:1">' + d.event_type + '</span><span style="width:100px;color:' + (d.status === 'delivered' ? '#10B981' : '#EF4444') + ';font-weight:600">' + d.status + '</span><span style="width:140px;color:#b0b0b0;font-size:12px">' + time + '</span></div>';
+        }).join('');
+        log.innerHTML = '<div class="int-log-header"><span style="flex:1">Event</span><span style="width:100px">Status</span><span style="width:140px">Time</span></div>' + rows;
+      });
+    }
+
+    async function signOut() { await SB.auth.signOut(); window.location.href = '/login.html'; }
+
+    // Keyboard shortcut: Escape to close drawers/modals
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closeDrawer(); closeCreateModal(); }
+    });
+
+    init();
+  </script>
+</body>
 </html>
