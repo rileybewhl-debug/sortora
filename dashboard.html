@@ -1057,6 +1057,15 @@ document.getElementById('ob-pct').textContent = pct + '%';
       return allBookings.filter(function(b) { return new Date(b.created_at) >= cutoff; });
     }
 
+      // Update stats
+      var totalSplits = 0, totalRevenue = 0, active = 0, confirmed = 0;
+      allBookings.forEach(function(b) {
+        var parts = b.participants || [];
+        totalSplits += parts.length;
+        parts.forEach(function(p) { if (p.status === 'paid') totalRevenue += parseFloat(p.amount); });
+        if (b.status === 'pending') active++;
+        if (b.status === 'confirmed') confirmed++;
+      });
       document.getElementById('ov-splits').textContent = totalSplits;
       document.getElementById('ov-revenue').textContent = '$' + totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 0 });
       document.getElementById('ov-active').textContent = active;
