@@ -929,6 +929,10 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
 
     /* ── Chart ── */
     function buildChart(bookings) {
+      // Empty state for chart
+      var hasRevenue = bookings.some(function(b) { return (b.participants||[]).some(function(p) { return p.status === "paid"; }); });
+      if (!hasRevenue) { try { document.getElementById("chart-total").textContent = "\u2014"; document.getElementById("chart-total").style.color = "#b0b0b0"; } catch(e) {} }
+
       var labels = [], data = [];
       var now = new Date();
       if (currentInterval === 'daily') {
@@ -1556,7 +1560,7 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
         document.getElementById('fn-pct2').textContent = created > 0 ? Math.round(invites / created * 100) + '%' : '\u2014';
         document.getElementById('fn-pct3').textContent = invites > 0 ? Math.round(payments / invites * 100) + '%' : '\u2014';
         document.getElementById('fn-pct4').textContent = created > 0 ? Math.round(completed / created * 100) + '%' : '\u2014';
-        document.getElementById('funnel-card').style.display = created > 0 ? '' : 'none';
+        document.getElementById("funnel-card").style.display = ""; if (created === 0) { document.getElementById("funnel-card").style.opacity = "0.5"; } else { document.getElementById("funnel-card").style.opacity = "1"; };
       } catch(e) {}
     }
 
