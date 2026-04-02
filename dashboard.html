@@ -647,7 +647,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="card">
           <div class="card-header"><div class="card-title">Recent Payouts</div></div>
           <div id="po-list">
-            <div class="feed-empty">Payout data is available through your Stripe dashboard. Connect Stripe to view detailed payout history.</div>
+            <div class="feed-empty">Your first payout will appear here after a confirmed booking. Payouts are processed automatically through Stripe. Connect Stripe to view detailed payout history.</div>
           </div>
         </div>
       </div>
@@ -1087,7 +1087,7 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
       var revColor = revChange >= 0 ? "#10B981" : "#EF4444";
 
       document.getElementById("ov-splits").textContent = totalSplits || "\u2014";
-      document.getElementById("ov-revenue").textContent = "$" + totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 });
+      document.getElementById("ov-revenue").textContent = totalRevenue > 0 ? "$" + totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 }) : "\u2014";
       document.getElementById("ov-active").textContent = active || "\u2014";
       document.getElementById("ov-confirmed").textContent = confirmed || "\u2014";
       document.querySelectorAll("#stats-real .stat-sub").forEach(function(el) { el.textContent = periodLabel; });
