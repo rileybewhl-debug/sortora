@@ -185,6 +185,10 @@
 .skeleton-text{height:14px;margin-bottom:8px;width:80%}
 .skeleton-card{height:80px;border-radius:12px;margin-bottom:12px}
 .skeleton-chart{height:200px;border-radius:12px}
+
+/* Accessibility: focus outlines */
+*:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px;border-radius:4px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px}
 .stat-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px}
     .stat-label{font-size:12px;font-weight:600;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
@@ -458,7 +462,7 @@
           <button class="period-btn" onclick="setPeriod('90d',this)">90d</button>
           <button class="period-btn active" onclick="setPeriod('all',this)">All</button>
         </div>
-        <div class="stats-row" id="stats-real" style="display:none">
+        <div class="stats-row" id="stats-real" aria-live="polite" style="display:none">
           <div class="stat-card"><div class="stat-label">Total Splits</div><div class="stat-value" id="ov-splits">0</div><div class="stat-sub">all time</div></div>
           <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value green" id="ov-revenue">$0</div><div class="stat-sub">total collected</div></div>
           <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value blue" id="ov-active">0</div><div class="stat-sub">pending bookings</div></div>
@@ -789,7 +793,7 @@
   </div>
 
   <!-- Create Split Modal -->
-  <div class="modal-overlay" id="modal-overlay" onclick="closeCreateModal()">
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-label="Create a new split" onclick="closeCreateModal()">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-title">Create a new split</div>
       <div class="modal-sub">Manually create a split for phone bookings or walk-ins.</div>
@@ -1721,7 +1725,7 @@ document.getElementById('ob-pct').textContent = pct + '%';
     init();
   </script>
 
-  <div class="kpi-modal" id="kpi-modal" onclick="if(event.target===this)closeKpiCustomize()">
+  <div class="kpi-modal" id="kpi-modal" role="dialog" aria-modal="true" aria-label="Customize dashboard" onclick="if(event.target===this)closeKpiCustomize()">
     <div class="kpi-modal-card">
       <div class="kpi-modal-title">Customize Dashboard</div>
       <div class="kpi-option"><div><div class="kpi-option-label">Total Splits</div><div class="kpi-option-sub">Number of split participants</div></div><input type="checkbox" checked id="kc-splits"/></div>
