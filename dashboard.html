@@ -194,6 +194,11 @@
 
 /* Hide bar/line toggle — line is correct for time-series */
 .chart-type{display:none !important}
+
+/* Sparklines */
+.sparkline{height:24px;margin-top:8px}
+.sparkline svg{width:100%;height:24px}
+.sparkline path{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 /* Accessibility: focus outlines */
 *:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px;border-radius:4px}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px}
@@ -480,10 +485,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <button class="period-btn active" onclick="setPeriod('all',this)">All</button>
         </div>
         <div class="stats-row" id="stats-real" aria-live="polite" style="display:none">
-          <div class="stat-card"><div class="stat-label">Total Splits</div><div class="stat-value" id="ov-splits">0</div><div class="stat-sub">all time</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value green" id="ov-revenue">$0</div><div class="stat-sub">total collected</div></div>
-          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value blue" id="ov-active">0</div><div class="stat-sub">pending bookings</div></div>
-          <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value" id="ov-confirmed">0</div><div class="stat-sub">completed splits</div></div>
+          <div class="stat-card"><div class="stat-label">Total Splits</div><div class="stat-value" id="ov-splits">0</div><div class="stat-sub">all time</div><div class="sparkline" id="spark-splits"></div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value green" id="ov-revenue">$0</div><div class="stat-sub">total collected</div><div class="sparkline" id="spark-revenue"></div></div>
+          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value blue" id="ov-active">0</div><div class="stat-sub">pending bookings</div><div class="sparkline" id="spark-active"></div></div>
+          <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value" id="ov-confirmed">0</div><div class="stat-sub">completed splits</div><div class="sparkline" id="spark-confirmed"></div></div>
         </div>
         <div class="stats-row skeleton-wrap" id="stats-skeleton">
           <div class="stat-card"><div class="stat-label"><div class="skeleton skel-text-sm"></div></div><div class="skeleton skel-stat"></div></div>
@@ -1065,6 +1070,18 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
 
     var currentPeriod = 'all';
 
+    
+    function buildSparkline(containerId, data, color) {
+      var el = document.getElementById(containerId);
+      if (!el || !data.length) { if (el) el.innerHTML = ""; return; }
+      var max = Math.max.apply(null, data) || 1;
+      var w = 100, h = 24, pts = [];
+      for (var i = 0; i < data.length; i++) {
+        pts.push((i / (data.length - 1)) * w + "," + (h - (data[i] / max) * (h - 4) - 2));
+      }
+      el.innerHTML = '<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M' + pts.join(" L") + '" stroke="' + color + '"/></svg>';
+    }
+
     function updateStats() {
       var filtered = getFilteredBookings();
       var periodLabel = currentPeriod === "all" ? "all time" : currentPeriod === "today" ? "today" : "last " + currentPeriod;
@@ -1103,6 +1120,26 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
         if (subs[1]) subs[1].innerHTML = prevRevenue > 0 ? "<span style=\"color:" + revColor + ";font-weight:700\">" + revArrow + " " + Math.abs(revChange) + "%</span> vs prev " + currentPeriod : (totalRevenue > 0 ? "<span style=\"color:#10B981;font-weight:700\">\u2191 New</span> this " + currentPeriod : periodLabel);
       }
 
+      
+      // Sparklines
+      var days7 = [];
+      for (var si = 6; si >= 0; si--) {
+        var sd = new Date(); sd.setDate(sd.getDate() - si);
+        var dayRev = 0, daySplits = 0, dayActive = 0, dayConfirmed = 0;
+        allBookings.forEach(function(b) {
+          if (new Date(b.created_at).toDateString() === sd.toDateString()) {
+            daySplits += (b.participants || []).length;
+            (b.participants || []).forEach(function(p) { if (p.status === "paid") dayRev += parseFloat(p.amount); });
+            if (b.status === "pending") dayActive++;
+            if (b.status === "confirmed") dayConfirmed++;
+          }
+        });
+        days7.push({ rev: dayRev, splits: daySplits, active: dayActive, confirmed: dayConfirmed });
+      }
+      buildSparkline("spark-splits", days7.map(function(d) { return d.splits; }), "#0C1220");
+      buildSparkline("spark-revenue", days7.map(function(d) { return d.rev; }), "#10B981");
+      buildSparkline("spark-active", days7.map(function(d) { return d.active; }), "#3B6BFF");
+      buildSparkline("spark-confirmed", days7.map(function(d) { return d.confirmed; }), "#0C1220");
       try { updateFunnel(); updateAnalytics(); } catch(e) {}
     }
     function setPeriod(period, btn) {
