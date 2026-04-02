@@ -1046,11 +1046,33 @@ document.getElementById('ob-pct').textContent = pct + '%';
         if (b.status === "pending") active++;
         if (b.status === "confirmed") confirmed++;
       });
+
+      // Trend arrows
+      var now = new Date();
+      var prevFiltered = allBookings.filter(function(b) {
+        var dt = new Date(b.created_at);
+        if (currentPeriod === "today") { var y = new Date(); y.setDate(y.getDate()-1); return dt >= new Date(y.getFullYear(),y.getMonth(),y.getDate()) && dt < new Date(now.getFullYear(),now.getMonth(),now.getDate()); }
+        if (currentPeriod === "7d") { return dt >= new Date(now-14*86400000) && dt < new Date(now-7*86400000); }
+        if (currentPeriod === "30d") { return dt >= new Date(now-60*86400000) && dt < new Date(now-30*86400000); }
+        if (currentPeriod === "90d") { return dt >= new Date(now-180*86400000) && dt < new Date(now-90*86400000); }
+        return false;
+      });
+      var prevRevenue = 0;
+      prevFiltered.forEach(function(b) { (b.participants||[]).forEach(function(p) { if (p.status==="paid") prevRevenue += parseFloat(p.amount); }); });
+      var revChange = prevRevenue > 0 ? Math.round((totalRevenue - prevRevenue) / prevRevenue * 100) : 0;
+      var revArrow = revChange >= 0 ? "\u2191" : "\u2193";
+      var revColor = revChange >= 0 ? "#10B981" : "#EF4444";
+
       document.getElementById("ov-splits").textContent = totalSplits;
       document.getElementById("ov-revenue").textContent = "$" + totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 });
       document.getElementById("ov-active").textContent = active;
       document.getElementById("ov-confirmed").textContent = confirmed;
       document.querySelectorAll("#stats-real .stat-sub").forEach(function(el) { el.textContent = periodLabel; });
+      if (currentPeriod !== "all") {
+        var subs = document.querySelectorAll("#stats-real .stat-sub");
+        if (subs[1]) subs[1].innerHTML = prevRevenue > 0 ? "<span style=\"color:" + revColor + ";font-weight:700\">" + revArrow + " " + Math.abs(revChange) + "%</span> vs prev " + currentPeriod : (totalRevenue > 0 ? "<span style=\"color:#10B981;font-weight:700\">\u2191 New</span> this " + currentPeriod : periodLabel);
+      }
+
       try { updateFunnel(); updateAnalytics(); } catch(e) {}
     }
     function setPeriod(period, btn) {
