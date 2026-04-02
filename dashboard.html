@@ -1686,5 +1686,21 @@ document.getElementById('ob-pct').textContent = pct + '%';
 
     init();
   </script>
+
+  <div class="kpi-modal" id="kpi-modal" onclick="if(event.target===this)closeKpiCustomize()">
+    <div class="kpi-modal-card">
+      <div class="kpi-modal-title">Customize Dashboard</div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Total Splits</div><div class="kpi-option-sub">Number of split participants</div></div><input type="checkbox" checked id="kc-splits"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Revenue</div><div class="kpi-option-sub">Total collected amount</div></div><input type="checkbox" checked id="kc-revenue"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Active</div><div class="kpi-option-sub">Pending bookings</div></div><input type="checkbox" checked id="kc-active"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Confirmed</div><div class="kpi-option-sub">Completed splits</div></div><input type="checkbox" checked id="kc-confirmed"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Split Funnel</div><div class="kpi-option-sub">Conversion funnel visualization</div></div><input type="checkbox" checked id="kc-funnel"/></div>
+      <div class="kpi-option"><div><div class="kpi-option-label">Analytics Grid</div><div class="kpi-option-sub">Day of week, group size, rates</div></div><input type="checkbox" checked id="kc-analytics"/></div>
+      <div class="kpi-modal-actions">
+        <button class="kpi-modal-btn kpi-modal-cancel" onclick="closeKpiCustomize()">Cancel</button>
+        <button class="kpi-modal-btn kpi-modal-save" onclick="saveKpiPrefs()">Save</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
