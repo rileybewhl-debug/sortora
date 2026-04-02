@@ -904,7 +904,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         window.location.href = '/dashboard.html';
       }
 
-      loadBookings();
+      await loadBookings();
+      // Default to 30d view
+      var defaultBtn = document.querySelectorAll(".period-btn")[2];
+      if (defaultBtn) setPeriod("30d", defaultBtn);
     }
 
     /* ── Onboarding ── */
