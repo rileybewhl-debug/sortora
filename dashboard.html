@@ -910,7 +910,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       var doneCount = steps.filter(function(s) { return s.done; }).length;
       var pct = Math.round((doneCount + 1) / (steps.length + 1) * 100);
 document.getElementById('ob-bar').style.width = pct + '%';
-document.getElementById('ob-count').textContent = doneCount + ' of ' + steps.length + ' complete';
+document.getElementById("ob-count").textContent = (doneCount + 1) + " of " + (steps.length + 1) + " complete";
 document.getElementById('ob-pct').textContent = pct + '%';
       
       // Persistent banner for incomplete onboarding
