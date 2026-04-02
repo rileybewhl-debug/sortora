@@ -12,7 +12,8 @@
     body{font-family:'Plus Jakarta Sans',sans-serif;background:#f5f6f8;min-height:100vh;-webkit-font-smoothing:antialiased;color:#0C1220;display:flex}
 
     /* Skeleton loading */
-    @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+    @keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
     .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite linear;border-radius:6px}
     .skel-stat{height:36px;width:60px;margin-bottom:4px}
     .skel-row{height:64px;border-radius:10px;margin-bottom:8px}
@@ -177,6 +178,13 @@
 .int-zapier-icon{font-size:28px}
 .int-zapier-text{font-size:13px;color:#6a6a6a;line-height:1.5}
 .int-zapier-text b{color:#0C1220}
+
+/* Skeleton shimmer */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+.skeleton-text{height:14px;margin-bottom:8px;width:80%}
+.skeleton-card{height:80px;border-radius:12px;margin-bottom:12px}
+.skeleton-chart{height:200px;border-radius:12px}
 .stat-card{background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px}
     .stat-label{font-size:12px;font-weight:600;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
@@ -841,7 +849,10 @@
       var used = bizData.splits_this_month || 0;
       document.getElementById('plan-name').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
       document.getElementById('plan-usage').textContent = used + ' / ' + (plan === 'pro' ? '∞' : limit) + ' splits this month';
-      document.getElementById('plan-bar').style.width = (plan === 'pro' ? 0 : Math.min(used / limit * 100, 100)) + '%';
+      var pctUsed = plan === 'pro' ? 0 : Math.min(used / limit * 100, 100);
+      document.getElementById('plan-bar').style.width = pctUsed + '%';
+      if (pctUsed >= 80 && pctUsed < 100) document.getElementById('plan-bar').style.background = '#F59E0B';
+      if (pctUsed >= 100) { document.getElementById('plan-bar').style.background = '#EF4444'; document.getElementById('plan-usage').innerHTML = used + ' / ' + limit + ' splits <a href="#" onclick="showView(\'settings\')" style="color:#3B6BFF;font-weight:700;margin-left:8px">Upgrade \u2192</a>'; }
 
       updateEmbedCode();
       document.getElementById('set-biz').value = bizData.business_name || '';
@@ -876,7 +887,7 @@
         { id: 'account', text: 'Create your account', done: true, action: null },
         { id: 'stripe', text: 'Connect Stripe', done: !!bizData.stripe_onboarded, action: bizData.stripe_onboarded ? null : 'connectStripe()' },
         { id: 'widget', text: 'Embed widget on your site', done: false, action: "showView('embed')" },
-        { id: 'split', text: 'Create your first split', done: (bizData.splits_this_month || 0) > 0, action: 'openCreateModal()' }
+        { id: 'split', text: 'Start collecting split payments', done: (bizData.splits_this_month || 0) > 0, action: 'openCreateModal()' }
       ];
       var doneCount = steps.filter(function(s) { return s.done; }).length;
       var pct = Math.round(doneCount / steps.length * 100);
@@ -1085,10 +1096,10 @@ document.getElementById('ob-pct').textContent = pct + '%';
         if (b.status === 'pending') active++;
         if (b.status === 'confirmed') confirmed++;
       });
-      document.getElementById('ov-splits').textContent = totalSplits;
+      document.getElementById('ov-splits').textContent = totalSplits || '\u2014';
       document.getElementById('ov-revenue').textContent = '$' + totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 0 });
-      document.getElementById('ov-active').textContent = active;
-      document.getElementById('ov-confirmed').textContent = confirmed;
+      document.getElementById('ov-active').textContent = active || '\u2014';
+      document.getElementById('ov-confirmed').textContent = confirmed || '\u2014';
       try { updateFunnel(); updateAnalytics(); generateNotifications(); checkMilestones(); } catch(e) {}
       document.getElementById('ov-count').textContent = allBookings.length + ' total';
       document.getElementById('bk-count').textContent = allBookings.length + ' total';
@@ -1265,7 +1276,8 @@ document.getElementById('ob-pct').textContent = pct + '%';
           document.getElementById('cs-count').value = '';
           document.getElementById('cs-name').value = '';
           document.getElementById('cs-email').value = '';
-          loadBookings();
+          try { if (allBookings.length === 0) { var confetti = document.createElement('div'); confetti.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999'; confetti.innerHTML = Array.from({length:50}, function() { var c = ['#3B6BFF','#10B981','#F59E0B','#EF4444','#8b5cf6'][Math.floor(Math.random()*5)]; return '<div style="position:absolute;width:8px;height:8px;background:'+c+';border-radius:50%;top:-10px;left:'+Math.random()*100+'%;animation:confettiFall '+(1+Math.random()*2)+'s ease-out forwards;animation-delay:'+Math.random()*0.5+'s"></div>'; }).join(''); document.body.appendChild(confetti); setTimeout(function(){confetti.remove()},4000); } } catch(ce) {}
+      loadBookings();
         } else {
           errEl.textContent = data.error || 'Something went wrong.';
           errEl.style.display = 'block';
