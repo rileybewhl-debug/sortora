@@ -186,6 +186,11 @@
 .skeleton-card{height:80px;border-radius:12px;margin-bottom:12px}
 .skeleton-chart{height:200px;border-radius:12px}
 
+
+/* Onboarding persistent banner */
+.ob-banner{background:linear-gradient(135deg,#EEF2FF,#fff);border:1px solid #d4deff;border-radius:12px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;display:none}
+.ob-banner-text{font-size:14px;font-weight:600;color:#0C1220}
+.ob-banner-btn{padding:8px 20px;background:#3B6BFF;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
 /* Accessibility: focus outlines */
 *:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px;border-radius:4px}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px}
@@ -458,6 +463,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <div class="onboarding-steps" id="ob-steps"></div>
         </div>
 
+        <div class="ob-banner" id="ob-banner" style="display:none">
+          <div class="ob-banner-text">⚡ You're one step away from collecting your first split payment!</div>
+          <button class="ob-banner-btn" onclick="openCreateModal()">Create your first split →</button>
+        </div>
         <!-- Stats -->
         <div class="kpi-customize"><span style="font-size:13px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.04em">Stats</span><button class="kpi-customize-btn" onclick="openKpiCustomize()">Customize</button></div>
         <div class="period-selector" id="period-selector">
@@ -903,7 +912,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 document.getElementById('ob-bar').style.width = pct + '%';
 document.getElementById('ob-count').textContent = doneCount + ' of ' + steps.length + ' complete';
 document.getElementById('ob-pct').textContent = pct + '%';
-      if (doneCount === steps.length) { document.getElementById('onboarding').classList.add('all-done'); return; }
+      
+      // Persistent banner for incomplete onboarding
+      var banner = document.getElementById("ob-banner");
+      if (banner) banner.style.display = doneCount < steps.length ? "flex" : "none";
+
+if (doneCount === steps.length) { document.getElementById('onboarding').classList.add('all-done');  try { var cs = document.createElement("div"); cs.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999"; cs.innerHTML = Array.from({length:60}, function() { var co = ["#3B6BFF","#10B981","#F59E0B","#EF4444","#8b5cf6"][Math.floor(Math.random()*5)]; return "<div style=\"position:absolute;width:8px;height:8px;background:"+co+";border-radius:50%;top:-10px;left:"+Math.random()*100+"%;animation:confettiFall "+(1+Math.random()*2)+"s ease-out forwards;animation-delay:"+Math.random()*0.5+"s\"></div>"; }).join(""); document.body.appendChild(cs); setTimeout(function(){cs.remove();},4000); } catch(ce) {} ; return; }
       document.getElementById('ob-steps').innerHTML = steps.map(function(s) {
         return '<div class="ob-step' + (s.done ? ' completed' : '') + '">'
           + '<div class="ob-check' + (s.done ? ' done' : '') + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
