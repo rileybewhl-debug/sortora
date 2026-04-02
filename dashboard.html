@@ -1022,17 +1022,7 @@ document.getElementById('ob-pct').textContent = pct + '%';
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    /* ── Load Bookings ── */
-    async function loadBookings() {
-      var r = await SB.from('booking_sessions')
-        .select('*, participants(id, email, name, amount, status, paid_at)')
-        .eq('business_id', currentUser.id)
-        .order('created_at', { ascending: false });
-      allBookings = r.data || [];
-
-
     var currentPeriod = 'all';
-    }
     function setPeriod(period, btn) {
       currentPeriod = period;
       var btns = document.querySelectorAll('.period-btn');
@@ -1056,6 +1046,17 @@ document.getElementById('ob-pct').textContent = pct + '%';
       }
       return allBookings.filter(function(b) { return new Date(b.created_at) >= cutoff; });
     }
+
+    /* ── Load Bookings ── */
+    async function loadBookings() {
+      var r = await SB.from('booking_sessions')
+        .select('*, participants(id, email, name, amount, status, paid_at)')
+        .eq('business_id', currentUser.id)
+        .order('created_at', { ascending: false });
+      allBookings = r.data || [];
+    }
+
+
 
       // Update stats
       var totalSplits = 0, totalRevenue = 0, active = 0, confirmed = 0;
