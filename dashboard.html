@@ -650,7 +650,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="card">
           <div class="card-header"><div class="card-title">Recent Payouts</div></div>
           <div id="po-list">
-            <div class="feed-empty">Your first payout will appear here after a confirmed booking. Payouts are processed automatically through Stripe.<br><br><button onclick="openCreateModal()" style="padding:10px 24px;background:#3B6BFF;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Create your first split \u2192</button></div>
+            <div class="feed-empty">Your first payout will appear here after a confirmed booking. Payouts are processed automatically through Stripe.<br><br><button onclick="openCreateModal()" style="padding:10px 24px;background:#3B6BFF;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Create your first split →</button></div>
           </div>
         </div>
       </div>
@@ -1483,6 +1483,7 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
 
     function markAllRead() {
       notifications.forEach(function(n) { n.read = true; });
+      try { localStorage.setItem("sortora_read_notifs", JSON.stringify(notifications.map(function(n) { return n.id; }))); } catch(e) {}
       renderNotifications();
     }
 
@@ -1525,6 +1526,7 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
 
     // Auto-generate notifications from data
     function generateNotifications() {
+      var readIds = []; try { readIds = JSON.parse(localStorage.getItem("sortora_read_notifs") || "[]"); } catch(e) {}
       allBookings.forEach(function(b) {
         if (b.status === 'confirmed') {
           addNotification('Booking "' + b.title + '" is fully paid!', 'high', 'confirmed-' + b.id);
@@ -1536,6 +1538,9 @@ if (doneCount === steps.length) { document.getElementById('onboarding').classLis
           }
         });
       });
+    
+      notifications.forEach(function(n) { if (readIds.indexOf(n.id) > -1) n.read = true; });
+      renderNotifications();
     }
 
     // Split Funnel
