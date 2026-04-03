@@ -205,6 +205,8 @@
 *:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px;border-radius:4px}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px}
 .stat-card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:20px}
+.stat-card:hover{border-color:#D0D0CE}
+
     .stat-label{font-size:12px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
     .stat-value.blue{color:#3B6BFF}
@@ -290,9 +292,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .badge-pending{background:rgba(59,107,255,.08);color:#3B6BFF}
     
 /* Status icons for accessibility */
-.badge-confirmed::before{content:"\2713 ";font-weight:700}
-.badge-pending::before{content:"\23F3 "}
-.badge-expired::before{content:"\2717 ";font-weight:700}
+.badge-confirmed::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#1A8917;margin-right:6px}
+.badge-pending::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#D97706;margin-right:6px}
+.badge-expired::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#D92D20;margin-right:6px}
 .badge-confirmed{background:rgba(16,185,129,.08);color:#10B981}
     .badge-expired{background:rgba(239,68,68,.06);color:#ef4444}
 
