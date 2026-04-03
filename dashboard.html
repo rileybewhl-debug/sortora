@@ -55,7 +55,7 @@
     .view{display:none}
     .view.active{display:block}
     .main-header{background:#fff;border-bottom:1px solid #E8E8E6;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
-    .main-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .main-title{font-family:'DM Serif Display',Georgia,serif;font-size:32px;font-weight:400;letter-spacing:-0.01em}
     .main-subtitle{font-size:13px;color:#6B6B6B;font-weight:500;margin-top:2px}
     .main-actions{display:flex;gap:8px}
     .header-btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:1px solid #E8E8E6;background:#fff;color:#1A1A1A;display:flex;align-items:center;gap:6px;text-decoration:none}
@@ -76,7 +76,7 @@
     .ob-step{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;transition:background .1s}
     .ob-step:hover{background:#f7f8fa}
     .ob-check{width:24px;height:24px;border-radius:50%;border:2px solid #E8E8E6;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
-    .ob-check.done{background:#10B981;border-color:#10B981}
+    .ob-check.done{background:#1A8917;border-color:#1A8917}
     .ob-check svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5;display:none}
     .ob-check.done svg{display:block}
     .ob-step-text{font-size:13px;font-weight:600;color:#1A1A1A}
@@ -102,8 +102,8 @@
 .notif-item:hover{background:#f7f8fa}
 .notif-item.unread{background:#fafbff}
 .notif-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.notif-dot.high{background:#EF4444}
-.notif-dot.medium{background:#F59E0B}
+.notif-dot.high{background:#D92D20}
+.notif-dot.medium{background:#D97706}
 .notif-dot.low{background:#3B6BFF}
 .notif-dot.read{background:transparent}
 .notif-content{flex:1;min-width:0}
@@ -128,9 +128,9 @@
 .kpi-modal-cancel{background:#f0f1f3;color:#1A1A1A}
 /* Period selector */
 .period-selector{display:flex;align-items:center;gap:4px;background:#f0f1f3;border-radius:10px;padding:3px;margin-bottom:16px}
-.period-btn{padding:7px 14px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#6B6B6B;cursor:pointer;font-family:inherit;transition:all .15s}
+.period-btn{padding:7px 14px;border:none;background:transparent;border-radius:6px;font-size:13px;font-weight:500;color:#6B6B6B;cursor:pointer;font-family:inherit;transition:all .15s}
 .period-btn:hover{color:#1A1A1A}
-.period-btn.active{background:#fff;color:#1A1A1A;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.period-btn.active{background:#fff;color:#1A1A1A;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 /* Analytics mini cards */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .analytics-card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:20px}
@@ -152,8 +152,8 @@
 .funnel-bar-fill{height:100%;border-radius:6px;transition:width .6s ease}
 .funnel-bar-fill.step1{background:linear-gradient(90deg,#3B6BFF,#5a85ff)}
 .funnel-bar-fill.step2{background:linear-gradient(90deg,#6B8EFF,#8aabff)}
-.funnel-bar-fill.step3{background:linear-gradient(90deg,#10B981,#34d399)}
-.funnel-bar-fill.step4{background:linear-gradient(90deg,#059669,#10B981)}
+.funnel-bar-fill.step3{background:linear-gradient(90deg,#1A8917,#34d399)}
+.funnel-bar-fill.step4{background:linear-gradient(90deg,#059669,#1A8917)}
 .funnel-count{font-size:13px;font-weight:700;color:#1A1A1A;width:50px;text-align:right;flex-shrink:0}
 .funnel-pct{font-size:11px;color:#b0b0b0;font-weight:600;width:40px;text-align:right;flex-shrink:0}
 /* Integrations */
@@ -174,8 +174,8 @@
 .int-log-header{display:flex;padding:10px 14px;background:#f7f8fa;font-size:12px;font-weight:700;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em}
 .int-log-row{display:flex;padding:10px 14px;border-top:1px solid #f0f1f3;font-size:13px;align-items:center}
 .int-log-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:10px}
-.int-log-status.delivered{background:#10B981}
-.int-log-status.failed{background:#EF4444}
+.int-log-status.delivered{background:#1A8917}
+.int-log-status.failed{background:#D92D20}
 .int-zapier{display:flex;align-items:center;gap:16px;padding:16px;background:#FFF5EB;border:1px solid #FFE0B2;border-radius:12px;margin-bottom:16px}
 .int-zapier-icon{font-size:28px}
 .int-zapier-text{font-size:13px;color:#6B6B6B;line-height:1.5}
@@ -210,7 +210,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .stat-label{font-size:11px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
     .stat-value.blue{color:#3B6BFF}
-    .stat-value.green{color:#10B981}
+    .stat-value.green{color:#1A8917}
     .stat-sub{font-size:12px;color:#b0b0b0;margin-top:4px}
 
     /* ── Cards ── */
@@ -238,7 +238,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .feed-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5}
     .feed-item:last-child{border-bottom:none}
     .feed-dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0}
-    .feed-dot.payment{background:#10B981}
+    .feed-dot.payment{background:#1A8917}
     .feed-dot.join{background:#3B6BFF}
     .feed-dot.confirmed{background:#f59e0b}
     .feed-dot.created{background:#8b5cf6}
@@ -295,7 +295,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .badge-confirmed::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#1A8917;margin-right:6px}
 .badge-pending::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#D97706;margin-right:6px}
 .badge-expired::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#D92D20;margin-right:6px}
-.badge-confirmed{background:rgba(16,185,129,.08);color:#10B981}
+.badge-confirmed{background:rgba(16,185,129,.08);color:#1A8917}
     .badge-expired{background:rgba(239,68,68,.06);color:#ef4444}
 
     /* ── Embed code ── */
@@ -305,7 +305,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .embed-dot{width:7px;height:7px;border-radius:50%}
     .embed-pre{font-family:'Courier New',monospace;font-size:13px;line-height:1.7;color:rgba(255,255,255,.7);white-space:pre-wrap;word-break:break-all;position:relative;z-index:1}
     .embed-pre .tag{color:#3B6BFF}
-    .embed-pre .attr{color:#10B981}
+    .embed-pre .attr{color:#1A8917}
     .embed-pre .val{color:#f59e0b}
     .embed-copy{position:absolute;top:12px;right:12px;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s;z-index:2}
     .embed-copy:hover{background:rgba(255,255,255,.14);color:#fff}
@@ -327,7 +327,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .stripe-btn{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .15s;flex-shrink:0}
     .stripe-btn-connect{background:#635BFF;color:#fff}
     .stripe-btn-connect:hover{background:#524ae0}
-    .stripe-btn-connected{background:#10B981;color:#fff;cursor:default}
+    .stripe-btn-connected{background:#1A8917;color:#fff;cursor:default}
 
     /* ── Empty state ── */
     .empty{text-align:center;padding:40px 24px}
@@ -563,7 +563,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           </div>
           <div class="analytics-card" style="text-align:center">
             <div class="analytics-title">Completion Rate</div>
-            <div class="analytics-big" id="an-completion" style="color:#10B981">—</div>
+            <div class="analytics-big" id="an-completion" style="color:#1A8917">—</div>
             <div class="analytics-sub" id="an-comp-sub">of splits fully paid</div>
           </div>
           <div class="analytics-card" style="text-align:center">
@@ -720,7 +720,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
             <input class="int-input" type="url" id="wh-url" placeholder="https://hooks.zapier.com/..." inputmode="url"/>
             <button class="int-btn int-btn-primary" onclick="saveWebhookUrl()">Save</button>
           </div>
-          <div id="wh-save-status" style="font-size:12px;color:#10B981;display:none;margin-bottom:12px">Saved!</div>
+          <div id="wh-save-status" style="font-size:12px;color:#1A8917;display:none;margin-bottom:12px">Saved!</div>
 
           <div class="int-section-title" style="margin-top:20px;font-size:14px">Webhook Secret</div>
           <div class="int-section-sub">Optional. If set, Sortora signs payloads with HMAC-SHA256 so you can verify they came from us.</div>
@@ -858,7 +858,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   <script>
     var SB = window.supabase.createClient('https://gzwyzocfohtnejttkglg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6d3l6b2Nmb2h0bmVqdHRrZ2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjkzNDAsImV4cCI6MjA4ODY0NTM0MH0.WTEGzb2zz7UxjpukffbWFLF5Zup2lC65f1H5nQBE_fw');
     var currentUser = null, bizData = null, allBookings = [], chartInstance = null, currentFilter = 'all', currentChartType = 'line', currentInterval = 'daily';
-    var avatarColors = ['#3B6BFF','#8b5cf6','#f59e0b','#10B981','#ef4444','#ec4899','#6366f1','#14b8a6'];
+    var avatarColors = ['#3B6BFF','#8b5cf6','#f59e0b','#1A8917','#ef4444','#ec4899','#6366f1','#14b8a6'];
 
     function showView(id, el) {
       document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
@@ -889,8 +889,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       document.getElementById('plan-usage').textContent = used + ' / ' + (plan === 'pro' ? '∞' : limit) + ' splits this month';
       var pctUsed = plan === 'pro' ? 0 : Math.min(used / limit * 100, 100);
       document.getElementById('plan-bar').style.width = pctUsed + '%';
-      if (pctUsed >= 80 && pctUsed < 100) document.getElementById('plan-bar').style.background = '#F59E0B';
-      if (pctUsed >= 100) { document.getElementById('plan-bar').style.background = '#EF4444'; document.getElementById('plan-usage').innerHTML = used + ' / ' + limit + ' splits <a href="#" onclick="showView(\'settings\')" style="color:#3B6BFF;font-weight:700;margin-left:8px">Upgrade \u2192</a>'; }
+      if (pctUsed >= 80 && pctUsed < 100) document.getElementById('plan-bar').style.background = '#D97706';
+      if (pctUsed >= 100) { document.getElementById('plan-bar').style.background = '#D92D20'; document.getElementById('plan-usage').innerHTML = used + ' / ' + limit + ' splits <a href="#" onclick="showView(\'settings\')" style="color:#3B6BFF;font-weight:700;margin-left:8px">Upgrade \u2192</a>'; }
 
       updateEmbedCode();
       document.getElementById('set-biz').value = bizData.business_name || '';
@@ -940,7 +940,7 @@ document.getElementById('ob-pct').textContent = pct + '%';
       var banner = document.getElementById("ob-banner");
       if (banner) banner.style.display = doneCount < steps.length ? "flex" : "none";
 
-if (doneCount === steps.length) { var obEl = document.getElementById('onboarding'); var totalRev = 0; allBookings.forEach(function(b) { (b.participants||[]).forEach(function(p) { if (p.status==='paid') totalRev += parseFloat(p.amount); }); }); var mItems = [{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/><path d="M12 3v12"/><path d="M5 21h14"/></svg>',l:'First split created',d:allBookings.length>=1},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',l:'First payout received',d:totalRev>0},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',l:'$500 in revenue',d:totalRev>=500},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',l:'50th booking',d:allBookings.length>=50}]; obEl.innerHTML = '<div style="padding:24px"><div style="font-size:16px;font-weight:800;margin-bottom:16px">Milestones</div>' + mItems.map(function(m) { return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px"><span style="font-size:20px">' + m.i + '</span><span style="font-weight:600;color:' + (m.d ? '#10B981' : '#b0b0b0') + '">' + m.l + (m.d ? ' \u2713' : '') + '</span></div>'; }).join('') + '</div>';  try { var cs = document.createElement("div"); cs.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999"; cs.innerHTML = Array.from({length:60}, function() { var co = ["#3B6BFF","#93C5FD","#6366F1","#A5B4FC","#BFDBFE"][Math.floor(Math.random()*5)]; return "<div style=\"position:absolute;width:8px;height:8px;background:"+co+";border-radius:50%;top:-10px;left:"+Math.random()*100+"%;animation:confettiFall "+(1+Math.random()*2)+"s ease-out forwards;animation-delay:"+Math.random()*0.5+"s\"></div>"; }).join(""); document.body.appendChild(cs); setTimeout(function(){cs.remove();},4000); } catch(ce) {} ; return; }
+if (doneCount === steps.length) { var obEl = document.getElementById('onboarding'); var totalRev = 0; allBookings.forEach(function(b) { (b.participants||[]).forEach(function(p) { if (p.status==='paid') totalRev += parseFloat(p.amount); }); }); var mItems = [{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/><path d="M12 3v12"/><path d="M5 21h14"/></svg>',l:'First split created',d:allBookings.length>=1},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',l:'First payout received',d:totalRev>0},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',l:'$500 in revenue',d:totalRev>=500},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',l:'50th booking',d:allBookings.length>=50}]; obEl.innerHTML = '<div style="padding:24px"><div style="font-size:16px;font-weight:800;margin-bottom:16px">Milestones</div>' + mItems.map(function(m) { return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px"><span style="font-size:20px">' + m.i + '</span><span style="font-weight:600;color:' + (m.d ? '#1A8917' : '#b0b0b0') + '">' + m.l + (m.d ? ' \u2713' : '') + '</span></div>'; }).join('') + '</div>';  try { var cs = document.createElement("div"); cs.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999"; cs.innerHTML = Array.from({length:60}, function() { var co = ["#3B6BFF","#93C5FD","#6366F1","#A5B4FC","#BFDBFE"][Math.floor(Math.random()*5)]; return "<div style=\"position:absolute;width:8px;height:8px;background:"+co+";border-radius:50%;top:-10px;left:"+Math.random()*100+"%;animation:confettiFall "+(1+Math.random()*2)+"s ease-out forwards;animation-delay:"+Math.random()*0.5+"s\"></div>"; }).join(""); document.body.appendChild(cs); setTimeout(function(){cs.remove();},4000); } catch(ce) {} ; return; }
       document.getElementById('ob-steps').innerHTML = steps.map(function(s) {
         return '<div class="ob-step' + (s.done ? ' completed' : '') + '">'
           + '<div class="ob-check' + (s.done ? ' done' : '') + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
@@ -1123,7 +1123,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       prevFiltered.forEach(function(b) { (b.participants||[]).forEach(function(p) { if (p.status==="paid") prevRevenue += parseFloat(p.amount); }); });
       var revChange = prevRevenue > 0 ? Math.round((totalRevenue - prevRevenue) / prevRevenue * 100) : 0;
       var revArrow = revChange >= 0 ? "\u2191" : "\u2193";
-      var revColor = revChange >= 0 ? "#10B981" : "#EF4444";
+      var revColor = revChange >= 0 ? "#1A8917" : "#D92D20";
 
       document.getElementById("ov-splits").textContent = totalSplits || "\u2014";
       document.getElementById("ov-revenue").textContent = totalRevenue > 0 ? "$" + totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 }) : "\u2014";
@@ -1132,7 +1132,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       document.querySelectorAll("#stats-real .stat-sub").forEach(function(el) { el.textContent = periodLabel; });
       if (currentPeriod !== "all") {
         var subs = document.querySelectorAll("#stats-real .stat-sub");
-        if (subs[1]) subs[1].innerHTML = prevRevenue > 0 ? "<span style=\"color:" + revColor + ";font-weight:700\">" + revArrow + " " + Math.abs(revChange) + "%</span> vs prev " + currentPeriod : (totalRevenue > 0 ? "<span style=\"color:#10B981;font-weight:700\">\u2191 New</span> this " + currentPeriod : periodLabel);
+        if (subs[1]) subs[1].innerHTML = prevRevenue > 0 ? "<span style=\"color:" + revColor + ";font-weight:700\">" + revArrow + " " + Math.abs(revChange) + "%</span> vs prev " + currentPeriod : (totalRevenue > 0 ? "<span style=\"color:#1A8917;font-weight:700\">\u2191 New</span> this " + currentPeriod : periodLabel);
       }
 
       
@@ -1152,7 +1152,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
         days7.push({ rev: dayRev, splits: daySplits, active: dayActive, confirmed: dayConfirmed });
       }
       buildSparkline("spark-splits", days7.map(function(d) { return d.splits; }), "#1A1A1A");
-      buildSparkline("spark-revenue", days7.map(function(d) { return d.rev; }), "#10B981");
+      buildSparkline("spark-revenue", days7.map(function(d) { return d.rev; }), "#1A8917");
       buildSparkline("spark-active", days7.map(function(d) { return d.active; }), "#3B6BFF");
       buildSparkline("spark-confirmed", days7.map(function(d) { return d.confirmed; }), "#1A1A1A");
       try { updateFunnel(); updateAnalytics(); } catch(e) {}
@@ -1307,7 +1307,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       parts.forEach(function(p, i) {
         var color = avatarColors[i % avatarColors.length];
         var initials = (p.name || p.email || '??').substring(0, 2).toUpperCase();
-        var statusBadge = p.status === 'paid' ? '<span class="drawer-p-status" style="background:rgba(16,185,129,.08);color:#10B981">Paid</span>' : '<span class="drawer-p-status" style="background:rgba(59,107,255,.08);color:#3B6BFF">Pending</span>';
+        var statusBadge = p.status === 'paid' ? '<span class="drawer-p-status" style="background:rgba(16,185,129,.08);color:#1A8917">Paid</span>' : '<span class="drawer-p-status" style="background:rgba(59,107,255,.08);color:#3B6BFF">Pending</span>';
         var paidDate = p.paid_at ? '<br><span style="font-size:10px;color:#b0b0b0">' + new Date(p.paid_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '</span>' : '';
         html += '<div class="drawer-participant"><div class="drawer-p-avatar" style="background:' + color + '">' + initials + '</div><div class="drawer-p-info"><div class="drawer-p-name">' + (p.name || 'Participant') + '</div><div class="drawer-p-email">' + (p.email || '') + paidDate + '</div></div>' + statusBadge + '</div>';
       });
@@ -1380,7 +1380,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
           document.getElementById('cs-count').value = '';
           document.getElementById('cs-name').value = '';
           document.getElementById('cs-email').value = '';
-          try { if (allBookings.length === 0) { var confetti = document.createElement('div'); confetti.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999'; confetti.innerHTML = Array.from({length:50}, function() { var c = ['#3B6BFF','#10B981','#F59E0B','#EF4444','#8b5cf6'][Math.floor(Math.random()*5)]; return '<div style="position:absolute;width:8px;height:8px;background:'+c+';border-radius:50%;top:-10px;left:'+Math.random()*100+'%;animation:confettiFall '+(1+Math.random()*2)+'s ease-out forwards;animation-delay:'+Math.random()*0.5+'s"></div>'; }).join(''); document.body.appendChild(confetti); setTimeout(function(){confetti.remove()},4000); } } catch(ce) {}
+          try { if (allBookings.length === 0) { var confetti = document.createElement('div'); confetti.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999'; confetti.innerHTML = Array.from({length:50}, function() { var c = ['#3B6BFF','#1A8917','#D97706','#D92D20','#8b5cf6'][Math.floor(Math.random()*5)]; return '<div style="position:absolute;width:8px;height:8px;background:'+c+';border-radius:50%;top:-10px;left:'+Math.random()*100+'%;animation:confettiFall '+(1+Math.random()*2)+'s ease-out forwards;animation-delay:'+Math.random()*0.5+'s"></div>'; }).join(''); document.body.appendChild(confetti); setTimeout(function(){confetti.remove()},4000); } } catch(ce) {}
       loadBookings();
         } else {
           errEl.textContent = data.error || 'Something went wrong.';
@@ -1768,11 +1768,11 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       var result = document.getElementById('wh-test-result');
       btn.disabled = true; btn.textContent = 'Sending...'; result.style.display = 'none';
       var url = document.getElementById('wh-url').value.trim();
-      if (!url) { result.style.display = 'block'; result.style.color = '#EF4444'; result.textContent = 'Please save a webhook URL first.'; btn.disabled = false; btn.textContent = 'Send Test Event'; return; }
+      if (!url) { result.style.display = 'block'; result.style.color = '#D92D20'; result.textContent = 'Please save a webhook URL first.'; btn.disabled = false; btn.textContent = 'Send Test Event'; return; }
       try {
         var res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sortora-Event': 'test' }, body: JSON.stringify({ event: 'test', timestamp: new Date().toISOString(), data: { message: 'This is a test webhook from Sortora' } }) });
-        result.style.display = 'block'; result.style.color = res.ok ? '#10B981' : '#F59E0B'; result.textContent = res.ok ? 'Success! Your webhook received the test event.' : 'Webhook responded with status ' + res.status;
-      } catch (err) { result.style.display = 'block'; result.style.color = '#EF4444'; result.textContent = 'Failed to reach webhook URL: ' + err.message; }
+        result.style.display = 'block'; result.style.color = res.ok ? '#1A8917' : '#D97706'; result.textContent = res.ok ? 'Success! Your webhook received the test event.' : 'Webhook responded with status ' + res.status;
+      } catch (err) { result.style.display = 'block'; result.style.color = '#D92D20'; result.textContent = 'Failed to reach webhook URL: ' + err.message; }
       btn.disabled = false; btn.textContent = 'Send Test Event';
     }
     function loadWebhookSettings() {
@@ -1792,7 +1792,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
         var rows = r.data.map(function(d) {
           var time = new Date(d.delivered_at || d.created_at).toLocaleString();
           var statusClass = d.status === 'delivered' ? 'delivered' : 'failed';
-          return '<div class="int-log-row"><div class="int-log-status ' + statusClass + '"></div><span style="flex:1">' + d.event_type + '</span><span style="width:100px;color:' + (d.status === 'delivered' ? '#10B981' : '#EF4444') + ';font-weight:600">' + d.status + '</span><span style="width:140px;color:#b0b0b0;font-size:12px">' + time + '</span></div>';
+          return '<div class="int-log-row"><div class="int-log-status ' + statusClass + '"></div><span style="flex:1">' + d.event_type + '</span><span style="width:100px;color:' + (d.status === 'delivered' ? '#1A8917' : '#D92D20') + ';font-weight:600">' + d.status + '</span><span style="width:140px;color:#b0b0b0;font-size:12px">' + time + '</span></div>';
         }).join('');
         log.innerHTML = '<div class="int-log-header"><span style="flex:1">Event</span><span style="width:100px">Status</span><span style="width:140px">Time</span></div>' + rows;
       });
