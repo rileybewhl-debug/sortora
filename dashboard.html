@@ -1321,7 +1321,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       document.getElementById('ov-active').textContent = active || '\u2014';
       document.getElementById('ov-confirmed').textContent = confirmed || '\u2014';
       try { updateFunnel(); updateAnalytics(); generateNotifications(); checkMilestones(); } catch(e) {}
-      document.getElementById('ov-count').textContent = allBookings.length + ' total';
+      try { document.getElementById('ov-count').textContent = allBookings.length + ' total'; } catch(e) {}
       document.getElementById('bk-count').textContent = allBookings.length + ' total';
 
       // Payout estimates
@@ -1335,12 +1335,12 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       // Hide skeletons
       document.getElementById('stats-skeleton').classList.add('hidden');
       document.getElementById('stats-real').style.display = '';
-      document.getElementById('ov-skeleton').classList.add('hidden');
+      try { document.getElementById('ov-skeleton').classList.add('hidden'); } catch(e) {}
       document.getElementById('ov-list').style.display = '';
       document.getElementById('bk-skeleton').classList.add('hidden');
       document.getElementById('bk-list').style.display = '';
 
-      renderBookingList('ov-list', allBookings.slice(0, 5));
+      if (document.getElementById('ov-list')) { renderBookingList('ov-list', allBookings.slice(0, 5)); }
       renderBookingList('bk-list', allBookings);
       buildChart(allBookings);
       buildActivityFeed(allBookings);
