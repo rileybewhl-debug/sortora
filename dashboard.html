@@ -265,7 +265,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .search-box svg{width:16px;height:16px;stroke:#b0b0b0;flex-shrink:0}
     .search-box input{border:none;outline:none;font-size:13px;font-family:inherit;color:#1A1A1A;width:100%;background:transparent}
     .search-box input::placeholder{color:#9B9B9B}
-    .filter-btn{padding:7px 14px;border:1px solid #E8E8E6;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;background:#fff;color:#6B6B6B;transition:all .12s;display:flex;align-items:center;gap:4px}
+    .filter-btn{padding:7px 14px;border:1px solid #E8E8E6;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;background:#fff;color:#6B6B6B;transition:all .2s ease;display:flex;align-items:center;gap:4px}
     .filter-btn:hover,.filter-btn.active{border-color:#1A1A1A;color:#1A1A1A;background:#fff;font-weight:600}
 .filter-btn:hover{border-color:#D0D0CE;color:#1A1A1A}
     .filter-btn svg{width:14px;height:14px}
@@ -276,7 +276,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .booking-row{border-bottom:1px solid #F0F0EE;transition:background .12s;padding:16px;cursor:pointer}
     .booking-row:last-child{border-bottom:none}
     .booking-row:hover{background:#fafbff;margin:0 -12px;padding:14px 12px;border-radius:8px}
-    .booking-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+    .booking-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .booking-icon.pending{background:rgba(59,107,255,.08)}
     .booking-icon.confirmed{background:rgba(16,185,129,.08)}
     .booking-icon.expired{background:rgba(239,68,68,.06)}
@@ -1243,7 +1243,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
         var paid = parts.filter(function(p) { return p.status === 'paid'; }).length;
         var pct = parts.length ? Math.round(paid / parts.length * 100) : 0;
         var statusCls = b.status === 'confirmed' ? 'confirmed' : b.status === 'expired' ? 'expired' : 'pending';
-        var icon = b.status === 'confirmed' ? '✓' : b.status === 'expired' ? '✕' : '⏳';
+        var icon = b.status === 'confirmed' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : b.status === 'expired' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D92D20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
         var date = new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         return '<div class="booking-row" onclick="openDrawer(' + JSON.stringify(b).replace(/"/g, '&quot;') + ')">'
           + '<div class="booking-icon ' + statusCls + '">' + icon + '</div>'
