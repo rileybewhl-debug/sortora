@@ -1336,7 +1336,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       document.getElementById('stats-skeleton').classList.add('hidden');
       document.getElementById('stats-real').style.display = '';
       try { document.getElementById('ov-skeleton').classList.add('hidden'); } catch(e) {}
-      document.getElementById('ov-list').style.display = '';
+      try { document.getElementById('ov-list').style.display = ''; } catch(e) {}
       document.getElementById('bk-skeleton').classList.add('hidden');
       document.getElementById('bk-list').style.display = '';
 
