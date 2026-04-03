@@ -132,7 +132,7 @@
 .period-btn:hover{color:#1A1A1A}
 .period-btn.active{background:#fff;color:#1A1A1A;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 /* Analytics mini cards */
-.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.analytics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
 .analytics-card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:20px}
 .analytics-title{font-size:13px;font-weight:700;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
 .day-bars{display:flex;align-items:flex-end;gap:6px;height:80px}
@@ -433,7 +433,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <span class="sb-logo-text">Sortora</span>
     </a>
     <nav class="sb-nav">
-      <button class="sb-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Home</button>
+      <button class="sb-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</button>
       <button class="sb-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</button>
       <button class="sb-item" onclick="showView('payouts',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payouts</button>
       <button class="sb-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Analytics</button>
@@ -614,7 +614,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <div class="chart-wrap"><canvas id="revenue-chart"></canvas></div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        
           
         <!-- Analytics -->
         <div class="analytics-grid" id="analytics-grid" style="display:none">
@@ -645,7 +645,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
             <div class="analytics-big" id="an-avg-rev">—</div>
             <div class="analytics-sub" id="an-rev-sub">per booking</div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -879,7 +878,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
   <!-- Mobile nav -->
   <div class="mobile-nav"><div class="mobile-nav-inner">
-    <div class="mn-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Home</div>
+    <div class="mn-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</div>
     <div class="mn-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</div>
     <div class="mn-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Analytics</div>
     <div class="mn-item" onclick="showView('payouts',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payouts</div>
