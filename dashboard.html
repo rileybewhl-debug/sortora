@@ -27,17 +27,19 @@
     .sb-logo{padding:20px 20px 24px;display:flex;align-items:center;gap:8px;text-decoration:none}
     .sb-logo-text{font-weight:800;font-size:20px;color:#1A1A1A;letter-spacing:-.5px}
     .sb-nav{flex:1;padding:0 12px;display:flex;flex-direction:column;gap:2px}
-    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:600;color:#595959;cursor:pointer;transition:all .12s;text-decoration:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
-    .sb-item:hover{background:#f7f7f7;color:#1A1A1A}
-    .sb-item.active{background:#EEF2FF;color:#3B6BFF}
+    
+.sb-item svg{width:18px;height:18px;stroke-width:1.5}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:#6B6B6B;cursor:pointer;transition:all .12s;text-decoration:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+    .sb-item:hover{background:#F5F5F3;color:#1A1A1A}
+    .sb-item.active{background:#F5F5F3;color:#1A1A1A;border-left:3px solid #3B6BFF;border-radius:0 8px 8px 0;padding-left:9px}
     .sb-item svg{width:18px;height:18px;flex-shrink:0}
     .sb-badge{background:#3B6BFF;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;margin-left:auto}
     .sb-divider{height:1px;background:#E8E8E6;margin:12px 0}
-    .sb-section{font-size:11px;font-weight:700;color:#b0b0b0;text-transform:uppercase;letter-spacing:.06em;padding:8px 12px 4px}
+    .sb-section{font-size:11px;font-weight:600;color:#9B9B9B;text-transform:uppercase;letter-spacing:.08em;padding:20px 12px 8px}
     .sb-plan{margin:0 12px 12px;padding:12px;background:#f7f8fa;border-radius:8px;border:1px solid #E8E8E6}
     .sb-plan-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#b0b0b0;margin-bottom:4px}
     .sb-plan-name{font-size:14px;font-weight:800;color:#1A1A1A}
-    .sb-plan-usage{font-size:11px;color:#595959;margin-top:4px}
+    .sb-plan-usage{font-size:11px;color:#6B6B6B;margin-top:4px}
     .sb-plan-bar{height:4px;border-radius:2px;background:#E8E8E6;margin-top:6px;overflow:hidden}
     .sb-plan-bar-fill{height:100%;border-radius:2px;background:#3B6BFF;transition:width .3s}
     .sb-footer{padding:16px;border-top:1px solid #E8E8E6}
@@ -46,7 +48,7 @@
     .sb-avatar{width:32px;height:32px;border-radius:50%;background:#3B6BFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
     .sb-user-info{flex:1;min-width:0}
     .sb-user-name{font-size:13px;font-weight:700;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .sb-user-role{font-size:11px;color:#595959}
+    .sb-user-role{font-size:11px;color:#6B6B6B}
 
     /* ── Main ── */
     .main{flex:1;margin-left:240px;min-height:100vh}
@@ -54,7 +56,7 @@
     .view.active{display:block}
     .main-header{background:#fff;border-bottom:1px solid #E8E8E6;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
     .main-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
-    .main-subtitle{font-size:13px;color:#595959;font-weight:500;margin-top:2px}
+    .main-subtitle{font-size:13px;color:#6B6B6B;font-weight:500;margin-top:2px}
     .main-actions{display:flex;gap:8px}
     .header-btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;border:1px solid #E8E8E6;background:#fff;color:#1A1A1A;display:flex;align-items:center;gap:6px;text-decoration:none}
     .header-btn:hover{background:#f7f7f7}
@@ -67,7 +69,7 @@
     .onboarding{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:20px 24px;margin-bottom:20px}
     .onboarding-title{font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px}
     .onboarding-title svg{width:18px;height:18px;stroke:#3B6BFF}
-    .onboarding-sub{font-size:12px;color:#595959;margin-bottom:16px}
+    .onboarding-sub{font-size:12px;color:#6B6B6B;margin-bottom:16px}
     .onboarding-bar{height:6px;border-radius:3px;background:#E8E8E6;overflow:hidden;margin-bottom:16px}
     .onboarding-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#3B6BFF,#6B8EFF);transition:width .5s}
     .onboarding-steps{display:flex;flex-direction:column;gap:8px}
@@ -78,7 +80,7 @@
     .ob-check svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5;display:none}
     .ob-check.done svg{display:block}
     .ob-step-text{font-size:13px;font-weight:600;color:#1A1A1A}
-    .ob-step.completed .ob-step-text{color:#595959;text-decoration:line-through}
+    .ob-step.completed .ob-step-text{color:#6B6B6B;text-decoration:line-through}
     .ob-step-action{margin-left:auto;font-size:12px;font-weight:700;color:#3B6BFF;cursor:pointer;text-decoration:none}
     .onboarding.all-done{display:none}
 
@@ -87,7 +89,7 @@
     /* Notifications */
 .notif-bell{position:relative;cursor:pointer;padding:8px;border-radius:8px;border:none;background:transparent;transition:background .15s}
 .notif-bell:hover{background:#f0f1f3}
-.notif-bell svg{width:20px;height:20px;stroke:#595959;fill:none;stroke-width:2}
+.notif-bell svg{width:20px;height:20px;stroke:#6B6B6B;fill:none;stroke-width:2}
 .notif-badge{position:absolute;top:4px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#EF4444;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;line-height:1}
 .notif-badge:empty,.notif-badge.hidden{display:none}
 .notif-panel{position:absolute;top:calc(100% + 8px);right:0;width:360px;max-height:420px;background:#fff;border:1px solid #E8E8E6;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:100;overflow:hidden;display:none}
@@ -126,13 +128,13 @@
 .kpi-modal-cancel{background:#f0f1f3;color:#1A1A1A}
 /* Period selector */
 .period-selector{display:flex;align-items:center;gap:4px;background:#f0f1f3;border-radius:10px;padding:3px;margin-bottom:16px}
-.period-btn{padding:7px 14px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#595959;cursor:pointer;font-family:inherit;transition:all .15s}
+.period-btn{padding:7px 14px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#6B6B6B;cursor:pointer;font-family:inherit;transition:all .15s}
 .period-btn:hover{color:#1A1A1A}
 .period-btn.active{background:#fff;color:#1A1A1A;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 /* Analytics mini cards */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .analytics-card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:20px}
-.analytics-title{font-size:13px;font-weight:700;color:#595959;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
+.analytics-title{font-size:13px;font-weight:700;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
 .day-bars{display:flex;align-items:flex-end;gap:6px;height:80px}
 .day-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 .day-bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#3B6BFF,#5a85ff);min-height:2px;transition:height .4s}
@@ -145,7 +147,7 @@
 .funnel-card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:24px;margin-bottom:20px}
 .funnel-title{font-size:15px;font-weight:800;margin-bottom:16px;letter-spacing:-.02em}
 .funnel-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.funnel-label{font-size:13px;font-weight:600;color:#595959;width:120px;flex-shrink:0}
+.funnel-label{font-size:13px;font-weight:600;color:#6B6B6B;width:120px;flex-shrink:0}
 .funnel-bar-wrap{flex:1;height:28px;background:#f0f1f3;border-radius:6px;overflow:hidden;position:relative}
 .funnel-bar-fill{height:100%;border-radius:6px;transition:width .6s ease}
 .funnel-bar-fill.step1{background:linear-gradient(90deg,#3B6BFF,#5a85ff)}
@@ -157,7 +159,7 @@
 /* Integrations */
 .int-section{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:24px;margin-bottom:20px}
 .int-section-title{font-size:16px;font-weight:800;margin-bottom:4px}
-.int-section-sub{font-size:13px;color:#595959;margin-bottom:16px}
+.int-section-sub{font-size:13px;color:#6B6B6B;margin-bottom:16px}
 .int-input-row{display:flex;gap:8px;margin-bottom:12px}
 .int-input{flex:1;padding:10px 14px;border:1px solid #E8E8E6;border-radius:8px;font-size:14px;font-family:inherit;min-height:44px}
 .int-input:focus{outline:none;border-color:#3B6BFF}
@@ -169,14 +171,14 @@
 .int-event{padding:6px 14px;border:1px solid #E8E8E6;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 .int-event.active{background:#EEF2FF;border-color:#3B6BFF;color:#3B6BFF}
 .int-log{border:1px solid #E8E8E6;border-radius:8px;overflow:hidden;margin-top:16px}
-.int-log-header{display:flex;padding:10px 14px;background:#f7f8fa;font-size:12px;font-weight:700;color:#595959;text-transform:uppercase;letter-spacing:.04em}
+.int-log-header{display:flex;padding:10px 14px;background:#f7f8fa;font-size:12px;font-weight:700;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em}
 .int-log-row{display:flex;padding:10px 14px;border-top:1px solid #f0f1f3;font-size:13px;align-items:center}
 .int-log-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:10px}
 .int-log-status.delivered{background:#10B981}
 .int-log-status.failed{background:#EF4444}
 .int-zapier{display:flex;align-items:center;gap:16px;padding:16px;background:#FFF5EB;border:1px solid #FFE0B2;border-radius:12px;margin-bottom:16px}
 .int-zapier-icon{font-size:28px}
-.int-zapier-text{font-size:13px;color:#595959;line-height:1.5}
+.int-zapier-text{font-size:13px;color:#6B6B6B;line-height:1.5}
 .int-zapier-text b{color:#1A1A1A}
 
 /* Skeleton shimmer */
@@ -203,7 +205,7 @@
 *:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px;border-radius:4px}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #3B6BFF;outline-offset:2px}
 .stat-card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:20px}
-    .stat-label{font-size:12px;font-weight:600;color:#595959;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+    .stat-label{font-size:12px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
     .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
     .stat-value.blue{color:#3B6BFF}
     .stat-value.green{color:#10B981}
@@ -213,20 +215,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .card{background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:24px;margin-bottom:20px}
     .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
     .card-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
-    .card-title small{font-size:13px;font-weight:500;color:#595959}
+    .card-title small{font-size:13px;font-weight:500;color:#6B6B6B}
     .card-actions{display:flex;align-items:center;gap:6px}
 
     /* ── Chart ── */
     .chart-controls{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-    .chart-interval{display:flex;background:#f5f6f8;border-radius:8px;overflow:hidden;border:1px solid #E8E8E6}
-    .chart-interval button{padding:6px 14px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;font-family:inherit;color:#595959;transition:all .12s}
+    .chart-interval{display:flex;background:#F5F5F3;border-radius:8px;overflow:hidden;border:1px solid #E8E8E6}
+    .chart-interval button{padding:6px 14px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;font-family:inherit;color:#6B6B6B;transition:all .12s}
     .chart-interval button.active{background:#fff;color:#1A1A1A;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-    .chart-type{display:flex;background:#f5f6f8;border-radius:8px;overflow:hidden;border:1px solid #E8E8E6;margin-left:auto}
-    .chart-type button{padding:6px 14px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;font-family:inherit;color:#595959;transition:all .12s;display:flex;align-items:center;gap:4px}
+    .chart-type{display:flex;background:#F5F5F3;border-radius:8px;overflow:hidden;border:1px solid #E8E8E6;margin-left:auto}
+    .chart-type button{padding:6px 14px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;font-family:inherit;color:#6B6B6B;transition:all .12s;display:flex;align-items:center;gap:4px}
     .chart-type button.active{background:#fff;color:#1A1A1A;box-shadow:0 1px 3px rgba(0,0,0,.06)}
     .chart-type button svg{width:14px;height:14px}
     .chart-amount{font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
-    .chart-amount-label{font-size:13px;color:#595959;font-weight:500;margin-bottom:16px}
+    .chart-amount-label{font-size:13px;color:#6B6B6B;font-weight:500;margin-bottom:16px}
     .chart-wrap{position:relative;height:260px}
 
     /* ── Activity Feed ── */
@@ -247,7 +249,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .onboarding-pct{font-size:11px;color:#9CA3AF}
 .empty-sample{background:#f8f9fa;border:1px dashed #d0d5dd;border-radius:10px;padding:24px;text-align:center}
 .empty-sample-title{font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:6px}
-.empty-sample-desc{font-size:13px;color:#595959;margin-bottom:16px;line-height:1.5}
+.empty-sample-desc{font-size:13px;color:#6B6B6B;margin-bottom:16px;line-height:1.5}
 .empty-sample-btn{display:inline-block;padding:10px 20px;background:#3B6BFF;color:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
 .empty-sample-btn:hover{background:#2952cc}
 .empty-sample-preview{display:flex;gap:12px;justify-content:center;margin-bottom:16px;opacity:.5}
@@ -261,10 +263,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .search-box svg{width:16px;height:16px;stroke:#b0b0b0;flex-shrink:0}
     .search-box input{border:none;outline:none;font-size:13px;font-family:inherit;color:#1A1A1A;width:100%;background:transparent}
     .search-box input::placeholder{color:#b0b5bd}
-    .filter-btn{padding:7px 14px;border:1px solid #E8E8E6;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;color:#595959;transition:all .12s;display:flex;align-items:center;gap:4px}
+    .filter-btn{padding:7px 14px;border:1px solid #E8E8E6;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;color:#6B6B6B;transition:all .12s;display:flex;align-items:center;gap:4px}
     .filter-btn:hover,.filter-btn.active{border-color:#3B6BFF;color:#3B6BFF;background:rgba(59,107,255,.04)}
     .filter-btn svg{width:14px;height:14px}
-    .export-btn{margin-left:auto;padding:7px 14px;border:1px solid #E8E8E6;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;color:#595959;transition:all .12s;display:flex;align-items:center;gap:4px}
+    .export-btn{margin-left:auto;padding:7px 14px;border:1px solid #E8E8E6;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;color:#6B6B6B;transition:all .12s;display:flex;align-items:center;gap:4px}
     .export-btn:hover{border-color:#1A1A1A;color:#1A1A1A}
     .export-btn svg{width:14px;height:14px}
 
@@ -277,13 +279,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .booking-icon.expired{background:rgba(239,68,68,.06)}
     .booking-info{flex:1;min-width:0}
     .booking-title{font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:2px}
-    .booking-meta{font-size:12px;color:#595959}
+    .booking-meta{font-size:12px;color:#6B6B6B}
     .booking-right{text-align:right;flex-shrink:0}
     .booking-amount{font-size:16px;font-weight:800;color:#1A1A1A}
     .booking-progress{display:flex;align-items:center;gap:6px;margin-top:4px}
     .booking-prog-track{width:60px;height:4px;border-radius:2px;background:#E8E8E6;overflow:hidden}
     .booking-prog-fill{height:100%;border-radius:2px;background:#3B6BFF}
-    .booking-prog-text{font-size:11px;color:#595959;font-weight:600}
+    .booking-prog-text{font-size:11px;color:#6B6B6B;font-weight:600}
     .badge{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;text-transform:capitalize}
     .badge-pending{background:rgba(59,107,255,.08);color:#3B6BFF}
     
@@ -309,17 +311,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     /* ── Stripe Embedded Onboarding Modal ── */
 .stripe-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
 .stripe-modal-inner{background:#fff;border-radius:16px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15)}
-.stripe-modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#595959;transition:all .15s}
+.stripe-modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#6B6B6B;transition:all .15s}
 .stripe-modal-close:hover{background:#f5f5f5;color:#1A1A1A}
 .stripe-modal-title{font-size:18px;font-weight:700;margin-bottom:4px}
-.stripe-modal-desc{font-size:13px;color:#595959;margin-bottom:24px}
+.stripe-modal-desc{font-size:13px;color:#6B6B6B;margin-bottom:24px}
 /* ── Stripe connect ── */
     .stripe-box{display:flex;align-items:center;gap:16px;padding:20px;background:#f7f8fa;border:1px solid #E8E8E6;border-radius:12px}
     .stripe-icon{width:44px;height:44px;border-radius:10px;background:#635BFF;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .stripe-icon svg{width:24px;height:24px}
     .stripe-info{flex:1}
     .stripe-title{font-size:14px;font-weight:700;margin-bottom:2px}
-    .stripe-desc{font-size:13px;color:#595959;line-height:1.4}
+    .stripe-desc{font-size:13px;color:#6B6B6B;line-height:1.4}
     .stripe-btn{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .15s;flex-shrink:0}
     .stripe-btn-connect{background:#635BFF;color:#fff}
     .stripe-btn-connect:hover{background:#524ae0}
@@ -330,7 +332,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .empty-icon{width:48px;height:48px;border-radius:50%;background:#f7f8fa;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
     .empty-icon svg{width:22px;height:22px;stroke:#b0b0b0;fill:none;stroke-width:2}
     .empty h3{font-size:16px;font-weight:800;margin-bottom:4px}
-    .empty p{font-size:14px;color:#595959}
+    .empty p{font-size:14px;color:#6B6B6B}
 
     /* ── Detail Drawer ── */
     .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -341,19 +343,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .drawer-title{font-size:18px;font-weight:800}
     .drawer-close{width:32px;height:32px;border-radius:8px;border:1px solid #E8E8E6;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .12s}
     .drawer-close:hover{background:#f7f7f7}
-    .drawer-close svg{width:16px;height:16px;stroke:#595959}
+    .drawer-close svg{width:16px;height:16px;stroke:#6B6B6B}
     .drawer-body{flex:1;overflow-y:auto;padding:24px}
     .drawer-section{margin-bottom:24px}
     .drawer-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#b0b0b0;margin-bottom:12px}
     .drawer-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;border-bottom:1px solid #f5f5f5}
     .drawer-row:last-child{border-bottom:none}
-    .drawer-row-label{color:#595959;font-weight:500}
+    .drawer-row-label{color:#6B6B6B;font-weight:500}
     .drawer-row-value{color:#1A1A1A;font-weight:600}
     .drawer-participant{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:#f7f8fa;margin-bottom:6px}
     .drawer-p-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
     .drawer-p-info{flex:1;min-width:0}
     .drawer-p-name{font-size:13px;font-weight:700;color:#1A1A1A}
-    .drawer-p-email{font-size:11px;color:#595959}
+    .drawer-p-email{font-size:11px;color:#6B6B6B}
     .drawer-p-status{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
 
     /* ── Payout rows ── */
@@ -365,7 +367,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .payout-icon svg{width:16px;height:16px}
     .payout-info{flex:1}
     .payout-title{font-size:13px;font-weight:700;color:#1A1A1A}
-    .payout-meta{font-size:11px;color:#595959}
+    .payout-meta{font-size:11px;color:#6B6B6B}
     .payout-amount{font-size:15px;font-weight:800;color:#1A1A1A}
 
     /* ── Create Split Modal ── */
@@ -374,7 +376,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     .modal{background:#fff;border-radius:16px;width:100%;max-width:480px;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.15);transform:scale(.95);transition:transform .2s}
     .modal-overlay.open .modal{transform:scale(1)}
     .modal-title{font-size:20px;font-weight:800;margin-bottom:4px}
-    .modal-sub{font-size:13px;color:#595959;margin-bottom:20px}
+    .modal-sub{font-size:13px;color:#6B6B6B;margin-bottom:20px}
 
     /* ── Forms ── */
     .form-group{margin-bottom:14px}
@@ -405,7 +407,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     }
     .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E8E8E6;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
     .mobile-nav-inner{display:flex;justify-content:space-around;padding:8px 0}
-    .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:#595959;cursor:pointer;padding:4px 8px}
+    .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:#6B6B6B;cursor:pointer;padding:4px 8px}
     .mn-item.active{color:#3B6BFF}
     .mn-item svg{width:20px;height:20px}
     @media(max-width:768px){.mobile-nav{display:block}body{padding-bottom:60px}}
@@ -455,7 +457,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="main-header">
         <div><div class="main-title" id="welcome-title">Dashboard</div><div class="main-subtitle">Here's what's happening with your splits</div></div>
         <div class="main-actions">
-          <div style="position:relative;display:inline-block" id="notif-container"><button class="notif-bell" onclick="toggleNotifPanel()" aria-expanded="false" aria-controls="notif-panel"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="notif-badge hidden" id="notif-badge"></span></button><div class="notif-panel" id="notif-panel"><div class="notif-header"><div class="notif-header-title">Notifications</div><div style="display:flex;gap:8px;align-items:center"><button class="notif-mark-read" onclick="markAllRead()">Mark all read</button><button class="notif-mark-read" onclick="toggleNotifSettings()" style="color:#595959" title="Settings">&#9881;</button></div></div><div id="notif-settings" style="display:none;padding:16px;border-top:1px solid #f0f1f3"><div style="font-size:13px;font-weight:700;margin-bottom:12px">Notification Preferences</div><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#595959;border-bottom:1px solid #f7f8fa"><span>Payment received</span><input type="checkbox" checked id="ns-payments" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#595959;border-bottom:1px solid #f7f8fa"><span>Booking confirmed</span><input type="checkbox" checked id="ns-confirmed" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#595959;border-bottom:1px solid #f7f8fa"><span>Payout sent</span><input type="checkbox" checked id="ns-payouts" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#595959"><span>Weekly digest</span><input type="checkbox" checked id="ns-digest" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label></div><div class="notif-list" id="notif-list"><div class="notif-empty">No notifications yet</div></div></div></div>
+          <div style="position:relative;display:inline-block" id="notif-container"><button class="notif-bell" onclick="toggleNotifPanel()" aria-expanded="false" aria-controls="notif-panel"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="notif-badge hidden" id="notif-badge"></span></button><div class="notif-panel" id="notif-panel"><div class="notif-header"><div class="notif-header-title">Notifications</div><div style="display:flex;gap:8px;align-items:center"><button class="notif-mark-read" onclick="markAllRead()">Mark all read</button><button class="notif-mark-read" onclick="toggleNotifSettings()" style="color:#6B6B6B" title="Settings">&#9881;</button></div></div><div id="notif-settings" style="display:none;padding:16px;border-top:1px solid #f0f1f3"><div style="font-size:13px;font-weight:700;margin-bottom:12px">Notification Preferences</div><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B;border-bottom:1px solid #f7f8fa"><span>Payment received</span><input type="checkbox" checked id="ns-payments" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B;border-bottom:1px solid #f7f8fa"><span>Booking confirmed</span><input type="checkbox" checked id="ns-confirmed" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B;border-bottom:1px solid #f7f8fa"><span>Payout sent</span><input type="checkbox" checked id="ns-payouts" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B"><span>Weekly digest</span><input type="checkbox" checked id="ns-digest" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label></div><div class="notif-list" id="notif-list"><div class="notif-empty">No notifications yet</div></div></div></div>
           <button class="header-btn header-btn-primary" onclick="openCreateModal()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New Split
@@ -478,7 +480,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <button class="ob-banner-btn" onclick="openCreateModal()">Create your first split →</button>
         </div>
         <!-- Stats -->
-        <div class="kpi-customize"><span style="font-size:13px;font-weight:700;color:#595959;text-transform:uppercase;letter-spacing:.04em">Stats</span><button class="kpi-customize-btn" onclick="openKpiCustomize()">Customize</button></div>
+        <div class="kpi-customize"><span style="font-size:13px;font-weight:700;color:#6B6B6B;text-transform:uppercase;letter-spacing:.04em">Stats</span><button class="kpi-customize-btn" onclick="openKpiCustomize()">Customize</button></div>
         <div class="period-selector" id="period-selector">
           <button class="period-btn" onclick="setPeriod('today',this)">Today</button>
           <button class="period-btn" onclick="setPeriod('7d',this)">7d</button>
@@ -669,7 +671,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="main-body">
         <div class="card">
           <div class="card-header"><div class="card-title">Your Embed Code</div></div>
-          <p style="font-size:14px;color:#595959;margin-bottom:16px;line-height:1.5">Configure your widget, then copy the script tag into your booking page.</p>
+          <p style="font-size:14px;color:#6B6B6B;margin-bottom:16px;line-height:1.5">Configure your widget, then copy the script tag into your booking page.</p>
           <div class="form-row" style="margin-bottom:14px">
             <div class="form-group"><div class="form-label">Booking Title</div><input class="form-input" type="text" id="embed-title" placeholder="e.g. Private Pottery Class" oninput="updateEmbedCode()"/></div>
             <div class="form-group"><div class="form-label">Booking Amount ($)</div><input class="form-input" type="number" id="embed-amount" placeholder="e.g. 240" step="0.01" oninput="updateEmbedCode()"/></div>
@@ -786,19 +788,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <div class="card-header"><div class="card-title">Plan &amp; Billing</div></div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
             <div style="padding:16px;border:1px solid #E8E8E6;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-starter" onclick="selectPlan('starter')">
-              <div style="font-size:12px;font-weight:700;color:#595959;text-transform:uppercase;margin-bottom:4px">Starter</div>
+              <div style="font-size:12px;font-weight:700;color:#6B6B6B;text-transform:uppercase;margin-bottom:4px">Starter</div>
               <div style="font-size:24px;font-weight:800">$29<small style="font-size:13px;color:#b0b0b0">/mo</small></div>
-              <div style="font-size:11px;color:#595959;margin-top:4px">10 splits/mo · 3% fee</div>
+              <div style="font-size:11px;color:#6B6B6B;margin-top:4px">10 splits/mo · 3% fee</div>
             </div>
             <div style="padding:16px;border:2px solid #3B6BFF;border-radius:10px;cursor:pointer;background:rgba(59,107,255,.02)" id="plan-growth" onclick="selectPlan('growth')">
               <div style="font-size:12px;font-weight:700;color:#3B6BFF;text-transform:uppercase;margin-bottom:4px">Growth</div>
               <div style="font-size:24px;font-weight:800">$59<small style="font-size:13px;color:#b0b0b0">/mo</small></div>
-              <div style="font-size:11px;color:#595959;margin-top:4px">50 splits/mo · 2.5% fee</div>
+              <div style="font-size:11px;color:#6B6B6B;margin-top:4px">50 splits/mo · 2.5% fee</div>
             </div>
             <div style="padding:16px;border:1px solid #E8E8E6;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-pro" onclick="selectPlan('pro')">
-              <div style="font-size:12px;font-weight:700;color:#595959;text-transform:uppercase;margin-bottom:4px">Pro</div>
+              <div style="font-size:12px;font-weight:700;color:#6B6B6B;text-transform:uppercase;margin-bottom:4px">Pro</div>
               <div style="font-size:24px;font-weight:800">$99<small style="font-size:13px;color:#b0b0b0">/mo</small></div>
-              <div style="font-size:11px;color:#595959;margin-top:4px">Unlimited · 2% fee</div>
+              <div style="font-size:11px;color:#6B6B6B;margin-top:4px">Unlimited · 2% fee</div>
             </div>
           </div>
         </div>
@@ -1256,7 +1258,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
 
     function toggleFilter(filter, el) {
       currentFilter = filter;
-      document.querySelectorAll('.filter-btn').forEach(function(b) { b.style.borderColor = '#E8E8E6'; b.style.color = '#595959'; });
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.style.borderColor = '#E8E8E6'; b.style.color = '#6B6B6B'; });
       el.style.borderColor = '#3B6BFF'; el.style.color = '#3B6BFF';
       filterBookings();
     }
@@ -1610,7 +1612,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
         document.getElementById('fn-pct2').textContent = created > 0 ? Math.round(invites / created * 100) + '%' : '\u2014';
         document.getElementById('fn-pct3').textContent = invites > 0 ? Math.round(payments / invites * 100) + '%' : '\u2014';
         document.getElementById('fn-pct4').textContent = created > 0 ? Math.round(completed / created * 100) + '%' : '\u2014';
-        document.getElementById("funnel-card").style.display = ""; if (created === 0) { document.getElementById("funnel-card").style.opacity = "0.5"; try { var fc = document.getElementById("funnel-card"); if (!fc.querySelector(".funnel-empty-msg")) { var msg = document.createElement("div"); msg.className = "funnel-empty-msg"; msg.style.cssText = "text-align:center;padding:12px;font-size:13px;color:#595959;font-weight:500"; msg.innerHTML = "Your funnel will fill up as customers use your split payments. <a href=\"#\" onclick=\"openCreateModal();return false\" style=\"color:#3B6BFF;font-weight:700\">Create a split \u2192</a>"; fc.appendChild(msg); } } catch(e) {}; } else { document.getElementById("funnel-card").style.opacity = "1"; try { var em = document.querySelector(".funnel-empty-msg"); if (em) em.remove(); } catch(e) {}; };
+        document.getElementById("funnel-card").style.display = ""; if (created === 0) { document.getElementById("funnel-card").style.opacity = "0.5"; try { var fc = document.getElementById("funnel-card"); if (!fc.querySelector(".funnel-empty-msg")) { var msg = document.createElement("div"); msg.className = "funnel-empty-msg"; msg.style.cssText = "text-align:center;padding:12px;font-size:13px;color:#6B6B6B;font-weight:500"; msg.innerHTML = "Your funnel will fill up as customers use your split payments. <a href=\"#\" onclick=\"openCreateModal();return false\" style=\"color:#3B6BFF;font-weight:700\">Create a split \u2192</a>"; fc.appendChild(msg); } } catch(e) {}; } else { document.getElementById("funnel-card").style.opacity = "1"; try { var em = document.querySelector(".funnel-empty-msg"); if (em) em.remove(); } catch(e) {}; };
       } catch(e) {}
     }
 
@@ -1661,7 +1663,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
     function showMilestoneCelebration(emoji, title) {
       var toast = document.createElement('div');
       toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#fff;border:1px solid #E8E8E6;border-radius:12px;padding:16px 24px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:9999;display:flex;align-items:center;gap:12px;animation:slideInRight .4s ease;font-family:inherit';
-      toast.innerHTML = '<span style="font-size:28px">' + emoji + '</span><div><div style="font-size:15px;font-weight:800">' + title + '</div><div style="font-size:12px;color:#595959;margin-top:2px">Keep it up!</div></div>';
+      toast.innerHTML = '<span style="font-size:28px">' + emoji + '</span><div><div style="font-size:15px;font-weight:800">' + title + '</div><div style="font-size:12px;color:#6B6B6B;margin-top:2px">Keep it up!</div></div>';
       document.body.appendChild(toast);
       setTimeout(function() { toast.style.opacity = '0'; toast.style.transition = 'opacity .3s'; setTimeout(function() { toast.remove(); }, 300); }, 4000);
     }
