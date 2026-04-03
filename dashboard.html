@@ -433,9 +433,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <span class="sb-logo-text">Sortora</span>
     </a>
     <nav class="sb-nav">
-      <button class="sb-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Overview</button>
+      <button class="sb-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Home</button>
       <button class="sb-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</button>
       <button class="sb-item" onclick="showView('payouts',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payouts</button>
+      <button class="sb-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Analytics</button>
       <div class="sb-divider"></div>
       <div class="sb-section">Tools</div>
       <button class="sb-item" onclick="showView('embed',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Widget</button>
@@ -464,7 +465,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <!-- ═══ OVERVIEW ═══ -->
     <div class="view active" id="view-overview">
       <div class="main-header">
-        <div><div class="main-title" id="welcome-title">Dashboard</div><div class="main-subtitle">Here's what's happening with your splits</div></div>
+        <div><div class="main-title" id="welcome-title">Home</div><div class="main-subtitle">Here's what needs your attention</div></div>
         <div class="main-actions">
           <div style="position:relative;display:inline-block" id="notif-container"><button class="notif-bell" onclick="toggleNotifPanel()" aria-expanded="false" aria-controls="notif-panel"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="notif-badge hidden" id="notif-badge"></span></button><div class="notif-panel" id="notif-panel"><div class="notif-header"><div class="notif-header-title">Notifications</div><div style="display:flex;gap:8px;align-items:center"><button class="notif-mark-read" onclick="markAllRead()">Mark all read</button><button class="notif-mark-read" onclick="toggleNotifSettings()" style="color:#6B6B6B" title="Settings">&#9881;</button></div></div><div id="notif-settings" style="display:none;padding:16px;border-top:1px solid #f0f1f3"><div style="font-size:13px;font-weight:700;margin-bottom:12px">Notification Preferences</div><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B;border-bottom:1px solid #f7f8fa"><span>Payment received</span><input type="checkbox" checked id="ns-payments" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B;border-bottom:1px solid #f7f8fa"><span>Booking confirmed</span><input type="checkbox" checked id="ns-confirmed" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B;border-bottom:1px solid #f7f8fa"><span>Payout sent</span><input type="checkbox" checked id="ns-payouts" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label><label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:13px;color:#6B6B6B"><span>Weekly digest</span><input type="checkbox" checked id="ns-digest" onchange="saveNotifPrefs()" style="width:18px;height:18px;accent-color:#3B6BFF"/></label></div><div class="notif-list" id="notif-list"><div class="notif-empty">No notifications yet</div></div></div></div>
           <button class="header-btn header-btn-primary" onclick="openCreateModal()">
@@ -488,6 +489,78 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <div class="ob-banner-text"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B6BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>You're one step away from collecting your first split payment!</div>
           <button class="ob-banner-btn" onclick="openCreateModal()">Create your first split →</button>
         </div>
+
+        <!-- Pending Actions -->
+        <div class="card" id="pending-actions" style="margin-bottom:20px">
+          <div class="card-header"><div class="card-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Needs attention</div></div>
+          <div id="pending-list">
+            <div style="text-align:center;padding:24px;color:#6B6B6B">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div style="font-weight:600;color:#1A1A1A;margin-bottom:4px">You're all caught up</div>
+              <div style="font-size:13px">No splits need your attention right now.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Snapshot -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+          <div class="stat-card">
+            <div class="stat-label">Today's Revenue</div>
+            <div class="stat-value green" id="home-today-rev">—</div>
+            <div class="stat-sub" id="home-today-rev-sub">today</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Splits</div>
+            <div class="stat-value blue" id="home-active-count">—</div>
+            <div class="stat-sub"><a href="#" onclick="showView('bookings',document.querySelectorAll('.sb-item')[1]);return false" style="color:#3B6BFF;font-weight:600;font-size:13px;text-decoration:none">View all bookings →</a></div>
+          </div>
+        </div>
+        <div style="margin-bottom:24px"><a href="#" onclick="showView('analytics',document.querySelectorAll('.sb-item')[3]);return false" style="color:#3B6BFF;font-weight:600;font-size:14px;text-decoration:none">View full analytics →</a></div>
+
+        <!-- Recent Activity (compact — 5 items max) -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Activity</div>
+          </div>
+          <div class="feed-list" id="feed-list">
+            <div class="empty-sample"><div class="empty-sample-preview"><div class="empty-sample-card"><strong>$450 collected</strong>3 bookings this week</div><div class="empty-sample-card"><strong>87% completion</strong>Split success rate</div></div><div class="empty-sample-title">Your dashboard data will appear here</div><div class="empty-sample-desc">Connect Stripe and create your first split to see live revenue, bookings, and payout data.</div></div>
+          </div>
+        </div>
+
+        <!-- Stripe Embedded Onboarding Modal -->
+<div class="stripe-modal" id="stripe-onboarding-modal">
+<div class="stripe-modal-inner">
+<button class="stripe-modal-close" onclick="closeStripeModal()">&times;</button>
+<div class="stripe-modal-title">Connect your Stripe account</div>
+<div class="stripe-modal-desc">Complete the form below to start receiving payouts. Your information goes directly to Stripe.</div>
+<div id="stripe-onboarding-container"></div>
+</div>
+</div>
+
+<!-- Stripe connect prompt -->
+        <div class="card" id="stripe-prompt" style="display:none">
+          <div class="card-header"><div class="card-title">Connect Stripe to receive payments</div></div>
+          <div class="stripe-box">
+            <div class="stripe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="stripe-info"><div class="stripe-title">Stripe Connect</div><div class="stripe-desc">Connect your bank account to receive payouts from split bookings.</div></div>
+            <button class="stripe-btn stripe-btn-connect" id="stripe-btn" onclick="connectStripe()">Connect Stripe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ ANALYTICS ═══ -->
+    <div class="view" id="view-analytics">
+      <div class="main-header">
+        <div><div class="main-title">Analytics</div><div class="main-subtitle">Track your split payment performance</div></div>
+        <div class="main-actions">
+          <button class="header-btn header-btn-primary" onclick="openCreateModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Split
+          </button>
+        </div>
+      </div>
+      <div class="main-body">
         <!-- Stats -->
         <div class="kpi-customize"><span style="font-size:20px;font-weight:600;color:#1A1A1A;text-transform:none;letter-spacing:-0.01em">Stats</span><button class="kpi-customize-btn" onclick="openKpiCustomize()">Customize</button></div>
         <div class="period-selector" id="period-selector">
@@ -573,49 +646,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
             <div class="analytics-sub" id="an-rev-sub">per booking</div>
           </div>
         </div>
-
-        <!-- Recent bookings -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Recent Bookings <small id="ov-count"></small></div>
-            </div>
-            <div id="ov-list" style="display:none"></div>
-            <div class="skeleton-wrap" id="ov-skeleton">
-              <div class="skeleton skel-row"></div>
-              <div class="skeleton skel-row"></div>
-              <div class="skeleton skel-row"></div>
-            </div>
-          </div>
-
-          <!-- Activity Feed -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Activity</div>
-            </div>
-            <div class="feed-list" id="feed-list">
-              <div class="empty-sample"><div class="empty-sample-preview"><div class="empty-sample-card"><strong>$450 collected</strong>3 bookings this week</div><div class="empty-sample-card"><strong>87% completion</strong>Split success rate</div></div><div class="empty-sample-title">Your dashboard data will appear here</div><div class="empty-sample-desc">Connect Stripe and create your first split to see live revenue, bookings, and payout data.</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stripe Embedded Onboarding Modal -->
-<div class="stripe-modal" id="stripe-onboarding-modal">
-<div class="stripe-modal-inner">
-<button class="stripe-modal-close" onclick="closeStripeModal()">&times;</button>
-<div class="stripe-modal-title">Connect your Stripe account</div>
-<div class="stripe-modal-desc">Complete the form below to start receiving payouts. Your information goes directly to Stripe.</div>
-<div id="stripe-onboarding-container"></div>
-</div>
-</div>
-
-<!-- Stripe connect prompt -->
-        <div class="card" id="stripe-prompt" style="display:none">
-          <div class="card-header"><div class="card-title">Connect Stripe to receive payments</div></div>
-          <div class="stripe-box">
-            <div class="stripe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-            <div class="stripe-info"><div class="stripe-title">Stripe Connect</div><div class="stripe-desc">Connect your bank account to receive payouts from split bookings.</div></div>
-            <button class="stripe-btn stripe-btn-connect" id="stripe-btn" onclick="connectStripe()">Connect Stripe</button>
-          </div>
         </div>
       </div>
     </div>
@@ -849,8 +879,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
   <!-- Mobile nav -->
   <div class="mobile-nav"><div class="mobile-nav-inner">
-    <div class="mn-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</div>
+    <div class="mn-item active" onclick="showView('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Home</div>
     <div class="mn-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</div>
+    <div class="mn-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Analytics</div>
     <div class="mn-item" onclick="showView('payouts',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payouts</div>
     <div class="mn-item" onclick="showView('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</div>
   </div></div>
@@ -867,6 +898,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       document.querySelectorAll('.sb-item').forEach(function(s) { s.classList.remove('active'); });
       document.querySelectorAll('.mn-item').forEach(function(m) { m.classList.remove('active'); });
       if (el) el.classList.add('active');
+      // Rebuild chart when Analytics view becomes visible (charts fail in hidden divs)
+      if (id === 'analytics' && allBookings.length > 0) {
+        setTimeout(function() { buildChart(allBookings); updateStats(); updateFunnel(); updateAnalytics(); }, 50);
+      }
+      // Update Home page data when switching to it
+      if (id === 'overview') { updateHomePage(); }
     }
 
     async function init() {
@@ -918,9 +955,87 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       }
 
       await loadBookings();
-      // Default to 30d view
-      var defaultBtn = document.querySelectorAll(".period-btn")[2];
-      if (defaultBtn) setPeriod("30d", defaultBtn);
+      updateHomePage();
+    }
+
+    /* ── Home Page ── */
+    function updateHomePage() {
+      // Today's Revenue
+      var todayRev = 0, yesterdayRev = 0;
+      var now = new Date();
+      var todayStr = now.toDateString();
+      var yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+      var yesterdayStr = yesterday.toDateString();
+      allBookings.forEach(function(b) {
+        (b.participants || []).forEach(function(p) {
+          if (p.status === 'paid' && p.paid_at) {
+            var pd = new Date(p.paid_at);
+            if (pd.toDateString() === todayStr) todayRev += parseFloat(p.amount);
+            if (pd.toDateString() === yesterdayStr) yesterdayRev += parseFloat(p.amount);
+          }
+        });
+      });
+      var revEl = document.getElementById('home-today-rev');
+      if (revEl) revEl.textContent = todayRev > 0 ? '$' + todayRev.toLocaleString('en-US', { minimumFractionDigits: 0 }) : '\u2014';
+      var revSub = document.getElementById('home-today-rev-sub');
+      if (revSub) {
+        if (yesterdayRev > 0 && todayRev > 0) {
+          var pctChange = Math.round((todayRev - yesterdayRev) / yesterdayRev * 100);
+          var arrow = pctChange >= 0 ? '\u2191' : '\u2193';
+          var color = pctChange >= 0 ? '#1A8917' : '#D92D20';
+          revSub.innerHTML = '<span style="color:' + color + ';font-weight:700">' + arrow + ' ' + Math.abs(pctChange) + '%</span> vs yesterday';
+        } else if (todayRev > 0) {
+          revSub.innerHTML = '<span style="color:#1A8917;font-weight:700">\u2191 New</span> today';
+        } else {
+          revSub.textContent = 'today';
+        }
+      }
+
+      // Active Splits count
+      var activeCount = allBookings.filter(function(b) { return b.status === 'pending'; }).length;
+      var activeEl = document.getElementById('home-active-count');
+      if (activeEl) activeEl.textContent = activeCount || '\u2014';
+
+      // Pending Actions
+      var pendingList = document.getElementById('pending-list');
+      if (!pendingList) return;
+      var actions = [];
+      allBookings.forEach(function(b) {
+        if (b.status === 'pending') {
+          var unpaid = (b.participants || []).filter(function(p) { return p.status !== 'paid'; });
+          if (unpaid.length > 0) {
+            actions.push({ type: 'unpaid', booking: b, count: unpaid.length });
+          }
+        }
+      });
+      // Recent payments (last 24 hours)
+      allBookings.forEach(function(b) {
+        (b.participants || []).forEach(function(p) {
+          if (p.status === 'paid' && p.paid_at) {
+            var paidDate = new Date(p.paid_at);
+            if (now - paidDate < 86400000) {
+              actions.push({ type: 'payment', booking: b, participant: p });
+            }
+          }
+        });
+      });
+
+      if (actions.length === 0) {
+        pendingList.innerHTML = '<div style="text-align:center;padding:24px;color:#6B6B6B"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div style="font-weight:600;color:#1A1A1A;margin-bottom:4px">You\'re all caught up</div><div style="font-size:13px">No splits need your attention right now.</div></div>';
+        return;
+      }
+
+      // Show max 5 action items
+      var html = actions.slice(0, 5).map(function(a) {
+        if (a.type === 'unpaid') {
+          return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F0F0EE;cursor:pointer" onclick="showView(\'bookings\',document.querySelectorAll(\'.sb-item\')[1])"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div style="flex:1"><div style="font-weight:600;font-size:14px">' + (a.booking.title || 'Booking') + '</div><div style="font-size:13px;color:#6B6B6B">' + a.count + ' participant' + (a.count > 1 ? 's' : '') + ' haven\'t paid yet</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B9B9B" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg></div>';
+        }
+        if (a.type === 'payment') {
+          return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F0F0EE"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div style="flex:1"><div style="font-weight:600;font-size:14px">$' + parseFloat(a.participant.amount).toFixed(0) + ' received</div><div style="font-size:13px;color:#6B6B6B">' + (a.booking.title || 'Booking') + '</div></div></div>';
+        }
+        return '';
+      }).join('');
+      pendingList.innerHTML = html;
     }
 
     /* ── Onboarding ── */
@@ -1069,10 +1184,10 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       events.sort(function(a, b) { return b.time - a.time; });
       var el = document.getElementById('feed-list');
       if (!events.length) { el.innerHTML = '<div class="empty-sample"><div class="empty-sample-preview"><div class="empty-sample-card"><strong>Escape Room - 6 people</strong>$180 total · 4 of 6 paid</div><div class="empty-sample-card"><strong>Pottery Class - 4 people</strong>$120 total · Fully paid ✓</div></div><div class="empty-sample-title">Your activity feed will appear here</div><div class="empty-sample-desc">Once you create your first split payment, you\'ll see real-time updates as participants pay their share.</div><button class="empty-sample-btn" onclick="openCreateModal()">Create my first split</button></div>'; return; }
-      el.innerHTML = events.slice(0, 20).map(function(e) {
+      el.innerHTML = events.slice(0, 5).map(function(e) {
         var ago = timeAgo(e.time);
         return '<div class="feed-item"><div class="feed-dot ' + e.type + '"></div><div class="feed-info"><div class="feed-text">' + e.text + '</div><div class="feed-time">' + ago + '</div></div></div>';
-      }).join('');
+      }).join('') + (events.length > 5 ? '<div style="text-align:center;padding:12px"><a href="#" onclick="showView(\'analytics\',document.querySelectorAll(\'.sb-item\')[3]);return false" style="color:#3B6BFF;font-weight:600;font-size:13px;text-decoration:none">View all activity \u2192</a></div>' : '');
     }
 
     function timeAgo(date) {
