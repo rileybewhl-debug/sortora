@@ -442,19 +442,47 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       .sidebar{display:none}
       .main{margin-left:0}
       .main-header{padding:16px 20px}
-      .main-body{padding:16px 20px 40px}
+      .main-title{font-size:24px}
+      .main-body{padding:16px 20px 80px}
       .stats-row{grid-template-columns:1fr 1fr}
+      .stat-card{padding:14px}
+      .stat-value{font-size:22px}
       .form-row{grid-template-columns:1fr}
-      .drawer{width:100%}
-      .bookings-toolbar{flex-direction:column;align-items:stretch}
+      .drawer{width:100%;max-width:100%}
+      .bookings-toolbar{flex-direction:column;align-items:stretch;gap:8px}
       .search-box{max-width:none}
       .export-btn{margin-left:0}
+      .filter-btn{padding:6px 12px;font-size:12px}
+      .chart-controls{flex-direction:column;gap:8px}
+      .chart-type{display:none}
+      .card{border-radius:10px}
+      .onboarding{padding:16px}
+      .ob-banner{flex-direction:column;gap:12px;text-align:center;padding:14px 16px}
+      .funnel-card{padding:16px}
+      .period-selector{overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .analytics-grid{grid-template-columns:1fr 1fr}
+      .kpi-customize{flex-direction:column;align-items:flex-start;gap:4px}
+      .notif-panel{right:-60px;width:320px}
+      .modal{max-width:calc(100vw - 32px);padding:20px}
     }
     .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--color-bg-card);border-top:1px solid var(--color-border);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
     .mobile-nav-inner{display:flex;justify-content:space-around;padding:8px 0}
     .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;padding:4px 8px}
     .mn-item.active{color:var(--color-accent)}
     .mn-item svg{width:20px;height:20px}
+    
+    @media(max-width:480px){
+      .stats-row{grid-template-columns:1fr}
+      .analytics-grid{grid-template-columns:1fr}
+      .main-header{flex-direction:column;align-items:flex-start;gap:12px}
+      .main-actions{width:100%}
+      .header-btn-primary{flex:1;justify-content:center}
+      .main-title{font-size:22px}
+      .notif-panel{right:-20px;width:calc(100vw - 40px)}
+      .booking-row{padding:12px 0}
+      .drawer-header{padding:16px}
+      .drawer-body{padding:16px}
+    }
     @media(max-width:768px){.mobile-nav{display:block}body{padding-bottom:60px}}
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
