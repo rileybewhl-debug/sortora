@@ -992,21 +992,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       }
 
       await loadBookings();
-      updateHomePage();
-    }
 
       if (params.get("billing") === "success") {
         var newPlan = params.get("plan") || "growth";
-        await supabase.from("businesses").update({ plan: newPlan, subscription_status: "active" }).eq("id", currentUser.id);
+        await SB.from("businesses").update({ plan: newPlan, subscription_status: "active" }).eq("id", currentUser.id);
         bizData.plan = newPlan;
         highlightPlan(newPlan);
         document.getElementById("plan-name").textContent = newPlan.charAt(0).toUpperCase() + newPlan.slice(1);
         var newLimit = planLimits[newPlan] || 50;
         document.getElementById("plan-usage").textContent = (bizData.splits_this_month || 0) + " / " + newLimit + " splits this month";
         window.history.replaceState({}, "", "/dashboard.html");
-        alert("Plan upgraded to " + newPlan.charAt(0).toUpperCase() + newPlan.slice(1) + "!");
       }
 
+      updateHomePage();
+    }
     /* ── Home Page ── */
     function updateHomePage() {
       // Today's Revenue
