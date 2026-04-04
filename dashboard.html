@@ -90,7 +90,7 @@
     .main{flex:1;margin-left:240px;min-height:100vh}
     .view{display:none}
     .view.active{display:block}
-    .main-header{background:var(--color-bg-card);border-bottom:1px solid var(--color-border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;overflow:visible}
+    .main-header{background:var(--color-bg-card);border-bottom:1px solid var(--color-border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:-webkit-sticky;position:sticky;top:0;z-index:20;overflow:visible}
     .main-title{font-family:'DM Serif Display',Georgia,serif;font-size:var(--text-3xl);font-weight:400;letter-spacing:-0.01em}
     .main-subtitle{font-size:var(--text-sm);color:var(--color-text-secondary);font-weight:500;margin-top:2px}
     .main-actions{display:flex;gap:8px}
@@ -470,7 +470,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       .plan-modal{align-items:flex-end}
       .kpi-modal .kpi-modal-card{border-radius:16px 16px 0 0;max-height:90vh;overflow-y:auto}
       .header-btn{min-height:44px}
-      .main-header .header-btn-primary .btn-text{display:none}
+      .header-btn-primary .btn-text{display:none !important}
       .sb-item{min-height:44px}
       .mn-item{min-height:44px;padding:6px 12px}
       .ob-step{min-height:44px}
@@ -964,7 +964,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div class="mn-item" onclick="showView('bookings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Bookings</div>
     <div class="mn-item" onclick="showView('analytics',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Analytics</div>
     <div class="mn-item" onclick="showView('payouts',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Payouts</div>
-    <div class="mn-item" onclick="showView('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>Settings</div>
+    <div class="mn-item" onclick="showView('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</div>
   </div></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
