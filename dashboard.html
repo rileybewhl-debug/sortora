@@ -90,7 +90,7 @@
     .main{flex:1;margin-left:240px;min-height:100vh}
     .view{display:none}
     .view.active{display:block}
-    .main-header{background:var(--color-bg-card);border-bottom:1px solid var(--color-border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+    .main-header{background:var(--color-bg-card);border-bottom:1px solid var(--color-border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;overflow:visible}
     .main-title{font-family:'DM Serif Display',Georgia,serif;font-size:var(--text-3xl);font-weight:400;letter-spacing:-0.01em}
     .main-subtitle{font-size:var(--text-sm);color:var(--color-text-secondary);font-weight:500;margin-top:2px}
     .main-actions{display:flex;gap:8px}
@@ -480,9 +480,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     }
     .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--color-bg-card);border-top:1px solid var(--color-border);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
     .mobile-nav-inner{display:flex;justify-content:space-around;padding:8px 0}
-    .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;padding:4px 8px}
+    .mn-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;padding:6px 8px;min-width:0;flex:1}
     .mn-item.active{color:var(--color-accent)}
-    .mn-item svg{width:20px;height:20px}
+    .mn-item svg{width:20px;height:20px;flex-shrink:0}
     
     @media(max-width:480px){
       .stats-row{grid-template-columns:1fr}
@@ -741,7 +741,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="main-actions">
           <button class="header-btn header-btn-primary" onclick="openCreateModal()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Split
+            <span class="btn-text">New Split</span>
           </button>
         </div>
       </div>
