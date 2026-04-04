@@ -1619,11 +1619,6 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       if (plan === "enterprise") { window.open("mailto:riley@sortora.com?subject=Sortora%20Enterprise%20Inquiry", "_blank"); return; }
       var currentPlan = (bizData.plan || "starter");
       if (plan === currentPlan) return;
-      if (plan === "starter") {
-        if (!confirm("Downgrade to Starter (free)? Your current features may be limited.")) { highlightPlan(currentPlan); return; }
-      } else {
-        if (!confirm("Upgrade to " + plan.charAt(0).toUpperCase() + plan.slice(1) + "? You will be redirected to checkout.")) { highlightPlan(currentPlan); return; }
-      }
       try {
         var res = await fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ businessId: currentUser.id, plan: plan }) });
         var data = await res.json();
