@@ -1,4 +1,12 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — Sortora</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <style>
     /* ── Design Tokens ── */
     :root{
       --font-body:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
@@ -992,9 +1000,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       }
 
       await loadBookings();
+
+      if (params.get("billing") === "success") {
+        var newPlan = params.get("plan") || "growth";
+        await SB.from("businesses").update({ plan: newPlan, subscription_status: "active" }).eq("id", currentUser.id);
+        bizData.plan = newPlan;
+        highlightPlan(newPlan);
+        document.getElementById("plan-name").textContent = newPlan.charAt(0).toUpperCase() + newPlan.slice(1);
+        var newLimit = planLimits[newPlan] || 50;
+        document.getElementById("plan-usage").textContent = (bizData.splits_this_month || 0) + " / " + newLimit + " splits this month";
+        window.history.replaceState({}, "", "/dashboard.html");
+      }
+
       updateHomePage();
     }
-
     /* ── Home Page ── */
     function updateHomePage() {
       // Today's Revenue
@@ -1595,7 +1614,24 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
         else { el.style.borderColor = '#E8E8E6'; el.style.borderWidth = '1px'; }
       });
     }
-    function selectPlan(plan) { highlightPlan(plan); }
+    async function selectPlan(plan) {
+      highlightPlan(plan);
+      if (plan === "enterprise") { window.open("mailto:riley@sortora.com?subject=Sortora%20Enterprise%20Inquiry", "_blank"); return; }
+      var currentPlan = (bizData.plan || "starter");
+      if (plan === currentPlan) return;
+      if (plan === "starter") {
+        if (!confirm("Downgrade to Starter (free)? Your current features may be limited.")) { highlightPlan(currentPlan); return; }
+      } else {
+        if (!confirm("Upgrade to " + plan.charAt(0).toUpperCase() + plan.slice(1) + "? You will be redirected to checkout.")) { highlightPlan(currentPlan); return; }
+      }
+      try {
+        var res = await fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ businessId: currentUser.id, plan: plan }) });
+        var data = await res.json();
+        if (data.free) { bizData.plan = "starter"; highlightPlan("starter"); document.getElementById("plan-name").textContent = "Starter"; document.getElementById("plan-usage").textContent = (bizData.splits_this_month || 0) + " / 50 splits this month"; alert("Starter plan activated!"); return; }
+        if (data.url) { window.location.href = data.url; }
+        else { alert(data.error || "Something went wrong"); highlightPlan(currentPlan); }
+      } catch(err) { alert("Failed to process plan change. Please try again."); highlightPlan(currentPlan); }
+    }
 
     async function connectStripe() {
       var btn = document.getElementById('stripe-btn') || document.getElementById('stripe-btn-settings');
