@@ -859,33 +859,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><div class="card-title">Plan &amp; Billing</div></div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
-            <div style="padding:16px;border:1px solid #E8E8E6;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-starter" onclick="selectPlan('starter')">
-              <div style="font-size:11px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Starter</div>
-              <div style="font-size:28px;font-weight:800">$0<small style="font-size:13px;color:#9B9B9B;font-weight:500">/mo</small></div>
-              <div style="font-size:12px;color:#3B6BFF;font-weight:600;margin-top:4px">$0.50 + 1.5% per split</div>
-              <div style="font-size:12px;color:#6B6B6B;margin-top:8px">Up to 50 splits/month</div>
+          <div class="card-header"><div class="card-title">Plan & Billing</div></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">
+            <div>
+              <div style="display:flex;align-items:baseline;gap:8px">
+                <span style="font-size:20px;font-weight:700" id="billing-plan-name">Starter</span>
+                <span style="font-size:13px;color:#6B6B6B" id="billing-plan-price">Free</span>
+              </div>
+              <div style="font-size:13px;color:#6B6B6B;margin-top:4px" id="billing-plan-detail">$0.50 + 1.5% per split · Up to 50 splits/month</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+                <div style="height:4px;width:200px;background:#E8E8E6;border-radius:2px;overflow:hidden"><div style="height:100%;border-radius:2px;background:#3B6BFF;transition:width .3s" id="billing-plan-bar"></div></div>
+                <span style="font-size:12px;color:#6B6B6B" id="billing-plan-usage">0 / 50 splits</span>
+              </div>
             </div>
-            <div style="padding:16px;border:2px solid #3B6BFF;border-radius:10px;cursor:pointer;background:rgba(59,107,255,.02);position:relative" id="plan-growth" onclick="selectPlan('growth')">
-              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#3B6BFF;color:#fff;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px">Most popular</div>
-              <div style="font-size:11px;font-weight:600;color:#3B6BFF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Growth</div>
-              <div style="font-size:28px;font-weight:800">$49<small style="font-size:13px;color:#9B9B9B;font-weight:500">/mo</small></div>
-              <div style="font-size:12px;color:#3B6BFF;font-weight:600;margin-top:4px">$0.30 + 1.0% per split</div>
-              <div style="font-size:12px;color:#6B6B6B;margin-top:8px">Up to 500 splits/month</div>
-            </div>
-            <div style="padding:16px;border:1px solid #E8E8E6;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-scale" onclick="selectPlan('scale')">
-              <div style="font-size:11px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Scale</div>
-              <div style="font-size:28px;font-weight:800">$149<small style="font-size:13px;color:#9B9B9B;font-weight:500">/mo</small></div>
-              <div style="font-size:12px;color:#3B6BFF;font-weight:600;margin-top:4px">$0.20 + 0.7% per split</div>
-              <div style="font-size:12px;color:#6B6B6B;margin-top:8px">Up to 2,000 splits/month</div>
-            </div>
-            <div style="padding:16px;border:1px solid #1A1A1A;border-radius:10px;cursor:pointer;transition:all .15s;background:#1A1A1A;color:#fff" id="plan-enterprise" onclick="selectPlan('enterprise')">
-              <div style="font-size:11px;font-weight:600;color:#9B9B9B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Enterprise</div>
-              <div style="font-size:28px;font-weight:800">Custom</div>
-              <div style="font-size:12px;color:#3B6BFF;font-weight:600;margin-top:4px">Volume-based pricing</div>
-              <div style="font-size:12px;color:#9B9B9B;margin-top:8px">2,000+ splits/month</div>
-            </div>
+            <button style="padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid #E8E8E6;background:#fff;color:#1A1A1A;transition:all .15s" onclick="openPlanModal()" onmouseover="this.style.background='#F5F5F3'" onmouseout="this.style.background='#fff'">Change plan →</button>
           </div>
         </div>
       </div>
@@ -982,6 +969,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       document.getElementById('set-category').value = bizData.category || '';
       highlightPlan(plan);
       renderOnboarding();
+      updateBillingDisplay();
 
       if (bizData.stripe_onboarded) {
         document.getElementById('stripe-prompt').style.display = 'none';
@@ -1010,6 +998,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         var newLimit = planLimits[newPlan] || 50;
         document.getElementById("plan-usage").textContent = (bizData.splits_this_month || 0) + " / " + newLimit + " splits this month";
         window.history.replaceState({}, "", "/dashboard.html");
+              closePlanModal();
+        updateBillingDisplay();
       }
 
       updateHomePage();
@@ -1614,6 +1604,22 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
         else { el.style.borderColor = '#E8E8E6'; el.style.borderWidth = '1px'; }
       });
     }
+    function openPlanModal() { var m = document.getElementById("plan-modal"); m.style.opacity = "1"; m.style.pointerEvents = "auto"; highlightPlan(bizData.plan || "starter"); }
+    function closePlanModal() { var m = document.getElementById("plan-modal"); m.style.opacity = "0"; m.style.pointerEvents = "none"; }
+    function updateBillingDisplay() {
+      var plan = bizData.plan || "starter";
+      var info = { starter: { name: "Starter", price: "Free", detail: "$0.50 + 1.5% per split \u00B7 Up to 50 splits/month", limit: 50 }, growth: { name: "Growth", price: "$49/mo", detail: "$0.30 + 1.0% per split \u00B7 Up to 500 splits/month", limit: 500 }, scale: { name: "Scale", price: "$149/mo", detail: "$0.20 + 0.7% per split \u00B7 Up to 2,000 splits/month", limit: 2000 }, enterprise: { name: "Enterprise", price: "Custom", detail: "Volume-based pricing \u00B7 2,000+ splits/month", limit: 99999 } };
+      var p = info[plan] || info.starter;
+      try {
+        document.getElementById("billing-plan-name").textContent = p.name;
+        document.getElementById("billing-plan-price").textContent = p.price;
+        document.getElementById("billing-plan-detail").textContent = p.detail;
+        var used = bizData.splits_this_month || 0;
+        document.getElementById("billing-plan-usage").textContent = used + " / " + (plan === "enterprise" ? "\u221E" : p.limit) + " splits";
+        var pct = plan === "enterprise" ? 0 : Math.min(used / p.limit * 100, 100);
+        document.getElementById("billing-plan-bar").style.width = pct + "%";
+      } catch(e) {}
+    }
     async function selectPlan(plan) {
       highlightPlan(plan);
       if (plan === "enterprise") { window.open("mailto:riley@sortora.com?subject=Sortora%20Enterprise%20Inquiry", "_blank"); return; }
@@ -1994,7 +2000,44 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
     init();
   </script>
 
-  <div class="kpi-modal" id="kpi-modal" role="dialog" aria-modal="true" aria-label="Customize dashboard" onclick="if(event.target===this)closeKpiCustomize()">
+  
+
+  <div class="plan-modal" id="plan-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;display:flex;align-items:center;justify-content:center" onclick="if(event.target===this)closePlanModal()">
+    <div style="background:#fff;border-radius:16px;width:100%;max-width:720px;padding:32px;box-shadow:0 8px 40px rgba(0,0,0,.15)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div style="font-size:20px;font-weight:700">Choose a plan</div>
+        <button onclick="closePlanModal()" style="border:none;background:none;cursor:pointer;padding:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="padding:16px;border:1px solid #E8E8E6;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-starter" onclick="selectPlan('starter')">
+          <div style="font-size:11px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Starter</div>
+          <div style="font-size:24px;font-weight:800">$0<small style="font-size:12px;color:#9B9B9B;font-weight:500">/mo</small></div>
+          <div style="font-size:11px;color:#3B6BFF;font-weight:600;margin-top:4px">$0.50 + 1.5%</div>
+          <div style="font-size:11px;color:#6B6B6B;margin-top:6px">50 splits/mo</div>
+        </div>
+        <div style="padding:16px;border:2px solid #3B6BFF;border-radius:10px;cursor:pointer;background:rgba(59,107,255,.02);position:relative" id="plan-growth" onclick="selectPlan('growth')">
+          <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#3B6BFF;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap">Most popular</div>
+          <div style="font-size:11px;font-weight:600;color:#3B6BFF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Growth</div>
+          <div style="font-size:24px;font-weight:800">$49<small style="font-size:12px;color:#9B9B9B;font-weight:500">/mo</small></div>
+          <div style="font-size:11px;color:#3B6BFF;font-weight:600;margin-top:4px">$0.30 + 1.0%</div>
+          <div style="font-size:11px;color:#6B6B6B;margin-top:6px">500 splits/mo</div>
+        </div>
+        <div style="padding:16px;border:1px solid #E8E8E6;border-radius:10px;cursor:pointer;transition:all .15s" id="plan-scale" onclick="selectPlan('scale')">
+          <div style="font-size:11px;font-weight:600;color:#6B6B6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Scale</div>
+          <div style="font-size:24px;font-weight:800">$149<small style="font-size:12px;color:#9B9B9B;font-weight:500">/mo</small></div>
+          <div style="font-size:11px;color:#3B6BFF;font-weight:600;margin-top:4px">$0.20 + 0.7%</div>
+          <div style="font-size:11px;color:#6B6B6B;margin-top:6px">2,000 splits/mo</div>
+        </div>
+        <div style="padding:16px;border:1px solid #1A1A1A;border-radius:10px;cursor:pointer;background:#1A1A1A;color:#fff" id="plan-enterprise" onclick="selectPlan('enterprise')">
+          <div style="font-size:11px;font-weight:600;color:#9B9B9B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Enterprise</div>
+          <div style="font-size:24px;font-weight:800">Custom</div>
+          <div style="font-size:11px;color:#3B6BFF;font-weight:600;margin-top:4px">Volume pricing</div>
+          <div style="font-size:11px;color:#9B9B9B;margin-top:6px">2,000+ splits/mo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="kpi-modal" id="kpi-modal" role="dialog" aria-modal="true" aria-label="Customize dashboard" onclick="if(event.target===this)closeKpiCustomize()">
     <div class="kpi-modal-card">
       <div class="kpi-modal-title">Customize Dashboard</div>
       <div class="kpi-option"><div><div class="kpi-option-label">Total Splits</div><div class="kpi-option-sub">Number of split participants</div></div><input type="checkbox" checked id="kc-splits"/></div>
