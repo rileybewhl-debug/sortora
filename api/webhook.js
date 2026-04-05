@@ -169,7 +169,7 @@ module.exports = async function handler(req, res) {
 
       var { data: receiptSession } = await supabase
         .from('booking_sessions')
-        .select('title, total_amount, total_participants, booking_date, metadata, businesses(business_name)')
+        .select('title, total_amount, total_participants, booking_date, metadata, businesses(business_name, email)')
         .eq('id', bookingSessionId)
         .single();
 
@@ -200,6 +200,26 @@ module.exports = async function handler(req, res) {
         });
       }
       // ── End receipt email ──
+
+      // ── Notify business: payment received ──
+      if (receiptSession && receiptSession.businesses && receiptSession.businesses.email) {
+        var bizEmail = receiptSession.businesses.email;
+        var notifyHtml = emails.paymentReceived({
+          amount: paidParticipant ? paidParticipant.amount : 0,
+          participantName: paidParticipant ? paidParticipant.name : null,
+          bookingTitle: receiptSession.title,
+          dashUrl: 'https://sortora.com/dashboard.html'
+        });
+        resend.emails.send({
+          from: EMAIL_FROM, to: bizEmail,
+          subject: (paidParticipant && paidParticipant.name ? paidParticipant.name : 'Someone') + ' just paid — ' + receiptSession.title,
+          html: notifyHtml,
+          tags: [{ name: 'category', value: 'payment-received' }]
+        }).catch(function(err) {
+          console.error('Business payment notification failed:', err);
+        });
+      }
+      // ── End business notification ──
 
       var { data: allParts } = await supabase
         .from('participants')
