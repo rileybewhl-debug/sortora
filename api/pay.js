@@ -92,6 +92,7 @@ module.exports = async function handler(req, res) {
       }],
       payment_intent_data: {
         application_fee_amount: applicationFee,
+        setup_future_usage: session.auto_charge ? 'off_session' : undefined,
         transfer_data: { destination: stripeAccountId },
         metadata: {
           participant_id: participant.id,

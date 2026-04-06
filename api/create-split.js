@@ -43,7 +43,9 @@ module.exports = async function handler(req, res) {
     var perPerson = Math.round(totalAmount / totalParticipants * 100) / 100;
 
     // Split expires in 7 days — after this, no new payments accepted
-    var expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    var deadlineDays = sanitizeNumber(body.deadlineDays, 1, 30) || 7;
+    var autoCharge = body.autoCharge === true;
+    var expiresAt = new Date(Date.now() + deadlineDays * 24 * 60 * 60 * 1000).toISOString();
 
     var sessionResult = await supabase
       .from('booking_sessions')
@@ -56,6 +58,7 @@ module.exports = async function handler(req, res) {
         paid_count: 0,
         status: 'pending',
         deadline: expiresAt,
+        auto_charge: autoCharge,
         expires_at: expiresAt,
         metadata: {}
       })

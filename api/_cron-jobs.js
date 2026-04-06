@@ -433,7 +433,125 @@ async function PaymentReminder(req, res) {
   }
 }
 
-module.exports = { Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly, PaymentReminder };
+
+async function AutoCharge(req, res) {
+  setSecurityHeaders(res);
+  if (process.env.CRON_SECRET && req.headers.authorization !== 'Bearer ' + process.env.CRON_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  try {
+    var now = new Date().toISOString();
+    var { data: sessions } = await supabase
+      .from('booking_sessions')
+      .select('id, title, total_amount, per_person_amount, status, auto_charge, deadline, business_id, businesses(email, owner_name, business_name, stripe_account_id)')
+      .eq('status', 'pending')
+      .eq('auto_charge', true)
+      .lt('deadline', now);
+
+    if (!sessions || !sessions.length) return res.status(200).json({ charged: 0 });
+
+    var charged = 0;
+    for (var s of sessions) {
+      var { data: parts } = await supabase
+        .from('participants')
+        .select('id, status, amount, stripe_customer_id, name, email')
+        .eq('booking_session_id', s.id);
+
+      var unpaid = (parts || []).filter(function(p) { return p.status !== 'paid'; });
+      if (!unpaid.length) continue;
+
+      var organizer = (parts || []).find(function(p) { return p.stripe_customer_id; });
+      if (!organizer || !organizer.stripe_customer_id) {
+        console.log('AutoCharge skip ' + s.id + ': no saved payment method');
+        continue;
+      }
+
+      var unpaidAmount = unpaid.reduce(function(sum, p) { return sum + parseFloat(p.amount || 0); }, 0);
+      var amountCents = Math.round(unpaidAmount * 100);
+      if (amountCents < 50) continue;
+
+      try {
+        var stripeAccountId = s.businesses && s.businesses.stripe_account_id;
+        if (!stripeAccountId) continue;
+
+        var customer = await stripe.customers.retrieve(organizer.stripe_customer_id);
+        var pmId = customer.invoice_settings && customer.invoice_settings.default_payment_method;
+        if (!pmId) {
+          var pms = await stripe.paymentMethods.list({ customer: organizer.stripe_customer_id, type: 'card', limit: 1 });
+          pmId = pms.data && pms.data[0] && pms.data[0].id;
+        }
+        if (!pmId) { console.log('AutoCharge skip ' + s.id + ': no payment method on file'); continue; }
+
+        var feePercent = 0.03;
+        var applicationFee = Math.round(amountCents * feePercent);
+
+        var pi = await stripe.paymentIntents.create({
+          amount: amountCents,
+          currency: 'usd',
+          customer: organizer.stripe_customer_id,
+          payment_method: pmId,
+          off_session: true,
+          confirm: true,
+          application_fee_amount: applicationFee,
+          transfer_data: { destination: stripeAccountId },
+          metadata: { booking_session_id: s.id, type: 'auto_charge' }
+        });
+
+        if (pi.status === 'succeeded') {
+          for (var u of unpaid) {
+            await supabase.from('participants').update({ status: 'paid', paid_at: now, stripe_payment_intent_id: pi.id }).eq('id', u.id);
+          }
+          await supabase.from('booking_sessions').update({ status: 'confirmed', paid_count: (parts || []).length }).eq('id', s.id);
+
+          if (s.businesses && s.businesses.email) {
+            var html = emails.autoChargeReceipt({
+              name: s.businesses.owner_name || 'there',
+              bookingTitle: s.title,
+              amount: unpaidAmount,
+              unpaidCount: unpaid.length,
+              totalCount: (parts || []).length,
+              dashUrl: 'https://sortora.com/dashboard.html'
+            });
+            await resend.emails.send({
+              from: FROM, to: s.businesses.email,
+              subject: 'Auto-charge processed: 
+ + parseFloat(p.amount).toFixed(0) + ' share for ' + p.booking_sessions.title,
+        html: html,
+        tags: [{ name: 'category', value: 'payment-reminder' }]
+      });
+
+      await supabase.from('participants').update({ reminder_sent: true }).eq('id', p.id);
+      sent++;
+    }
+
+    return res.status(200).json({ sent: sent });
+  } catch (err) {
+    alertError('cron-payment-reminder', err, req);
+    return res.status(500).json({ error: 'Failed' });
+  }
+}
+
+module.exports = { Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly };
+ + unpaidAmount.toFixed(0) + ' for ' + s.title,
+              html: html,
+              tags: [{ name: 'category', value: 'auto-charge' }]
+            });
+          }
+          charged++;
+        }
+      } catch (stripeErr) {
+        console.error('AutoCharge failed for session ' + s.id + ':', stripeErr.message);
+        alertError('cron-autocharge', stripeErr, req);
+      }
+    }
+    return res.status(200).json({ charged: charged });
+  } catch (err) {
+    alertError('cron-autocharge', err, req);
+    return res.status(500).json({ error: 'Failed' });
+  }
+}
+
+module.exports = { Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly, PaymentReminder, AutoCharge };
  + parseFloat(p.amount).toFixed(0) + ' share for ' + p.booking_sessions.title,
         html: html,
         tags: [{ name: 'category', value: 'payment-reminder' }]
