@@ -1716,9 +1716,11 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       if (amount) text += ' data-amount="' + amount + '"';
       if (title) text += ' data-title="' + title + '"';
       text += ' data-theme="auto"><\/script>';
+      localStorage.setItem('sortora_widget_copied','1');
+      try{renderOnboarding();}catch(e){}
       navigator.clipboard.writeText(text).then(function() {
         var btn = document.querySelector('.embed-copy');
-        btn.textContent = 'Copied!'; localStorage.setItem('sortora_widget_copied','1'); try{renderOnboarding();}catch(e){} setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+        btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
       });
     }
 
