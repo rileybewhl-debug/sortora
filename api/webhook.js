@@ -169,7 +169,7 @@ module.exports = async function handler(req, res) {
 
       var { data: receiptSession } = await supabase
         .from('booking_sessions')
-        .select('title, total_amount, total_participants, booking_date, metadata, businesses(business_name)')
+        .select('title, total_amount, total_participants, booking_date, metadata, businesses(business_name, email)')
         .eq('id', bookingSessionId)
         .single();
 
@@ -201,6 +201,8 @@ module.exports = async function handler(req, res) {
       }
       // ── End receipt email ──
 
+
+
       var { data: allParts } = await supabase
         .from('participants')
         .select('id, status')
@@ -226,6 +228,28 @@ module.exports = async function handler(req, res) {
       }
 
       console.log('Webhook processed: participant ' + participantId + ' paid (' + paidCount + '/' + totalCount + ')');
+
+      // ── Notify business: payment received ──
+      if (receiptSession && receiptSession.businesses && receiptSession.businesses.email) {
+        var bizEmail = receiptSession.businesses.email;
+        var notifyHtml = emails.paymentReceived({
+          amount: paidParticipant ? paidParticipant.amount : 0,
+          participantName: paidParticipant ? paidParticipant.name : null,
+          bookingTitle: receiptSession.title,
+          paidCount: paidCount,
+          totalCount: totalCount,
+          dashUrl: 'https://sortora.com/dashboard.html'
+        });
+        resend.emails.send({
+          from: EMAIL_FROM, to: bizEmail,
+          subject: (paidParticipant && paidParticipant.name ? paidParticipant.name : 'Someone') + ' just paid \u2014 ' + receiptSession.title,
+          html: notifyHtml,
+          tags: [{ name: 'category', value: 'payment-received' }]
+        }).catch(function(err) {
+          console.error('Business payment notification failed:', err);
+        });
+      }
+      // ── End business notification ──
     }
 
     // SUBSCRIPTION UPDATED

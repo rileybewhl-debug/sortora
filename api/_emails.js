@@ -669,6 +669,55 @@ function paymentReminder(data) {
     + '</div>');
 }
 
+
+/* ═══════════════════════════════════════════════════
+ *  25. REAL-TIME PAYMENT RECEIVED (business notification)
+ * ═══════════════════════════════════════════════════ */
+function paymentReceived(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Payment Received')
+    + '<div style="padding:36px 40px;text-align:center">'
+    + '<div style="width:56px;height:56px;border-radius:50%;background:' + GREEN + ';margin:0 auto 20px;text-align:center;line-height:56px">'
+    + '<span style="font-size:24px;color:#fff;font-family:Arial">\u2713</span></div>'
+    + '<div style="font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Payment received</div>'
+    + '<div style="font-size:40px;font-weight:800;color:' + DARK + ';letter-spacing:-1.5px;line-height:1;margin-bottom:8px">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder,
+  paymentReceived: paymentReceived
+};
+ + amt + '</div>'
+    + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">' + (data.participantName || 'A participant') + ' just paid</div>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:16px 20px;margin-bottom:24px;border:1px solid ' + BORDER + ';text-align:left">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Booking</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingTitle || '\u2014') + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Progress</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' paid</td></tr>'
+    + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
 module.exports = {
   paymentLink: paymentLink,
   paymentReceipt: paymentReceipt,
