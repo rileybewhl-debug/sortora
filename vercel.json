@@ -1,15 +1,5 @@
 {
-  "functions": {
-    "api/*.js": {
-      "memory": 256,
-      "maxDuration": 10
-    }
-  },
   "crons": [
-    {
-      "path": "/api/cron-reset",
-      "schedule": "0 0 1 * *"
-    },
     {
       "path": "/api/cron?job=digest",
       "schedule": "0 16 * * 1"
