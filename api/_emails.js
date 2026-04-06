@@ -705,7 +705,8 @@ function paymentReceived(data) {
   featureDiscovery: featureDiscovery,
   monthlySummary: monthlySummary,
   paymentReminder: paymentReminder,
-  paymentReceived: paymentReceived
+  paymentReceived: paymentReceived,
+  autoChargeReceipt: autoChargeReceipt
 };
  + amt + '</div>'
     + '<div style="font-size:14px;color:' + GRAY + ';margin-bottom:24px;font-weight:500">' + (data.participantName || 'A participant') + ' just paid</div>'
@@ -714,6 +715,53 @@ function paymentReceived(data) {
     + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Booking</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.bookingTitle || '\u2014') + '</td></tr>'
     + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Progress</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.paidCount || 0) + ' of ' + (data.totalCount || 0) + ' paid</td></tr>'
     + '</table></div>'
+    + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
+    + '</div>');
+}
+
+
+/* ═══════════════════════════════════════════════════
+ *  26. AUTO-CHARGE RECEIPT (organizer notification)
+ * ═══════════════════════════════════════════════════ */
+function autoChargeReceipt(data) {
+  var amt = parseFloat(data.amount).toFixed(2);
+  return wrapper(header('Auto-Charge Processed')
+    + '<div style="padding:36px 40px">'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 16px;font-weight:500">Hey ' + (data.name || 'there') + ',</p>'
+    + '<p style="font-size:15px;color:' + GRAY + ';line-height:1.7;margin:0 0 20px;font-weight:500">The payment deadline for <strong style="color:' + DARK + '">' + data.bookingTitle + '</strong> has passed. As requested, we automatically charged your card for the remaining unpaid balance.</p>'
+    + '<div style="background:' + GLASS + ';border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid ' + BORDER + '">'
+    + '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Auto-charged amount</td><td style="padding:6px 0;font-size:16px;color:' + DARK + ';font-weight:800;text-align:right">
+  paymentLink: paymentLink,
+  paymentReceipt: paymentReceipt,
+  bookingConfirmed: bookingConfirmed,
+  businessConfirmed: businessConfirmed,
+  welcome: welcome,
+  quickWin: quickWin,
+  socialProof: socialProof,
+  featureSpotlight: featureSpotlight,
+  checkIn: checkIn,
+  dunningDay0: dunningDay0,
+  dunningDay3: dunningDay3,
+  dunningDay7: dunningDay7,
+  dunningDay14: dunningDay14,
+  expiringCard: expiringCard,
+  widgetNudge: widgetNudge,
+  payoutNotification: payoutNotification,
+  weeklyDigest: weeklyDigest,
+  milestone: milestone,
+  reengageDay7: reengageDay7,
+  reengageDay14: reengageDay14,
+  reengageDay30: reengageDay30,
+  featureDiscovery: featureDiscovery,
+  monthlySummary: monthlySummary,
+  paymentReminder: paymentReminder
+};
+ + amt + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Unpaid participants</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + (data.unpaidCount || 0) + ' of ' + (data.totalCount || 0) + '</td></tr>'
+    + '<tr><td style="padding:6px 0;font-size:13px;color:' + MUTED + ';font-weight:500">Booking</td><td style="padding:6px 0;font-size:13px;color:' + DARK + ';font-weight:600;text-align:right">' + data.bookingTitle + '</td></tr>'
+    + '</table></div>'
+    + '<p style="font-size:13px;color:' + MUTED + ';line-height:1.6;margin:0 0 24px;font-weight:500">You enabled auto-charge when creating this split. The booking is now fully confirmed.</p>'
     + '<a href="' + (data.dashUrl || 'https://sortora.com/dashboard.html') + '" style="display:inline-block;padding:12px 28px;background:' + BRAND + ';color:#fff;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none">View in dashboard</a>'
     + '</div>');
 }
