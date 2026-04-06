@@ -1,4 +1,4 @@
-var CACHE_NAME = 'sortora-v1';
+var CACHE_NAME = 'sortora-v2';
 var STATIC_ASSETS = [
   '/dashboard.html',
   '/manifest.json'
