@@ -11,15 +11,15 @@
       "schedule": "0 0 1 * *"
     },
     {
-      "path": "/api/cron-digest",
+      "path": "/api/cron?job=digest",
       "schedule": "0 16 * * 1"
     },
     {
-      "path": "/api/cron-reminder",
+      "path": "/api/cron?job=reminder",
       "schedule": "0 15 * * *"
     },
     {
-      "path": "/api/cron-autocharge",
+      "path": "/api/cron?job=autocharge",
       "schedule": "0 */6 * * *"
     }
   ],

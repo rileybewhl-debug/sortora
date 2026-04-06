@@ -14,7 +14,8 @@ module.exports = async function handler(req, res) {
     'expiring': jobs.ExpiringCards,
     'reengage': jobs.Reengage,
     'monthly': jobs.Monthly,
-    'reminder': jobs.PaymentReminder
+    'reminder': jobs.PaymentReminder,
+    'autocharge': jobs.AutoCharge
   };
 
   if (!job || !map[job]) {
