@@ -201,25 +201,7 @@ module.exports = async function handler(req, res) {
       }
       // ── End receipt email ──
 
-      // ── Notify business: payment received ──
-      if (receiptSession && receiptSession.businesses && receiptSession.businesses.email) {
-        var bizEmail = receiptSession.businesses.email;
-        var notifyHtml = emails.paymentReceived({
-          amount: paidParticipant ? paidParticipant.amount : 0,
-          participantName: paidParticipant ? paidParticipant.name : null,
-          bookingTitle: receiptSession.title,
-          dashUrl: 'https://sortora.com/dashboard.html'
-        });
-        resend.emails.send({
-          from: EMAIL_FROM, to: bizEmail,
-          subject: (paidParticipant && paidParticipant.name ? paidParticipant.name : 'Someone') + ' just paid — ' + receiptSession.title,
-          html: notifyHtml,
-          tags: [{ name: 'category', value: 'payment-received' }]
-        }).catch(function(err) {
-          console.error('Business payment notification failed:', err);
-        });
-      }
-      // ── End business notification ──
+
 
       var { data: allParts } = await supabase
         .from('participants')
@@ -246,6 +228,28 @@ module.exports = async function handler(req, res) {
       }
 
       console.log('Webhook processed: participant ' + participantId + ' paid (' + paidCount + '/' + totalCount + ')');
+
+      // ── Notify business: payment received ──
+      if (receiptSession && receiptSession.businesses && receiptSession.businesses.email) {
+        var bizEmail = receiptSession.businesses.email;
+        var notifyHtml = emails.paymentReceived({
+          amount: paidParticipant ? paidParticipant.amount : 0,
+          participantName: paidParticipant ? paidParticipant.name : null,
+          bookingTitle: receiptSession.title,
+          paidCount: paidCount,
+          totalCount: totalCount,
+          dashUrl: 'https://sortora.com/dashboard.html'
+        });
+        resend.emails.send({
+          from: EMAIL_FROM, to: bizEmail,
+          subject: (paidParticipant && paidParticipant.name ? paidParticipant.name : 'Someone') + ' just paid \u2014 ' + receiptSession.title,
+          html: notifyHtml,
+          tags: [{ name: 'category', value: 'payment-received' }]
+        }).catch(function(err) {
+          console.error('Business payment notification failed:', err);
+        });
+      }
+      // ── End business notification ──
     }
 
     // SUBSCRIPTION UPDATED
