@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Dashboard — Sortora</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4" defer></script>
   <style>
     /* ── Design Tokens ── */
     :root{
@@ -1523,7 +1523,6 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
 
       if (document.getElementById('ov-list')) { renderBookingList('ov-list', allBookings.slice(0, 5)); }
       renderBookingList('bk-list', allBookings);
-      buildChart(allBookings);
       buildActivityFeed(allBookings);
       renderOnboarding();
     }
@@ -1863,6 +1862,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
           indicator.classList.add("refreshing");
           loadBookings().then(function() {
             updateHomePage();
+            try { if (document.getElementById('view-analytics').classList.contains('active')) { buildChart(allBookings); updateStats(); updateFunnel(); updateAnalytics(); } } catch(e) {}
             indicator.classList.remove("active", "refreshing");
           }).catch(function() {
             indicator.classList.remove("active", "refreshing");
@@ -2165,8 +2165,6 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       });
     }
 
-    async function signOut() { await SB.auth.signOut(); window.location.href = '/login.html'; }
-
   </script>
 
   
@@ -2238,6 +2236,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
   </div>
 </body>
 </html>
+
 
 
 
