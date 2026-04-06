@@ -153,6 +153,7 @@ module.exports = async function handler(req, res) {
         .update({
           status: 'paid',
           stripe_payment_intent_id: paymentIntentId,
+          stripe_customer_id: session.customer || null,
           paid_at: new Date().toISOString()
         })
         .eq('id', participantId);
