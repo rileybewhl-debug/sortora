@@ -1,6 +1,6 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
-const { corsCheck, applyRateLimit, sanitizeString, setSecurityHeaders, alertError } = require('./_security');
+const { corsCheck, applyRateLimit, sanitizeString, setSecurityHeaders, alertError } = require('../lib/_security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
