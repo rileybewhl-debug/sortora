@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3B6BFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Dashboard — Sortora</title>
@@ -2234,6 +2238,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       </div>
     </div>
   </div>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}</script>
 </body>
 </html>
 
