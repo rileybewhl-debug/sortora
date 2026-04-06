@@ -587,7 +587,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           </div>
         </div>
 
-        <!-- Today's Snapshot -->
+        <!-- Upgrade Banner (shown at 80%+ usage) -->
+        <div class="card" id="upgrade-banner" style="display:none;margin-bottom:20px;border:1px solid rgba(59,107,255,.2);background:rgba(59,107,255,.03)">
+          <div style="display:flex;align-items:center;gap:16px;padding:4px 0">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(59,107,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B6BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div style="flex:1"><div style="font-weight:700;font-size:14px;color:#1A1A1A;margin-bottom:2px" id="upgrade-banner-title">Approaching your plan limit</div><div style="font-size:13px;color:#6B6B6B" id="upgrade-banner-desc">Upgrade to unlock more splits and lower fees.</div></div>
+            <button style="padding:8px 16px;background:#3B6BFF;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap" onclick="openPlanModal()">Upgrade</button>
+          </div>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
           <div class="stat-card">
             <div class="stat-label">Today's Revenue</div>
@@ -729,6 +736,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
             <div class="analytics-title">Avg Revenue / Split</div>
             <div class="analytics-big" id="an-avg-rev">—</div>
             <div class="analytics-sub" id="an-rev-sub">per booking</div>
+          </div>
+          <div class="analytics-card" id="locked-forecast" style="text-align:center;position:relative;opacity:.6">
+            <div style="position:absolute;top:8px;right:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B9B9B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+            <div class="analytics-title">Revenue Forecast</div>
+            <div class="analytics-big" style="color:#9B9B9B">—</div>
+            <div style="font-size:12px;color:#6B6B6B;margin-top:8px">Predict next month's revenue</div>
+            <button style="margin-top:10px;padding:6px 14px;background:rgba(59,107,255,.08);color:#3B6BFF;border:1px solid rgba(59,107,255,.2);border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="openPlanModal()">Upgrade to Growth</button>
           </div>
         </div>
       </div>
@@ -1011,6 +1025,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       document.getElementById('plan-bar').style.width = pctUsed + '%';
       if (pctUsed >= 80 && pctUsed < 100) document.getElementById('plan-bar').style.background = '#D97706';
       if (pctUsed >= 100) { document.getElementById('plan-bar').style.background = '#D92D20'; document.getElementById('plan-usage').innerHTML = used + ' / ' + limit + ' splits <a href="#" onclick="showView(\'settings\')" style="color:#3B6BFF;font-weight:700;margin-left:8px">Upgrade \u2192</a>'; }
+      var ub = document.getElementById('upgrade-banner');
+      if (ub && plan !== 'enterprise') {
+        if (pctUsed >= 80) { ub.style.display = ''; document.getElementById('upgrade-banner-title').textContent = pctUsed >= 100 ? 'You\u2019ve hit your plan limit' : 'You\u2019ve used ' + used + ' of ' + limit + ' splits'; document.getElementById('upgrade-banner-desc').textContent = pctUsed >= 100 ? 'Upgrade now to keep collecting split payments.' : 'Upgrade to unlock more splits and lower per-transaction fees.'; }
+        else { ub.style.display = 'none'; }
+      }
+      var lf = document.getElementById('locked-forecast');
+      if (lf) { lf.style.display = (plan === 'starter') ? '' : 'none'; }
 
       updateEmbedCode();
       document.getElementById('set-biz').value = bizData.business_name || '';
@@ -2136,3 +2157,4 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
   </div>
 </body>
 </html>
+
