@@ -22,5 +22,13 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid job. Use ?job=reset|nudge|digest|expiring|reengage|monthly' });
   }
 
+  if (job === 'all') {
+    var results = {};
+    try { await jobs.PaymentReminder(req, Object.assign({}, res, {status:function(){return{json:function(d){results.reminder=d}}}})); } catch(e) { results.reminder = {error: e.message}; }
+    try { await jobs.AutoCharge(req, Object.assign({}, res, {status:function(){return{json:function(d){results.autocharge=d}}}})); } catch(e) { results.autocharge = {error: e.message}; }
+    if (new Date().getUTCDay() === 1) { try { await jobs.Digest(req, Object.assign({}, res, {status:function(){return{json:function(d){results.digest=d}}}})); } catch(e) { results.digest = {error: e.message}; } }
+    return res.status(200).json(results);
+  }
+
   return map[job](req, res);
 };
