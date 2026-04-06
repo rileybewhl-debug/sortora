@@ -1228,7 +1228,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       var steps = [
         { id: 'account', text: 'Create your account', done: true, action: null },
         { id: 'stripe', text: 'Connect Stripe', done: !!bizData.stripe_onboarded, action: bizData.stripe_onboarded ? null : 'connectStripe()' },
-        { id: 'widget', text: 'Embed widget on your site', done: false, action: "showView('embed')" },
+        { id: 'widget', text: 'Embed widget on your site', done: !!localStorage.getItem('sortora_widget_copied'), action: "showView('embed')" },
         { id: 'split', text: 'Start collecting split payments', done: (bizData.splits_this_month || 0) > 0, action: 'openCreateModal()' }
       ];
       var doneCount = steps.filter(function(s) { return s.done; }).length;
@@ -1717,7 +1717,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
       text += ' data-theme="auto"><\/script>';
       navigator.clipboard.writeText(text).then(function() {
         var btn = document.querySelector('.embed-copy');
-        btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+        btn.textContent = 'Copied!'; localStorage.setItem('sortora_widget_copied','1'); setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
       });
     }
 
