@@ -417,7 +417,23 @@ async function PaymentReminder(req, res) {
       await resend.emails.send({
         from: FROM,
         to: p.email,
-        subject: 'Reminder: Pay your  Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly };
+        subject: 'Reminder: Pay your  + ' share for ' + p.booking_sessions.title,
+        html: html,
+        tags: [{ name: 'category', value: 'payment-reminder' }]
+      });
+
+      await supabase.from('participants').update({ reminder_sent: true }).eq('id', p.id);
+      sent++;
+    }
+
+    return res.status(200).json({ sent: sent });
+  } catch (err) {
+    alertError('cron-payment-reminder', err, req);
+    return res.status(500).json({ error: 'Failed' });
+  }
+}
+
+module.exports = { Reset, Nudge, Digest, ExpiringCards, Reengage, Monthly, PaymentReminder };
  + parseFloat(p.amount).toFixed(0) + ' share for ' + p.booking_sessions.title,
         html: html,
         tags: [{ name: 'category', value: 'payment-reminder' }]
