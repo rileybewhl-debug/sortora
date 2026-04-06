@@ -1,11 +1,11 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
-const { setSecurityHeaders, alertError, dispatchWebhook } = require('./_security');
+const { setSecurityHeaders, alertError, dispatchWebhook } = require('../lib/_security');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
-const emails = require('./_emails');
+const emails = require('../lib/_emails');
 const resend = new Resend(process.env.RESEND_API_KEY);
 var EMAIL_FROM = process.env.EMAIL_FROM || 'Riley from Sortora <riley@sortora.com>';
 

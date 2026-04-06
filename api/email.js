@@ -1,7 +1,7 @@
 const { Resend } = require('resend');
 const { createClient } = require('@supabase/supabase-js');
-const { setSecurityHeaders, alertError, sanitizeUUID } = require('./_security');
-const emails = require('./_emails');
+const { setSecurityHeaders, alertError, sanitizeUUID } = require('../lib/_security');
+const emails = require('../lib/_emails');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);

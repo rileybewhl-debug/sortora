@@ -1,5 +1,5 @@
-const jobs = require('./_cron-jobs');
-const { setSecurityHeaders } = require('./_security');
+const jobs = require('../lib/_cron-jobs');
+const { setSecurityHeaders } = require('../lib/_security');
 
 // Routes: /api/cron?job=reset|nudge|digest|expiring|reengage|monthly|reminder
 module.exports = async function handler(req, res) {
