@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="/css/design-system.css">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#3B6BFF">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -1234,15 +1234,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       ];
       var doneCount = steps.filter(function(s) { return s.done; }).length;
       var pct = Math.round((doneCount + 1) / (steps.length + 1) * 100);
-document.getElementById('ob-bar').style.width = pct + '%';
-document.getElementById("ob-count").textContent = (doneCount + 1) + " of " + (steps.length + 1) + " complete";
-document.getElementById('ob-pct').textContent = pct + '%';
+var obBar = document.getElementById('ob-bar');
+var obCount = document.getElementById('ob-count');
+var obPct = document.getElementById('ob-pct');
+if (obBar) obBar.style.width = pct + '%';
+if (obCount) obCount.textContent = (doneCount + 1) + " of " + (steps.length + 1) + " complete";
+if (obPct) obPct.textContent = pct + '%';
       
       // Persistent banner for incomplete onboarding
       var banner = document.getElementById("ob-banner");
       if (banner) banner.style.display = doneCount < steps.length ? "flex" : "none";
 
-if (doneCount === steps.length) { var obEl = document.getElementById('onboarding'); var totalRev = 0; allBookings.forEach(function(b) { (b.participants||[]).forEach(function(p) { if (p.status==='paid') totalRev += parseFloat(p.amount); }); }); var mItems = [{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/><path d="M12 3v12"/><path d="M5 21h14"/></svg>',l:'First split created',d:allBookings.length>=1},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',l:'First payout received',d:totalRev>0},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',l:'$500 in revenue',d:totalRev>=500},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',l:'50th booking',d:allBookings.length>=50}]; obEl.innerHTML = '<div style="padding:24px"><div style="font-size:16px;font-weight:800;margin-bottom:16px">Milestones</div>' + mItems.map(function(m) { return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px"><span style="font-size:20px">' + m.i + '</span><span style="font-weight:600;color:' + (m.d ? '#1A8917' : '#757575') + '">' + m.l + (m.d ? ' \u2713' : '') + '</span></div>'; }).join('') + '</div>';  try { var cs = document.createElement("div"); cs.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999"; cs.innerHTML = Array.from({length:60}, function() { var co = ["#3B6BFF","#93C5FD","#6366F1","#A5B4FC","#BFDBFE"][Math.floor(Math.random()*5)]; return "<div style=\"position:absolute;width:8px;height:8px;background:"+co+";border-radius:50%;top:-10px;left:"+Math.random()*100+"%;animation:confettiFall "+(1+Math.random()*2)+"s ease-out forwards;animation-delay:"+Math.random()*0.5+"s\"></div>"; }).join(""); document.body.appendChild(cs); setTimeout(function(){cs.remove();},4000); } catch(ce) {} ; return; }
+if (doneCount === steps.length) { var obEl = document.getElementById('onboarding'); if (localStorage.getItem('sortora_milestones_seen')) { if (obEl) obEl.style.display = 'none'; if (banner) banner.style.display = 'none'; return; } localStorage.setItem('sortora_milestones_seen', Date.now().toString()); var totalRev = 0; allBookings.forEach(function(b) { (b.participants||[]).forEach(function(p) { if (p.status==='paid') totalRev += parseFloat(p.amount); }); }); var mItems = [{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/><path d="M12 3v12"/><path d="M5 21h14"/></svg>',l:'First split created',d:allBookings.length>=1},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',l:'First payout received',d:totalRev>0},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',l:'$500 in revenue',d:totalRev>=500},{i:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A8917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',l:'50th booking',d:allBookings.length>=50}]; obEl.innerHTML = '<div style="padding:24px"><div style="font-size:16px;font-weight:800;margin-bottom:16px">Milestones</div>' + mItems.map(function(m) { return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px"><span style="font-size:20px">' + m.i + '</span><span style="font-weight:600;color:' + (m.d ? '#1A8917' : '#757575') + '">' + m.l + (m.d ? ' \u2713' : '') + '</span></div>'; }).join('') + '</div>';  try { var cs = document.createElement("div"); cs.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999"; cs.innerHTML = Array.from({length:60}, function() { var co = ["#3B6BFF","#93C5FD","#6366F1","#A5B4FC","#BFDBFE"][Math.floor(Math.random()*5)]; return "<div style=\"position:absolute;width:8px;height:8px;background:"+co+";border-radius:50%;top:-10px;left:"+Math.random()*100+"%;animation:confettiFall "+(1+Math.random()*2)+"s ease-out forwards;animation-delay:"+Math.random()*0.5+"s\"></div>"; }).join(""); document.body.appendChild(cs); setTimeout(function(){cs.remove();},4000); } catch(ce) {} ; return; }
       document.getElementById('ob-steps').innerHTML = steps.map(function(s) {
         return '<div class="ob-step' + (s.done ? ' completed' : '') + '">'
           + '<div class="ob-check' + (s.done ? ' done' : '') + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
@@ -2244,6 +2247,7 @@ if (doneCount === steps.length) { var obEl = document.getElementById('onboarding
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}</script>
 </body>
 </html>
+
 
 
 
