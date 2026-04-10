@@ -1169,82 +1169,104 @@ function loadWebhookSettings() {
 function startWalkthrough() {
   if (localStorage.getItem('sortora_walkthrough_done')) return;
   var steps = [
-    { target: '.sb-item.active', title: 'Home', desc: 'Your command center. See pending actions, today\'s revenue, and recent activity at a glance.', pos: 'right' },
-    { target: '.sb-item:nth-child(2)', title: 'Bookings', desc: 'Track every split payment session. See who paid, who hasn\'t, and manage your bookings.', pos: 'right' },
-    { target: '.sb-item:nth-child(4)', title: 'Analytics', desc: 'Dive into your performance — revenue charts, conversion funnel, and booking trends.', pos: 'right' },
-    { target: '.sb-nav .sb-item:nth-child(6)', title: 'Widget', desc: 'Copy your embed code and paste it on your booking page. One script tag — that\'s it.', pos: 'right' },
-    { target: '.header-btn-primary', title: 'Create a Split', desc: 'Manually create splits for phone bookings or walk-ins. Set deadlines and auto-charge.', pos: 'bottom' }
+    { view: 'overview', target: '#pending-actions', title: 'Home — Pending Actions', desc: 'This card shows bookings that need your attention — unpaid participants, new payments, and recent activity. When everything is handled, it says "You\'re all caught up."' },
+    { view: 'overview', target: '#home-today-rev', title: 'Home — Today\'s Snapshot', desc: 'Quick glance at today\'s revenue and active splits. Click "View full analytics" for the deep dive.' },
+    { view: 'bookings', target: '#bk-list', title: 'Bookings', desc: 'Every split payment session lives here. Click any booking to see who paid, who hasn\'t, and share the payment link. Red "unpaid" badges flag outstanding balances.' },
+    { view: 'analytics', target: '#funnel-card', title: 'Analytics — Split Funnel', desc: 'See your conversion flow: how many splits you create, invites sent, payments made, and fully completed bookings. Low numbers? Try shorter deadlines.' },
+    { view: 'analytics', target: '#stats-real', title: 'Analytics — Stats', desc: 'Your key metrics with sparklines. Filter by time period and customize which cards show using the "Customize" button.' },
+    { view: 'embed', target: '.embed-box', title: 'Widget — Embed Code', desc: 'Copy this script tag and paste it on your booking page. One line of code — works with WordPress, Squarespace, Wix, or any site.' },
+    { view: 'settings', target: '#save-btn', title: 'Settings', desc: 'Update your business info, manage your Stripe connection, and change your plan. You\'re all set up — time to create your first split!' }
   ];
   var current = 0;
+
   var overlay = document.createElement('div');
   overlay.id = 'wt-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9000;transition:opacity .2s';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;transition:opacity .3s';
   document.body.appendChild(overlay);
 
   var tooltip = document.createElement('div');
   tooltip.id = 'wt-tooltip';
-  tooltip.style.cssText = 'position:fixed;z-index:9002;background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 8px 32px rgba(0,0,0,.18);max-width:280px;font-family:DM Sans,sans-serif;transition:all .2s';
+  tooltip.style.cssText = 'position:fixed;z-index:9002;background:#fff;border-radius:14px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.2);max-width:320px;font-family:DM Sans,sans-serif;transition:all .25s ease';
   document.body.appendChild(tooltip);
 
   function show(idx) {
     if (idx >= steps.length) { finish(); return; }
+    clearHighlight();
     current = idx;
     var step = steps[idx];
-    var el = document.querySelector(step.target);
-    if (!el) { show(idx + 1); return; }
 
-    el.style.position = el.style.position || 'relative';
-    el.style.zIndex = '9001';
-    el.style.boxShadow = '0 0 0 4px rgba(59,107,255,.3)';
-    el.style.borderRadius = '8px';
-
-    var rect = el.getBoundingClientRect();
-    tooltip.innerHTML = '<div style="font-size:12px;color:#3B6BFF;font-weight:700;margin-bottom:4px">Step ' + (idx + 1) + ' of ' + steps.length + '</div>'
-      + '<div style="font-size:16px;font-weight:800;color:#1A1A1A;margin-bottom:6px">' + step.title + '</div>'
-      + '<div style="font-size:14px;color:#6B6B6B;line-height:1.6;margin-bottom:16px">' + step.desc + '</div>'
-      + '<div style="display:flex;gap:8px;justify-content:flex-end">'
-      + '<button onclick="skipWalkthrough()" style="padding:7px 14px;border:1px solid #E8E8E6;background:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#6B6B6B">Skip</button>'
-      + '<button onclick="nextWalkthroughStep()" style="padding:7px 14px;border:none;background:#3B6BFF;color:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + (idx === steps.length - 1 ? 'Done' : 'Next') + '</button>'
-      + '</div>';
-
-    if (step.pos === 'right') {
-      tooltip.style.top = rect.top + 'px';
-      tooltip.style.left = (rect.right + 16) + 'px';
-    } else {
-      tooltip.style.top = (rect.bottom + 12) + 'px';
-      tooltip.style.left = rect.left + 'px';
+    // Navigate to the correct page
+    var sbItems = document.querySelectorAll('.sb-item');
+    var viewMap = { overview: 0, bookings: 1, payouts: 2, analytics: 3, embed: 5, integrations: 6, settings: 7 };
+    var sbIdx = viewMap[step.view];
+    if (sbIdx !== undefined && sbItems[sbIdx]) {
+      showView(step.view, sbItems[sbIdx]);
     }
 
-    // Mobile: force bottom positioning
-    if (window.innerWidth < 768) {
-      tooltip.style.top = 'auto';
-      tooltip.style.bottom = '80px';
-      tooltip.style.left = '16px';
-      tooltip.style.right = '16px';
-      tooltip.style.maxWidth = 'none';
-    }
+    // Wait for page to render
+    setTimeout(function() {
+      var el = document.querySelector(step.target);
+      if (!el) { show(idx + 1); return; }
+
+      // Highlight element
+      el.style.position = 'relative';
+      el.style.zIndex = '9001';
+      el.style.boxShadow = '0 0 0 4px rgba(59,107,255,.35), 0 0 24px rgba(59,107,255,.12)';
+      el.style.borderRadius = '12px';
+      el.style.transition = 'box-shadow .3s';
+
+      // Scroll element into view
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      setTimeout(function() {
+        var rect = el.getBoundingClientRect();
+
+        // Build tooltip content
+        tooltip.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+          + '<div style="font-size:11px;color:#3B6BFF;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Step ' + (idx + 1) + ' of ' + steps.length + '</div>'
+          + '<div style="display:flex;gap:3px">' + steps.map(function(s,i) { return '<div style="width:' + (i === idx ? '16px' : '6px') + ';height:4px;border-radius:2px;background:' + (i <= idx ? '#3B6BFF' : '#E8E8E6') + ';transition:all .2s"></div>'; }).join('') + '</div>'
+          + '</div>'
+          + '<div style="font-size:17px;font-weight:800;color:#1A1A1A;margin-bottom:8px;letter-spacing:-.01em">' + step.title + '</div>'
+          + '<div style="font-size:14px;color:#6B6B6B;line-height:1.65;margin-bottom:18px">' + step.desc + '</div>'
+          + '<div style="display:flex;gap:8px;justify-content:space-between;align-items:center">'
+          + '<button onclick="skipWalkthrough()" style="padding:8px 16px;border:1px solid #E8E8E6;background:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#6B6B6B;transition:all .12s">Skip tour</button>'
+          + '<div style="display:flex;gap:6px">'
+          + (idx > 0 ? '<button onclick="prevWalkthroughStep()" style="padding:8px 14px;border:1px solid #E8E8E6;background:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#1A1A1A">Back</button>' : '')
+          + '<button onclick="nextWalkthroughStep()" style="padding:8px 20px;border:none;background:#3B6BFF;color:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s">' + (idx === steps.length - 1 ? 'Get started!' : 'Next \u2192') + '</button>'
+          + '</div></div>';
+
+        // Position tooltip below or beside element
+        var top = rect.bottom + 16;
+        var left = Math.max(16, Math.min(rect.left, window.innerWidth - 340));
+        if (top + 250 > window.innerHeight) { top = Math.max(16, rect.top - 260); }
+
+        // Mobile: bottom sheet style
+        if (window.innerWidth < 768) {
+          tooltip.style.top = 'auto';
+          tooltip.style.bottom = '76px';
+          tooltip.style.left = '12px';
+          tooltip.style.right = '12px';
+          tooltip.style.maxWidth = 'none';
+        } else {
+          tooltip.style.top = top + 'px';
+          tooltip.style.left = left + 'px';
+          tooltip.style.bottom = 'auto';
+          tooltip.style.right = 'auto';
+        }
+      }, 300);
+    }, 200);
   }
 
   function clearHighlight() {
-    document.querySelectorAll('[style*="z-index: 9001"], [style*="z-index:9001"]').forEach(function(el) {
-      el.style.zIndex = '';
-      el.style.boxShadow = '';
-    });
-    // Also clear by checking all step targets
     steps.forEach(function(s) {
       var el = document.querySelector(s.target);
-      if (el) { el.style.zIndex = ''; el.style.boxShadow = ''; }
+      if (el) { el.style.zIndex = ''; el.style.boxShadow = ''; el.style.transition = ''; }
     });
   }
 
-  window.nextWalkthroughStep = function() {
-    clearHighlight();
-    show(current + 1);
-  };
-
-  window.skipWalkthrough = function() {
-    finish();
-  };
+  window.nextWalkthroughStep = function() { show(current + 1); };
+  window.prevWalkthroughStep = function() { if (current > 0) show(current - 1); };
+  window.skipWalkthrough = function() { finish(); };
 
   function finish() {
     clearHighlight();
@@ -1253,16 +1275,18 @@ function startWalkthrough() {
     var tt = document.getElementById('wt-tooltip');
     if (ov) ov.remove();
     if (tt) tt.remove();
+    // Return to Home
+    var sbItems = document.querySelectorAll('.sb-item');
+    if (sbItems[0]) showView('overview', sbItems[0]);
   }
 
-  // Delay to let dashboard render first
   setTimeout(function() { show(0); }, 1500);
 }
 
-// Start walkthrough after init
-var _origInit = typeof init === 'function' ? init : null;
+// Start walkthrough on first visit
 if (!localStorage.getItem('sortora_walkthrough_done')) {
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(startWalkthrough, 2000);
   });
 }
+
