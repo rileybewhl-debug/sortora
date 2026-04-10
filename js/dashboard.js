@@ -1163,3 +1163,106 @@ function loadWebhookSettings() {
 }
 
 
+
+
+// ── Interactive Walkthrough ──
+function startWalkthrough() {
+  if (localStorage.getItem('sortora_walkthrough_done')) return;
+  var steps = [
+    { target: '.sb-item.active', title: 'Home', desc: 'Your command center. See pending actions, today\'s revenue, and recent activity at a glance.', pos: 'right' },
+    { target: '.sb-item:nth-child(2)', title: 'Bookings', desc: 'Track every split payment session. See who paid, who hasn\'t, and manage your bookings.', pos: 'right' },
+    { target: '.sb-item:nth-child(4)', title: 'Analytics', desc: 'Dive into your performance — revenue charts, conversion funnel, and booking trends.', pos: 'right' },
+    { target: '.sb-nav .sb-item:nth-child(6)', title: 'Widget', desc: 'Copy your embed code and paste it on your booking page. One script tag — that\'s it.', pos: 'right' },
+    { target: '.header-btn-primary', title: 'Create a Split', desc: 'Manually create splits for phone bookings or walk-ins. Set deadlines and auto-charge.', pos: 'bottom' }
+  ];
+  var current = 0;
+  var overlay = document.createElement('div');
+  overlay.id = 'wt-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9000;transition:opacity .2s';
+  document.body.appendChild(overlay);
+
+  var tooltip = document.createElement('div');
+  tooltip.id = 'wt-tooltip';
+  tooltip.style.cssText = 'position:fixed;z-index:9002;background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 8px 32px rgba(0,0,0,.18);max-width:280px;font-family:DM Sans,sans-serif;transition:all .2s';
+  document.body.appendChild(tooltip);
+
+  function show(idx) {
+    if (idx >= steps.length) { finish(); return; }
+    current = idx;
+    var step = steps[idx];
+    var el = document.querySelector(step.target);
+    if (!el) { show(idx + 1); return; }
+
+    el.style.position = el.style.position || 'relative';
+    el.style.zIndex = '9001';
+    el.style.boxShadow = '0 0 0 4px rgba(59,107,255,.3)';
+    el.style.borderRadius = '8px';
+
+    var rect = el.getBoundingClientRect();
+    tooltip.innerHTML = '<div style="font-size:12px;color:#3B6BFF;font-weight:700;margin-bottom:4px">Step ' + (idx + 1) + ' of ' + steps.length + '</div>'
+      + '<div style="font-size:16px;font-weight:800;color:#1A1A1A;margin-bottom:6px">' + step.title + '</div>'
+      + '<div style="font-size:14px;color:#6B6B6B;line-height:1.6;margin-bottom:16px">' + step.desc + '</div>'
+      + '<div style="display:flex;gap:8px;justify-content:flex-end">'
+      + '<button onclick="skipWalkthrough()" style="padding:7px 14px;border:1px solid #E8E8E6;background:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#6B6B6B">Skip</button>'
+      + '<button onclick="nextWalkthroughStep()" style="padding:7px 14px;border:none;background:#3B6BFF;color:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">' + (idx === steps.length - 1 ? 'Done' : 'Next') + '</button>'
+      + '</div>';
+
+    if (step.pos === 'right') {
+      tooltip.style.top = rect.top + 'px';
+      tooltip.style.left = (rect.right + 16) + 'px';
+    } else {
+      tooltip.style.top = (rect.bottom + 12) + 'px';
+      tooltip.style.left = rect.left + 'px';
+    }
+
+    // Mobile: force bottom positioning
+    if (window.innerWidth < 768) {
+      tooltip.style.top = 'auto';
+      tooltip.style.bottom = '80px';
+      tooltip.style.left = '16px';
+      tooltip.style.right = '16px';
+      tooltip.style.maxWidth = 'none';
+    }
+  }
+
+  function clearHighlight() {
+    document.querySelectorAll('[style*="z-index: 9001"], [style*="z-index:9001"]').forEach(function(el) {
+      el.style.zIndex = '';
+      el.style.boxShadow = '';
+    });
+    // Also clear by checking all step targets
+    steps.forEach(function(s) {
+      var el = document.querySelector(s.target);
+      if (el) { el.style.zIndex = ''; el.style.boxShadow = ''; }
+    });
+  }
+
+  window.nextWalkthroughStep = function() {
+    clearHighlight();
+    show(current + 1);
+  };
+
+  window.skipWalkthrough = function() {
+    finish();
+  };
+
+  function finish() {
+    clearHighlight();
+    localStorage.setItem('sortora_walkthrough_done', '1');
+    var ov = document.getElementById('wt-overlay');
+    var tt = document.getElementById('wt-tooltip');
+    if (ov) ov.remove();
+    if (tt) tt.remove();
+  }
+
+  // Delay to let dashboard render first
+  setTimeout(function() { show(0); }, 1500);
+}
+
+// Start walkthrough after init
+var _origInit = typeof init === 'function' ? init : null;
+if (!localStorage.getItem('sortora_walkthrough_done')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(startWalkthrough, 2000);
+  });
+}
