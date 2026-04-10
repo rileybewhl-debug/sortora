@@ -24,7 +24,7 @@
   var CSS = '\
     :host{all:initial;display:block;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.5;color:#0C1220}\
     *{margin:0;padding:0;box-sizing:border-box}\
-    .sortora-root{border-radius:12px;overflow:hidden;transition:all .2s}\
+    .sortora-root{border-radius:12px;overflow:hidden;transition:all .2s;max-width:100%}\
     \
     .st-toggle{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:12px;cursor:pointer;transition:all .15s;user-select:none}\
     .st-toggle.off{background:#f7f8fa;border:1px solid #e0e3e8}\
@@ -141,6 +141,8 @@
     var checkoutBtn = document.querySelector('[type="submit"], .checkout-btn, .book-btn, .booking-submit, #checkout, .btn-checkout');
     if (checkoutBtn && checkoutBtn.parentNode) {
       checkoutBtn.parentNode.insertBefore(mount, checkoutBtn);
+    } else if (script && script.parentNode) {
+      script.parentNode.insertBefore(mount, script);
     } else {
       document.body.appendChild(mount);
     }
@@ -355,3 +357,4 @@
     shadow.appendChild(darkCSS);
   }
 })();
+
