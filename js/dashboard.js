@@ -985,7 +985,7 @@ function updateFunnel() {
     var convRate = created > 0 ? Math.round(completed / created * 100) : 100;
     var tipEl = document.getElementById('funnel-tip');
     if (!tipEl) { tipEl = document.createElement('div'); tipEl.id = 'funnel-tip'; tipEl.style.cssText = 'padding:12px 16px;background:rgba(59,107,255,.03);border:1px solid rgba(59,107,255,.1);border-radius:8px;margin-top:16px;font-size:13px;color:#6B6B6B;display:flex;align-items:flex-start;gap:10px'; document.getElementById('funnel-card').appendChild(tipEl); }
-    if (convRate < 50 && created >= 3) { tipEl.style.display = ''; tipEl.innerHTML = '<div style="flex-shrink:0;width:20px;height:20px;display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B6BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div><span style="flex:1"><strong style="color:#1A1A1A">Low completion rate.</strong> Try sending payment reminders or shortening your split deadline. <a href="#" onclick="openPlanModal();return false" style="color:#3B6BFF;font-weight:700">Growth plans</a> include auto-reminders.</span>'; }
+    if (convRate < 50 && created >= 3) { tipEl.style.display = ''; tipEl.innerHTML = '<span style="flex:1"><strong style="color:#1A1A1A">Low completion rate.</strong> Try sending payment reminders or shortening your split deadline. <a href="#" onclick="openPlanModal();return false" style="color:#3B6BFF;font-weight:700">Growth plans</a> include auto-reminders.</span>'; }
     else { tipEl.style.display = 'none'; }
   } catch(e) {}
 }
