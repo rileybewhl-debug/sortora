@@ -423,9 +423,8 @@
       var amount = parseFloat(participantData.amount);
       document.getElementById('share-amount').innerHTML = '$' + amount.toFixed(2) + '<small>USD</small>';
       document.getElementById('share-for').innerHTML = 'for <b>' + (participantData.email || '') + '</b>';
-      document.getElementById('pay-btn-amount').textContent = '
-
-      // Group progress
+      document.getElementById('pay-btn-amount').textContent = '$' + amount.toFixed(2);
+      initExpressCheckout();
       var paid = allParticipants.filter(function(p) { return p.status === 'paid'; }).length;
       var total = allParticipants.length;
       var pct = total ? Math.round(paid / total * 100) : 0;
