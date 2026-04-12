@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Split this booking with your group. Everyone pays their share — no awkward Venmo requests."/>
+  <title>Split Payment — Sortora</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#F8F8F6;color:#1A1A1A;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+    .container{width:100%;max-width:440px}
+
+    .logo{display:flex;align-items:center;gap:7px;text-decoration:none;justify-content:center;margin-bottom:32px}
+    .logo-text{font-weight:800;font-size:18px;color:#1A1A1A;letter-spacing:-.5px}
+
+    .card{background:#fff;border:1px solid #E8E8E6;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+
+    /* Hero */
+    .hero{padding:32px 28px 24px;text-align:center;border-bottom:1px solid #F0F0EE}
+    .hero-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3B6BFF;margin-bottom:12px}
+    .hero-price{font-size:52px;font-weight:800;letter-spacing:-.04em;line-height:1}
+    .hero-price small{font-size:18px;font-weight:600;color:#6B6B6B}
+    .hero-total{font-size:14px;color:#6B6B6B;margin-top:8px;font-weight:500}
+    .hero-title{font-family:'DM Serif Display',Georgia,serif;font-size:24px;font-weight:400;margin-top:16px}
+    .hero-biz{font-size:14px;color:#6B6B6B;margin-top:4px;font-weight:500}
+
+    /* Steps */
+    .steps{display:flex;align-items:center;justify-content:center;gap:0;padding:20px 28px;border-bottom:1px solid #F0F0EE}
+    .step-dot{width:28px;height:28px;border-radius:50%;border:2px solid #E8E8E6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#6B6B6B;transition:all .2s}
+    .step-dot.active{border-color:#3B6BFF;color:#3B6BFF;background:rgba(59,107,255,.06)}
+    .step-dot.done{border-color:#1A8917;background:#1A8917;color:#fff}
+    .step-line{width:40px;height:2px;background:#E8E8E6;transition:background .2s}
+    .step-line.done{background:#1A8917}
+
+    /* Form */
+    .form-section{padding:24px 28px}
+    .form-title{font-size:16px;font-weight:700;margin-bottom:20px}
+
+    /* Sortora input group — consistent across all fields */
+    .sg{margin-bottom:16px}
+    .sg-label{display:block;font-size:12px;font-weight:700;color:#6B6B6B;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+    .sg-control{display:flex;align-items:center;background:#F8F8F6;border:1px solid #E8E8E6;border-radius:12px;padding:4px;transition:border .15s;overflow:hidden}
+    .sg-control:focus-within{border-color:#3B6BFF;box-shadow:0 0 0 3px rgba(59,107,255,.06)}
+    .sg-input{flex:1;padding:10px 12px;border:none;background:transparent;font-size:15px;font-family:inherit;color:#1A1A1A;outline:none;min-width:0}
+    .sg-input::placeholder{color:#9B9B9B}
+    .sg-icon{width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid #E8E8E6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sg-icon svg{width:18px;height:18px;stroke:#6B6B6B}
+    .sg-static{flex:1;padding:10px 12px;font-size:15px;font-weight:700;color:#1A1A1A}
+    .sg-row{display:flex;gap:12px}
+    .sg-row>.sg{flex:1;min-width:0}
+
+    /* People selector */
+    .sg-people{display:flex;align-items:center;justify-content:space-between;background:#F8F8F6;border:1px solid #E8E8E6;border-radius:12px;padding:4px 4px 4px 16px}
+    .sg-people-count{font-size:20px;font-weight:800;color:#1A1A1A}
+    .sg-people-sub{font-size:12px;color:#6B6B6B;font-weight:500}
+    .sg-people-btns{display:flex;gap:4px}
+    .sg-btn{width:40px;height:40px;border-radius:10px;border:1px solid #E8E8E6;background:#fff;font-size:20px;font-weight:700;cursor:pointer;transition:all .12s;font-family:inherit;color:#1A1A1A;display:flex;align-items:center;justify-content:center}
+    .sg-btn:hover{border-color:#3B6BFF;color:#3B6BFF;background:rgba(59,107,255,.04)}
+    .sg-btn:active{transform:scale(.95)}
+
+    /* Summary */
+    .summary{background:#F8F8F6;border:1px solid #E8E8E6;border-radius:12px;padding:16px 18px;margin-top:8px}
+    .summary-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+    .summary-label{color:#6B6B6B;font-weight:500}
+    .summary-value{font-weight:700}
+    .summary-row.total{border-top:1px solid #E8E8E6;margin-top:6px;padding-top:10px;font-size:15px}
+    .summary-value.blue{color:#3B6BFF}
+
+    /* CTA */
+    .cta-btn{width:100%;padding:15px;background:#3B6BFF;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:20px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .cta-btn:hover{background:#2952CC;transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,107,255,.3)}
+    .cta-btn:disabled{background:#d0d0d0;cursor:not-allowed;transform:none;box-shadow:none}
+    .cta-btn svg{width:18px;height:18px}
+
+    /* Share section */
+    .share-section{padding:28px;text-align:center}
+    .share-icon{width:56px;height:56px;border-radius:50%;background:#E8F5E8;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .share-icon svg{width:28px;height:28px;stroke:#1A8917}
+    .share-title{font-size:20px;font-weight:800;margin-bottom:6px}
+    .share-desc{font-size:14px;color:#6B6B6B;margin-bottom:20px;line-height:1.6;font-weight:500}
+
+    .share-link{display:flex;gap:4px;margin-bottom:16px}
+    .share-link input{flex:1;padding:10px 12px;background:#F8F8F6;border:1px solid #E8E8E6;border-radius:10px;font-size:13px;font-family:inherit;color:#1A1A1A;outline:none}
+    .share-link button{padding:10px 16px;border:none;background:#1A1A1A;color:#fff;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s}
+    .share-link button:hover{background:#333}
+
+    .share-native{width:100%;padding:14px;background:#3B6BFF;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;margin-bottom:12px}
+    .share-native:hover{background:#2952CC}
+    .share-native svg{width:18px;height:18px}
+
+    .share-divider{display:flex;align-items:center;gap:12px;margin:16px 0;font-size:12px;color:#6B6B6B;font-weight:600}
+    .share-divider::before,.share-divider::after{content:'';flex:1;height:1px;background:#E8E8E6}
+
+    .share-pay{width:100%;padding:13px;background:#1A1A1A;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;text-decoration:none}
+    .share-pay:hover{background:#333;transform:translateY(-1px)}
+    .share-pay svg{width:16px;height:16px}
+
+    /* Tracker */
+    .tracker{padding:0 28px 24px}
+    .tracker-title{font-size:12px;font-weight:700;color:#6B6B6B;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+    .tracker-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#F8F8F6;border:1px solid #E8E8E6;border-radius:10px;margin-bottom:6px}
+    .tracker-avatar{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+    .tracker-info{flex:1;min-width:0}
+    .tracker-name{font-size:14px;font-weight:600}
+    .tracker-email{font-size:12px;color:#6B6B6B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .tracker-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;flex-shrink:0}
+    .tracker-badge.pending{background:rgba(217,119,6,.08);color:#D97706}
+    .tracker-badge.waiting{background:#F0F0EE;color:#6B6B6B}
+    .tracker-badge.paid{background:#E8F5E8;color:#1A8917}
+
+    /* Error */
+    .error{background:#FEF3F2;border:1px solid #FECACA;color:#D92D20;padding:10px 14px;border-radius:10px;font-size:13px;margin-top:10px;display:none;font-weight:500}
+
+    /* Trust */
+    .trust{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;padding:16px 28px;border-top:1px solid #F0F0EE}
+    .trust-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#757575;font-weight:500}
+    .trust-item svg{width:14px;height:14px}
+
+    /* Footer */
+    .footer{text-align:center;margin-top:20px}
+    .footer a{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#757575;text-decoration:none;font-weight:500;transition:color .12s}
+    .footer a:hover{color:#1A1A1A}
+
+    .hidden{display:none !important}
+
+    @media(max-width:480px){
+      body{padding:16px}
+      .hero{padding:24px 20px 20px}
+      .hero-price{font-size:44px}
+      .form-section{padding:20px}
+      .share-section{padding:20px}
+      .tracker{padding:0 20px 20px}
+      .sg-row{flex-direction:column;gap:0}
+      .sg-control{min-width:0}
+    }
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+  <a class="logo" href="https://sortora.com">
+    <svg width="22" height="22" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#1A1A1A" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#1A1A1A" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#1A1A1A"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#1A1A1A" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span class="logo-text">Sortora</span>
+  </a>
+
+  <div class="container">
+    <div class="card">
+
+      <div class="hero">
+        <div class="hero-label" id="hero-label">Your share</div>
+        <div class="hero-price" id="per-person">$0<small>/person</small></div>
+        <div class="hero-total" id="total-line">$0 total · 2 people</div>
+        <div class="hero-title" id="booking-title">Group Booking</div>
+        <div class="hero-biz" id="biz-name"></div>
+      </div>
+
+      <div class="steps">
+        <div class="step-dot active" id="sd1">1</div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step-dot" id="sd2">2</div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step-dot" id="sd3">3</div>
+      </div>
+
+      <!-- Step 1: Create -->
+      <div class="form-section" id="step-create">
+        <div class="form-title">Set up your split</div>
+
+        <div class="sg" id="field-title">
+          <div class="sg-label">Experience</div>
+          <div class="sg-control">
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+            <input class="sg-input" type="text" id="f-title" placeholder="e.g. Escape Room — Friday Night"/>
+          </div>
+        </div>
+
+        <div class="sg" id="field-amount">
+          <div class="sg-label">Total price</div>
+          <div class="sg-control">
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <input class="sg-input" type="number" id="f-amount" placeholder="240" step="0.01" oninput="updateSummary()"/>
+          </div>
+        </div>
+
+        <div class="sg">
+          <div class="sg-label">Group size</div>
+          <div class="sg-people">
+            <div>
+              <div class="sg-people-count" id="f-people">2</div>
+              <div class="sg-people-sub">people</div>
+            </div>
+            <div class="sg-people-btns">
+              <button class="sg-btn" onclick="adjustPeople(-1)">−</button>
+              <button class="sg-btn" onclick="adjustPeople(1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-row">
+          <div class="sg">
+            <div class="sg-label">Your name</div>
+            <div class="sg-control">
+              <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <input class="sg-input" type="text" id="f-name" placeholder="Your name"/>
+            </div>
+          </div>
+          <div class="sg">
+            <div class="sg-label">Your email</div>
+            <div class="sg-control">
+              <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+              <input class="sg-input" type="email" id="f-email" placeholder="you@email.com"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary" id="summary">
+          <div class="summary-row"><span class="summary-label">Total</span><span class="summary-value" id="s-total">$0</span></div>
+          <div class="summary-row"><span class="summary-label">Split between</span><span class="summary-value" id="s-people">2 people</span></div>
+          <div class="summary-row"><span class="summary-label">Sortora fee</span><span class="summary-value">included</span></div>
+          <div class="summary-row total"><span class="summary-label">Your share</span><span class="summary-value blue" id="s-share">$0</span></div>
+        </div>
+
+        <button class="cta-btn" id="create-btn" onclick="createSplit()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Create & share split
+        </button>
+        <div class="error" id="create-error"></div>
+      </div>
+
+      <!-- Step 2: Share -->
+      <div class="share-section hidden" id="step-share">
+        <div class="share-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="share-title">Split created!</div>
+        <div class="share-desc">Share this link with your group. Each person pays their own share — no chasing anyone on Venmo.</div>
+
+        <button class="share-native" onclick="nativeShare()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share with your group
+        </button>
+
+        <div class="share-link">
+          <input type="text" id="join-url" readonly onclick="this.select()"/>
+          <button onclick="copyLink()">Copy</button>
+        </div>
+
+        <div class="share-divider">or pay your share now</div>
+
+        <a class="share-pay" id="pay-link" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pay your share
+        </a>
+      </div>
+
+      <!-- Tracker -->
+      <div class="tracker hidden" id="tracker">
+        <div class="tracker-title">Group status</div>
+        <div id="tracker-list"></div>
+      </div>
+
+      <div class="trust">
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Encrypted</div>
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>PCI</div>
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="#635BFF" stroke-width="0"><rect width="24" height="24" rx="4" fill="#635BFF"/><path d="M11.2 9.6c0-.66.54-.92 1.44-.92.96 0 2.16.3 3.12.82V6.92A8.3 8.3 0 0012.64 6c-2.52 0-4.2 1.32-4.2 3.52 0 3.44 4.74 2.88 4.74 4.36 0 .78-.68 1.04-1.62 1.04-1.4 0-2.52-.48-3.54-1.12v2.58A8.98 8.98 0 0011.56 18c2.58 0 4.36-1.28 4.36-3.52-.02-3.72-4.72-3.04-4.72-4.48z" fill="white"/></svg>Stripe</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://sortora.com">
+      <svg width="14" height="14" viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#757575" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#757575" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#757575"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#757575" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      Powered by Sortora
+    </a>
+  </div>
+
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var BUSINESS_ID = params.get('businessId') || params.get('business') || params.get('id');
+    var PRESET_TITLE = params.get('title');
+    var PRESET_AMOUNT = params.get('amount');
+    var PRESET_PEOPLE = params.get('people');
+    var peopleCount = parseInt(PRESET_PEOPLE) || 2;
+    var sessionData = null;
+
+    if (PRESET_TITLE) {
+      document.getElementById('f-title').value = PRESET_TITLE;
+      document.getElementById('booking-title').textContent = PRESET_TITLE;
+    }
+    if (PRESET_AMOUNT) {
+      document.getElementById('f-amount').value = PRESET_AMOUNT;
+    }
+    if (PRESET_PEOPLE) {
+      peopleCount = Math.max(2, Math.min(50, parseInt(PRESET_PEOPLE)));
+    }
+    document.getElementById('f-people').textContent = peopleCount;
+
+    // If preset, show as read-only display instead of inputs
+    if (PRESET_TITLE && PRESET_AMOUNT) {
+      document.getElementById('field-title').style.display = 'none';
+      document.getElementById('field-amount').style.display = 'none';
+    }
+
+    if (BUSINESS_ID) {
+      fetch('/api/widget-status?id=' + BUSINESS_ID)
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d.businessName) {
+            document.getElementById('biz-name').textContent = 'with ' + d.businessName;
+          }
+        }).catch(function() {});
+    }
+
+    updateSummary();
+
+    function adjustPeople(delta) {
+      peopleCount = Math.max(2, Math.min(50, peopleCount + delta));
+      document.getElementById('f-people').textContent = peopleCount;
+      updateSummary();
+    }
+
+    function updateSummary() {
+      var amount = parseFloat(document.getElementById('f-amount').value) || 0;
+      var pp = amount > 0 ? Math.round(amount / peopleCount * 100) / 100 : 0;
+      document.getElementById('per-person').innerHTML = '$' + pp.toFixed(0) + '<small>/person</small>';
+      document.getElementById('total-line').textContent = '$' + amount.toFixed(0) + ' total \u00B7 ' + peopleCount + ' people';
+      document.getElementById('s-total').textContent = '$' + amount.toFixed(0);
+      document.getElementById('s-people').textContent = peopleCount + ' people';
+      document.getElementById('s-share').textContent = '$' + pp.toFixed(2);
+      var title = document.getElementById('f-title').value || PRESET_TITLE || 'Group Booking';
+      document.getElementById('booking-title').textContent = title;
+    }
+
+    async function createSplit() {
+      var title = document.getElementById('f-title').value.trim() || PRESET_TITLE || 'Group Booking';
+      var amount = parseFloat(document.getElementById('f-amount').value);
+      var name = document.getElementById('f-name').value.trim();
+      var email = document.getElementById('f-email').value.trim();
+      var err = document.getElementById('create-error');
+      err.style.display = 'none';
+
+      if (!amount || amount <= 0) { err.textContent = 'Please enter the total price.'; err.style.display = 'block'; return; }
+      if (!name) { err.textContent = 'Please enter your name.'; err.style.display = 'block'; return; }
+      if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; err.style.display = 'block'; return; }
+      if (!BUSINESS_ID) { err.textContent = 'Invalid checkout link. Contact the business.'; err.style.display = 'block'; return; }
+
+      var btn = document.getElementById('create-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<div style="width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite"></div> Creating...';
+
+      try {
+        var res = await fetch('/api/create-split', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ businessId: BUSINESS_ID, title: title, totalAmount: amount, totalParticipants: peopleCount, organizerEmail: email, organizerName: name })
+        });
+        var data = await res.json();
+        if (data.success) {
+          sessionData = data;
+          showShare(data);
+        } else {
+          err.textContent = data.error || 'Something went wrong.';
+          err.style.display = 'block';
+          resetBtn();
+        }
+      } catch (e) {
+        err.textContent = 'Network error. Check your connection.';
+        err.style.display = 'block';
+        resetBtn();
+      }
+    }
+
+    function resetBtn() {
+      var btn = document.getElementById('create-btn');
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="18" height="18"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Create & share split';
+    }
+
+    function showShare(data) {
+      document.getElementById('sd1').classList.remove('active');
+      document.getElementById('sd1').classList.add('done');
+      document.getElementById('sd1').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      document.getElementById('sl1').classList.add('done');
+      document.getElementById('sd2').classList.add('active');
+
+      document.getElementById('step-create').classList.add('hidden');
+      document.getElementById('step-share').classList.remove('hidden');
+      document.getElementById('tracker').classList.remove('hidden');
+
+      document.getElementById('join-url').value = data.joinUrl;
+      document.getElementById('pay-link').href = data.organizerPayUrl || data.joinUrl;
+      document.getElementById('hero-label').textContent = 'Split created';
+
+      var name = document.getElementById('f-name').value.trim();
+      var email = document.getElementById('f-email').value.trim();
+      var colors = ['#3B6BFF','#8b5cf6','#f59e0b','#1A8917','#ef4444','#ec4899','#6366f1','#14b8a6'];
+      var html = '<div class="tracker-row"><div class="tracker-avatar" style="background:' + colors[0] + '">' + name.substring(0,2).toUpperCase() + '</div><div class="tracker-info"><div class="tracker-name">' + name + ' (you)</div><div class="tracker-email">' + email + '</div></div><span class="tracker-badge pending">Unpaid</span></div>';
+      for (var i = 1; i < peopleCount; i++) {
+        html += '<div class="tracker-row"><div class="tracker-avatar" style="background:' + colors[i % colors.length] + '">?</div><div class="tracker-info"><div class="tracker-name">Waiting for invite</div><div class="tracker-email">Share the link above</div></div><span class="tracker-badge waiting">Waiting</span></div>';
+      }
+      document.getElementById('tracker-list').innerHTML = html;
+    }
+
+    function copyLink() {
+      var input = document.getElementById('join-url');
+      navigator.clipboard.writeText(input.value).then(function() {
+        var btn = input.nextElementSibling;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      });
+    }
+
+    function nativeShare() {
+      var url = document.getElementById('join-url').value;
+      var title = document.getElementById('f-title').value || PRESET_TITLE || 'Group Booking';
+      if (navigator.share) {
+        navigator.share({ title: 'Pay your share \u2014 ' + title, text: 'Split this booking with me! Pay your share here:', url: url }).catch(function() {});
+      } else {
+        copyLink();
+      }
+    }
+  </script>
+</body>
+</html>
