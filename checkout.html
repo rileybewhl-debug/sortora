@@ -313,6 +313,21 @@
 
     updateSummary();
 
+    // Restore previous session on refresh
+    (function() {
+      var saved = sessionStorage.getItem('sortora_checkout');
+      if (saved) {
+        try {
+          var s = JSON.parse(saved);
+          peopleCount = s.people || 2;
+          document.getElementById('f-name').value = s.name || '';
+          document.getElementById('f-email').value = s.email || '';
+          document.getElementById('f-people').textContent = peopleCount;
+          showShare({ joinUrl: s.joinUrl, organizerPayUrl: s.payUrl });
+        } catch(e) { sessionStorage.removeItem('sortora_checkout'); }
+      }
+    })();
+
     function adjustPeople(delta) {
       peopleCount = Math.max(2, Math.min(50, peopleCount + delta));
       document.getElementById('f-people').textContent = peopleCount;
@@ -377,6 +392,14 @@
     }
 
     function showShare(data) {
+      // Save to sessionStorage so refresh keeps state
+      sessionStorage.setItem('sortora_checkout', JSON.stringify({
+        joinUrl: data.joinUrl,
+        payUrl: data.organizerPayUrl || data.joinUrl,
+        name: document.getElementById('f-name').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        people: peopleCount
+      }));
       document.getElementById('sd1').classList.remove('active');
       document.getElementById('sd1').classList.add('done');
       document.getElementById('sd1').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>';
