@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Pay Your Share — Sortora</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    :root{--sortora-primary:#3B6BFF;--sortora-primary-hover:#2d5ae6;--sortora-font:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;--sortora-radius:12px;--sortora-card-radius:16px}
+    :root{--sortora-primary:#3B6BFF;--sortora-primary-hover:#2d5ae6;--sortora-font:'DM Sans',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;--sortora-radius:12px;--sortora-card-radius:16px}
     *{margin:0;padding:0;box-sizing:border-box}
 
     /* Accessibility: min-width + touch targets */
@@ -17,18 +17,18 @@
     .group-member{min-height:44px}
     input,select,textarea{min-height:44px;font-size:16px}
 
-    body{font-family:var(--sortora-font);background:#f7f8fa;color:#0C1220;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    body{font-family:var(--sortora-font);background:#F8F8F6;color:#1A1A1A;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 
     .pay-container{width:100%;max-width:480px;margin:0 auto}
 
     /* Business header — this is THEIR brand, not ours */
     .biz-header{text-align:center;margin-bottom:24px}
-    .biz-logo{width:56px;height:56px;border-radius:14px;background:#0C1220;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;margin:0 auto 12px}
+    .biz-logo{width:56px;height:56px;border-radius:14px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;margin:0 auto 12px}
     .biz-name{font-size:18px;font-weight:800;letter-spacing:-.02em}
     .biz-type{font-size:13px;color:#6a6a6a;margin-top:2px}
 
     /* Main card */
-    .pay-card{background:#fff;border:1px solid #EBEBEB;border-radius:var(--sortora-card-radius);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+    .pay-card{background:#fff;border:1px solid #E8E8E6;border-radius:var(--sortora-card-radius);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
 
     /* Booking details band */
     .booking-band{padding:24px 28px;border-bottom:1px solid #f0f0f0}
@@ -36,35 +36,35 @@
     .booking-title{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
     .booking-details{display:flex;flex-direction:column;gap:6px}
     .booking-detail{display:flex;align-items:center;gap:8px;font-size:14px;color:#555}
-    .booking-detail svg{width:16px;height:16px;stroke:#b0b0b0;fill:none;stroke-width:2;flex-shrink:0}
+    .booking-detail svg{width:16px;height:16px;stroke:#757575;fill:none;stroke-width:2;flex-shrink:0}
 
     /* Your share — the money moment */
     .share-section{padding:24px 28px;background:#fafbff;border-bottom:1px solid #f0f0f0}
     .share-label{font-size:13px;font-weight:600;color:#6a6a6a;margin-bottom:4px}
-    .share-amount{font-size:42px;font-weight:800;letter-spacing:-.04em;color:#0C1220}
-    .share-amount small{font-size:16px;font-weight:500;color:#b0b0b0;margin-left:4px}
+    .share-amount{font-size:42px;font-weight:800;letter-spacing:-.04em;color:#1A1A1A}
+    .share-amount small{font-size:16px;font-weight:500;color:#757575;margin-left:4px}
     .share-for{font-size:14px;color:#6a6a6a;margin-top:4px}
-    .share-for b{color:#0C1220}
+    .share-for b{color:#1A1A1A}
 
     /* Group progress */
     .group-section{padding:20px 28px;border-bottom:1px solid #f0f0f0}
     .group-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .group-title{font-size:13px;font-weight:700;color:#0C1220}
+    .group-title{font-size:13px;font-weight:700;color:#1A1A1A}
     .group-count{font-size:12px;color:#6a6a6a;font-weight:600}
-    .group-bar{height:6px;border-radius:3px;background:#EBEBEB;overflow:hidden;margin-bottom:14px}
+    .group-bar{height:6px;border-radius:3px;background:#E8E8E6;overflow:hidden;margin-bottom:14px}
     .group-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#3B6BFF,#6B8EFF);transition:width .8s ease}
     .group-list{display:flex;flex-direction:column;gap:6px}
-    .group-member{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:#f7f8fa}
+    .group-member{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:#F8F8F6}
     .group-member-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
     .group-member-info{flex:1;min-width:0}
-    .group-member-email{font-size:13px;font-weight:600;color:#0C1220;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .group-member-email{font-size:13px;font-weight:600;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .group-member-you{font-size:11px;color:var(--sortora-primary);font-weight:700}
     .group-member-status{flex-shrink:0}
     .group-check{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
     .group-check.paid{background:#10B981}
     .group-check.paid svg{stroke:#fff}
-    .group-check.pending{background:#EBEBEB}
-    .group-check.pending svg{stroke:#b0b0b0}
+    .group-check.pending{background:#E8E8E6}
+    .group-check.pending svg{stroke:#757575}
     .group-check.you{background:var(--sortora-primary)}
     .group-check.you svg{stroke:#fff}
     .group-check svg{width:12px;height:12px;fill:none;stroke-width:2.5}
@@ -74,7 +74,7 @@
 .express-checkout-container{display:none}
 .express-divider{display:flex;align-items:center;gap:12px;margin:16px 0 8px}
 .express-divider-line{flex:1;height:1px;background:#e5e7eb}
-.express-divider-text{font-size:12px;color:#b0b0b0;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.express-divider-text{font-size:12px;color:#757575;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 #payment-request-button{min-height:48px}
 /* Pay button */
     .pay-action{padding:24px 28px}
@@ -84,22 +84,22 @@
     .pay-btn svg{width:20px;height:20px}
     .pay-btn-success{background:#10B981;cursor:default}
     .pay-btn-success:hover{background:#10B981;transform:none;box-shadow:none}
-    .pay-note{font-size:12px;color:#b0b0b0;text-align:center;margin-top:10px;line-height:1.5}
-    .pay-note svg{width:12px;height:12px;stroke:#b0b0b0;fill:none;stroke-width:2;vertical-align:-2px;margin-right:2px}
+    .pay-note{font-size:12px;color:#757575;text-align:center;margin-top:10px;line-height:1.5}
+    .pay-note svg{width:12px;height:12px;stroke:#757575;fill:none;stroke-width:2;vertical-align:-2px;margin-right:2px}
 
     
     
     /* Progress steps */
     .progress-steps{display:flex;align-items:center;justify-content:center;gap:0;padding:20px 28px 0}
     .progress-step{display:flex;align-items:center;gap:0}
-    .progress-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:2px solid #ebebeb;color:#b0b0b0;background:#fff;transition:all .3s;flex-shrink:0}
+    .progress-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:2px solid #ebebeb;color:#757575;background:#fff;transition:all .3s;flex-shrink:0}
     .progress-dot.active{border-color:var(--sortora-primary);color:var(--sortora-primary);background:rgba(59,107,255,.06)}
     .progress-dot.done{border-color:#10B981;color:#fff;background:#10B981}
     .progress-dot.done svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3}
     .progress-line{width:32px;height:2px;background:#ebebeb;flex-shrink:0}
     .progress-line.done{background:#10B981}
     .progress-line.active{background:linear-gradient(90deg,#10B981,var(--sortora-primary))}
-    .progress-labels{display:flex;justify-content:space-between;padding:6px 20px 0;font-size:10px;color:#b0b0b0;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .progress-labels{display:flex;justify-content:space-between;padding:6px 20px 0;font-size:10px;color:#757575;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
     @media(prefers-color-scheme:dark){
       .progress-dot{border-color:var(--sortora-divider);color:var(--sortora-text-dim);background:var(--sortora-card)}
       .progress-dot.active{background:rgba(59,107,255,.12)}
@@ -109,7 +109,7 @@
 
     /* Trust signals */
     .trust-strip{padding:16px 28px 0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
-    .trust-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#f7f8fa;border:1px solid #ebebeb;border-radius:6px;font-size:11px;color:#6a6a6a;font-weight:600}
+    .trust-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#F8F8F6;border:1px solid #ebebeb;border-radius:6px;font-size:11px;color:#6a6a6a;font-weight:600}
     .trust-badge svg{width:14px;height:14px;flex-shrink:0}
     .card-brands{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 28px 0}
     .card-brand{height:22px;opacity:.45;transition:opacity .15s}
@@ -140,7 +140,7 @@
 
     /* Loading */
     .loading{text-align:center;padding:80px 28px}
-    .loading-spinner{width:32px;height:32px;border:3px solid #EBEBEB;border-top-color:#3B6BFF;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto 16px}
+    .loading-spinner{width:32px;height:32px;border:3px solid #E8E8E6;border-top-color:#3B6BFF;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto 16px}
     @keyframes spin{to{transform:rotate(360deg)}}
     .loading-text{font-size:14px;color:#6a6a6a}
 
@@ -151,19 +151,19 @@
 
     /* Powered by footer */
     .powered-by{text-align:center;margin-top:20px;padding:8px}
-    .powered-by a{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#b0b0b0;text-decoration:none;font-weight:600;transition:color .12s}
+    .powered-by a{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#757575;text-decoration:none;font-weight:600;transition:color .12s}
     .powered-by a:hover{color:#6a6a6a}
     .powered-by svg{width:14px;height:14px}
 
     /* Trust badges */
     .trust-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px}
-    .trust-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#b0b0b0;font-weight:500}
-    .trust-item svg{width:12px;height:12px;stroke:#b0b0b0;fill:none;stroke-width:2}
+    .trust-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#757575;font-weight:500}
+    .trust-item svg{width:12px;height:12px;stroke:#757575;fill:none;stroke-width:2}
 
     
     /* Dark mode */
     @media(prefers-color-scheme:dark){
-      :root{--sortora-bg:#0C1220;--sortora-card:#1a2233;--sortora-card-border:#2a3344;--sortora-text:#f0f2f5;--sortora-text-muted:#8a94a6;--sortora-text-dim:#6a7486;--sortora-glass:#151d2e;--sortora-divider:#232d3f;--sortora-input-bg:#151d2e}
+      :root{--sortora-bg:#1A1A1A;--sortora-card:#1a2233;--sortora-card-border:#2a3344;--sortora-text:#f0f2f5;--sortora-text-muted:#8a94a6;--sortora-text-dim:#6a7486;--sortora-glass:#151d2e;--sortora-divider:#232d3f;--sortora-input-bg:#151d2e}
       body{background:var(--sortora-bg);color:var(--sortora-text)}
       .pay-card{background:var(--sortora-card);border-color:var(--sortora-card-border);box-shadow:0 4px 24px rgba(0,0,0,.3)}
       .booking-band{border-bottom-color:var(--sortora-divider)}
@@ -334,7 +334,7 @@
 
     <div class="powered-by">
       <a href="https://sortora.com" target="_blank">
-        <svg viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#b0b0b0" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#b0b0b0" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#b0b0b0"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#b0b0b0" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 44 44" fill="none"><circle cx="11" cy="32" r="6" stroke="#757575" stroke-width="1.5" fill="none"/><circle cx="33" cy="32" r="6" stroke="#757575" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="6.5" fill="#757575"/><path d="M11 26 C11 6, 33 6, 33 26" stroke="#757575" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
         Powered by Sortora
       </a>
     </div>
@@ -632,173 +632,6 @@
         }
         currentY = 0;
       });
-    }
-  </script>
-</body>
-</html>
- + amount.toFixed(2);
-      initExpressCheckout();
-
-      // Group progress
-      var paid = allParticipants.filter(function(p) { return p.status === 'paid'; }).length;
-      var total = allParticipants.length;
-      var pct = total ? Math.round(paid / total * 100) : 0;
-      document.getElementById('group-count').textContent = paid + ' of ' + total + ' paid';
-      document.getElementById('group-bar').style.width = pct + '%';
-
-      document.getElementById('group-list').innerHTML = allParticipants.map(function(p, i) {
-        var isYou = p.id === participantData.id;
-        var isPaid = p.status === 'paid';
-        var initials = (p.email || '').substring(0, 2).toUpperCase();
-        var color = avatarColors[i % avatarColors.length];
-        var checkCls = isPaid ? 'paid' : (isYou ? 'you' : 'pending');
-        var checkIcon = isPaid ? '<polyline points="20 6 9 17 4 12"/>' : (isYou ? '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>' : '<circle cx="12" cy="12" r="1"/>');
-
-        return '<div class="group-member">'
-          + '<div class="group-member-av" style="background:' + color + '">' + initials + '</div>'
-          + '<div class="group-member-info"><div class="group-member-email">' + maskEmail(p.email) + (isYou ? ' <span class="group-member-you">(you)</span>' : '') + '</div></div>'
-          + '<div class="group-member-status"><div class="group-check ' + checkCls + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">' + checkIcon + '</svg></div></div></div>';
-      }).join('');
-
-      // Deadline
-      if (sessionData.deadline) {
-        var dl = new Date(sessionData.deadline);
-        var now = new Date();
-        var daysLeft = Math.ceil((dl - now) / (1000 * 60 * 60 * 24));
-        if (daysLeft > 0 && daysLeft <= 7) {
-          document.getElementById('deadline-warning').style.display = 'flex';
-          document.getElementById('deadline-text').textContent = 'Payment due by ' + dl.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' (' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + ' left)';
-        }
-      }
-
-      // Show correct state
-      if (participantData.status === 'paid') {
-        showState('paid');
-        // Also show the booking details above the paid state
-        document.getElementById('active-state').style.display = 'block';
-        var payBtn = document.getElementById('pay-btn');
-        payBtn.className = 'pay-btn pay-btn-success';
-        payBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Paid — Thank you!';
-        payBtn.disabled = true;
-        document.getElementById('paid-state').style.display = 'none';
-      } else {
-        showState('active');
-      }
-    }
-
-    function maskEmail(email) {
-      if (!email) return '';
-      var parts = email.split('@');
-      if (parts[0].length <= 3) return email;
-      return parts[0].substring(0, 3) + '***@' + parts[1];
-    }
-
-    
-
-    // Initialize Apple Pay / Google Pay express checkout
-    async function initExpressCheckout() {
-      try {
-        var res = await fetch('/api/pay?mode=intent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: participantData.payment_token })
-        });
-        var data = await res.json();
-        if (!data.clientSecret || !data.publishableKey) return;
-
-        var stripeInstance = Stripe(data.publishableKey);
-        var paymentRequest = stripeInstance.paymentRequest({
-          country: 'US',
-          currency: data.currency || 'usd',
-          total: {
-            label: data.label || 'Split Payment',
-            amount: data.amount
-          },
-          requestPayerName: true,
-          requestPayerEmail: true
-        });
-
-        var prButton = stripeInstance.elements().create('paymentRequestButton', {
-          paymentRequest: paymentRequest,
-          style: { paymentRequestButton: { type: 'default', theme: 'dark', height: '48px' } }
-        });
-
-        var canPay = await paymentRequest.canMakePayment();
-        if (canPay) {
-          prButton.mount('#payment-request-button');
-          document.getElementById('express-container').style.display = 'block';
-        }
-
-        paymentRequest.on('paymentmethod', async function(ev) {
-          var confirmResult = await stripeInstance.confirmCardPayment(
-            data.clientSecret,
-            { payment_method: ev.paymentMethod.id },
-            { handleActions: false }
-          );
-
-          if (confirmResult.error) {
-            ev.complete('fail');
-          } else {
-            ev.complete('success');
-            if (confirmResult.paymentIntent.status === 'requires_action') {
-              var actionResult = await stripeInstance.confirmCardPayment(data.clientSecret);
-              if (actionResult.error) {
-                alert('Payment authentication failed. Please try the card button below.');
-              } else {
-                window.location.href = '/pay.html?token=' + participantData.payment_token + '&success=true';
-              }
-            } else {
-              window.location.href = '/pay.html?token=' + participantData.payment_token + '&success=true';
-            }
-          }
-        });
-      } catch (err) {
-        console.log('Express checkout not available:', err);
-      }
-    }
-
-    async function handlePay() {
-      var btn = document.getElementById('pay-btn');
-      btn.disabled = true;
-      btn.innerHTML = '<div class="loading-spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div> Processing...';
-
-      // In production: call your API to create a Stripe Checkout session
-      // The API creates a checkout session with the participant's amount
-      // and redirects to Stripe's hosted payment page
-      try {
-        var res = await fetch('/api/pay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            participantId: participantData.id,
-            bookingSessionId: sessionData.id,
-            token: participantData.payment_token
-          })
-        });
-        var data = await res.json();
-        if (data.url) {
-          window.location.href = data.url; // Redirect to Stripe Checkout
-        } else {
-          alert(data.error || 'Could not start payment. Please try again.');
-          btn.disabled = false;
-          btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay $' + parseFloat(participantData.amount).toFixed(2);
-        }
-      } catch (e) {
-        alert('Network error. Please check your connection and try again.');
-        btn.disabled = false;
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay $' + parseFloat(participantData.amount).toFixed(2);
-      }
-    }
-
-    // Handle return from Stripe
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('success') === 'true') {
-      // Payment was successful — the webhook will update the DB
-      // Show success state immediately for good UX
-      document.getElementById('loading-state').style.display = 'none';
-      document.getElementById('paid-state').style.display = 'block';
-    } else {
-      init();
     }
   </script>
 </body>
