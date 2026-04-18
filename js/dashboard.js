@@ -60,8 +60,9 @@ async function init() {
   if (bizData.stripe_onboarded) {
     document.getElementById('stripe-prompt').style.display = 'none';
     var btn = document.getElementById('stripe-btn-settings');
-    btn.textContent = 'Connected'; btn.className = 'stripe-btn stripe-btn-connected'; btn.disabled = true;
-    document.getElementById('stripe-title').textContent = 'Stripe Connected';
+    btn.textContent = 'Change account'; btn.className = 'stripe-btn stripe-btn-change'; btn.disabled = false;
+    btn.onclick = changeStripeAccount;
+    document.getElementById('stripe-title').innerHTML = 'Stripe Connected <span style="display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:2px 8px;background:#E8F5E8;color:#1A8917;border-radius:6px;font-size:11px;font-weight:700;vertical-align:middle"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Active</span>';
     document.getElementById('stripe-desc').textContent = 'Your account is connected and ready to receive payouts.';
   } else {
     document.getElementById('stripe-prompt').style.display = 'block';
@@ -71,6 +72,13 @@ async function init() {
   if (params.get('stripe') === 'success') {
     await SB.from('businesses').update({ stripe_onboarded: true }).eq('id', currentUser.id);
     window.location.href = '/dashboard.html';
+  }
+  if (params.get('reconnect') === 'true' && params.get('view') === 'settings') {
+    setTimeout(function() {
+      var settingsItem = document.querySelector('.sb-item:nth-child(7)') || document.querySelector('.sb-item[onclick*="settings"]');
+      if (settingsItem) showView('settings', settingsItem);
+      setTimeout(function() { connectStripe(); }, 400);
+    }, 300);
   }
 
   await loadBookings();
@@ -770,6 +778,21 @@ async function selectPlan(plan) {
   } catch(err) { alert("Failed to process plan change. Please try again."); highlightPlan(currentPlan); }
 }
 
+async function changeStripeAccount() {
+  var confirmed = confirm('Change your connected Stripe account?\n\nThis will disconnect your current Stripe account and let you connect a different one. Any in-progress splits will continue to pay out to the current account until they complete.\n\nContinue?');
+  if (!confirmed) return;
+  var btn = document.getElementById('stripe-btn-settings');
+  btn.disabled = true; btn.textContent = 'Disconnecting...';
+  try {
+    await SB.from('businesses').update({ stripe_onboarded: false, stripe_account_id: null }).eq('id', currentUser.id);
+    location.href = '/dashboard.html?view=settings&reconnect=true';
+  } catch (err) {
+    console.error('Disconnect error:', err);
+    btn.disabled = false; btn.textContent = 'Change account';
+    alert('Could not disconnect. Please try again or contact support.');
+  }
+}
+
 async function connectStripe() {
   var btn = document.getElementById('stripe-btn') || document.getElementById('stripe-btn-settings');
   btn.disabled = true; btn.textContent = 'Setting up...';
@@ -1289,4 +1312,5 @@ if (!localStorage.getItem('sortora_walkthrough_done')) {
     setTimeout(startWalkthrough, 2000);
   });
 }
+
 
