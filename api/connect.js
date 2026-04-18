@@ -47,7 +47,7 @@ module.exports = async function handler(req, res) {
         type: 'standard',
         metadata: { sortora_business_id: businessId }
       }, {
-        idempotencyKey: 'acct_' + businessId
+        idempotencyKey: 'acct_' + businessId + '_' + Math.floor(Date.now() / 1000)
       });
       accountId = account.id;
       await supabase.from('businesses').update({ stripe_account_id: accountId, stripe_connected_at: new Date().toISOString() }).eq('id', businessId);
@@ -73,3 +73,4 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
