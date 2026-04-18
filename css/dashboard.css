@@ -356,6 +356,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .stripe-btn-connect{background:#635BFF;color:#fff}
 .stripe-btn-connect:hover{background:#524ae0}
 .stripe-btn-connected{background:#1A8917;color:#fff;cursor:default}
+.stripe-btn-change{background:#fff;color:#1A1A1A;border:1px solid #E8E8E6}
+.stripe-btn-change:hover{border-color:#3B6BFF;color:#3B6BFF;background:rgba(59,107,255,.04)}
 
 /* ── Empty state ── */
 .empty{text-align:center;padding:40px 24px}
@@ -494,4 +496,5 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .pull-indicator.active{transform:translateX(-50%) translateY(16px)}
 .pull-indicator.refreshing svg{animation:spin .8s linear infinite}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
 
