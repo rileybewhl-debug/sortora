@@ -1,6 +1,6 @@
 var CACHE_NAME = 'sortora-v2';
 var STATIC_ASSETS = [
-  '/dashboard.html',
+  '/dashboard',
   '/manifest.json'
 ];
 
@@ -41,3 +41,4 @@ self.addEventListener('fetch', function(e) {
     })
   );
 });
+
